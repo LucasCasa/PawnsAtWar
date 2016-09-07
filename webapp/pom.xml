@@ -27,16 +27,5 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>ar.edu.itba.paw-webapp</groupId>
-      <artifactId>service</artifactId>
-      <version>${parent.version}</version>
-      <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>ar.edu.itba.paw-webapp</groupId>
-      <artifactId>interface</artifactId>
-      <version>${parent.version}</version>
-    </dependency>
   </dependencies>
 </project>
