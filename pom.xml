@@ -8,6 +8,10 @@
   <name>paw-webapp</name>
   <modules>
     <module>webapp</module>
+    <module>service</module>
+    <module>persistence</module>
+    <module>interfaces</module>
+    <module>model</module>
   </modules>
 
   <properties>  
