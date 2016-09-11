@@ -64,15 +64,19 @@ public class TerrainJdbcDao implements TerrainDao {
 						},position.getX(),position.getY());
 		return terrainList.isEmpty() ? null:terrainList.get(0);
 	}
-
-
+	
 	@Override
 	public List<Terrain> getTerrain(Point p, int range) {
 		if(range < 0){
 			return null;
 		}
-//consulta de pensar
-		return null;
+		
+        List<Terrain> terrainList = jdbcTemplate
+                .query("SELECT * FROM terrain WHERE (y= ? AND (x<= ? AND x>= ?)) OR (x=? AND (y<= ? AND y>= ?))",(ResultSet resultSet, int rowNum) -> {
+                    return new Terrain(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"),resultSet.getInt("power"));     //.getInt("type");
+                },p.getY(),p.getX() + range, p.getX() - range, p.getX(), p.getY() + range, p.getY() -range);
+
+        return terrainList;
 	}
 
 

@@ -14,6 +14,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.model.Buildings;
 import ar.edu.itba.model.Point;
+import ar.edu.itba.model.User;
 
 public class BuildingJdbcDao implements BuildingDao {
 	
@@ -54,14 +55,21 @@ public class BuildingJdbcDao implements BuildingDao {
 
 	@Override
 	public Integer setLevel(Point p) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public List<Buildings> getBuildings(Point p, int range) {
-		// TODO Auto-generated method stub
-		return null;
+			if(range < 0){
+				return null;
+			}
+			
+	        List<Buildings> buildingList = jdbcTemplate
+	                .query("SELECT * FROM buildings WHERE (y= ? AND (x<= ? AND x>= ?)) OR (x=? AND (y<= ? AND y>= ?))",(ResultSet resultSet, int rowNum) -> {
+	                    return new Buildings(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("type"),resultSet.getInt("leve"));
+	                },p.getY(),p.getX() + range, p.getX() - range, p.getX(), p.getY() + range, p.getY() -range);
+
+	        return buildingList;
 	}
 
 	@Override
@@ -84,7 +92,6 @@ public class BuildingJdbcDao implements BuildingDao {
 
 	@Override
 	public Buildings setIdPlayer(Point p) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
@@ -103,6 +110,11 @@ public class BuildingJdbcDao implements BuildingDao {
 	@Override
 	public Buildings insertBuilding(Point p, int idPlayer, int type) {
 		return insertBuilding(p,0,idPlayer,type);
+	}
+
+	@Override
+	public boolean belongsTo(Point p, User u) {
+		return false;
 	}
 	
 

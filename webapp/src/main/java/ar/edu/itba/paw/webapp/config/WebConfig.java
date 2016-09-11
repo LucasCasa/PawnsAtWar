@@ -1,15 +1,18 @@
 package ar.edu.itba.paw.webapp.config;
 
+import javax.sql.DataSource;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
 @EnableWebMvc
-@ComponentScan({"ar.edu.itba.paw.webapp.controller"})
+@ComponentScan({"ar.edu.itba.paw.webapp.controller","ar.edu.itba.service","ar.edu.itba.persistance"})
 @Configuration
 public class WebConfig {
 	
@@ -21,5 +24,14 @@ public class WebConfig {
 		viewResolver.setSuffix(".jsp");
 
 		return viewResolver;
+	}
+	
+	public DataSource dataSource(){
+		
+		final SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+		dataSource.setDriverClass(org.postgresql.Driver.class);
+	  	dataSource.setUrl("jdbc:postgresql://localhost/paw");
+	  	
+	  	return dataSource;
 	}
 }
