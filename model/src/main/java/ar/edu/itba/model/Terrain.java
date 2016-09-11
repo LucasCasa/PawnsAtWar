@@ -2,10 +2,10 @@ package ar.edu.itba.model;
 
 public class Terrain {
 	private Point position;
-	private TypeMod typemod;
+	private int typemod;
 	private int power;
 	
-	public Terrain(Point position, TypeMod typemod, int power) {
+	public Terrain(Point position, int typemod, int power) {
 		super();
 		this.position = position;
 		this.typemod = typemod;
@@ -16,7 +16,7 @@ public class Terrain {
 		return position;
 	}
 
-	public TypeMod getTypemod() {
+	public int getTypemod() {
 		return typemod;
 	}
 

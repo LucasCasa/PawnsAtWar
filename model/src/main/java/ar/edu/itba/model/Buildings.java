@@ -3,10 +3,10 @@ package ar.edu.itba.model;
 public class Buildings {
 	private Point position;
 	private int idPlayer;
-	private Type type;
+	private int type;
 	private int level;
 	
-	public Buildings(Point position, int idPlayer, Type type, int level) {
+	public Buildings(Point position, int idPlayer, int type, int level) {
 		super();
 		this.position = position;
 		this.idPlayer = idPlayer;
@@ -25,7 +25,7 @@ public class Buildings {
 	public int getIdPlayer() {
 		return idPlayer;
 	}
-	public Type getType() {
+	public int getType() {
 		return type;
 	}
 	
