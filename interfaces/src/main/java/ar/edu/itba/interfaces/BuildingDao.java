@@ -19,9 +19,9 @@ public interface BuildingDao {
 	
 	public Buildings setIdPlayer(Point p);
 	
-	public Buildings insertBuilding(Point p, int level, int idPlayer, int type);
+	public Buildings addBuilding(Point p, int level, int idPlayer, int type);
 	
-	public Buildings insertBuilding(Point p, int idPlayer, int type);
+	public Buildings addBuilding(Point p, int idPlayer, int type);
 	
 	public boolean belongsTo(Point p, User u);
 	

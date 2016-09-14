@@ -24,7 +24,6 @@ public interface TerrainDao {
 	 * @return a list of terrains that are at a distance of range of the position p
 	 */
 	public List<Terrain> getTerrain(Point p, int range);
-	
 	/**
 	 * Returns the terrain in a position
 	 * @param p

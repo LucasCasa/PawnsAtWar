@@ -32,17 +32,17 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return viewResolver;
 	}
 
-
+	@Bean
 	public DataSource dataSource(){
-
 		final SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
 		dataSource.setDriverClass(org.postgresql.Driver.class);
 		dataSource.setUrl("jdbc:postgresql://localhost/paw");
-		dataSource.setUsername("root");
-		dataSource.setPassword("root");
+		dataSource.setUsername("Magdalena");
+		dataSource.setPassword("hoyquiero");
 		return dataSource;
 	}
 
+	@Bean
 	public DataSourceInitializer dataSourceInitializer (final DataSource ds){
 		DataSourceInitializer dsi= new DataSourceInitializer();
 		dsi.setDataSource(ds);
@@ -53,7 +53,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 	private DatabasePopulator databasePopulator(){
 		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-		//dbp.addScript(schemaSql);
+		//dbp.addScript(schema);
 		return dbp;
 	}
 

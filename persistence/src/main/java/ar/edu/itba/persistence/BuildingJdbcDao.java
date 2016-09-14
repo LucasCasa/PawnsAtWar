@@ -92,11 +92,14 @@ public class BuildingJdbcDao implements BuildingDao {
 
 	@Override
 	public Buildings setIdPlayer(Point p) {
+		if(p.getX() < 0 || p.getY() < 0){
+			return null;
+		}
 		return null;
 	}
 
 	@Override
-	public Buildings insertBuilding(Point p, int level, int idPlayer, int type) {
+	public Buildings addBuilding(Point p, int level, int idPlayer, int type) {
 		final Map<String,Object> args = new HashMap<>();
 		args.put("x", p.getX());
 		args.put("y", p.getY());
@@ -108,8 +111,8 @@ public class BuildingJdbcDao implements BuildingDao {
 	}
 
 	@Override
-	public Buildings insertBuilding(Point p, int idPlayer, int type) {
-		return insertBuilding(p,0,idPlayer,type);
+	public Buildings addBuilding(Point p, int idPlayer, int type) {
+		return addBuilding(p,0,idPlayer,type);
 	}
 
 	@Override
