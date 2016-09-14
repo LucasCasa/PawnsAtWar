@@ -36,7 +36,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 		return viewResolver;
 	}
-
+/*
 	@Bean
 	public DataSource dataSource(){
 		final SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
@@ -61,7 +61,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		dbp.addScript(schemaSql);
 		return dbp;
 	}
-
+*/
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");

@@ -2,13 +2,13 @@
 <%@ taglib prefix="te" uri="custom.tld"%>
 <%@ include file="header.jsp" %>
 <link rel="stylesheet" href="<c:url value= "/resources/css/style.css" /> ">
-
-<div id="myCarousel" class="carousel slide" data-ride="carousel" style="display: inline-block">
-<table style="max-width: 896px;">
+<div class="container">
+<div id="Map" class="carousel slide" style="display: inline-block">
+<table style="max-width: 537,6px;">
 <c:forEach var="row" items="${map}">
 <tr>
 	<c:forEach var="item" items="${row}">
-		<td><te:Terrain clas="img-responsive" id="${item}" /></td>
+		<td style="width:76px;height: 76px"><te:Terrain clas="img-responsive" id="${item}" /></td>
 	</c:forEach>
 </tr>
 </c:forEach>
@@ -30,5 +30,5 @@
 		<span class="sr-only">Down</span>
 	</a>
 </div>
-
+</div>
 <%@ include file="footer.jsp" %>
