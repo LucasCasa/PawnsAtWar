@@ -20,71 +20,9 @@ public class HomePageController {
 	@RequestMapping("/map")
 	public ModelAndView gridLoader(){
 		final ModelAndView mav = new ModelAndView("index");
-		//List<List<Integer>>  elements = new ArrayList<>();
-		
+
 		List<List<Terrain>> elements;
 		elements = ts.getTerrain(new Point(3,3), 1);
-		System.err.println(elements.toString());
-		/* ESTO ES UN ASCO */
-		/*elements.add(new ArrayList<>());
-		elements.add(new ArrayList<>());
-		elements.add(new ArrayList<>());
-		elements.add(new ArrayList<>());
-		elements.add(new ArrayList<>());
-		elements.add(new ArrayList<>());
-		elements.add(new ArrayList<>());
-		elements.add(new ArrayList<>());
-		elements.add(new ArrayList<>());
-		elements.get(0).add(0);
-		elements.get(0).add(0);
-		elements.get(0).add(0);
-		elements.get(0).add(4);
-		elements.get(0).add(0);
-		elements.get(0).add(4);
-		elements.get(0).add(0);
-		elements.get(1).add(0);
-		elements.get(1).add(2);
-		elements.get(1).add(0);
-		elements.get(1).add(0);
-		elements.get(1).add(0);
-		elements.get(1).add(0);
-		elements.get(1).add(0);
-		elements.get(2).add(0);
-		elements.get(2).add(0);
-		elements.get(2).add(1);
-		elements.get(2).add(0);
-		elements.get(2).add(0);
-		elements.get(2).add(0);
-		elements.get(2).add(0);
-		elements.get(3).add(0);
-		elements.get(3).add(5);
-		elements.get(3).add(0);
-		elements.get(3).add(3);
-		elements.get(3).add(0);
-		elements.get(3).add(0);
-		elements.get(3).add(5);
-		elements.get(4).add(6);
-		elements.get(4).add(0);
-		elements.get(4).add(0);
-		elements.get(4).add(0);
-		elements.get(4).add(0);
-		elements.get(4).add(6);
-		elements.get(4).add(0);
-		elements.get(5).add(0);
-		elements.get(5).add(5);
-		elements.get(5).add(0);
-		elements.get(5).add(3);
-		elements.get(5).add(0);
-		elements.get(5).add(0);
-		elements.get(5).add(5);
-		elements.get(6).add(6);
-		elements.get(6).add(0);
-		elements.get(6).add(0);
-		elements.get(6).add(0);
-		elements.get(6).add(0);
-		elements.get(6).add(6);
-		elements.get(6).add(0);
-		*/
 		mav.addObject("map",elements);
 		return mav;
 	}
