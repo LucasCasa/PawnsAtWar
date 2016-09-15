@@ -20,7 +20,7 @@ import org.springframework.web.servlet.view.JstlView;
 
 
 @EnableWebMvc
-@ComponentScan({"ar.edu.itba.paw.webapp.controller","ar.edu.itba.service","ar.edu.itba.persistance"})
+@ComponentScan({"ar.edu.itba.paw.webapp.controller","ar.edu.itba.service","ar.edu.itba.persistence"})
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 
@@ -55,12 +55,14 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return dsi;
 
 	}
+	
 
 	private DatabasePopulator databasePopulator(){
 		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
 		dbp.addScript(schemaSql);
 		return dbp;
 	}
+
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {

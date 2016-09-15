@@ -22,16 +22,6 @@ public class ArmyJdbcDao implements ArmyDao{
 	public ArmyJdbcDao(final DataSource dataSource){
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("army").usingGeneratedKeyColumns("idArmy");
-		jdbcTemplate.execute("create table if not exists army ("
-				+ "idArmy integer SERIAL PRIMARY KEY,"
-		 		+ "x integer not null,"
-				+ "y integer not null, "
-		 		+ "idPlayer integer," 
-		 		+ "boolean available"
-		 		+ "CHECK (x >= 0),"
-		 		+ "CHECK (y >= 0)"
-		 		+ ");"
-		);
 	}
 
 	@Override

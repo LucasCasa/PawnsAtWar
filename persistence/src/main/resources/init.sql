@@ -1,0 +1,5 @@
+INSERT INTO terrain VALUES (1,1,0,0);
+INSERT INTO terrain VALUES (1,2,1,0);
+INSERT INTO terrain VALUES (2,1,1,0);
+INSERT INTO terrain VALUES (2,2,1,0);
+INSERT INTO terrain VALUES (1,3,0,0);

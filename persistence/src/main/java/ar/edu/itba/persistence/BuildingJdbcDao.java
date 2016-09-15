@@ -25,20 +25,6 @@ public class BuildingJdbcDao implements BuildingDao {
 	public BuildingJdbcDao(final DataSource dataSource){
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("buildings");
-		jdbcTemplate.execute("create table if not exists buildings (" 
-		 		+ "x integer not null,"
-				+ "y integer not null, "
-		 		+ "type integer,"
-				+ "idPlayer integer,"
-				+ "level integer"
-		 		+ "primary key (x,y),"
-		 		+ "CHECK (level >= 0),"
-		 		+ "CHECK (type >= 0),"
-		 		+ "CHECK (x >= 0),"
-		 		+ "CHECK (y >= 0),"
-		 		+ "FOREIGN KEY (idPlayer) REFERENCES user ON DELETE SET NULL"
-		 		+ ");"
-		);
 	}
 
 	@Override

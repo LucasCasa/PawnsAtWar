@@ -8,7 +8,7 @@
 <c:forEach var="row" items="${map}">
 <tr>
 	<c:forEach var="item" items="${row}">
-		<td><te:Terrain clas="img-responsive" id="${item}" /></td>
+		<td><te:Terrain clas="img-responsive" id="${item.getType()}" /></td>
 	</c:forEach>
 </tr>
 </c:forEach>

@@ -26,20 +26,7 @@ public class TerrainJdbcDao implements TerrainDao {
 	public TerrainJdbcDao(final DataSource dataSource){
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("terrain");
-		jdbcTemplate.execute("create table if not exists terrain (" 
-		 		+ "x integer not null,"
-				+ "y integer not null, "
-		 		+ "power integer,"
-				+ "type integer,"
-		 		+ "primary key (x,y),"
-		 		+ "CHECK (power >= 0),"
-		 		+ "CHECK (type >= 0),"
-		 		+ "CHECK (x >= 0),"
-		 		+ "CHECK (y >= 0)"
-		 		+ ");"
-		);
 	}
-	
 
 	@Override
 	public Integer getPower(Point position) {
@@ -67,14 +54,10 @@ public class TerrainJdbcDao implements TerrainDao {
 	
 	@Override
 	public List<Terrain> getTerrain(Point p, int range) {
-		if(range < 0){
-			return null;
-		}
-		
         List<Terrain> terrainList = jdbcTemplate
-                .query("SELECT * FROM terrain WHERE (y= ? AND (x<= ? AND x>= ?)) OR (x=? AND (y<= ? AND y>= ?))",(ResultSet resultSet, int rowNum) -> {
+                .query("SELECT * FROM terrain WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
                     return new Terrain(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"),resultSet.getInt("power"));     //.getInt("type");
-                },p.getY(),p.getX() + range, p.getX() - range, p.getX(), p.getY() + range, p.getY() -range);
+                },p.getX()-range,p.getX() + range, p.getY() - range, p.getY()+range);
 
         return terrainList;
 	}
