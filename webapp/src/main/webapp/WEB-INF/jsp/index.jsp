@@ -8,24 +8,24 @@
 <c:forEach var="row" items="${map}">
 <tr>
 	<c:forEach var="item" items="${row}">
-		<td style="width:76px;height: 76px"><te:Terrain clas="img-responsive" id="${item}" /></td>
+		<td style="width:76px;height: 76px"><te:Terrain clas="img-responsive" id="${item.getType()}" /></td>
 	</c:forEach>
 </tr>
 </c:forEach>
 </table>
-	<a class="left carousel-control" href="#myCarousel" role="button">
+	<a class="left carousel-control" href="javascript:location.href= window.location.pathname+'?x=<c:out value="${x - 1}"/>&amp;y=<c:out value="${y}"/>'" role="button">
 		<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
 		<span class="sr-only">Left</span>
 	</a>
-	<a class="up carousel-control" href="#myCarousel" role="button">
+	<a class="up carousel-control" href="javascript:location.href= window.location.pathname+'?x=<c:out value="${x}"/>&amp;y=<c:out value="${y-1}"/>'" role="button">
 		<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
 		<span class="sr-only">Up</span>
 	</a>
-	<a class="right carousel-control" href="#myCarousel" role="button">
+	<a class="right carousel-control" href="javascript:location.href= window.location.pathname+'?x=<c:out value="${x + 1}"/>&amp;y=<c:out value="${y}"/>'" role="button">
 		<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
 		<span class="sr-only">Right</span>
 	</a>
-	<a class="down carousel-control" href="#myCarousel" role="button">
+	<a class="down carousel-control" href="javascript:location.href= window.location.pathname+'?x=<c:out value="${x}"/>&amp;y=<c:out value="${y+1}"/>'" role="button">
 		<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
 		<span class="sr-only">Down</span>
 	</a>
