@@ -66,6 +66,7 @@ public class TerrainJdbcDao implements TerrainDao {
 	@Override
 	public Terrain getTerrain(Point p) {
 		List<Terrain> terrains =  getTerrain(p,0);
+		System.out.println("GET TERRAIN ME ESTA DEVOLVIENDO ESTO: " + terrains.get(0).toString());
 		return terrains.isEmpty() ? null : terrains.get(0);
 	}
 

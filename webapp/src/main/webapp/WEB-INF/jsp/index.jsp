@@ -2,13 +2,19 @@
 <%@ taglib prefix="te" uri="custom.tld"%>
 <%@ include file="header.jsp" %>
 <link rel="stylesheet" href="<c:url value= "/resources/css/style.css" /> ">
+
+
+
+
 <div class="container">
+
 <div id="Map" class="carousel slide" style="display: inline-block">
 <table style="max-width: 537,6px;">
+
 <c:forEach var="row" items="${map}">
 <tr>
 	<c:forEach var="item" items="${row}">
-		<td style="width:76px;height: 76px"><te:Terrain clas="img-responsive" id="${item}" /></td>
+		<td style="width:76px;height: 76px"><te:Terrain clas="img-responsive" id="${item.getType()}" /></td>
 	</c:forEach>
 </tr>
 </c:forEach>

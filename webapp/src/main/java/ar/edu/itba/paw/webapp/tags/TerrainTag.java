@@ -13,25 +13,25 @@ public class TerrainTag extends SimpleTagSupport{
         JspWriter out = getJspContext().getOut();
         switch (id){
             case 0:
-                out.print("<img class=\" "+clas + " \" src=\"resources/images/terrain.jpg\">");
+                out.print("<img class=\" "+clas + " \" src=\"/webapp/resources/images/terrain.jpg\">");
                 break;
             case 1:
-                out.print("<img class=\" " + clas + " \" src=\"resources/images/cas.jpg\">");
+                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/cas.jpg\">");
                 break;
             case 2:
-                out.print("<img class=\" " + clas + " \" src=\"resources/images/arch.jpg\">");
+                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/arch.jpg\">");
                 break;
             case 3:
-                out.print("<img class=\" " + clas + " \" src=\"resources/images/ba.jpg\">");
+                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/ba.jpg\">");
                 break;
             case 4:
-                out.print("<img class=\" " + clas + " \" src=\"resources/images/go.jpg\">");
+                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/go.jpg\">");
                 break;
             case 5:
-                out.print("<img class=\" " + clas + " \" src=\"resources/images/terrgold.jpg\">");
+                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/terrgold.jpg\">");
                 break;
             case 6:
-                out.print("<img class=\" " + clas + " \"  src=\"resources/images/mi.jpg\">");
+                out.print("<img class=\" " + clas + " \"  src=\"/webapp/resources/images/mi.jpg\">");
                 break;
 
         }

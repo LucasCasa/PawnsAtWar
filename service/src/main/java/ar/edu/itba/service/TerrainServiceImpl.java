@@ -11,6 +11,8 @@ import ar.edu.itba.interfaces.TerrainService;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Terrain;
 
+import static java.lang.System.out;
+
 @org.springframework.stereotype.Component
 public class TerrainServiceImpl implements TerrainService{
 	
@@ -52,7 +54,11 @@ public class TerrainServiceImpl implements TerrainService{
 
 	@Override
 	public Terrain getTerrain(Point p) {
-		return terrainDao.getTerrain(p);
+
+		Terrain terrain = terrainDao.getTerrain(p);
+		System.out.println("EL TERRAIN DAO ME DEVUELVE UN TERRAIN");
+		System.out.println("Y TODA SU INFORMACIO ES LA SIGUIENTE: " + terrain.toString());
+		return terrain;
 	}
 
 	@Override
