@@ -1,17 +1,13 @@
 package ar.edu.itba.service;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.TerrainDao;
 import ar.edu.itba.interfaces.TerrainService;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Terrain;
 
-import static java.lang.System.out;
 
 @org.springframework.stereotype.Component
 public class TerrainServiceImpl implements TerrainService{
@@ -28,37 +24,6 @@ public class TerrainServiceImpl implements TerrainService{
 	@Override
 	public Integer getType(Point position) {
 		return terrainDao.getType(position);
-	}
-
-	@Override
-	public List<List<Terrain>> getTerrain(Point p, int range) {
-		int size = range*2+1;
-		List<Terrain> list = terrainDao.getTerrain(p, range);
-		Terrain[][] aux = new Terrain[size][size];
-
-		for(Terrain t: list){
-			aux[t.getPosition().getY() - (p.getY() - range)][t.getPosition().getX() - (p.getX() - range)] = t;
-		}
-		
-		List<List<Terrain>> res = new ArrayList<>(size);
-		
-		
-		for(int i=0; i<size; i++){
-			res.add(new ArrayList<>(size));
-			for(int j=0; j<size; j++){
-				res.get(i).add(aux[i][j]);
-			}
-		}
-		return res;
-	}
-
-	@Override
-	public Terrain getTerrain(Point p) {
-
-		Terrain terrain = terrainDao.getTerrain(p);
-		System.out.println("EL TERRAIN DAO ME DEVUELVE UN TERRAIN");
-		System.out.println("Y TODA SU INFORMACIO ES LA SIGUIENTE: " + terrain.toString());
-		return terrain;
 	}
 
 	@Override

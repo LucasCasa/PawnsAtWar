@@ -1,23 +1,19 @@
 package ar.edu.itba.model;
 
-public class Terrain {
-	private Point position;
-	private int type;
+public class Terrain extends Sector {
 	private int power;
 	
 	public Terrain(Point position, int type, int power) {
-		super();
-		this.position = position;
-		this.type = type;
+		super(position,type);
 		this.power = power;
 	}
 
 	public Point getPosition() {
-		return position;
+		return super.getPosition();
 	}
 
 	public int getType() {
-		return type;
+		return super.getType();
 	}
 
 	public int getPower() {
@@ -25,6 +21,6 @@ public class Terrain {
 	}
 	
 	public String toString(){
-		return "(" + this.position.toString() + "," + this.type + "," + this.power + ")";
+		return "(" + super.getPosition().toString() + "," + super.getType() + "," + this.power + ")";
 	}
 }

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TerrainDao;
 import ar.edu.itba.model.Point;
+import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.Terrain;
 
 @Repository
@@ -53,10 +54,10 @@ public class TerrainJdbcDao implements TerrainDao {
 	}
 	
 	@Override
-	public List<Terrain> getTerrain(Point p, int range) {
-        List<Terrain> terrainList = jdbcTemplate
+	public List<Sector> getTerrain(Point p, int range) {
+        List<Sector> terrainList = jdbcTemplate
                 .query("SELECT * FROM terrain WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
-                    return new Terrain(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"),resultSet.getInt("power"));     //.getInt("type");
+                    return new Sector(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"));
                 },p.getX()-range,p.getX() + range, p.getY() - range, p.getY()+range);
 
         return terrainList;
@@ -64,9 +65,8 @@ public class TerrainJdbcDao implements TerrainDao {
 
 
 	@Override
-	public Terrain getTerrain(Point p) {
-		List<Terrain> terrains =  getTerrain(p,0);
-		System.out.println("GET TERRAIN ME ESTA DEVOLVIENDO ESTO: " + terrains.get(0).toString());
+	public Sector getTerrain(Point p) {
+		List<Sector> terrains =  getTerrain(p,0);
 		return terrains.isEmpty() ? null : terrains.get(0);
 	}
 

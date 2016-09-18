@@ -1,6 +1,8 @@
 package ar.edu.itba.persistence;
 
+import java.sql.ResultSet;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.sql.DataSource;
@@ -40,6 +42,21 @@ public class ArmyJdbcDao implements ArmyDao{
 	@Override
 	public Army addArmy(Point position, int idPlayer) {
 		return addArmy(position,idPlayer,false);
+	}
+
+	@Override
+	public List<Army> getArmy(int userId) {
+		 List<Army> armyList = jdbcTemplate
+	                .query("SELECT * FROM army WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
+	                    return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getBoolean("available"));     //.getInt("type");
+	                },userId);
+
+	        return armyList;
+	}
+
+	@Override
+	public boolean isAvailable(Point p) {
+		return false;
 	}
 
 }

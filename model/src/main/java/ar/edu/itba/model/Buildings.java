@@ -1,14 +1,10 @@
 package ar.edu.itba.model;
 
-public class Buildings {
-	private Point position;
-	private int type;
+public class Buildings extends Sector {
 	private int level;
 	
 	public Buildings(Point position, int type, int level) {
-		super();
-		this.position = position;
-		this.type = type;
+		super(position,type);
 		this.level = level;
 	}
 	public int getLevel() {
@@ -18,11 +14,11 @@ public class Buildings {
 		this.level = level;
 	}
 	public Point getPosition() {
-		return position;
+		return super.getPosition();
 	}
 
 	public int getType() {
-		return type;
+		return super.getType();
 	}
 	
 	

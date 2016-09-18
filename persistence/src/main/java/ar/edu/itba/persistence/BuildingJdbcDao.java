@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.model.Buildings;
 import ar.edu.itba.model.Point;
+import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
 
 @Repository
@@ -42,27 +43,27 @@ public class BuildingJdbcDao implements BuildingDao {
 	}
 
 	@Override
-	public Integer setLevel(Point p) {
+	public Integer setLevel(Point p,int level) {
 		return null;
 	}
 
 	@Override
-	public List<Buildings> getBuildings(Point p, int range) {
+	public List<Sector> getBuildings(Point p, int range) {
 			if(range < 0){
 				return null;
 			}
 			
-	        List<Buildings> buildingList = jdbcTemplate
+	        List<Sector> buildingList = jdbcTemplate
 	                .query("SELECT * FROM buildings WHERE (y= ? AND (x<= ? AND x>= ?)) OR (x=? AND (y<= ? AND y>= ?))",(ResultSet resultSet, int rowNum) -> {
-	                    return new Buildings(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"),resultSet.getInt("leve"));
+	                    return new Sector(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"));
 	                },p.getY(),p.getX() + range, p.getX() - range, p.getX(), p.getY() + range, p.getY() -range);
 
 	        return buildingList;
 	}
 
 	@Override
-	public Buildings getBuilding(Point p) {
-		List<Buildings> buildings = getBuildings(p,0);
+	public Sector getBuilding(Point p) {
+		List<Sector> buildings = getBuildings(p,0);
 		return buildings.isEmpty() ? null : buildings.get(0);
 	}
 

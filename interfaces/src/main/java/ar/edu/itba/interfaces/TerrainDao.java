@@ -3,6 +3,7 @@ package ar.edu.itba.interfaces;
 import java.util.List;
 
 import ar.edu.itba.model.Point;
+import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.Terrain;
 
 public interface TerrainDao {
@@ -23,13 +24,13 @@ public interface TerrainDao {
 	 * @param range, the range of positions that you have to give.
 	 * @return a list of terrains that are at a distance of range of the position p
 	 */
-	public List<Terrain> getTerrain(Point p, int range);
+	public List<Sector> getTerrain(Point p, int range);
 	/**
 	 * Returns the terrain in a position
 	 * @param p
 	 * @return the terrain that is in position p
 	 */
-	public Terrain getTerrain(Point p);
+	public Sector getTerrain(Point p);
 	
 	public Terrain setPower(Point p, int power);
 	
