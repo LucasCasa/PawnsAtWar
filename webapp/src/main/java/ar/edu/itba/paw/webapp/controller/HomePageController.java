@@ -34,14 +34,12 @@ public class HomePageController {
 		return mav;
 	}
 
-	@RequestMapping("/map/{x}/{y}")
-	public ModelAndView terrainParams(@PathVariable(value="x") final int x, @PathVariable(value="y") final int y ) {
+	@RequestMapping(value="/map/", method = RequestMethod.GET)
+	public ModelAndView terrainParams(@RequestParam(value="x",required = false) final int x, @RequestParam(value="y", required = false) final int y ) {
 
 		final ModelAndView mav = new ModelAndView("terrain");
-		System.out.println("ANTES DE GET TERRAIN");
 
 		Terrain terrain = ts.getTerrain(new Point(x,y));
-		System.out.println("DESPUES DEL GET TERRAIN");
 		mav.addObject("terrain",terrain);
 
 		return mav;
