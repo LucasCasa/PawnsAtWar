@@ -10,7 +10,7 @@ create table if not exists terrain (
 	y integer not null,
 	power integer,
 	type integer,
-	primary key (x,y),
+	PRIMARY KEY (x,y),
 	CHECK (power >= 0),
 	CHECK (type >= 0),
 	CHECK (x >= 0),
@@ -23,7 +23,7 @@ create table if not exists buildings (
 	type integer,
 	idPlayer integer,
 	level integer,
-	primary key (x,y),
+	PRIMARY KEY (x,y),
 	CHECK (level >= 0),
 	CHECK (type >= 0),
 	CHECK (x >= 0),
@@ -38,5 +38,32 @@ create table if not exists army (
 	idPlayer integer,
 	available boolean,
 	CHECK (x >= 0), 
-	CHECK (y >= 0) 
+	CHECK (y >= 0), 
+	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE SET NULL
 );
+
+create table if not exists troop (
+	idArmy integer,
+	type integer,
+	amount integer,
+	FOREIGN KEY (idArmy) REFERENCES army ON DELETE SET NULL,
+	PRIMARY KEY (idArmy,type)
+);
+
+create table if not exists empire (
+	idPlayer integer,
+	lastUpdate timestamp,
+	PRIMARY KEY (idPlayer),
+	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE SET NULL
+);
+
+create table if not exists resources (
+	type integer,
+	amount integer,
+	idPlayer integer,
+	PRIMARY KEY (idPlayer, type),
+	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE SET NULL
+);
+
+
+

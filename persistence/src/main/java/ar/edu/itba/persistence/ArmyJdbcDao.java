@@ -8,11 +8,13 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ArmyDao;
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
 
+@Repository
 public class ArmyJdbcDao implements ArmyDao{
 	
 	private final JdbcTemplate jdbcTemplate;
@@ -32,7 +34,7 @@ public class ArmyJdbcDao implements ArmyDao{
 		args.put("idPlayer",idPlayer);
 		args.put("available", available);
 		final Number key = jdbcInsert.executeAndReturnKey(args);
-		return new Army(position,idPlayer,key.intValue(),available);
+		return new Army(position,key.intValue(),available);
 	}
 
 	@Override

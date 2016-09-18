@@ -10,12 +10,14 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.model.Buildings;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.User;
 
+@Repository
 public class BuildingJdbcDao implements BuildingDao {
 	
 	private final JdbcTemplate jdbcTemplate;
@@ -52,7 +54,7 @@ public class BuildingJdbcDao implements BuildingDao {
 			
 	        List<Buildings> buildingList = jdbcTemplate
 	                .query("SELECT * FROM buildings WHERE (y= ? AND (x<= ? AND x>= ?)) OR (x=? AND (y<= ? AND y>= ?))",(ResultSet resultSet, int rowNum) -> {
-	                    return new Buildings(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("type"),resultSet.getInt("leve"));
+	                    return new Buildings(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"),resultSet.getInt("leve"));
 	                },p.getY(),p.getX() + range, p.getX() - range, p.getX(), p.getY() + range, p.getY() -range);
 
 	        return buildingList;
@@ -93,7 +95,7 @@ public class BuildingJdbcDao implements BuildingDao {
 		args.put("idPlayer", idPlayer);
 		args.put("type", type);
 		jdbcInsert.execute(args);
-		return new Buildings(p,idPlayer,type,level);
+		return new Buildings(p,type,level);
 	}
 
 	@Override
