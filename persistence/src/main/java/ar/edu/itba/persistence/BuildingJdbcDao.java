@@ -54,9 +54,9 @@ public class BuildingJdbcDao implements BuildingDao {
 			}
 			
 	        List<Sector> buildingList = jdbcTemplate
-	                .query("SELECT * FROM buildings WHERE (y= ? AND (x<= ? AND x>= ?)) OR (x=? AND (y<= ? AND y>= ?))",(ResultSet resultSet, int rowNum) -> {
+	                .query("SELECT * FROM terrain WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
 	                    return new Sector(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"));
-	                },p.getY(),p.getX() + range, p.getX() - range, p.getX(), p.getY() + range, p.getY() -range);
+	                },p.getX()-range,p.getX() + range, p.getY() - range, p.getY()+range);
 
 	        return buildingList;
 	}

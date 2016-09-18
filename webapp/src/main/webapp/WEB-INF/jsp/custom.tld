@@ -18,4 +18,21 @@
             <required>false</required>
         </attribute>
     </tag>
+
+    <tag>
+        <name>Building</name>
+        <tag-class>ar.edu.itba.paw.webapp.tags.BuildingTag</tag-class>
+        <body-content>empty</body-content>
+        <description>Displays the specified building </description>
+        <attribute>
+            <name>id</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Integer</type>
+        </attribute>
+        <attribute>
+            <name>clas</name>
+            <required>false</required>
+        </attribute>
+    </tag>
 </taglib>
