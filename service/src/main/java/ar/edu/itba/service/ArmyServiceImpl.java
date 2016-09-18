@@ -18,8 +18,8 @@ public class ArmyServiceImpl implements ArmyService {
 	private ArmyDao ad;
 
 	@Override
-	public List<Army> getArmy(User u) {
-		return ad.getArmy(u.getId());
+	public List<Army> getArmies(User u) {
+		return ad.getArmiesByUserId(u.getId());
 	}
 
 	@Override

@@ -7,7 +7,7 @@ import ar.edu.itba.model.Point;
 import ar.edu.itba.model.User;
 
 public interface ArmyService{
-	public List<Army> getArmy(User u);
+	public List<Army> getArmies(User u);
 	public Army createArmy(Point p, User u);
 	
 }

@@ -45,7 +45,7 @@ public class ArmyJdbcDao implements ArmyDao{
 	}
 
 	@Override
-	public List<Army> getArmy(int userId) {
+	public List<Army> getArmiesByUserId(int userId) {
 		 List<Army> armyList = jdbcTemplate
 	                .query("SELECT * FROM army WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
 	                    return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getBoolean("available"));     //.getInt("type");
@@ -54,9 +54,23 @@ public class ArmyJdbcDao implements ArmyDao{
 	        return armyList;
 	}
 
+	public Army getArmyById(int idArmy){
+		List<Army> armies = jdbcTemplate
+				.query("SELECT * FROM army WHERE idArmy = ?",(ResultSet resultSet, int rowNum) -> {
+					return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getBoolean("available"));     //.getInt("type");
+				},idArmy);
+		return armies.isEmpty()? null: armies.get(0);
+	}
+
 	@Override
 	public boolean isAvailable(Point p) {
-		return false;
+		List<Boolean> isAvailable = jdbcTemplate.
+				query("SELECT available FROM army WHERE x = ? AND y = ?", (ResultSet resultSet, int rowNum) -> {
+					return resultSet.getBoolean("available");
+				}, p.getX(), p.getY());
+
+		return isAvailable.get(0);
+
 	}
 
 }

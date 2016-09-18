@@ -3,21 +3,19 @@
     <jsp-version>2.0</jsp-version>
     <short-name>Example TLD</short-name>
     <tag>
-        <name>Terrain</name>
-        <tag-class>ar.edu.itba.paw.webapp.tags.TerrainTag</tag-class>
+        <name>Building</name>
+        <tag-class>ar.edu.itba.paw.webapp.tags.BuildingTag</tag-class>
         <body-content>empty</body-content>
-        <description>Displays the specified terrain </description>
+        <description>Displays the specified building </description>
         <attribute>
-            <name>id</name>
+            <name>info</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.Integer</type>
+            <type>ar.edu.itba.paw.webapp.dataClasses.InformationBuilding</type>
         </attribute>
         <attribute>
             <name>clas</name>
             <required>false</required>
         </attribute>
     </tag>
-
-
 </taglib>

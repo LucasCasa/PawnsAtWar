@@ -31,16 +31,4 @@ public class HomePageController {
 		mav.addObject("y",y);
 		return mav;
 	}
-
-	@RequestMapping(value="/building", method = RequestMethod.GET)
-	public ModelAndView terrainParams(@RequestParam(value="x",required = false) final int x, @RequestParam(value="y", required = false) final int y ) {
-
-		final ModelAndView mav = new ModelAndView("terrain");
-
-		Sector sector = ss.getSector(new Point(x,y));
-		mav.addObject("terrain",sector);
-
-		return mav;
-
-	}
 }
