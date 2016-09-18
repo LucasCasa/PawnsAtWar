@@ -26,7 +26,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Value("classpath:schema.sql")
 	private Resource schemaSql;
-	
+
+	@Value("classpath:map.sql")
+	private Resource mapSql;
+
 	@Bean
 	public ViewResolver viewResolver(){
 		final InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
@@ -36,7 +39,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 		return viewResolver;
 	}
-/*
+
 	@Bean
 	public DataSource dataSource(){
 		final SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
@@ -60,9 +63,10 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	private DatabasePopulator databasePopulator(){
 		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
 		dbp.addScript(schemaSql);
+		//dbp.addScript(mapSql);
 		return dbp;
 	}
-*/
+
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
