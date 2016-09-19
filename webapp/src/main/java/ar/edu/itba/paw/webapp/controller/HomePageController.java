@@ -21,8 +21,7 @@ public class HomePageController {
 	private SectorService ss;
 	@Autowired
 	private EmpireService es;
-
-	@RequestMapping(value="/map", method = RequestMethod.GET)
+	@RequestMapping(value={"/map","/",}, method = RequestMethod.GET)
 	public ModelAndView gridLoader(@RequestParam(value= "x",required = false,defaultValue = "50") int x ,
 								   @RequestParam(value= "y",required = false,defaultValue = "50") int y){
 		final ModelAndView mav = new ModelAndView("index");

@@ -54,10 +54,10 @@ public class BuildingJdbcDao implements BuildingDao {
 			}
 			
 	        List<Sector> buildingList = jdbcTemplate
-	                .query("SELECT * FROM terrain WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
+	                .query("SELECT * FROM buildings WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
 	                    return new Sector(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"));
 	                },p.getX()-range,p.getX() + range, p.getY() - range, p.getY()+range);
-
+			System.out.println(buildingList);
 	        return buildingList;
 	}
 

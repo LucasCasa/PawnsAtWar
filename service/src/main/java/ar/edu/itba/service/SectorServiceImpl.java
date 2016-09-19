@@ -3,6 +3,7 @@ package ar.edu.itba.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.itba.model.Terrain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,8 +24,7 @@ public class SectorServiceImpl implements SectorService {
 	
 	@Override
 	public List<List<Sector>> getSector(Point p, int range) {
-		if(p.getX()-range < 0 && p.getY()-range <0){
-			return getSector(new Point(p.getX()+range,p.getY()+range),range);
+		/*	return getSector(new Point(p.getX()+range,p.getY()+range),range);
 		}else if( p.getY()-range < 0 ){
 			return getSector(new Point(p.getX(),p.getY()+range),range);
 		}else if(p.getX()-range < 0){
@@ -36,18 +36,27 @@ public class SectorServiceImpl implements SectorService {
 		}else if(p.getX()+range > td.getMaxX()){
 			return getSector(new Point(p.getX()-range,p.getY()),range);
 		}
-		
+		*/
 		int size = range*2 +1;
 		Sector[][] aux = new Sector[size][size];
 		List<List<Sector>> sectorList = new ArrayList<>(size);
 		List<Sector> buildingList = bd.getBuildings(p, range);
 		List<Sector> terrainList = td.getTerrain(p, range);
+		System.out.println(buildingList);
+		System.out.println(terrainList);
 		for(Sector s:terrainList){
 			aux[s.getPosition().getY() - (p.getY() - range)][s.getPosition().getX() - (p.getX() - range)] = s;
+			System.out.println("Cargue terrains");
 		}
 		for(Sector s:buildingList){
-			if(s != null){
 				aux[s.getPosition().getY() - (p.getY() - range)][s.getPosition().getX() - (p.getX() - range)] = s;
+				System.out.println("Cargue Building");
+		}
+		for(int i = 0; i< size;i++){
+			for(int j = 0; j<size ;j++){
+				if(aux[i][j] == null){
+					aux[i][j] = new Terrain(new Point(p.getX() - range + j, p.getY() - range + i),0,0);
+				}
 			}
 		}
 		//validar a futuro
@@ -91,7 +100,11 @@ public class SectorServiceImpl implements SectorService {
 		}else if(building == null){
 			return terrain;
 		}
+
 		return building;
 	}
-
+	@Override
+	public void deleteBuilding(Point p){
+		bd.deleteBuilding(p);
+	}
 }

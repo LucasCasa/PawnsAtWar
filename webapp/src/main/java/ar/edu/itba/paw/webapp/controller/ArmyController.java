@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.interfaces.ArmyService;
+import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.interfaces.TerrainService;
 import ar.edu.itba.interfaces.TroopService;
 import ar.edu.itba.model.*;
@@ -23,7 +24,8 @@ public class ArmyController {
 
     @Autowired
     private ArmyService as;
-
+    @Autowired
+    private SectorService ss;
     @Autowired
     private TroopService ts;
 
@@ -47,6 +49,13 @@ public class ArmyController {
         List<Troop> troops = ts.getTroopById(armyId);
         mav.addObject("army",army);
         mav.addObject("troops",troops);
+        return mav;
+    }
+
+    @RequestMapping(value="/attack", method = RequestMethod.POST)
+    public ModelAndView showArmy(@RequestParam int x, @RequestParam int y ){
+        final ModelAndView mav = new ModelAndView("attack");
+        ss.deleteBuilding(new Point(x,y));
         return mav;
     }
 }

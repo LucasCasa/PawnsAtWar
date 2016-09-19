@@ -26,7 +26,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Value("classpath:schema.sql")
 	private Resource schemaSql;
 
-	@Value("classpath:map.sql")
+	@Value("classpath:buildings.sql")
 	private Resource mapSql;
 	
 	@Value("classpath:user.sql")

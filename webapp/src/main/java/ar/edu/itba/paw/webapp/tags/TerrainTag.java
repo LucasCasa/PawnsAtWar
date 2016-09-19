@@ -33,9 +33,9 @@ public class TerrainTag extends SimpleTagSupport{
             case 6:
                 out.print("<img class=\" " + clas + " \"  src=\"/webapp/resources/images/mi.jpg\">");
                 break;
-            //case 7:
-            //    out.print("<img class=\" " + clas + " \"  src=\"/webapp/resources/images/mi.jpg\">");
-            //    break;
+            case 7:
+                out.print("<img class=\" " + clas + " \"  src=\"/webapp/resources/images/blacksmith.jpg\">");
+                break;
 
         }
     }
