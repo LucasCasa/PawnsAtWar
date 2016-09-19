@@ -2,12 +2,11 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.interfaces.ArmyService;
 import ar.edu.itba.interfaces.TerrainService;
-import ar.edu.itba.model.Army;
-import ar.edu.itba.model.Point;
-import ar.edu.itba.model.Terrain;
-import ar.edu.itba.model.User;
+import ar.edu.itba.interfaces.TroopService;
+import ar.edu.itba.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,19 +22,31 @@ import java.util.List;
 public class ArmyController {
 
     @Autowired
-    private ArmyService ts;
+    private ArmyService as;
+
+    @Autowired
+    private TroopService ts;
 
     @RequestMapping(value="/army")
     public ModelAndView showArmies(){
         final ModelAndView mav = new ModelAndView("army");
         List<Army> armies;
         User s = new User(0,"lucas","lucas","l@l.com");
-        armies = ts.getArmies(s); // aca el id del flaco
-        System.out.println(armies.size());
+        armies = as.getArmies(0); // aca el id del flaco
         if(armies == null){
             armies = new ArrayList<>();
         }
         mav.addObject("armies",armies);
+        return mav;
+    }
+
+    @RequestMapping(value="/army/{armyId]")
+    public ModelAndView showArmy(@PathVariable int armyId){
+        final ModelAndView mav = new ModelAndView("army");
+        Army army = as.getArmyById(armyId);
+        List<Troop> troops = ts.getTroopById(armyId);
+        mav.addObject("army",army);
+        mav.addObject("troops",troops);
         return mav;
     }
 }
