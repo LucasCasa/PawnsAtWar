@@ -29,7 +29,7 @@ create table if not exists buildings (
 	CHECK (type >= 0),
 	CHECK (x >= 0),
 	CHECK (y >= 0),
-	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE SET NULL
+	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE CASCADE
 );
 
 create table if not exists army (
@@ -40,14 +40,14 @@ create table if not exists army (
 	available boolean,
 	CHECK (x >= 0), 
 	CHECK (y >= 0), 
-	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE SET NULL
+	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE CASCADE
 );
 
 create table if not exists troop (
 	idArmy integer,
 	type integer,
 	amount integer,
-	FOREIGN KEY (idArmy) REFERENCES army ON DELETE SET NULL,
+	FOREIGN KEY (idArmy) REFERENCES army ON DELETE CASCADE,
 	PRIMARY KEY (idArmy,type)
 );
 
@@ -55,7 +55,7 @@ create table if not exists empire (
 	idPlayer integer,
 	lastUpdate timestamp,
 	PRIMARY KEY (idPlayer),
-	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE SET NULL
+	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE CASCADE
 );
 
 create table if not exists resources (
@@ -63,6 +63,6 @@ create table if not exists resources (
 	amount integer,
 	idPlayer integer,
 	PRIMARY KEY (idPlayer, type),
-	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE SET NULL
+	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE CASCADE
 );
 
