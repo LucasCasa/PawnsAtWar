@@ -27,34 +27,31 @@ public class ResourceJdbcDao implements ResourceDao {
 	}
 
 	@Override
-	public int addAmount(int idPlayer, int type, int value) {
-		int amount = getAmount(idPlayer,type);
-		List<Integer> amountList = jdbcTemplate
+	public void addAmount(int idPlayer, int type, int value) {
+		Resource amount = getResource(idPlayer,type);
+		jdbcTemplate.query("UPDATE resources SET amount = ? WHERE idPlayer = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
+							return resultSet.getInt("amount");
+						},amount.getQuantity() + value,idPlayer,type);
+	}
+	
+	@Override
+	public void setAmount(int idPlayer, int type, int value) {
+		jdbcTemplate
 				.query("UPDATE resources SET amount = ? WHERE idPlayer = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("amount");
-						},amount + value,idPlayer,type);
-		return amountList.isEmpty() ? null:amountList.get(0);
+						},value,idPlayer,type);
 	}
 
 	@Override
-	public int subtractAmount(int idPlayer, int type, int value) {
-		int amount = getAmount(idPlayer,type);
-		int aux = amount - value < 0 ? 0 : amount - value ;
-		List<Integer> amountList = jdbcTemplate
+	public void subtractAmount(int idPlayer, int type, int value) {
+		Resource amount = getResource(idPlayer,type);
+		int aux = amount.getQuantity() - value < 0 ? 0 : amount.getQuantity() - value ;
+		jdbcTemplate
 				.query("UPDATE resources SET amount = ? WHERE idPlayer = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("amount");
 						},aux,idPlayer,type);
-		return amountList.isEmpty() ? null:amountList.get(0);
 	}
 
-	@Override
-	public int getAmount(int idPlayer, int type) {
-		List<Integer> amountList = jdbcTemplate
-				.query("SELECT * FROM resources WHERE idPlayer = ?  AND type = ?",(ResultSet resultSet, int rowNum) -> {
-							return resultSet.getInt("amount");
-						},idPlayer,type);
-		return amountList.isEmpty() ? null:amountList.get(0);
-	}
 
 	@Override
 	public Resource addResource(int idPlayer, int type, int amount) {
@@ -78,6 +75,15 @@ public class ResourceJdbcDao implements ResourceDao {
 							return new Resource(resultSet.getInt("type"),resultSet.getInt("amount"));
 						},idPlayer);
 		return resourceList;
+	}
+
+	@Override
+	public Resource getResource(int idPlayer, int type) {
+		List<Resource> resourceList = jdbcTemplate
+				.query("SELECT * FROM resources WHERE idPlayer = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
+							return new Resource(resultSet.getInt("type"),resultSet.getInt("amount"));
+						},idPlayer,type);
+		return resourceList.get(0);
 	}
 	
 	

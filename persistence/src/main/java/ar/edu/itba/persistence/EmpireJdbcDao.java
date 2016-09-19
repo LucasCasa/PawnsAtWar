@@ -1,7 +1,6 @@
 package ar.edu.itba.persistence;
 
 import java.sql.ResultSet;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -14,10 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.ResourceDao;
-import ar.edu.itba.model.Empire;
-import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
-import ar.edu.itba.model.Sector;
 
 @Repository
 public class EmpireJdbcDao implements EmpireDao {
@@ -29,6 +25,9 @@ public class EmpireJdbcDao implements EmpireDao {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("empire");
 	}
+	
+	@Autowired
+	private ResourceDao rd;
 
 	@Override
 	public Timestamp getLastTimeUpdate(int userId) {
@@ -50,13 +49,12 @@ public class EmpireJdbcDao implements EmpireDao {
 
 	@Override
 	public Resource getResource(int userid, int id) {
-		// TODO Auto-generated method stub
-		return null;
+		return rd.getResource(userid, id);
 	}
 
 	@Override
 	public void setResource(int userId, int id, int amount) {
-		// TODO Auto-generated method stub
+		rd.setAmount(userId, id, amount);
 		
 	}
 	
