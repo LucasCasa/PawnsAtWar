@@ -7,7 +7,6 @@ public class Army {
 	private boolean available;
 	
 	public Army(Point position, int idPlayer,int idArmy, boolean available) {
-		super();
 		this.position = position;
 		this.idArmy = idArmy;
 		this.idPlayer = idPlayer;

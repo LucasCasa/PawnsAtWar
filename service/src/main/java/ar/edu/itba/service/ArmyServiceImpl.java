@@ -9,7 +9,6 @@ import ar.edu.itba.interfaces.ArmyDao;
 import ar.edu.itba.interfaces.ArmyService;
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
-import ar.edu.itba.model.User;
 
 @Service
 public class ArmyServiceImpl implements ArmyService {
@@ -18,13 +17,13 @@ public class ArmyServiceImpl implements ArmyService {
 	private ArmyDao ad;
 
 	@Override
-	public List<Army> getArmies(User u) {
-		return ad.getArmiesByUserId(u.getId());
+	public List<Army> getArmies(int idPlayer) {
+		return ad.getArmiesByUserId(idPlayer);
 	}
 
 	@Override
-	public Army createArmy(Point p, User u) {
-		return ad.addArmy(p, u.getId());
+	public Army createArmy(Point p, int idPlayer) {
+		return ad.addArmy(p, idPlayer);
 	}
 
 }

@@ -4,10 +4,9 @@ import java.util.List;
 
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
-import ar.edu.itba.model.User;
 
 public interface ArmyService{
-	public List<Army> getArmies(User u);
-	public Army createArmy(Point p, User u);
+	public List<Army> getArmies(int idPlayer);
+	public Army createArmy(Point p, int idPlayer);
 	
 }
