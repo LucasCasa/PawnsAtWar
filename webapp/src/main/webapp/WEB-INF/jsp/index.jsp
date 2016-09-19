@@ -1,16 +1,27 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="te" uri="custom.tld"%>
 <%@ include file="header.jsp" %>
-<link rel="stylesheet" href="<c:url value= "/resources/css/style.css" /> ">
 
 
 
 
 <div class="container">
 
+	<div class="form-inline">
+		<div class="form-group">
+			<label for="Xval">X:</label>
+			<input type="text" class="form-control" id="Xval" size="3">
+		</div>
+		<div class="form-group">
+			<label for="Yval">Y:</label>
+			<input type="text" class="form-control" id="Yval" size="3">
+		</div>
+		<button class="myButton" id="gotoDir" onclick="redir()">IR</button>
+	</div>
+	<br>
 <div id="Map" class="carousel slide" style="display: inline-block">
-<table style="max-width: 537,6px;">
 
+<table style="max-width: 537,6px;">
 <c:forEach var="row" items="${map}">
 <tr>
 	<c:forEach var="item" items="${row}">
