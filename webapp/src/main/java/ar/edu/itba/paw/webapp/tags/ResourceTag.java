@@ -9,7 +9,6 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 public class ResourceTag extends SimpleTagSupport{
 	
 	private int type;
-	
 	private int amount;
 	
 	@Override
@@ -17,7 +16,9 @@ public class ResourceTag extends SimpleTagSupport{
 		JspWriter out = getJspContext().getOut();
 		String imgName;
 		switch(type){
-			case 5:		imgName = "iconResGold.png";
+			case 0:		imgName = "iconResFood.png";
+						break;
+			case 1:		imgName = "iconResGold.png";
 						break;
 			default:	imgName = "";
 						break;
