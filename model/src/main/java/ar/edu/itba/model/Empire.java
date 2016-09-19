@@ -7,10 +7,10 @@ public class Empire {
 	private User user;
 	private List<Buildings> buildings;
 	private List<Army> army;
-	private List<Resources> resources;
+	private List<Resource> resources;
 	private Time lastUpdate;
 	
-	public Empire(User user, List<Buildings> buildings, List<Army> army, List<Resources> resources, Time lastUpdate) {
+	public Empire(User user, List<Buildings> buildings, List<Army> army, List<Resource> resources, Time lastUpdate) {
 		this.user = user;
 		this.buildings = buildings;
 		this.army = army;
@@ -38,11 +38,11 @@ public class Empire {
 		return army;
 	}
 
-	public List<Resources> getResources() {
+	public List<Resource> getResources() {
 		return resources;
 	}
 	
-	public void addResources(Resources r){
+	public void addResources(Resource r){
 		resources.add(r);
 	}
 	

@@ -1,6 +1,6 @@
 package ar.edu.itba.model;
 
-public class Resources {
+public class Resource {
 	private int type;
 	private int quantity;
 	
@@ -17,7 +17,7 @@ public class Resources {
 	}
 
 
-	public Resources(int type, int quantity) {
+	public Resource(int type, int quantity) {
 		this.type = type;
 		this.quantity = quantity;
 	}
