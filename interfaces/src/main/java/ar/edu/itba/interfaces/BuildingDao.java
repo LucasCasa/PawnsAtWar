@@ -28,5 +28,9 @@ public interface BuildingDao {
 	
 	public void deleteBuilding (Point p);
 	
+	public int getMaxX();
+	
+	public int getMaxY();
+	
 	
 }

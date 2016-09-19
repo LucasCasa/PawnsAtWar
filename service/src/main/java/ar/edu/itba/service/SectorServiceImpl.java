@@ -64,8 +64,30 @@ public class SectorServiceImpl implements SectorService {
 	public Sector getSector(Point p) {
 		Sector building = bd.getBuilding(p);
 		Sector terrain = td.getTerrain(p);
+		
+		//Selecciona el maximo valor de las dos tablas
+		int maxBuildingY = bd.getMaxY();
+		int maxTerrainY = td.getMaxY();
+		int max_valueY = maxBuildingY > maxTerrainY ? maxBuildingY : maxTerrainY;
+		int maxBuildingX = bd.getMaxX();
+		int maxTerrainX = td.getMaxX();
+		int max_valueX = maxBuildingX > maxTerrainX ? maxBuildingX : maxTerrainX; 
 		if(building == null && terrain == null){
-			return null;
+			//A continuacion se muestran todos los casos para poder redirigir si el usuario ingresa algo que no deberia
+			if(p.getX() < 0 && p.getY() < 0){
+				return getSector(new Point(0,0));
+			}else if(p.getX() < 0){
+				return getSector(new Point(0,p.getY()));
+			}else if(p.getY() < 0){
+				return getSector(new Point(p.getX(),0));
+			}else if(p.getX() >max_valueX && p.getY() > max_valueY){
+				return getSector(new Point(max_valueX,max_valueY));
+			}else if(p.getX() > max_valueX){
+				return getSector(new Point(max_valueX,p.getY()));
+			}else if(p.getY() > max_valueY){
+				
+				return getSector(new Point(p.getX(),max_valueY));
+			}
 		}else if(building == null){
 			return terrain;
 		}

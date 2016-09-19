@@ -115,5 +115,24 @@ public class BuildingJdbcDao implements BuildingDao {
 				
 	}
 	
+	public int getMaxX(){
+		 List<Integer> maxX = jdbcTemplate
+	                .query("SELECT max(x) as aux FROM buildings",(ResultSet resultSet, int rowNum) -> {
+	                    return resultSet.getInt("aux");
+	                });
+
+	        return maxX.isEmpty() ? -1 : maxX.get(0);
+	}
+
+	@Override
+	public int getMaxY() {
+		 List<Integer> maxX = jdbcTemplate
+	                .query("SELECT max(y) as aux FROM buildings",(ResultSet resultSet, int rowNum) -> {
+	                    return resultSet.getInt("aux");
+	                });
+
+	        return maxX.isEmpty() ? -1 : maxX.get(0);
+	}
+	
 
 }
