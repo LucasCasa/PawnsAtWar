@@ -106,3 +106,8 @@ body{
     position:relative;
     top:1px;
 }
+
+.table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th{
+    background-color: #974 ;
+    border-top: 1px solid #000;
+}

@@ -5,6 +5,7 @@ import ar.edu.itba.interfaces.TerrainService;
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Terrain;
+import ar.edu.itba.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,9 +28,14 @@ public class ArmyController {
     @RequestMapping(value="/army")
     public ModelAndView showArmies(){
         final ModelAndView mav = new ModelAndView("army");
-        //List<Army> armies;
-        //armies = ts.getArmies(0); // aca el id del flaco
-        //mav.addObject("map",armies);
+        List<Army> armies;
+        User s = new User(0,"lucas","lucas","l@l.com");
+        armies = ts.getArmies(s); // aca el id del flaco
+        System.out.println(armies.size());
+        if(armies == null){
+            armies = new ArrayList<>();
+        }
+        mav.addObject("armies",armies);
         return mav;
     }
 }
