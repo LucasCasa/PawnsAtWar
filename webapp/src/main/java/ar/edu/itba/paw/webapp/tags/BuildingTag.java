@@ -17,13 +17,11 @@ public class BuildingTag extends SimpleTagSupport {
 
     public void doTag() throws JspException, IOException {
         JspWriter out = getJspContext().getOut();
-
+        /*
         out.print("<img class=\" "+ clas + " \" src=\"/webapp/resources/images/" + info.getName() + ".png\"/>");
-
-        //out.print("<img class=\" "+clas + " \" src=\"/webapp/resources/images/terrain.jpg\">");
         out.println();
-        out.print(info.getDescription());
-
+        out.print("<p>" + info.getDescription() + "</p>");
+    */
 
     }
 
