@@ -1,12 +1,12 @@
 package ar.edu.itba.model;
 
 public class Troop {
-	private Army army;
+	private int idArmy;
 	private int type;
 	private int quantity;
 	
-	public Troop(Army army, int type, int quantity) {
-		this.army = army;
+	public Troop(int idArmy, int type, int quantity) {
+		this.idArmy = idArmy;
 		this.type = type;
 		this.quantity = quantity;
 	}
@@ -17,8 +17,8 @@ public class Troop {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
-	public Army getArmy() {
-		return army;
+	public int getidArmy() {
+		return idArmy;
 	}
 	public int getType() {
 		return type;

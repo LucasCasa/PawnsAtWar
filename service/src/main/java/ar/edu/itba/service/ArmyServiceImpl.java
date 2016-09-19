@@ -26,4 +26,9 @@ public class ArmyServiceImpl implements ArmyService {
 		return ad.addArmy(p, idPlayer);
 	}
 
+	@Override
+	public Army getArmyById(int idArmy) {
+		return ad.getArmyById(idArmy);
+	}
+
 }
