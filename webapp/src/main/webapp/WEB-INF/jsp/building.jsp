@@ -4,8 +4,22 @@
 <link rel="stylesheet" href="<c:url value= "/resources/css/style.css" /> ">
 
     <div id="terrain" class="container">
+        <div class="row">
+            <div class="col-md-4"> <img class="img-responsive" src="<c:url value="/resources/images/${building.getName()}.png" /> " /></div>
+            <div class="col-md-4">
+                <p> ${building.getDescription()}</p>
 
-        <build:Building clas="img-responsive" info="${building}" />
+                <div class="row">
+                    <div class="col-md-6"><button class="myButton" >Aumentar de nivel</button></div>
+                    <div class="col-md-4"><button class="myButton">Demoler</button></div>
+
+                </div>
+
+            </div>
+        </div>
     </div>
+
+
+
 
 <%@ include file="footer.jsp" %>
