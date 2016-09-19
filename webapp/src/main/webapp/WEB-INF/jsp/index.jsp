@@ -1,18 +1,19 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="te" uri="custom.tld"%>
+<%@ taglib prefix="re" uri="resource.tld"%>
 <%@ include file="header.jsp" %>
 
 
 
 
 <div class="container">
-	<div id="ResBar">
+	<div class="resBar">
 		<table>
 			<tbody>
 				<tr>
 					<c:forEach var="res" items="${resList}">
 					<td>
-						<span>${res.getType()} - ${res.getQuantity()}</span>
+						<re:Resource type="${res.getType()}" amount="${res.getQuantity()}"/>
 					</td>
 					</c:forEach>
 				</tr>
