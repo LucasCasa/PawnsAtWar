@@ -36,7 +36,7 @@ public class EmpireJdbcDao implements EmpireDao {
                     return resultSet.getTimestamp("lastUpdate");
                 },userId);
 
-	        return time.get(0);
+	        return time == null ? null : time.get(0);
 	}
 
 	@Override

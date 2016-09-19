@@ -1,5 +1,8 @@
 package ar.edu.itba.persistence;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +30,12 @@ public class UserJdbcDao implements UserDao{
 	
 	@Override
 	public User create(String username, String password, String email) {
-		// TODO Auto-generated method stub
-		return null;
+		final Map<String,Object> args = new HashMap<>();
+		args.put("username",username);
+		args.put("password", password);
+		args.put("email",email);
+		final Number key = jdbcInsert.executeAndReturnKey(args);
+		return new User(key.intValue(),username,password,email);
 	}
 
 }

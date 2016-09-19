@@ -7,7 +7,6 @@ import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.BuildingService;
 import ar.edu.itba.model.Buildings;
 import ar.edu.itba.model.Point;
-import ar.edu.itba.model.User;
 
 @Service
 public class BuildingServiceImpl implements BuildingService{
@@ -21,8 +20,8 @@ public class BuildingServiceImpl implements BuildingService{
 	}
 
 	@Override
-	public Integer setLevel(Point p, int level) {
-		return bd.setLevel(p, level);
+	public void setLevel(Point p, int level) {
+		bd.setLevel(p, level);
 	}
 
 	@Override
@@ -31,8 +30,8 @@ public class BuildingServiceImpl implements BuildingService{
 	}
 
 	@Override
-	public Buildings setIdPlayer(Point p) {
-		return bd.setIdPlayer(p);
+	public void setIdPlayer(Point p,int idPlayer) {
+		bd.setIdPlayer(p,idPlayer);
 	}
 
 	@Override
@@ -46,8 +45,8 @@ public class BuildingServiceImpl implements BuildingService{
 	}
 
 	@Override
-	public boolean belongsTo(Point p, User u) {
-		return bd.belongsTo(p, u);
+	public boolean belongsTo(Point p, int idPlayer) {
+		return bd.belongsTo(p, idPlayer);
 	}
 
 }

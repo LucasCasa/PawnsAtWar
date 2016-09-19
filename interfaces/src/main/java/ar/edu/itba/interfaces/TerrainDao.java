@@ -32,15 +32,17 @@ public interface TerrainDao {
 	 */
 	public Sector getTerrain(Point p);
 	
-	public Terrain setPower(Point p, int power);
+	public void setPower(Point p, int power);
 	
-	public Terrain setType(Point p, int t);
+	public void setType(Point p, int t);
 	
 	public Terrain addTerrain(Point p, int power, int t);
 	
 	public Terrain addTerrain(Point p, int t);
 	
 	public Terrain addTerrain(Point p);
+	
+	public void deleteTerrain(Point p);
 	
 	
 }

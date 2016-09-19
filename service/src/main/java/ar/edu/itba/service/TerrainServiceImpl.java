@@ -27,13 +27,13 @@ public class TerrainServiceImpl implements TerrainService{
 	}
 
 	@Override
-	public Terrain setPower(Point p, int power) {
-		return terrainDao.setPower(p, power);
+	public void setPower(Point p, int power) {
+		terrainDao.setPower(p, power);
 	}
 
 	@Override
-	public Terrain setType(Point p, int t) {
-		return terrainDao.setType(p, t);
+	public void setType(Point p, int t) {
+		terrainDao.setType(p, t);
 	}
 
 	@Override

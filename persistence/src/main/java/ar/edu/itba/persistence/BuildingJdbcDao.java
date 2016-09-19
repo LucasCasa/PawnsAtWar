@@ -16,7 +16,6 @@ import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.model.Buildings;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
-import ar.edu.itba.model.User;
 
 @Repository
 public class BuildingJdbcDao implements BuildingDao {
@@ -43,8 +42,9 @@ public class BuildingJdbcDao implements BuildingDao {
 	}
 
 	@Override
-	public Integer setLevel(Point p,int level) {
-		return null;
+	public void setLevel(Point p,int level) {
+		jdbcTemplate
+		.update("UPDATE buildings SET level = ? WHERE x = ? AND y = ?",level,p.getX(),p.getY());
 	}
 
 	@Override
@@ -69,9 +69,6 @@ public class BuildingJdbcDao implements BuildingDao {
 
 	@Override
 	public Integer getIdPlayer(Point p) {
-		if(p.getX() < 0 || p.getY() < 0){
-			return null;
-		}
 		List<Integer> buildingList = jdbcTemplate
 				.query("SELECT * FROM buildings WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("idPlayer");
@@ -80,11 +77,9 @@ public class BuildingJdbcDao implements BuildingDao {
 	}
 
 	@Override
-	public Buildings setIdPlayer(Point p) {
-		if(p.getX() < 0 || p.getY() < 0){
-			return null;
-		}
-		return null;
+	public void setIdPlayer(Point p,int idPlayer) {
+		jdbcTemplate
+		.update("UPDATE buildings SET idPlayer = ? WHERE x = ? AND y = ?",idPlayer,p.getX(),p.getY());
 	}
 
 	@Override
@@ -105,8 +100,19 @@ public class BuildingJdbcDao implements BuildingDao {
 	}
 
 	@Override
-	public boolean belongsTo(Point p, User u) {
+	public boolean belongsTo(Point p, int idPlayer) {
+		int id = getIdPlayer(p);
+		if(idPlayer == id){ //Falta verificar aca si es un aliado
+			return true;
+		}
 		return false;
+		
+	}
+
+	@Override
+	public void deleteBuilding(Point p) {
+		jdbcTemplate.update("DELETE FROM buildings WHERE x = ? AND y = ?", p.getX(),p.getY());
+				
 	}
 	
 

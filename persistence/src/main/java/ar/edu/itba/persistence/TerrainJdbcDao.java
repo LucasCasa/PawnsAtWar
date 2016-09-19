@@ -72,16 +72,14 @@ public class TerrainJdbcDao implements TerrainDao {
 
 
 	@Override
-	public Terrain setPower(Point p, int power) {
-		// TODO Auto-generated method stub
-		return null;
+	public void setPower(Point p, int power) {
+		jdbcTemplate.update("UPDATE terrain SET power = ? WHERE x = ? AND y = ?", power,p.getX(),p.getY());
 	}
 
 
 	@Override
-	public Terrain setType(Point p, int t) {
-		// TODO Auto-generated method stub
-		return null;
+	public void setType(Point p, int t) {
+		jdbcTemplate.update("UPDATE terrain SET type = ? WHERE x = ? AND y = ?", t,p.getX(),p.getY());
 	}
 
 
@@ -106,6 +104,12 @@ public class TerrainJdbcDao implements TerrainDao {
 	@Override
 	public Terrain addTerrain(Point p) {
 		return addTerrain(p,0,0);
+	}
+
+	@Override
+	public void deleteTerrain(Point p) {
+		jdbcTemplate.update("DELETE FROM terrain WHERE x = ? AND y = ?", p.getX(),p.getY());
+		
 	}
 
 }
