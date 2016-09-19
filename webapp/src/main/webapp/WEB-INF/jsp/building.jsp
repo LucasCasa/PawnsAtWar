@@ -6,12 +6,13 @@
     <div id="terrain" class="container">
         <div class="row">
             <div class="col-md-4"> <img class="img-responsive" src="<c:url value="/resources/images/${building.getName()}.png" /> " /></div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <p> ${building.getDescription()}</p>
 
                 <div class="row">
                     <div class="col-md-6"><button class="myButton" >Aumentar de nivel</button></div>
-                    <div class="col-md-4"><button class="myButton">Demoler</button></div>
+                    <div class="col-md-2"><button class="myButton">Atacar</button></div>
+                    <div class="col-md-2"><button class="myButton">Demoler</button></div>
 
                 </div>
 
