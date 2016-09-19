@@ -41,9 +41,7 @@ public class EmpireJdbcDao implements EmpireDao {
 
 	@Override
 	public void setLastTimeUpdate(int userId, Timestamp t) {
-		jdbcTemplate.query("UPDATE empire SET lastUpdate = ? WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
-				return resultSet.getInt("idPlayer");
-			},t,userId);
+		jdbcTemplate.update("UPDATE empire SET lastUpdate = ? WHERE idPlayer = ?",t,userId);
 		
 	}
 
@@ -55,12 +53,16 @@ public class EmpireJdbcDao implements EmpireDao {
 	@Override
 	public void setResource(int userId, int id, int amount) {
 		rd.setAmount(userId, id, amount);
-		
 	}
 	
 	@Override
 	public List<Resource> getResources(int userId){
 		return rd.getResources(userId);
+	}
+
+	@Override
+	public void addAmount(int userID, int id, int amount) {
+		rd.addAmount(userID, id, amount);
 	}
 	
 }

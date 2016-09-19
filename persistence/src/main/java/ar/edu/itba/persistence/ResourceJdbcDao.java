@@ -29,17 +29,13 @@ public class ResourceJdbcDao implements ResourceDao {
 	@Override
 	public void addAmount(int idPlayer, int type, int value) {
 		Resource amount = getResource(idPlayer,type);
-		jdbcTemplate.query("UPDATE resources SET amount = ? WHERE idPlayer = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
-							return resultSet.getInt("amount");
-						},amount.getQuantity() + value,idPlayer,type);
+		jdbcTemplate.update("UPDATE resources SET amount = ? WHERE idPlayer = ? AND type = ?",amount.getQuantity() + value,idPlayer,type);
 	}
 	
 	@Override
 	public void setAmount(int idPlayer, int type, int value) {
 		jdbcTemplate
-				.query("UPDATE resources SET amount = ? WHERE idPlayer = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
-							return resultSet.getInt("amount");
-						},value,idPlayer,type);
+				.update("UPDATE resources SET amount = ? WHERE idPlayer = ? AND type = ?",value,idPlayer,type);
 	}
 
 	@Override

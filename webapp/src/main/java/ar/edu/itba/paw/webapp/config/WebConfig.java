@@ -18,7 +18,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-
 @EnableWebMvc
 @ComponentScan({"ar.edu.itba.paw.webapp.controller","ar.edu.itba.service","ar.edu.itba.persistence"})
 @Configuration
@@ -29,6 +28,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Value("classpath:map.sql")
 	private Resource mapSql;
+	
+	@Value("classpath:user.sql")
+	private Resource userSql;
 
 	@Bean
 	public ViewResolver viewResolver(){
@@ -63,6 +65,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	private DatabasePopulator databasePopulator(){
 		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
 		dbp.addScript(schemaSql);
+		//dbp.addScript(userSql);
 		//dbp.addScript(mapSql);
 		return dbp;
 	}

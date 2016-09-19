@@ -8,8 +8,8 @@ public interface EmpireService {
 	
 	/**
 	 * Obtains a list with all the resources associated with a certain empire
-	 * 
+	 * @param userid The id of the user who owns the empire
 	 * @return The list with all the resources
 	 */
-	public List<Resource> getResources();
+	public List<Resource> getResources(int userid);
 }

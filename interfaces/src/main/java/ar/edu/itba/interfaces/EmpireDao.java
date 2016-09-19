@@ -34,6 +34,14 @@ public interface EmpireDao {
 	public void setResource(int userId, int id, int amount);
 	
 	/**
+	 * Adds the specified amount to the resource of type id
+	 * @param userID The id of the user
+	 * @param id The id of the resource
+	 * @param amount The amount to be added
+	 */
+	public void addAmount(int userID,int id, int amount);
+	
+	/**
 	 * Getter for all the resources of a certain user
 	 * @param userId
 	 * @return
