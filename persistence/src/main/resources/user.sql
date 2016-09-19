@@ -1,4 +1,21 @@
+DELETE FROM troop;
+DELETE FROM army;
+DELETE FROM resources;
+DELETE FROM empire;
+DELETE FROM users;
+
 INSERT INTO users VALUES (0,'kuyum','42069','mvega@itba.edu.ar');
 INSERT INTO empire VALUES (0,now());
 INSERT INTO resources VALUES (0,0,0);
 INSERT INTO resources VALUES (1,1000,0);
+
+INSERT INTO army VALUES (0,50,50,0,true);
+INSERT INTO army VALUES (1,51,51,0,true);
+INSERT INTO army VALUES (2,59,51,0,false);
+
+INSERT INTO troop VALUES (1,1,10);
+INSERT INTO troop VALUES (1,2,30);
+INSERT INTO troop VALUES (1,0,30);
+INSERT INTO troop VALUES (0,1,10);
+INSERT INTO troop VALUES (0,2,40);
+INSERT INTO troop VALUES (2,1,60);
