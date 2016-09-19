@@ -38,7 +38,7 @@
 		<c:forEach var="row" items="${map}">
 		<tr>
 			<c:forEach var="item" items="${row}">
-				<td style="width:76px;height: 76px"><te:Terrain clas="img-responsive" id="${item.getType()}" /></td>
+				<td style="width:76px;height: 76px"><a href="<c:url value="/building?x=${item.getPosition().getX()}&y=${item.getPosition().getY()}" />" ><te:Terrain clas="img-responsive" id="${item.getType()}" /></a></td>
 			</c:forEach>
 		</tr>
 		</c:forEach>

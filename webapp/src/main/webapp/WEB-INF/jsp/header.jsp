@@ -25,8 +25,8 @@
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="navbar-brand-centered">
 		      <ul class="nav navbar-nav">
-		        <li><a href="<c:url value="map"/>">Mapa</a></li>
-		        <li><a href="<c:url value="army"/>">Ejercitos</a></li>
+		        <li><a href="<c:url value="/map"/>">Mapa</a></li>
+		        <li><a href="<c:url value="/armies"/>">Ejercitos</a></li>
 		        <li><a href="#">Comercio</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">

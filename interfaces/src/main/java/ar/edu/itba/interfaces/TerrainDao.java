@@ -42,7 +42,11 @@ public interface TerrainDao {
 	
 	public Terrain addTerrain(Point p);
 	
-	public void deleteTerrain(Point p);
+	public int getMaxX();
+	
+	public int getMaxY();
+	
+	
 	
 	
 }

@@ -107,9 +107,27 @@ public class TerrainJdbcDao implements TerrainDao {
 	}
 
 	@Override
-	public void deleteTerrain(Point p) {
-		jdbcTemplate.update("DELETE FROM terrain WHERE x = ? AND y = ?", p.getX(),p.getY());
+	public int getMaxX() {
+		 List<Integer> maxX = jdbcTemplate
+	                .query("SELECT max(x) as aux FROM terrain",(ResultSet resultSet, int rowNum) -> {
+	                    return resultSet.getInt("aux");
+	                });
+
+	        return maxX.isEmpty() ? -1 : maxX.get(0);
 		
 	}
+	
+	@Override
+	public int getMaxY() {
+		 List<Integer> maxY = jdbcTemplate
+	                .query("SELECT max(y) as aux FROM terrain",(ResultSet resultSet, int rowNum) -> {
+	                    return resultSet.getInt("aux");
+	                });
+
+	        return maxY.isEmpty() ? -1 : maxY.get(0);
+		
+	}
+	
+	
 
 }

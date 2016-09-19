@@ -2,7 +2,8 @@ create table if not exists users (
 	idPlayer SERIAL PRIMARY KEY,
 	username VARCHAR (100),
 	password VARCHAR (100),
-	email VARCHAR(100)
+	email VARCHAR(100),
+	UNIQUE (username)
 );
 
 create table if not exists terrain (
@@ -64,5 +65,4 @@ create table if not exists resources (
 	PRIMARY KEY (idPlayer, type),
 	FOREIGN KEY (idPlayer) REFERENCES users ON DELETE SET NULL
 );
-
 

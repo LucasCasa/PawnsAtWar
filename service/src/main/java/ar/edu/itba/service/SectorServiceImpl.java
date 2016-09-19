@@ -23,6 +23,20 @@ public class SectorServiceImpl implements SectorService {
 	
 	@Override
 	public List<List<Sector>> getSector(Point p, int range) {
+		if(p.getX()-range < 0 && p.getY()-range <0){
+			return getSector(new Point(p.getX()+range,p.getY()+range),range);
+		}else if( p.getY()-range < 0 ){
+			return getSector(new Point(p.getX(),p.getY()+range),range);
+		}else if(p.getX()-range < 0){
+			return getSector(new Point(p.getX()+range,p.getY()),range);
+		}else if(p.getX()+range > td.getMaxX() && p.getY()+range > td.getMaxY()){
+			return getSector(new Point(p.getX()-range,p.getY()-range),range);
+		}else if(p.getY()+range > td.getMaxY()){
+			return getSector(new Point(p.getX(),p.getY()-range),range);
+		}else if(p.getX()+range > td.getMaxX()){
+			return getSector(new Point(p.getX()-range,p.getY()),range);
+		}
+		
 		int size = range*2 +1;
 		Sector[][] aux = new Sector[size][size];
 		List<List<Sector>> sectorList = new ArrayList<>(size);

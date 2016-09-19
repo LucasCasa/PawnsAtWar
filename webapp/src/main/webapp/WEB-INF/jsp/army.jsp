@@ -3,31 +3,27 @@
 <%@ include file="header.jsp" %>
 
 <div class="container">
-    <table class="table table-striped">
+    <table style="width: 100%">
         <tr>
-            <th>X</th>
-            <th>Y</th>
-            <th>Disponible</th>
-            <th>Dirigir</th>
+    <c:forEach var="troop" items="${troops}" >
+        <td style="text-align: center">
+        <c:choose>
+            <c:when test="${troop.getType() == 0}"><img src="<c:url value="/resources/images/warrior.png"/>"/></c:when>
+            <c:when test="${troop.getType() == 1}"><img src="<c:url value="/resources/images/archer.png"/>"/></c:when>
+            <c:when test="${troop.getType() == 2}"><img src="<c:url value="/resources/images/horseman.png"/>"/></c:when>
+            <c:otherwise>undefined</c:otherwise>
+        </c:choose>
+        </td>
+    </c:forEach>
         </tr>
-        <c:forEach var="army" items="${armies}">
         <tr>
-           <td>
-                <c:out value="${army.getPosition().getX()}"/>
-           </td>
-            <td>
-                <c:out value="${army.getPosition().getY()}"/>
-            </td>
-            <td>
-                <c:out value="${army.isAvailable()}"/>
-            </td>
-            <td>
-                <button onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.getIdArmy()}" />' ">D</button>
-            </td>
+    <c:forEach var="troop" items="${troops}" >
+        <td>
+        <h1 style=" background-color: rgba(0,0,0,0.7); color: #FF0;margin-left:40%;margin-right:40%;text-align: center"><c:out value="${troop.getQuantity()}"/></h1>
+        </td>
+    </c:forEach>
         </tr>
-            </c:forEach>
     </table>
-
 </div>
 
 <%@ include file="footer.jsp" %>
