@@ -27,9 +27,9 @@ public class ArmyController {
     @Autowired
     private TroopService ts;
 
-    @RequestMapping(value="/army")
+    @RequestMapping(value="/armies")
     public ModelAndView showArmies(){
-        final ModelAndView mav = new ModelAndView("army");
+        final ModelAndView mav = new ModelAndView("armies");
         List<Army> armies;
         User s = new User(0,"lucas","lucas","l@l.com");
         armies = as.getArmies(0); // aca el id del flaco
@@ -40,7 +40,7 @@ public class ArmyController {
         return mav;
     }
 
-    @RequestMapping(value="/army/{armyId]")
+    @RequestMapping(value="/armies/{armyId}")
     public ModelAndView showArmy(@PathVariable int armyId){
         final ModelAndView mav = new ModelAndView("army");
         Army army = as.getArmyById(armyId);
