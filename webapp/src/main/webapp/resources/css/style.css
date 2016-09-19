@@ -29,9 +29,13 @@
     background-image: url(../images/resbar_back.jpg);
 }
 
-.resBar.table{
+.resBar > table{
     max-height: 50px;
-    font-size: 200%;
+    font-size: 150%;
+}
+
+.resBar > table > tbody >tr > td{
+    width: 100px;
 }
 
 .resource{
