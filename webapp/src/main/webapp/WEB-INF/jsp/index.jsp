@@ -7,19 +7,9 @@
 
 
 <div class="container">
-	<div class="resBar">
-		<table>
-			<tbody>
-				<tr>
-					<c:forEach var="res" items="${resList}">
-					<td>
-						<re:Resource type="${res.getType()}" amount="${res.getQuantity()}"/>
-					</td>
-					</c:forEach>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+
+	<%@ include file="resourceBar.jsp" %>
+	
 	<div class="form-inline">
 		<div class="form-group">
 			<label for="Xval">X:</label>
