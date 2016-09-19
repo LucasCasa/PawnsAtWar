@@ -36,7 +36,7 @@ public class ArmyJdbcDao implements ArmyDao{
 		args.put("idPlayer",idPlayer);
 		args.put("available", available);
 		final Number key = jdbcInsert.executeAndReturnKey(args);
-		return new Army(position,key.intValue(),available);
+		return new Army(position,idPlayer,key.intValue(),available);
 	}
 
 	@Override
@@ -48,7 +48,7 @@ public class ArmyJdbcDao implements ArmyDao{
 	public List<Army> getArmiesByUserId(int userId) {
 		 List<Army> armyList = jdbcTemplate
 	                .query("SELECT * FROM army WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
-	                    return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getBoolean("available"));     //.getInt("type");
+	                    return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("idArmy"),resultSet.getBoolean("available"));
 	                },userId);
 
 	        return armyList;
@@ -57,8 +57,7 @@ public class ArmyJdbcDao implements ArmyDao{
 	public Army getArmyById(int idArmy){
 		List<Army> armies = jdbcTemplate
 				.query("SELECT * FROM army WHERE idArmy = ?",(ResultSet resultSet, int rowNum) -> {
-					return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getBoolean("available"));     //.getInt("type");
-				},idArmy);
+					return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("idArmy"),resultSet.getBoolean("available"));},idArmy);
 		return armies.isEmpty()? null: armies.get(0);
 	}
 

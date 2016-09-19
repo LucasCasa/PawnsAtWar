@@ -96,7 +96,7 @@ public class BuildingJdbcDao implements BuildingDao {
 		args.put("idPlayer", idPlayer);
 		args.put("type", type);
 		jdbcInsert.execute(args);
-		return new Buildings(p,type,level);
+		return new Buildings(p,idPlayer,type,level);
 	}
 
 	@Override

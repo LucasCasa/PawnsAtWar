@@ -1,6 +1,7 @@
 package ar.edu.itba.interfaces;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import ar.edu.itba.model.Resource;
 
@@ -31,4 +32,11 @@ public interface EmpireDao {
 	 * @param amount The amount to be set
 	 */
 	public void setResource(int userId, int id, int amount);
+	
+	/**
+	 * Getter for all the resources of a certain user
+	 * @param userId
+	 * @return
+	 */
+	public List<Resource> getResources(int userId);
 }

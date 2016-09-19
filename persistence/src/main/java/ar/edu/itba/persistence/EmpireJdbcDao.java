@@ -58,4 +58,9 @@ public class EmpireJdbcDao implements EmpireDao {
 		
 	}
 	
+	@Override
+	public List<Resource> getResources(int userId){
+		return rd.getResources(userId);
+	}
+	
 }

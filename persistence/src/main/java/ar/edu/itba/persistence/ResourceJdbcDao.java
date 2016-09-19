@@ -50,6 +50,7 @@ public class ResourceJdbcDao implements ResourceDao {
 				.query("UPDATE resources SET amount = ? WHERE idPlayer = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("amount");
 						},aux,idPlayer,type);
+	
 	}
 
 
@@ -60,7 +61,7 @@ public class ResourceJdbcDao implements ResourceDao {
 		args.put("amount", amount);
 		args.put("idPlayer",idPlayer);
 		jdbcInsert.execute(args);
-		return new Resource(type,amount);
+		return new Resource(type,idPlayer,amount);
 	}
 
 	@Override
@@ -72,7 +73,7 @@ public class ResourceJdbcDao implements ResourceDao {
 	public List<Resource> getResources(int idPlayer) {
 		List<Resource> resourceList = jdbcTemplate
 				.query("SELECT * FROM resources WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
-							return new Resource(resultSet.getInt("type"),resultSet.getInt("amount"));
+							return new Resource(resultSet.getInt("type"),resultSet.getInt("idPlayer"),resultSet.getInt("amount"));
 						},idPlayer);
 		return resourceList;
 	}
@@ -81,7 +82,7 @@ public class ResourceJdbcDao implements ResourceDao {
 	public Resource getResource(int idPlayer, int type) {
 		List<Resource> resourceList = jdbcTemplate
 				.query("SELECT * FROM resources WHERE idPlayer = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
-							return new Resource(resultSet.getInt("type"),resultSet.getInt("amount"));
+							return new Resource(resultSet.getInt("type"),resultSet.getInt("idPlayer"),resultSet.getInt("amount"));
 						},idPlayer,type);
 		return resourceList.get(0);
 	}

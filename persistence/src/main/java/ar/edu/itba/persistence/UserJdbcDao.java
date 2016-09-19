@@ -24,9 +24,10 @@ public class UserJdbcDao implements UserDao{
 	public User findbyId(long id) {
 		return null;
 	}
-
+	
 	@Override
-	public User create(String username, String email) {
+	public User create(String username, String password, String email) {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
