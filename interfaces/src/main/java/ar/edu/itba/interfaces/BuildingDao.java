@@ -7,6 +7,7 @@ import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 
 public interface BuildingDao {
+	
 	public Integer getLevel(Point p);
 	
 	public void setLevel(Point p, int level);
