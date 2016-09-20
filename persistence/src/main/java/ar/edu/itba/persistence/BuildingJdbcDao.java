@@ -26,7 +26,7 @@ public class BuildingJdbcDao implements BuildingDao {
 	@Autowired
 	public BuildingJdbcDao(final DataSource dataSource){
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("buildings");
+		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("BUILDING");
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class BuildingJdbcDao implements BuildingDao {
 			return null;
 		}
 		List<Integer> buildingList = jdbcTemplate
-				.query("SELECT * FROM buildings WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
+				.query("SELECT * FROM BUILDING WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("level");
 						},p.getX(),p.getY());
 		return buildingList.isEmpty() ? null:buildingList.get(0);
@@ -44,7 +44,7 @@ public class BuildingJdbcDao implements BuildingDao {
 	@Override
 	public void setLevel(Point p,int level) {
 		jdbcTemplate
-		.update("UPDATE buildings SET level = ? WHERE x = ? AND y = ?",level,p.getX(),p.getY());
+		.update("UPDATE BUILDING SET level = ? WHERE x = ? AND y = ?",level,p.getX(),p.getY());
 	}
 
 	@Override
@@ -54,10 +54,9 @@ public class BuildingJdbcDao implements BuildingDao {
 			}
 			
 	        List<Sector> buildingList = jdbcTemplate
-	                .query("SELECT * FROM buildings WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
+	                .query("SELECT * FROM BUILDING WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
 	                    return new Sector(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"));
 	                },p.getX()-range,p.getX() + range, p.getY() - range, p.getY()+range);
-			System.out.println(buildingList);
 	        return buildingList;
 	}
 
@@ -70,7 +69,7 @@ public class BuildingJdbcDao implements BuildingDao {
 	@Override
 	public Integer getIdPlayer(Point p) {
 		List<Integer> buildingList = jdbcTemplate
-				.query("SELECT * FROM buildings WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
+				.query("SELECT * FROM BUILDING WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("idPlayer");
 						},p.getX(),p.getY());
 		return buildingList.isEmpty() ? null:buildingList.get(0);
@@ -79,7 +78,7 @@ public class BuildingJdbcDao implements BuildingDao {
 	@Override
 	public void setIdPlayer(Point p,int idPlayer) {
 		jdbcTemplate
-		.update("UPDATE buildings SET idPlayer = ? WHERE x = ? AND y = ?",idPlayer,p.getX(),p.getY());
+		.update("UPDATE BUILDING SET idPlayer = ? WHERE x = ? AND y = ?",idPlayer,p.getX(),p.getY());
 	}
 
 	@Override
@@ -111,13 +110,13 @@ public class BuildingJdbcDao implements BuildingDao {
 
 	@Override
 	public void deleteBuilding(Point p) {
-		jdbcTemplate.update("DELETE FROM buildings WHERE x = ? AND y = ?", p.getX(),p.getY());
+		jdbcTemplate.update("DELETE FROM BUILDING WHERE x = ? AND y = ?", p.getX(),p.getY());
 				
 	}
 	
 	public int getMaxX(){
 		 List<Integer> maxX = jdbcTemplate
-	                .query("SELECT max(x) as aux FROM buildings",(ResultSet resultSet, int rowNum) -> {
+	                .query("SELECT max(x) as aux FROM BUILDING",(ResultSet resultSet, int rowNum) -> {
 	                    return resultSet.getInt("aux");
 	                });
 
@@ -127,7 +126,7 @@ public class BuildingJdbcDao implements BuildingDao {
 	@Override
 	public int getMaxY() {
 		 List<Integer> maxX = jdbcTemplate
-	                .query("SELECT max(y) as aux FROM buildings",(ResultSet resultSet, int rowNum) -> {
+	                .query("SELECT max(y) as aux FROM BUILDING",(ResultSet resultSet, int rowNum) -> {
 	                    return resultSet.getInt("aux");
 	                });
 

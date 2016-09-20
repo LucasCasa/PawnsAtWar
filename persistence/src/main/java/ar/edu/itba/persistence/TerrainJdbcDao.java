@@ -26,7 +26,7 @@ public class TerrainJdbcDao implements TerrainDao {
 	@Autowired
 	public TerrainJdbcDao(final DataSource dataSource){
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("terrain");
+		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("TERRAIN");
 	}
 
 	@Override
@@ -35,7 +35,7 @@ public class TerrainJdbcDao implements TerrainDao {
 			return null;
 		}
 		List<Integer> terrainList = jdbcTemplate
-				.query("SELECT * FROM terrain WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
+				.query("SELECT * FROM TERRAIN WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("power");
 						},position.getX(),position.getY());
 		return terrainList.isEmpty() ? null:terrainList.get(0);
@@ -47,7 +47,7 @@ public class TerrainJdbcDao implements TerrainDao {
 			return null;
 		}
 		List<Integer> terrainList = jdbcTemplate
-				.query("SELECT * FROM terrain WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
+				.query("SELECT * FROM TERRAIN WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("type");
 						},position.getX(),position.getY());
 		return terrainList.isEmpty() ? null:terrainList.get(0);
@@ -56,7 +56,7 @@ public class TerrainJdbcDao implements TerrainDao {
 	@Override
 	public List<Sector> getTerrain(Point p, int range) {
         List<Sector> terrainList = jdbcTemplate
-                .query("SELECT * FROM terrain WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
+                .query("SELECT * FROM TERRAIN WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
                     return new Sector(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"));
                 },p.getX()-range,p.getX() + range, p.getY() - range, p.getY()+range);
 
@@ -73,13 +73,13 @@ public class TerrainJdbcDao implements TerrainDao {
 
 	@Override
 	public void setPower(Point p, int power) {
-		jdbcTemplate.update("UPDATE terrain SET power = ? WHERE x = ? AND y = ?", power,p.getX(),p.getY());
+		jdbcTemplate.update("UPDATE TERRAIN SET power = ? WHERE x = ? AND y = ?", power,p.getX(),p.getY());
 	}
 
 
 	@Override
 	public void setType(Point p, int t) {
-		jdbcTemplate.update("UPDATE terrain SET type = ? WHERE x = ? AND y = ?", t,p.getX(),p.getY());
+		jdbcTemplate.update("UPDATE TERRAIN SET type = ? WHERE x = ? AND y = ?", t,p.getX(),p.getY());
 	}
 
 
@@ -109,7 +109,7 @@ public class TerrainJdbcDao implements TerrainDao {
 	@Override
 	public int getMaxX() {
 		 List<Integer> maxX = jdbcTemplate
-	                .query("SELECT max(x) as aux FROM terrain",(ResultSet resultSet, int rowNum) -> {
+	                .query("SELECT max(x) as aux FROM TERRAIN",(ResultSet resultSet, int rowNum) -> {
 	                    return resultSet.getInt("aux");
 	                });
 
@@ -120,7 +120,7 @@ public class TerrainJdbcDao implements TerrainDao {
 	@Override
 	public int getMaxY() {
 		 List<Integer> maxY = jdbcTemplate
-	                .query("SELECT max(y) as aux FROM terrain",(ResultSet resultSet, int rowNum) -> {
+	                .query("SELECT max(y) as aux FROM TERRAIN",(ResultSet resultSet, int rowNum) -> {
 	                    return resultSet.getInt("aux");
 	                });
 
