@@ -26,7 +26,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	@Value("classpath:schema.sql")
 	private Resource schemaSql;
 
-	@Value("classpath:buildings.sql")
+	@Value("classpath:map.sql")
 	private Resource mapSql;
 	
 	@Value("classpath:user.sql")
@@ -66,7 +66,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
 		dbp.addScript(schemaSql);
 		dbp.addScript(userSql);
-		dbp.addScript(mapSql);
+		//dbp.addScript(mapSql);
 		return dbp;
 	}
 

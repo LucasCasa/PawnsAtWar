@@ -21,7 +21,7 @@ public class HomePageController {
 	private SectorService ss;
 	@Autowired
 	private EmpireService es;
-	@RequestMapping(value={"/map","/",}, method = RequestMethod.GET)
+	@RequestMapping(value={"/map"}, method = RequestMethod.GET)
 	public ModelAndView gridLoader(@RequestParam(value= "x",required = false,defaultValue = "50") int x ,
 								   @RequestParam(value= "y",required = false,defaultValue = "50") int y){
 		final ModelAndView mav = new ModelAndView("index");
@@ -34,4 +34,17 @@ public class HomePageController {
 		mav.addObject("y",y);
 		return mav;
 	}
+
+	@RequestMapping("/")
+	public ModelAndView login(){
+		final ModelAndView mav = new ModelAndView("home");
+		return mav;
+	}
+	@RequestMapping(value= "/login",method = RequestMethod.POST)
+	public ModelAndView redir(@RequestParam(value= "id",required = false,defaultValue = "0") int id){
+		final ModelAndView mav = new ModelAndView("login");
+		mav.addObject("id",id);
+		return mav;
+	}
+
 }
