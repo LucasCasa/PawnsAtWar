@@ -20,6 +20,8 @@
     <org.postgresql.version>9.4.1209</org.postgresql.version>
     <junit.version>4.12</junit.version>
     <org.hsqldb.version>2.3.1</org.hsqldb.version>
+      <maven.compiler.source>1.8</maven.compiler.source>
+      <maven.compiler.target>1.8</maven.compiler.target>
 
   </properties>
 
@@ -76,7 +78,7 @@
         <version>${maven-eclipse-plugin.version}</version>
         <configuration>
           <downloadSources>true</downloadSources>
-	  <downloadJavadocs>true</downloadJavadocs>
+	        <downloadJavadocs>true</downloadJavadocs>
         </configuration>
       </plugin>
     </plugins>
