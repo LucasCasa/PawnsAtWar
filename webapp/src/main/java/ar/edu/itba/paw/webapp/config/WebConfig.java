@@ -66,7 +66,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
 		dbp.addScript(schemaSql);
 		dbp.addScript(userSql);
-		//dbp.addScript(mapSql);
+		dbp.addScript(mapSql);
 		return dbp;
 	}
 

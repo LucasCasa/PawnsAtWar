@@ -99,6 +99,8 @@ INSERT INTO building values (59,95,1,97,1);
 INSERT INTO building values (86,96,1,98,1);
 INSERT INTO building values (54,98,1,99,1);
 
+delete from terrain;
+
 INSERT INTO terrain VALUES (25,61,1,5);
 INSERT INTO terrain VALUES (8,11,1,5);
 INSERT INTO terrain VALUES (17,21,1,5);

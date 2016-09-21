@@ -16,22 +16,22 @@ public class TerrainTag extends SimpleTagSupport{
                 out.print("<img class=\" "+clas + " \" src=\"/webapp/resources/images/terrain.jpg\">");
                 break;
             case 1:
-                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/cas.jpg\">");
+                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/castle.jpg\">");
                 break;
             case 2:
-                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/arch.jpg\">");
+                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/archery.jpg\">");
                 break;
             case 3:
-                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/ba.jpg\">");
+                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/barracks.jpg\">");
                 break;
             case 4:
-                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/go.jpg\">");
+                out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/gold.jpg\">");
                 break;
             case 5:
                 out.print("<img class=\" " + clas + " \" src=\"/webapp/resources/images/terrgold.jpg\">");
                 break;
             case 6:
-                out.print("<img class=\" " + clas + " \"  src=\"/webapp/resources/images/mi.jpg\">");
+                out.print("<img class=\" " + clas + " \"  src=\"/webapp/resources/images/mill.jpg\">");
                 break;
             case 7:
                 out.print("<img class=\" " + clas + " \"  src=\"/webapp/resources/images/blacksmith.jpg\">");
