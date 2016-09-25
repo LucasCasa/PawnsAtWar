@@ -19,4 +19,6 @@ public interface BuildingService {
 	public Buildings addBuilding(Point p, int idPlayer, int type);
 	
 	boolean belongsTo(Point p, int idPlayer);
+
+	public Point getCastle(int idPlayer);
 }

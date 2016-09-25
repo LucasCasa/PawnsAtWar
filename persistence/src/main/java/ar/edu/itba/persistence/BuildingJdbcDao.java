@@ -132,6 +132,16 @@ public class BuildingJdbcDao implements BuildingDao {
 
 	        return maxX.isEmpty() ? -1 : maxX.get(0);
 	}
-	
+	@Override
+	public Point getCastle(int idPlayer){
+		List<Point> castles = jdbcTemplate
+				.query("SELECT * FROM BUILDING WHERE type=1 AND idPlayer= ?",(ResultSet resultSet, int rowNum) -> {
+				return new Point(resultSet.getInt("x"),resultSet.getInt("y"));
+				},idPlayer);
+		if(castles.isEmpty()){
+			throw new RuntimeException("Un jugador no puede no tener castillos");
+		}
+		return castles.get(0);
+	}
 
 }

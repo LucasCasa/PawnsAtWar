@@ -49,4 +49,6 @@ public class BuildingServiceImpl implements BuildingService{
 		return bd.belongsTo(p, idPlayer);
 	}
 
+	@Override
+	public Point getCastle(int idPlayer){ return bd.getCastle(idPlayer);}
 }
