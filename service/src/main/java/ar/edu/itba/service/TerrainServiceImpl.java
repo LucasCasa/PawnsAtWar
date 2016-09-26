@@ -37,14 +37,12 @@ public class TerrainServiceImpl implements TerrainService{
 	}
 
 	@Override
-	public Terrain addTerrain(Point p, int power, int t) {
-		// TODO Auto-generated method stub
-		return terrainDao.addTerrain(p, power, t);
+	public Terrain addTerrain(Point p, int power, int t,int idPlayer) {
+		return terrainDao.addTerrain(p, power, t,idPlayer);
 	}
 
 	@Override
 	public Terrain addTerrain(Point p, int t) {
-		// TODO Auto-generated method stub
 		return terrainDao.addTerrain(p,t);
 	}
 
@@ -52,5 +50,9 @@ public class TerrainServiceImpl implements TerrainService{
 	public Terrain addTerrain(Point p) {
 		// TODO Auto-generated method stub
 		return terrainDao.addTerrain(p);
+	}
+	
+	public int getUserId(Point p){
+		return terrainDao.getId(p);
 	}
 }

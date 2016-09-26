@@ -55,5 +55,5 @@ public class TroopJdbcDao implements TroopDao {
 	public void deleteTroop(int idArmy, int type) {
 		jdbcTemplate.update("DELETE FROM TROOP WHERE idArmy = ? AND type = ?", idArmy,type);
 	}
-	
+
 }

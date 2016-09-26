@@ -5,9 +5,8 @@ public class Buildings extends Sector {
 	private int idPlayer;
 	
 	public Buildings(Point position, int idPlayer, int type, int level) {
-		super(position,type);
+		super(position,type,idPlayer);
 		this.level = level;
-		this.idPlayer = idPlayer;
 	}
 	
 	public int getLevel() {

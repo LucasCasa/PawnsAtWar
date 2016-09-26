@@ -1,3 +1,5 @@
+drop table terrain;
+
 create table if not exists userPaw (
 	idPlayer SERIAL PRIMARY KEY,
 	username VARCHAR (100),
@@ -11,11 +13,13 @@ create table if not exists terrain (
 	y integer not null,
 	power integer,
 	type integer,
+	idPlayer integer,
 	PRIMARY KEY (x,y),
 	CHECK (power >= 0),
 	CHECK (type >= 0),
 	CHECK (x >= 0),
-	CHECK (y >= 0)
+	CHECK (y >= 0),
+	FOREIGN KEY (idPlayer) REFERENCES userPaw ON DELETE CASCADE
 );
 
 create table if not exists building (

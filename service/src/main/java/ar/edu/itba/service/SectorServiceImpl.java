@@ -42,11 +42,10 @@ public class SectorServiceImpl implements SectorService {
 		for(int i = 0; i< size;i++){
 			for(int j = 0; j<size ;j++){
 				if(aux[i][j] == null){
-					aux[i][j] = new Terrain(new Point(p.getX() - range + j, p.getY() - range + i),0,0);
+					aux[i][j] = new Terrain(new Point(p.getX() - range + j, p.getY() - range + i),0 ,0,0);
 				}
 			}
 		}
-		//validar a futuro
 		for(int i=0; i<size; i++){
 			sectorList.add(new ArrayList<>(size));
 			for(int j=0; j<size; j++){
@@ -64,7 +63,7 @@ public class SectorServiceImpl implements SectorService {
 			return null;
 		}
 		if(building == null && terrain == null){
-			return new Sector(p,0);
+			return new Sector(p,0,0);
 		}else if(building == null){
 			return terrain;
 		}

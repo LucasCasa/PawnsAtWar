@@ -9,7 +9,8 @@ public interface TerrainService {
 	public Integer getType(Point position);
 	public void setPower(Point p, int power);
 	public void setType(Point p, int t);
-	public Terrain addTerrain(Point p, int power, int t);
+	public Terrain addTerrain(Point p, int power, int t,int idPlayer);
 	public Terrain addTerrain(Point p, int t);
 	public Terrain addTerrain(Point p);
+	public int getUserId(Point p);
 }

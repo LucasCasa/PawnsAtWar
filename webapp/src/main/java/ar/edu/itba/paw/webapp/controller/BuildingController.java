@@ -27,9 +27,6 @@ public class BuildingController {
         final ModelAndView mav = new ModelAndView("building");
 
         Sector sector = ss.getSector(new Point(x,y));
-        if(sector == null){
-        	sector = new Sector(new Point(x,y), 0);
-        }
         InformationBuilding ib  = BuildingInformationMap.getInstance().getBuildingInformation(sector.getType());
 
         mav.addObject("building",ib);

@@ -55,7 +55,7 @@ public class BuildingJdbcDao implements BuildingDao {
 			
 	        List<Sector> buildingList = jdbcTemplate
 	                .query("SELECT * FROM BUILDING WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
-	                    return new Sector(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"));
+	                    return new Sector(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"),resultSet.getInt("idPlayer"));
 	                },p.getX()-range,p.getX() + range, p.getY() - range, p.getY()+range);
 	        return buildingList;
 	}
