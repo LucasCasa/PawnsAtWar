@@ -32,7 +32,7 @@ create table if not exists building (
 	FOREIGN KEY (idPlayer) REFERENCES userPaw ON DELETE CASCADE
 );
 
-create table if not exists army (
+create table if not exists ARMY (
 	idArmy SERIAL PRIMARY KEY,
 	x integer not null,
 	y integer not null,

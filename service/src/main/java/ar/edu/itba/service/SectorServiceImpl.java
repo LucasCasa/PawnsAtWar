@@ -27,19 +27,6 @@ public class SectorServiceImpl implements SectorService {
 	
 	@Override
 	public List<List<Sector>> getSector(Point p, int range) {
-		if( p.getY()-range < 0 && p.getX()-range < 0){
-			return getSector(new Point(p.getX()+range,p.getY()+range),range);
-		}else if( p.getY()-range < 0 ){
-			return getSector(new Point(p.getX(),p.getY()+range),range);
-		}else if(p.getX()-range < 0){
-			return getSector(new Point(p.getX()+range,p.getY()),range);
-		}else if(p.getX()+range > maxX && p.getY()+range > maxY){
-			return getSector(new Point(p.getX()-range,p.getY()-range),range);
-		}else if(p.getY()+range > maxY){
-			return getSector(new Point(p.getX(),p.getY()-range),range);
-		}else if(p.getX()+range > maxX){
-			return getSector(new Point(p.getX()-range,p.getY()),range);
-		}
 		int size = range*2 +1;
 		Sector[][] aux = new Sector[size][size];
 		List<List<Sector>> sectorList = new ArrayList<>(size);
@@ -73,21 +60,11 @@ public class SectorServiceImpl implements SectorService {
 	public Sector getSector(Point p) {
 		Sector building = bd.getBuilding(p);
 		Sector terrain = td.getTerrain(p);
+		if(p.getX()> maxX || p.getY()> maxY){
+			return null;
+		}
 		if(building == null && terrain == null){
-			//A continuacion se muestran todos los casos para poder redirigir si el usuario ingresa algo que no deberia
-			if(p.getX() < 0 && p.getY() < 0){
-				return getSector(new Point(0,0));
-			}else if(p.getX() < 0){
-				return getSector(new Point(0,p.getY()));
-			}else if(p.getY() < 0){
-				return getSector(new Point(p.getX(),0));
-			}else if(p.getX() >maxX && p.getY() > maxY){
-				return getSector(new Point(maxX,maxY));
-			}else if(p.getX() > maxX){
-				return getSector(new Point(maxX,p.getY()));
-			}else if(p.getY() > maxY){
-				return getSector(new Point(p.getX(),maxY));
-			}
+			return new Sector(p,0);
 		}else if(building == null){
 			return terrain;
 		}
