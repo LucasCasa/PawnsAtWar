@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Empire {
 	private User user;
-	private List<Buildings> buildings;
+	private List<Building> buildings;
 	private List<Army> army;
 	private List<Resource> resources;
 	private Time lastUpdate;
 	
-	public Empire(User user, List<Buildings> buildings, List<Army> army, List<Resource> resources, Time lastUpdate) {
+	public Empire(User user, List<Building> buildings, List<Army> army, List<Resource> resources, Time lastUpdate) {
 		this.user = user;
 		this.buildings = buildings;
 		this.army = army;
@@ -30,7 +30,7 @@ public class Empire {
 		return user;
 	}
 
-	public List<Buildings> getBuildings() {
+	public List<Building> getBuildings() {
 		return buildings;
 	}
 
@@ -47,7 +47,7 @@ public class Empire {
 	}
 	
 
-	public void addBuilding(Buildings b){
+	public void addBuilding(Building b){
 		buildings.add(b);
 	}
 	

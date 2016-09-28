@@ -2,7 +2,7 @@ package ar.edu.itba.interfaces;
 
 import java.util.List;
 
-import ar.edu.itba.model.Buildings;
+import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 
@@ -20,9 +20,9 @@ public interface BuildingDao {
 	
 	public void setIdPlayer(Point p,int idPlayer);
 	
-	public Buildings addBuilding(Point p, int level, int idPlayer, int type);
+	public Building addBuilding(Point p, int level, int idPlayer, int type);
 	
-	public Buildings addBuilding(Point p, int idPlayer, int type);
+	public Building addBuilding(Point p, int idPlayer, int type);
 	
 	public boolean belongsTo(Point p, int idPlayer);
 	

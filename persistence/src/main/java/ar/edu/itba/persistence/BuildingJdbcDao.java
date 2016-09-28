@@ -13,7 +13,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BuildingDao;
-import ar.edu.itba.model.Buildings;
+import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 
@@ -82,7 +82,7 @@ public class BuildingJdbcDao implements BuildingDao {
 	}
 
 	@Override
-	public Buildings addBuilding(Point p, int level, int idPlayer, int type) {
+	public Building addBuilding(Point p, int level, int idPlayer, int type) {
 		final Map<String,Object> args = new HashMap<>();
 		args.put("x", p.getX());
 		args.put("y", p.getY());
@@ -90,11 +90,11 @@ public class BuildingJdbcDao implements BuildingDao {
 		args.put("idPlayer", idPlayer);
 		args.put("type", type);
 		jdbcInsert.execute(args);
-		return new Buildings(p,idPlayer,type,level);
+		return new Building(p,idPlayer,type,level);
 	}
 
 	@Override
-	public Buildings addBuilding(Point p, int idPlayer, int type) {
+	public Building addBuilding(Point p, int idPlayer, int type) {
 		return addBuilding(p,0,idPlayer,type);
 	}
 

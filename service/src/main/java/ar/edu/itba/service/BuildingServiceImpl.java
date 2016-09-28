@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.BuildingService;
-import ar.edu.itba.model.Buildings;
+import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Point;
 
 @Service
@@ -35,12 +35,12 @@ public class BuildingServiceImpl implements BuildingService{
 	}
 
 	@Override
-	public Buildings addBuilding(Point p, int level, int idPlayer, int type) {
+	public Building addBuilding(Point p, int level, int idPlayer, int type) {
 		return bd.addBuilding(p, level, idPlayer, type);
 	}
 
 	@Override
-	public Buildings addBuilding(Point p, int idPlayer, int type) {
+	public Building addBuilding(Point p, int idPlayer, int type) {
 		return bd.addBuilding(p, idPlayer, type);
 	}
 

@@ -1,10 +1,10 @@
 package ar.edu.itba.model;
 
-public class Buildings extends Sector {
+public class Building extends Sector {
 	private int level;
 	private int idPlayer;
 	
-	public Buildings(Point position, int idPlayer, int type, int level) {
+	public Building(Point position, int idPlayer, int type, int level) {
 		super(position,type,idPlayer);
 		this.level = level;
 	}
