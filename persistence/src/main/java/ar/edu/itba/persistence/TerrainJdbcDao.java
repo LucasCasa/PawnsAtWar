@@ -130,7 +130,7 @@ public class TerrainJdbcDao implements TerrainDao {
 	}
 
 	@Override
-	public int getId(Point p) {
+	public Integer getId(Point p) {
 		List<Integer> terrainList = jdbcTemplate
 				.query("SELECT * FROM TERRAIN WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("idPlayer");
