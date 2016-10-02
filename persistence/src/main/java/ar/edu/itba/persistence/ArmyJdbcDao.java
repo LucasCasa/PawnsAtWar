@@ -25,7 +25,7 @@ public class ArmyJdbcDao implements ArmyDao{
 	@Autowired
 	public ArmyJdbcDao(final DataSource dataSource){
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("army").usingGeneratedKeyColumns("idArmy");
+		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("ARMY").usingGeneratedKeyColumns("idArmy");
 	}
 
 	@Override
@@ -47,7 +47,7 @@ public class ArmyJdbcDao implements ArmyDao{
 	@Override
 	public List<Army> getArmiesByUserId(int userId) {
 		 List<Army> armyList = jdbcTemplate
-	                .query("SELECT * FROM army WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
+	                .query("SELECT * FROM ARMY WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
 	                    return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("idArmy"),resultSet.getBoolean("available"));
 	                },userId);
 
@@ -56,7 +56,7 @@ public class ArmyJdbcDao implements ArmyDao{
 
 	public Army getArmyById(int idArmy){
 		List<Army> armies = jdbcTemplate
-				.query("SELECT * FROM army WHERE idArmy = ?",(ResultSet resultSet, int rowNum) -> {
+				.query("SELECT * FROM ARMY WHERE idArmy = ?",(ResultSet resultSet, int rowNum) -> {
 					return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("idArmy"),resultSet.getBoolean("available"));},idArmy);
 		return armies.isEmpty()? null: armies.get(0);
 	}
@@ -64,7 +64,7 @@ public class ArmyJdbcDao implements ArmyDao{
 	@Override
 	public boolean isAvailable(Point p) {
 		List<Boolean> isAvailable = jdbcTemplate.
-				query("SELECT available FROM army WHERE x = ? AND y = ?", (ResultSet resultSet, int rowNum) -> {
+				query("SELECT available FROM ARMY WHERE x = ? AND y = ?", (ResultSet resultSet, int rowNum) -> {
 					return resultSet.getBoolean("available");
 				}, p.getX(), p.getY());
 

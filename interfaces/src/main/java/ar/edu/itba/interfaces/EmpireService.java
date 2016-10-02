@@ -12,4 +12,5 @@ public interface EmpireService {
 	 * @return The list with all the resources
 	 */
 	public List<Resource> getResources(int userid);
+	
 }

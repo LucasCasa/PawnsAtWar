@@ -10,10 +10,20 @@
                 <p> ${building.getDescription()}</p>
 
                 <div class="row">
-                    <div class="col-md-6"><button class="myButton" >Aumentar de nivel</button></div>
-                    <div class="col-md-2"><button class="myButton">Atacar</button></div>
-                    <div class="col-md-2"><button class="myButton">Demoler</button></div>
-
+                    <c:choose>
+                        <c:when test = "${user.getId() == owner}">
+                            <c:if test = "${building.getId() == 0 || building.getId() == 5}">
+                                <div class="col-md-2"><button class="myButton">Construir</button></div>
+                            </c:if>
+                            <c:if test="${building.getId() != 0 && building.getId() != 5}">
+                                <div class="col-md-2"><button class="myButton">Demoler</button></div>
+                                <div class="col-md-6"><button class="myButton" >Aumentar de nivel</button></div>
+                            </c:if>
+                        </c:when>
+                        <c:when test="${user.getId() != owner && building.getId() != 0 && building.getId() != 5}">
+                            <div class="col-md-2"><button class="myButton">Atacar</button></div>
+                        </c:when>
+                    </c:choose>
                 </div>
 
             </div>

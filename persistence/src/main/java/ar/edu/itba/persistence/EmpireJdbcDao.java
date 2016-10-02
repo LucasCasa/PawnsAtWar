@@ -23,7 +23,7 @@ public class EmpireJdbcDao implements EmpireDao {
 	@Autowired
 	public EmpireJdbcDao(final DataSource dataSource){
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("empire");
+		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("EMPIRE");
 	}
 	
 	@Autowired
@@ -32,7 +32,7 @@ public class EmpireJdbcDao implements EmpireDao {
 	@Override
 	public Timestamp getLastTimeUpdate(int userId) {
 		List<Timestamp> time = jdbcTemplate.query
-				("SELECT * FROM empire WHERE idPlayer = ?", (ResultSet resultSet, int rowNum) -> {
+				("SELECT * FROM EMPIRE WHERE idPlayer = ?", (ResultSet resultSet, int rowNum) -> {
                     return resultSet.getTimestamp("lastUpdate");
                 },userId);
 
@@ -41,7 +41,7 @@ public class EmpireJdbcDao implements EmpireDao {
 
 	@Override
 	public void setLastTimeUpdate(int userId, Timestamp t) {
-		jdbcTemplate.update("UPDATE empire SET lastUpdate = ? WHERE idPlayer = ?",t,userId);
+		jdbcTemplate.update("UPDATE EMPIRE SET lastUpdate = ? WHERE idPlayer = ?",t,userId);
 		
 	}
 

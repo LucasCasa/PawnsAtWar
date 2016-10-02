@@ -20,7 +20,10 @@
     <org.postgresql.version>9.4.1209</org.postgresql.version>
     <junit.version>4.12</junit.version>
     <org.hsqldb.version>2.3.1</org.hsqldb.version>
-
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <javax-validation-api.version>1.1.0.Final</javax-validation-api.version>
+    <hibernate-validator.version>5.2.4.Final</hibernate-validator.version>
   </properties>
 
   <dependencyManagement>
@@ -51,6 +54,16 @@
         <version>${junit.version}</version>
         <scope>test</scope>
       </dependency>
+      <dependency>
+        <groupId>javax.validation</groupId>
+        <artifactId>validation-api</artifactId>
+        <version>${javax-validation-api.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId>
+        <artifactId>hibernate-validator</artifactId>
+        <version>${hibernate-validator.version}</version>
+      </dependency>
 
       <dependency>
         <groupId>org.springframework</groupId>
@@ -76,7 +89,7 @@
         <version>${maven-eclipse-plugin.version}</version>
         <configuration>
           <downloadSources>true</downloadSources>
-	  <downloadJavadocs>true</downloadJavadocs>
+	        <downloadJavadocs>true</downloadJavadocs>
         </configuration>
       </plugin>
     </plugins>

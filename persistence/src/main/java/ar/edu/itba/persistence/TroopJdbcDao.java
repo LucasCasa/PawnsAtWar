@@ -23,13 +23,13 @@ public class TroopJdbcDao implements TroopDao {
 	@Autowired
 	public TroopJdbcDao(final DataSource dataSource){
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("troop");
+		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("TROOP");
 	}
 
 	@Override
 	public int getAmount(int idArmy, int type) {
 		List<Integer> troopList = jdbcTemplate
-				.query("SELECT * FROM troop WHERE idArmy = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
+				.query("SELECT * FROM TROOP WHERE idArmy = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("amount");
 						},idArmy,type);
 		return troopList.isEmpty() ? -1 : troopList.get(0);
@@ -38,7 +38,7 @@ public class TroopJdbcDao implements TroopDao {
 	@Override
 	public List<Troop> getAllTroop(int idArmy) {
 		List<Troop> troopList = jdbcTemplate
-				.query("SELECT * FROM troop WHERE idArmy = ?",(ResultSet resultSet, int rowNum) -> {
+				.query("SELECT * FROM TROOP WHERE idArmy = ?",(ResultSet resultSet, int rowNum) -> {
 							return new Troop(resultSet.getInt("idArmy"),resultSet.getInt("type"),resultSet.getInt("amount"));
 						},idArmy);
 		return troopList;
@@ -47,13 +47,13 @@ public class TroopJdbcDao implements TroopDao {
 	@Override
 	public void changeAmount(int idArmy, int type, int amount) {
 		jdbcTemplate
-		.update("UPDATE troop SET amount = ? WHERE idArmy = ? AND type = ?",amount,idArmy,type);
+		.update("UPDATE TROOP SET amount = ? WHERE idArmy = ? AND type = ?",amount,idArmy,type);
 		
 	}
 
 	@Override
 	public void deleteTroop(int idArmy, int type) {
-		jdbcTemplate.update("DELETE FROM troop WHERE idArmy = ? AND type = ?", idArmy,type);
+		jdbcTemplate.update("DELETE FROM TROOP WHERE idArmy = ? AND type = ?", idArmy,type);
 	}
-	
+
 }

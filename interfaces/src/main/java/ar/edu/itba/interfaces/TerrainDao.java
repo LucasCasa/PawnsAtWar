@@ -36,7 +36,7 @@ public interface TerrainDao {
 	
 	public void setType(Point p, int t);
 	
-	public Terrain addTerrain(Point p, int power, int t);
+	public Terrain addTerrain(Point p, int power,int idPlayer ,int t);
 	
 	public Terrain addTerrain(Point p, int t);
 	
@@ -45,6 +45,8 @@ public interface TerrainDao {
 	public int getMaxX();
 	
 	public int getMaxY();
+	
+	public Integer getId(Point p);
 	
 	
 	

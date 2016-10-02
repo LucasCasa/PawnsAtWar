@@ -25,5 +25,18 @@
         </tr>
     </table>
 </div>
-
+<h1>Atacar</h1>
+<form method="post" action="<c:url value="/attack"/>">
+<div class="form-inline">
+    <div class="form-group">
+        <label for="Xval">X:</label>
+        <input type="text" class="form-control" name="x" id="Xval" size="3">
+    </div>
+    <div class="form-group">
+        <label for="Yval">Y:</label>
+        <input type="text" class="form-control" name="y" id="Yval" size="3">
+    </div>
+    <input type="submit" class="myButton" value="Atacar"/>
+</div>
+</form>
 <%@ include file="footer.jsp" %>
