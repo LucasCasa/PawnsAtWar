@@ -20,7 +20,7 @@ import ar.edu.itba.model.Sector;
 @Controller
 public class HomePageController {
 
-	final int USERID = (int)(Math.random()*100);
+	final int USERID = 69;
 	@Autowired
 	private SectorService ss;
 	@Autowired
@@ -64,8 +64,7 @@ public class HomePageController {
 	}
 
 	@ModelAttribute("user")
-	public User addStuffToRequestScope() {
-		System.out.println("ESTOY LLAMANDO A USER");
+	public User setRandomUser() {
 		User bean = new User(USERID,"lucas","42069","l@l.com");
 		return bean;
 	}
