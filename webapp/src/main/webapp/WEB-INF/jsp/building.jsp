@@ -12,14 +12,17 @@
                 <div class="row">
                     <c:choose>
                         <c:when test = "${user.getId() == owner}">
-                            <div class="col-md-6"><button class="myButton" >Aumentar de nivel</button></div>
+                            <c:if test = "${building.getId() == 0 || building.getId() == 5}">
+                                <div class="col-md-2"><button class="myButton">Construir</button></div>
+                            </c:if>
                             <c:if test="${building.getId() != 0 && building.getId() != 5}">
                                 <div class="col-md-2"><button class="myButton">Demoler</button></div>
+                                <div class="col-md-6"><button class="myButton" >Aumentar de nivel</button></div>
                             </c:if>
                         </c:when>
-                        <c:otherwise>
+                        <c:when test="${user.getId() != owner && building.getId() != 0 && building.getId() != 5}">
                             <div class="col-md-2"><button class="myButton">Atacar</button></div>
-                        </c:otherwise>
+                        </c:when>
                     </c:choose>
                 </div>
 
