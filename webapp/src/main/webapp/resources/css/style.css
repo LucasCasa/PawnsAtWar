@@ -24,6 +24,22 @@
     background-color: rgba(0,0,0,1);
 }
 
+#Map > table > tbody > tr > td > a > img{
+   padding:1px;
+   background-color:#000;
+}
+
+#Map > table > tbody > tr > td > a > img.friendly{
+    background-color:#3E39F2;
+}
+
+#Map > table > tbody > tr > td > a > img.hostile{
+    background-color:#F00;
+}
+
+#Map > table > tbody > tr > td > a > img.ally{
+    background-color:#225A23;
+}
 
 @media screen and (min-width:768px){
     .navbar-brand-centered {
@@ -38,6 +54,9 @@
     .navbar>.container-fluid .navbar-brand-centered {
         margin-left: -80px;
         background-color: rgba(0,0,0,0);
+    }
+    .navbar-brand-centered>a{
+         color: #BB0;
     }
 }
 .navbar-default{

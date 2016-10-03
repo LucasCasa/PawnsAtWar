@@ -65,7 +65,7 @@ public class HomePageController {
 		mav.addObject("resList",es.getResources(0));
 		mav.addObject("map",elements);
 		mav.addObject("x",xprime);
-		mav.addObject("y",yprime	);
+		mav.addObject("y",yprime);
 
 		mav.addObject("user",user);
 

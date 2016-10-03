@@ -19,7 +19,7 @@
 		        <span class="icon-bar"></span>
 		        <span class="icon-bar"></span>
 		      </button>
-		      <div class="navbar-brand navbar-brand-centered">PawnsAtWar</div>
+		      <div class="navbar-brand navbar-brand-centered"><a href="<c:url value="/"/>">PawnsAtWar</a></div>
 		    </div>
 
 		    <!-- Collect the nav links, forms, and other content for toggling -->
@@ -27,12 +27,12 @@
 		      <ul class="nav navbar-nav">
 		        <li><a href="<c:url value="/map"/>">Mapa</a></li>
 		        <li><a href="<c:url value="/armies"/>">Ejercitos</a></li>
-		        <li><a href="#">Comercio</a></li>
+		        <li><a><s>Comercio</s></a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		        <li><a href="#">Ranking</a></li>
-		        <li><a href="#">Mensajes</a></li>
-		        <li><a href="#">Salir</a></li>
+		        <li><a><s>Ranking</s></a></li>
+		        <li><a><s>Mensajes</s></a></li>
+		        <li><a><s>Salir</s></a></li>
 		      </ul>
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->
