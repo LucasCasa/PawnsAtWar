@@ -147,10 +147,13 @@ public class BuildingJdbcDao implements BuildingDao {
 	@Override
 	public boolean isCastleAlone(Point p, int range) {
 		List<Integer> buildings = jdbcTemplate
-				.query("",(ResultSet resultSet,int rowNum) -> {
+				.query("SELECT count(*) FROM building WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?)) ",(ResultSet resultSet,int rowNum) -> {
 					return new Integer(1);
-				});
-		return false;
+				},p.getX()- range,p.getX() + range,p.getY() - range, p.getY() + range);
+		if(buildings.isEmpty() || buildings.get(0) > 1){
+			return false;
+		}
+		return true;
 	}
 
 }
