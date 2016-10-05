@@ -21,6 +21,15 @@ function redir() {
 
 };
 
+function move(x, y){
+    var range = 3;
+    if(x<range || x>=100-range || y<range || y>=100-range){
+        console.log("invalid position");
+    }else{
+        window.location = window.location.pathname + "?x=" + x + "&y=" + y;
+    }
+}
+
 function isNumber(s)
 {
     return s.match("^[0-9]+");
@@ -37,11 +46,6 @@ function describe(){
     var elemento = document.createElement("img");
     document.getElementById("elemDescription").appendChild(elemento);
     elemento.src = '/webapp/resources/images/archery.png';
-
-
-
-
-
 };
 
 function deleteDescription(){

@@ -62,7 +62,7 @@ public class HomePageController {
 
 		List<List<Sector>> elements;
 		elements = ss.getSector(new Point(xprime,yprime), 3);
-		mav.addObject("resList",es.getResources(0));
+		mav.addObject("resList",es.getResources(user.getId()));
 		mav.addObject("map",elements);
 		mav.addObject("x",xprime);
 		mav.addObject("y",yprime);

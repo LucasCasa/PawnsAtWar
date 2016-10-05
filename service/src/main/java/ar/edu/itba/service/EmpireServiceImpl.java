@@ -7,8 +7,11 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.edu.itba.interfaces.BuildingService;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.EmpireService;
+import ar.edu.itba.interfaces.SectorService;
+import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
 
 @Service
@@ -16,6 +19,10 @@ public class EmpireServiceImpl implements EmpireService{
 	
 	@Autowired
 	EmpireDao ed;
+	@Autowired
+	SectorService ss;
+	@Autowired
+	BuildingService bs;
 	
 	//Production rate, temporary implementation
 	public static final int rate = 1;
@@ -50,6 +57,29 @@ public class EmpireServiceImpl implements EmpireService{
 		Timestamp currentTime = new Timestamp(date.getTime());
 		ed.setLastTimeUpdate(userid, currentTime);
 		return (currentTime.getTime()-oldTime.getTime())/1000;
+	}
+
+	@Override
+	public boolean build(int id, int xprime, int yprime, int type) {
+		final int resType = 1; /*Temporary*/
+		final Point p = new Point(xprime,yprime);
+		if(!hasResourcesAvailable(id, 1000, resType)){
+			return false;
+		}
+		if(ss.getSector(p).getType() == 5 && type != 4){
+			return false;
+		}
+		updateResources(id);
+		ed.substractAmount(id, resType, 1000);
+		bs.addBuilding(p, id, type);
+		return true;
+	}
+	
+	private boolean hasResourcesAvailable(int userid, int amount, int resType){
+		int rate = 1; /*Temporary*/
+		Resource l = ed.getResource(userid, resType);
+		int time = (int)timeLapsed(userid);
+		return l.getQuantity()*time*rate>=amount;
 	}
 
 }

@@ -1,0 +1,40 @@
+#buildListTable > tbody {
+	background-color: #FFE4C4;
+}
+
+#buildListTable > thead {
+	background-color: #BDB76B;
+	font-size: 150%;
+	text-align: center;
+}
+
+#buildListTable > tbody > tr > td > img {
+	height: 60px;
+	width: auto;
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#buildListTable input {
+	display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#buildListTable {
+	text-align: middle;
+	border-collapse: collapse;
+	border: 1px solid black;
+}
+
+#buildListTable > th, td {
+   align-content: center;
+   border: 2px solid black;
+   width: 200px;
+}
+
+#buildListTable > tbody > tr > td > img >.resource {
+	height: 40px;
+	width: auto;
+}

@@ -43,9 +43,7 @@ public class ResourceJdbcDao implements ResourceDao {
 		Resource amount = getResource(idPlayer,type);
 		int aux = amount.getQuantity() - value < 0 ? 0 : amount.getQuantity() - value ;
 		jdbcTemplate
-				.query("UPDATE resource SET amount = ? WHERE idPlayer = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
-							return resultSet.getInt("amount");
-						},aux,idPlayer,type);
+				.update("UPDATE resource SET amount = ? WHERE idPlayer = ? AND type = ?",aux,idPlayer,type);
 	
 	}
 

@@ -65,4 +65,8 @@ public class EmpireJdbcDao implements EmpireDao {
 		rd.addAmount(userID, id, amount);
 	}
 	
+	@Override
+	public void substractAmount(int userID, int id, int amount) {
+		rd.subtractAmount(userID, id, amount);
+	}
 }

@@ -1,5 +1,6 @@
 drop table terrain;
 drop table building;
+drop table empire;
 
 create table if not exists userPaw (
 	idPlayer SERIAL PRIMARY KEY,

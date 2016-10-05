@@ -47,4 +47,6 @@ public interface EmpireDao {
 	 * @return
 	 */
 	public List<Resource> getResources(int userId);
+
+	void substractAmount(int userID, int id, int amount);
 }
