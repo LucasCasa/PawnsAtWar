@@ -2,9 +2,6 @@ package ar.edu.itba.paw.webapp.controller;
 
 import java.util.List;
 
-import ar.edu.itba.interfaces.BuildingService;
-import ar.edu.itba.model.User;
-import ar.edu.itba.paw.webapp.dataClasses.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,13 +10,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import ar.edu.itba.interfaces.BuildingService;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistration;
-
-import static java.lang.System.out;
+import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.dataClasses.Validator;
 
 @Controller
 public class HomePageController {
@@ -64,6 +61,7 @@ public class HomePageController {
 		List<List<Sector>> elements;
 		elements = ss.getSector(new Point(xprime,yprime), 3);
 		mav.addObject("resList",es.getResources(user.getId()));
+		mav.addObject("ratesList",es.getRates(user.getId()));
 		mav.addObject("map",elements);
 		mav.addObject("x",xprime);
 		mav.addObject("y",yprime);

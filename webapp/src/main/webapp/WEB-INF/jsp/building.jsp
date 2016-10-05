@@ -32,7 +32,7 @@
                                                 <c:forEach var="b" items="${plainTerrainBuildings}">
                                                     <tr>
                                                         <td><bi:BuildingIcon id="${b}"/></td>
-                                                        <td><re:Resource type="1" amount="1000"/></td>
+                                                        <td><re:Resource rate="0" type="1" amount="1000"/></td>
                                                         <td>
                                                         <form method="post" action="<c:url value="/build"/>">
                                                         <input type="hidden" name="x" value="${point.getX()}"/>
@@ -43,6 +43,20 @@
                                                         </td>
                                                     </tr>
                                                 </c:forEach>
+                                            </c:if>
+                                            <c:if test = "${building.getId()==5}">
+                                                <tr>
+                                                     <td><bi:BuildingIcon id="4"/></td>
+                                                    <td><re:Resource rate="0" type="1" amount="1000"/></td>
+                                                    <td>
+                                                        <form method="post" action="<c:url value="/build"/>">
+                                                        <input type="hidden" name="x" value="${point.getX()}"/>
+                                                        <input type="hidden" name="y" value="${point.getY()}"/>
+                                                        <input type="hidden" name="type" value="4"/>
+                                                        <input type="submit" class="myButton" value="OK"/>
+                                                        </form>
+                                                    </td>
+                                                </tr>
                                             </c:if>
                                         </tbody>
                                     </table>

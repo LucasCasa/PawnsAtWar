@@ -67,6 +67,7 @@ public class BuildingController {
             mav.addObject("plainTerrainBuildings",plainTerrainBuildings);
             mav.addObject("goldTerraunBuilding",goldTerrainBuilding);
             mav.addObject("resList",es.getResources(user.getId()));
+            mav.addObject("ratesList",es.getRates(user.getId()));
 
             return mav;
 
@@ -98,8 +99,7 @@ public class BuildingController {
         if(es.build(user.getId(),xprime,yprime,typep)){
         	return new ModelAndView("redirect:/map");
         }else{
-        	// Log error
-        	return new ModelAndView("redirect:/error");
+        	return new ModelAndView("redirect:/building?x=" + xprime + "&y=" + yprime);
         }
       
     }
