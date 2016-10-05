@@ -28,6 +28,11 @@ public class Resource {
 		this.quantity = quantity;
 	}
 	
+	@Override
+	public String toString() {
+		return "Type: " + type + " - Qty: " + quantity + "  | userid: " + idPlayer;
+	}
+	
 	
 	
 }

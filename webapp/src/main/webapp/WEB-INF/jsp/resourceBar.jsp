@@ -4,9 +4,9 @@
 	<table>
 		<tbody>
 			<tr>
-				<c:forEach var="res" items="${resList}">
+				<c:forEach var="res" items="${resList}" varStatus="loop">
 				<td>
-					<re:Resource type="${res.getType()}" amount="${res.getQuantity()}"/>
+					<re:Resource rate="${ratesList.get(loop.index)}" type="${res.getType()}" amount="${res.getQuantity()}" />
 				</td>
 				</c:forEach>
 			</tr>

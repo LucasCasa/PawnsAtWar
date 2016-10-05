@@ -1,8 +1,11 @@
 package ar.edu.itba.service;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,6 +14,7 @@ import ar.edu.itba.interfaces.BuildingService;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.SectorService;
+import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
 
@@ -23,9 +27,6 @@ public class EmpireServiceImpl implements EmpireService{
 	SectorService ss;
 	@Autowired
 	BuildingService bs;
-	
-	//Production rate, temporary implementation
-	public static final int rate = 1;
 
 	@Override
 	public List<Resource> getResources(int userid) {
@@ -42,7 +43,7 @@ public class EmpireServiceImpl implements EmpireService{
 		List<Resource> list = ed.getResources(userid);
 		int seconds = (int)timeLapsed(userid);
 		for(Resource r: list){
-			ed.addAmount(userid, r.getType(), seconds*rate);
+			ed.addAmount(userid, r.getType(), seconds*getRate(userid, r.getType()));
 		}
 	}
 	
@@ -81,5 +82,38 @@ public class EmpireServiceImpl implements EmpireService{
 		int time = (int)timeLapsed(userid);
 		return l.getQuantity()*time*rate>=amount;
 	}
+	
+	@Override
+	public int getRate(int userid, int type){
+		List<Building> list;
+		switch(type){
+			case 0: list = ed.getBuilding(userid, SectorServiceImpl.MILL);//food
+					return list.size()+1;
+			case 1: list = ed.getBuilding(userid, SectorServiceImpl.GOLD);//gold
+					return list.size()+1;
+			default: return 1;
+		}
+	}
+
+	@Override
+	public Map<Resource, Integer> getResourceMap(int userid) {
+		Map<Resource,Integer> map = new HashMap<>();
+		List<Resource> l = ed.getResources(userid);
+		for(Resource r: l){
+			map.put(r, getRate(userid,r.getType()));
+		}
+		return map;
+	}
+	
+	@Override
+	public List<Integer> getRates(int userid){
+		List<Integer> l = new ArrayList<>();
+		for(Resource r: ed.getResources(userid)){
+			l.add(getRate(userid,r.getType()));
+		}
+		return l;
+	}
+	
+	
 
 }

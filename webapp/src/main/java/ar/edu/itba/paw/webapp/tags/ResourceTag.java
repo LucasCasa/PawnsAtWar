@@ -10,6 +10,7 @@ public class ResourceTag extends SimpleTagSupport{
 	
 	private int type;
 	private int amount;
+	private int rate;
 	
 	@Override
 	public void doTag() throws JspException, IOException {
@@ -23,7 +24,7 @@ public class ResourceTag extends SimpleTagSupport{
 			default:	imgName = "";
 						break;
 		}
-		out.print("<img class=\"resource\" src=\"/webapp/resources/images/" + imgName + "\"/><span class=\"quantity\">   " + amount + "</span>");
+		out.print("<img class=\"resource\" src=\"/webapp/resources/images/" + imgName + "\"/><span class=\"quantity\" id=\""+ rate +"\">   " + amount + "</span>");
 	}
 	
 	public void setAmount(int amount) {
@@ -36,6 +37,14 @@ public class ResourceTag extends SimpleTagSupport{
 	
 	public int getAmount() {
 		return amount;
+	}
+	
+	public int getRate() {
+		return rate;
+	}
+	
+	public void setRate(int rate) {
+		this.rate = rate;
 	}
 	
 	public int getType() {

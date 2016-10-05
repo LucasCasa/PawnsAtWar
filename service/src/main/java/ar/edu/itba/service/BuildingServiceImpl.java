@@ -50,5 +50,15 @@ public class BuildingServiceImpl implements BuildingService{
 	}
 
 	@Override
-	public Point getCastle(int idPlayer){ return bd.getCastle(idPlayer);}
+	public Point getCastle(int idPlayer){ 
+		return bd.getCastle(idPlayer);
+	}
+
+	@Override
+	public void levelUp(Point p) {
+		bd.setLevel(p, bd.getLevel(p) + 1);
+		
+	}
+	
+	
 }
