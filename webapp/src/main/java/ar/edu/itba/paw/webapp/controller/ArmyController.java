@@ -6,6 +6,7 @@ import ar.edu.itba.interfaces.TerrainService;
 import ar.edu.itba.interfaces.TroopService;
 import ar.edu.itba.model.*;
 import ar.edu.itba.paw.webapp.dataClasses.BuildingInformationMap;
+import ar.edu.itba.paw.webapp.dataClasses.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -43,16 +44,15 @@ public class ArmyController {
     public ModelAndView showArmy(@PathVariable String armyId){
 
         final ModelAndView mav = new ModelAndView("army");
-        String regex = "^\\d\\d?";
 
-        if(armyId == null || !armyId.matches(regex)) {
-            return new ModelAndView("redirect:/error");
+        if(armyId == null || !Validator.isInteger(armyId)) {
+            return new ModelAndView("redirect:/error?m=Valor de parametro incorrecto");
         }
         int id = Integer.parseInt(armyId);
 
         Army army = as.getArmyById(id);
         if(army == null){
-            return new ModelAndView("redirect:/error");
+            return new ModelAndView("redirect:/error?m=el ejercito no existe");
         }
         List<Troop> troops = ts.getTroopById(id);
         mav.addObject("army",army);
@@ -63,9 +63,8 @@ public class ArmyController {
     @RequestMapping(value="/attack", method = RequestMethod.POST)
     public ModelAndView showArmy(@RequestParam String x, @RequestParam String y,@ModelAttribute("user") final User user ){
         final ModelAndView mav = new ModelAndView("attack");
-        String regex = "^\\d\\d?";
-        if(x == null || y == null || !x.matches(regex) || !y.matches(regex) ){
-            return new ModelAndView("redirect:/error");
+        if(x == null || y == null || !Validator.validBoardPosition(x) || Validator.validBoardPosition(y) ){
+            return new ModelAndView("redirect:/error?m=Posicion invalida");
         }
         int xprime = Integer.parseInt(x);
         int yprime = Integer.parseInt(y);
@@ -74,7 +73,7 @@ public class ArmyController {
 
         Sector s = ss.getSector(new Point(xprime,yprime));
         if(s == null){
-            return new ModelAndView("redirect:/error");
+            return new ModelAndView("redirect:/error?m=No existe edificio en esa direccion");
         }
         if(s.getIdPlayer() == user.getId()){
             mav.addObject("message","No se puede atacar un edificio tuyo...");

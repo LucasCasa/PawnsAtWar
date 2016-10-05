@@ -25,8 +25,10 @@
         </tr>
     </table>
 </div>
-<h1>Atacar</h1>
-<form method="post" action="<c:url value="/attack"/>">
+<c:choose>
+    <c:when test="${army.isAvailable()}">
+    <h1 style="text-align: center;"><b>Atacar</b></h1><br>
+<form style="text-align: center" method="post" action="<c:url value="/attack"/>">
 <div class="form-inline">
     <div class="form-group">
         <label for="Xval">X:</label>
@@ -39,4 +41,9 @@
     <input type="submit" class="myButton" value="Atacar"/>
 </div>
 </form>
+    </c:when>
+    <c:otherwise>
+        <h1 style="text-align: center">Ejercito Ocupado</h1>
+    </c:otherwise>
+</c:choose>
 <%@ include file="footer.jsp" %>

@@ -4,6 +4,7 @@ import java.util.List;
 
 import ar.edu.itba.interfaces.BuildingService;
 import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.dataClasses.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -47,10 +48,10 @@ public class HomePageController {
 			 xprime = p.getX();
 			 yprime = p.getY();
 		}else{
-			String regex = "^\\d\\d?";
 
-			if(!x.matches(regex) || !y.matches(regex) ) {
-				return new ModelAndView("redirect:/error");
+
+			if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y) ) {
+				return new ModelAndView("redirect:/error?m=Posicion Invalida");
 			}
 			xprime = Integer.parseInt(x);
 			yprime = Integer.parseInt(y);
