@@ -5,6 +5,7 @@ import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.interfaces.TerrainService;
 import ar.edu.itba.interfaces.TroopService;
 import ar.edu.itba.model.*;
+import ar.edu.itba.paw.webapp.dataClasses.BuildingInformationMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -80,6 +81,14 @@ public class ArmyController {
         }else if(s.getType() == 0 || s.getType() == 5){
             mav.addObject("message","No se puede atacar un Terreno sin edificio");
         }else {
+            if(s.getType() == BuildingInformationMap.CASTLE){
+              /*if(ss.isCastleAlone()){
+                  mav.addObject("message", "ATAQUE EXITOSO!");
+              }else{
+                  mav.addObject("message","Para atacar un castillo primero se tienen que destruir todos los demas edificios");
+                  return mav;
+              }*/
+            }
             mav.addObject("message", "ATAQUE EXITOSO!");
             ss.deleteBuilding(new Point(xprime,yprime));
         }

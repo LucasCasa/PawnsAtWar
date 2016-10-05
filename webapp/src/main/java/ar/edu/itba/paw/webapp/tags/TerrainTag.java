@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.tags;
 
+import ar.edu.itba.paw.webapp.dataClasses.BuildingInformationMap;
+
 import java.io.IOException;
 
 import javax.servlet.jsp.tagext.*;
@@ -20,28 +22,28 @@ public class TerrainTag extends SimpleTagSupport{
         	status = "hostile";
         }
         switch (id){
-            case 0:
+            case BuildingInformationMap.EMPTY:
                 out.print("<img class=\" " + clas + " " + status + " \" src=\"/webapp/resources/images/terrain.jpg\">");
                 break;
-            case 1:
+            case BuildingInformationMap.CASTLE:
                 out.print("<img class=\" " + clas + " " + status + " \" src=\"/webapp/resources/images/castle.jpg\">");
                 break;
-            case 2:
+            case BuildingInformationMap.ARCHERY:
                 out.print("<img class=\" " + clas + " " + status+ " \" src=\"/webapp/resources/images/archery.jpg\">");
                 break;
-            case 3:
+            case BuildingInformationMap.BARRACKS:
                 out.print("<img class=\" " + clas + " " + status+ " \" src=\"/webapp/resources/images/barracks.jpg\">");
                 break;
-            case 4:
+            case BuildingInformationMap.GOLD:
                 out.print("<img class=\" " + clas + " " + status + " \" src=\"/webapp/resources/images/gold.jpg\">");
                 break;
-            case 5:
+            case BuildingInformationMap.TERR_GOLD:
                 out.print("<img class=\" " + clas + " " + status + " \" src=\"/webapp/resources/images/terrgold.jpg\">");
                 break;
-            case 6:
+            case BuildingInformationMap.MILL:
                 out.print("<img class=\" " + clas + " " + status + " \"  src=\"/webapp/resources/images/mill.jpg\">");
                 break;
-            case 7:
+            case BuildingInformationMap.BLACKSMITH:
                 out.print("<img class=\" " + clas + " " + status + " \"  src=\"/webapp/resources/images/blacksmith.jpg\">");
                 break;
 

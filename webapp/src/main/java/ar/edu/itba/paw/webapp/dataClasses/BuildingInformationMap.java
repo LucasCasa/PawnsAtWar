@@ -7,6 +7,14 @@ import java.util.List;
  * Created by root on 9/18/16.
  */
 public class BuildingInformationMap {
+    public static final int EMPTY = 0;
+    public static final int CASTLE = 1;
+    public static final int ARCHERY = 2;
+    public static final int BARRACKS = 3;
+    public static final int GOLD = 4;
+    public static final int TERR_GOLD = 5;
+    public static final int MILL = 6;
+    public static final int BLACKSMITH = 7;
 
     private List<InformationBuilding> infoList;
     private static BuildingInformationMap bim = new BuildingInformationMap();
