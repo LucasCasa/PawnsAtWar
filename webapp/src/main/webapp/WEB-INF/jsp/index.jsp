@@ -10,10 +10,11 @@
 	
 	<%@ include file="resourceBar.jsp" %>
 
-	<div class="form-inline">
+	<div class="form-inline" >
 		<div class="form-group">
 			<label for="Xval">X:</label>
 			<input type="text" class="form-control" id="Xval" size="3">
+
 		</div>
 		<div class="form-group">
 			<label for="Yval">Y:</label>
@@ -24,7 +25,7 @@
 
 
 		</button>
-
+		<span id="error" style="display:none; color:#FF0000">Direccion invalida!</span>
 	</div>
 	<br>
 
