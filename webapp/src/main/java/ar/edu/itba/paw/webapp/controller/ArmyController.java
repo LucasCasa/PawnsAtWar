@@ -29,10 +29,14 @@ public class ArmyController {
     private TroopService ts;
 
     @RequestMapping(value="/armies")
-    public ModelAndView showArmies(@ModelAttribute("user") final User user){
+    public ModelAndView showArmies(@ModelAttribute("user") final User user, @RequestParam String x, @RequestParam String y){
         final ModelAndView mav = new ModelAndView("armies");
         List<Army> armies;
         armies = as.getArmies(0); // aca el id del flaco
+
+        if(Validator.isInteger(x) && Validator.isInteger(y){
+
+        }
         if(armies == null){
             armies = new ArrayList<>();
         }
@@ -99,4 +103,6 @@ public class ArmyController {
         User bean = new User(69,"lucas","42069","l@l.com");
         return bean;
     }
+
+
 }

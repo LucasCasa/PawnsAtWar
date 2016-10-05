@@ -55,7 +55,8 @@
                             </c:if>
                         </c:when>
                         <c:when test="${user.getId() != owner && building.getId() != 0 && building.getId() != 5}">
-                            <div class="col-md-2"><button class="myButton">Atacar</button></div>
+                            <div class="col-md-2" onclick="att()"><a href="<c:url value="/armies?x=${point.getX()}&y=${point.getY()}"/>"><button class="myButton">Atacar</button></a>
+                            </div>
                         </c:when>
                     </c:choose>
                 </div>
