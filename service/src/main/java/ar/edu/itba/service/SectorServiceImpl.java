@@ -16,6 +16,17 @@ import ar.edu.itba.model.Sector;
 @Service
 public class SectorServiceImpl implements SectorService {
 	
+	
+	//no esta bien hecho.
+	public static final int CASTLE = 1;
+	public static final int EMPTY = 0;
+	public static final int ARCHERY = 2;
+	public static final int BARRAKS = 3;
+	public static final int GOLD = 4;
+	public static final int TERR_GOLD = 5;
+	public static final int MILL = 6;
+	public static final int BLACKSMITH = 7;
+	
 	public static final int maxX = 99;
 	public static final int  maxY = 99;
 	
@@ -57,11 +68,11 @@ public class SectorServiceImpl implements SectorService {
 
 	@Override
 	public Sector getSector(Point p) {
-		Sector building = bd.getBuilding(p);
-		Sector terrain = td.getTerrain(p);
 		if(p.getX()> maxX || p.getY()> maxY){
 			return null;
 		}
+		Sector building = bd.getBuilding(p);
+		Sector terrain = td.getTerrain(p);
 		if(building == null && terrain == null){
 			return new Sector(p,0,0);
 		}else if(building == null){
@@ -70,8 +81,36 @@ public class SectorServiceImpl implements SectorService {
 
 		return building;
 	}
+	
 	@Override
 	public void deleteBuilding(Point p){
+		if(p.getX() > maxX || p.getY() > maxY){
+			return;
+		}
+		Sector b = bd.getBuilding(p);
 		bd.deleteBuilding(p);
+		if(b.getType() == CASTLE){
+			td.addTerrain(p);
+			updateTerrain(p);
+		}else if(b.getType() == GOLD){
+			td.addTerrain(p, 1, b.getIdPlayer(),TERR_GOLD);
+		}else{
+			td.addTerrain(p, 1, b.getIdPlayer(), EMPTY);
+		}
+	}
+	
+	private void updateTerrain(Point p){
+		List<Sector> listSector = td.getTerrain(p, 3);
+		for(Sector s: listSector){
+			td.setIdPlayer(s.getPosition(),null);
+		}
+		
+	}
+
+	@Override
+	public boolean isCastleAlone(Point p, int range) {
+		if(range <= 0) 
+			return false;
+		return bd.isCastleAlone(p, range);
 	}
 }

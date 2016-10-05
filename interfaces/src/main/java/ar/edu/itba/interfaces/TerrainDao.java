@@ -47,6 +47,8 @@ public interface TerrainDao {
 	public int getMaxY();
 	
 	public Integer getId(Point p);
+
+	public void setIdPlayer(Point p, Integer idPlayer);
 	
 	
 	

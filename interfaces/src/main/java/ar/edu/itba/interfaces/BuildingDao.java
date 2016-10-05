@@ -34,5 +34,13 @@ public interface BuildingDao {
 
 	public Point getCastle(int idPlayer);
 	
+	/**
+	 * This method returns if there are any other buildings in the range provided surrounding the castle
+	 * @param p; the point in which the castle is found
+	 * @param range; the range to look for
+	 * @return if there are any other buildings
+	 */
+	public boolean isCastleAlone (Point p, int range);
+	
 	
 }

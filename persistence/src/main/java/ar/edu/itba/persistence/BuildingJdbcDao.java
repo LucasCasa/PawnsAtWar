@@ -38,7 +38,7 @@ public class BuildingJdbcDao implements BuildingDao {
 				.query("SELECT * FROM BUILDING WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("level");
 						},p.getX(),p.getY());
-		return buildingList.isEmpty() ? null:buildingList.get(0);
+		return buildingList.isEmpty() ? 0:buildingList.get(0);
 	}
 
 	@Override
@@ -72,7 +72,7 @@ public class BuildingJdbcDao implements BuildingDao {
 				.query("SELECT * FROM BUILDING WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("idPlayer");
 						},p.getX(),p.getY());
-		return buildingList.isEmpty() ? null:buildingList.get(0);
+		return buildingList.isEmpty() ? 0:buildingList.get(0);
 	}
 
 	@Override
@@ -142,6 +142,15 @@ public class BuildingJdbcDao implements BuildingDao {
 			throw new RuntimeException("Un jugador no puede no tener castillos");
 		}
 		return castles.get(0);
+	}
+
+	@Override
+	public boolean isCastleAlone(Point p, int range) {
+		List<Integer> buildings = jdbcTemplate
+				.query("",(ResultSet resultSet,int rowNum) -> {
+					return new Integer(1);
+				});
+		return false;
 	}
 
 }

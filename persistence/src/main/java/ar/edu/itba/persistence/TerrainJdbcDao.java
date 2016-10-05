@@ -38,7 +38,7 @@ public class TerrainJdbcDao implements TerrainDao {
 				.query("SELECT * FROM TERRAIN WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getInt("power");
 						},position.getX(),position.getY());
-		return terrainList.isEmpty() ? null:terrainList.get(0);
+		return terrainList.isEmpty() ? 0:terrainList.get(0);
 	}
 
 	@Override
@@ -80,6 +80,10 @@ public class TerrainJdbcDao implements TerrainDao {
 	@Override
 	public void setType(Point p, int t) {
 		jdbcTemplate.update("UPDATE TERRAIN SET type = ? WHERE x = ? AND y = ?", t,p.getX(),p.getY());
+	}
+	
+	public void setIdPlayer(Point p, Integer idPlayer){
+		jdbcTemplate.update("UPDATE TERRAIN SET idPlayer = ? WHERE x = ? AND y = ?", idPlayer,p.getX(),p.getY());
 	}
 
 
