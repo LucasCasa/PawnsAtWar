@@ -10,6 +10,8 @@ public interface BuildingService {
 	
 	public void setLevel(Point p, int level);
 	
+	public void levelUp(Point p);
+	
 	public Integer getIdPlayer(Point p);
 	
 	public void setIdPlayer(Point p,int idPlayer);

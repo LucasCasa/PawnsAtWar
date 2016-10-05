@@ -42,7 +42,6 @@ public interface BuildingDao {
 	 */
 	public boolean isCastleAlone (Point p, int range);
 
-	public List<Building> getBuildings(int userId, int type);
-	
+	public List<Building> getBuildings(int userId, int type);	
 	
 }
