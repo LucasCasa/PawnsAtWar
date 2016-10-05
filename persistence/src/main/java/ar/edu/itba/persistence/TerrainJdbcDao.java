@@ -102,13 +102,13 @@ public class TerrainJdbcDao implements TerrainDao {
 
 	@Override
 	public Terrain addTerrain(Point p, int t) {
-		return addTerrain(p,0,-1,t);
+		return addTerrain(p,0,0,t);
 	}
 
 
 	@Override
 	public Terrain addTerrain(Point p) {
-		return addTerrain(p,0,-1,0);
+		return addTerrain(p,0,0,0);
 	}
 
 	@Override
