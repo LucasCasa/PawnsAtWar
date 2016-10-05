@@ -3,6 +3,6 @@
 <%@ taglib prefix="re" uri="resource.tld"%>
 <%@ include file="header.jsp" %>
 
-<h1>ATAQUE EXITOSO</h1>
+<h1><c:out value="${message}"/></h1>
 
 <%@ include file="footer.jsp" %>

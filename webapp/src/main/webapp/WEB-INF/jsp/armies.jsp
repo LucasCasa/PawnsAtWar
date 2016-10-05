@@ -19,7 +19,14 @@
                 <c:out value="${army.getPosition().getY()}"/>
             </td>
             <td>
-                <c:out value="${army.isAvailable()}"/>
+                <c:choose>
+                    <c:when test="${army.isAvailable()}">
+                        <c:out value="Si"/>
+                    </c:when>
+                    <c:otherwise>
+                        <c:out value="No"/>
+                    </c:otherwise>
+                </c:choose>
             </td>
             <td>
                 <button class="myButton" onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.getIdArmy()}" />' ">+ Info</button>
