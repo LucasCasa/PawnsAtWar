@@ -1,7 +1,9 @@
 package ar.edu.itba.persistence;
 
 import java.sql.ResultSet;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -54,6 +56,16 @@ public class TroopJdbcDao implements TroopDao {
 	@Override
 	public void deleteTroop(int idArmy, int type) {
 		jdbcTemplate.update("DELETE FROM TROOP WHERE idArmy = ? AND type = ?", idArmy,type);
+	}
+
+	@Override
+	public Troop addTroop(int idArmy, int type, int amount) {
+		final Map<String,Object> args = new HashMap<>();
+		args.put("idArmy", idArmy);
+		args.put("type", type);
+		args.put("amount", amount);
+		jdbcInsert.execute(args);
+		return new Troop(idArmy,type,amount);
 	}
 
 }

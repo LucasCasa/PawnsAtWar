@@ -9,5 +9,6 @@ public interface TroopDao {
 	public List<Troop> getAllTroop(int idArmy);
 	public void changeAmount(int idArmy,int type, int amount);
 	public void deleteTroop (int idArmy, int type);
+	public Troop addTroop(int idArmy, int type, int amount);
 	
 }

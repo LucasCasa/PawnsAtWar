@@ -113,4 +113,12 @@ public class SectorServiceImpl implements SectorService {
 			return false;
 		return bd.isCastleAlone(p, range);
 	}
+	
+	public void buildSector(Point p, int idPlayer, int type){
+		if(type == EMPTY || type == TERR_GOLD){
+			td.addTerrain(p, 0, idPlayer, type);
+		}else{
+			bd.addBuilding(p, idPlayer, type);
+		}
+	}
 }

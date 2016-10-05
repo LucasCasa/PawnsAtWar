@@ -12,6 +12,8 @@ import ar.edu.itba.model.Troop;
 @Service
 public class TroopServiceImpl implements TroopService {
 	
+	private static final int MAX_TROOP = 3;
+	
 	@Autowired
 	TroopDao td;
 
@@ -22,17 +24,30 @@ public class TroopServiceImpl implements TroopService {
 
 	@Override
 	public int getAmount(int idArmy, int type) {
-		return td.getAmount(idArmy, type);
+		if(type >= 0 && type < MAX_TROOP)
+			return td.getAmount(idArmy, type);
+		return -1;
 	}
 
 	@Override
 	public void changeAmount(int idArmy, int type, int amount) {
-		td.changeAmount(idArmy, type, amount);
+		if(amount >= 0 || (type >=0 && type <MAX_TROOP))
+			td.changeAmount(idArmy, type, amount);
 	}
 
 	@Override
 	public void deleteTroop(int idArmy, int type) {
-		td.deleteTroop(idArmy, type);	
+		if(type >= 0 && type < MAX_TROOP)
+			td.deleteTroop(idArmy, type);	
 	}
+
+	@Override
+	public Troop addTroop(int idArmy, int type, int amount) {
+		if((type < 0 && type >= MAX_TROOP) || amount < 0){
+			return null;
+		}
+		return td.addTroop(idArmy,type,amount);
+	}
+	
 
 }
