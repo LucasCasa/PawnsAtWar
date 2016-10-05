@@ -156,4 +156,13 @@ public class BuildingJdbcDao implements BuildingDao {
 		return true;
 	}
 
+	@Override
+	public List<Building> getBuildings(int userId, int type) {
+		List<Building> buildingList = jdbcTemplate
+                .query("SELECT * FROM building WHERE type = ? AND idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
+                    return new Building(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("type"),resultSet.getInt("level"));
+                },type,userId);
+        return buildingList;
+	}
+
 }

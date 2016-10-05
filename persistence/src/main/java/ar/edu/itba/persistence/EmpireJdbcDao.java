@@ -11,8 +11,10 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.ResourceDao;
+import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Resource;
 
 @Repository
@@ -28,6 +30,9 @@ public class EmpireJdbcDao implements EmpireDao {
 	
 	@Autowired
 	private ResourceDao rd;
+	
+	@Autowired
+	private BuildingDao bd;
 
 	@Override
 	public Timestamp getLastTimeUpdate(int userId) {
@@ -68,5 +73,10 @@ public class EmpireJdbcDao implements EmpireDao {
 	@Override
 	public void substractAmount(int userID, int id, int amount) {
 		rd.subtractAmount(userID, id, amount);
+	}
+
+	@Override
+	public List<Building> getBuilding(int userId, int type) {
+		return bd.getBuildings(userId,type);
 	}
 }

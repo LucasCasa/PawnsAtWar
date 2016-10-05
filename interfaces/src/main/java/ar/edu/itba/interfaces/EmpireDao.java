@@ -3,6 +3,7 @@ package ar.edu.itba.interfaces;
 import java.sql.Timestamp;
 import java.util.List;
 
+import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Resource;
 
 public interface EmpireDao {
@@ -49,4 +50,6 @@ public interface EmpireDao {
 	public List<Resource> getResources(int userId);
 
 	void substractAmount(int userID, int id, int amount);
+	
+	public List<Building> getBuilding (int userId, int type);
 }
