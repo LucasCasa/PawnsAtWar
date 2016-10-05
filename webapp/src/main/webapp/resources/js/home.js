@@ -1,23 +1,32 @@
 /**
  * Created by lucas on 18/09/16.
  */
+
 function redir() {
-    var hidden = false;;
+
+
+   // var hidden = false;;
     if(!isNumber($('#Xval').val()) || !isNumber($('#Yval').val())){
 
-        hidden = !hidden;
-        if(hidden) {
-            document.getElementById('goToDir').style.visibility = 'hidden';
 
-        } else {
-            document.getElementById('goToDir').style.visibility = 'visible';
+        $('.form-inline').addClass('has-error');
+        $('#error').show();
+        //window.location = ;
+//        hidden = !hidden;
+    //    if(hidden) {
+  //          document.getElementById('goToDir').style.visibility = 'hidden';
+//
+  //      } else {
+//            document.getElementById('goToDir').style.visibility = 'visible';
 
         }
 
-    }else{
-            console.log(window.location.pathname + "?x=" + $('#Xval').val() + "&y=" + $('#Yval').val());
+    else{
+            //console.log(window.location.pathname + "?x=" + $('#Xval').val() + "&y=" + $('#Yval').val());
             window.location = window.location.pathname + "?x=" + $('#Xval').val() + "&y=" + $('#Yval').val();
-        }
+
+    }
+
 
 };
 
