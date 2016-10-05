@@ -18,11 +18,11 @@ public class BadRequestController {
 
 
     @RequestMapping(value="/error")
-    public ModelAndView errors(){
+    public ModelAndView errors(@RequestParam(value= "m",required = false) String message){
 
         final ModelAndView mav = new ModelAndView("error");
 
-
+        mav.addObject("message",message);
         return mav;
     }
 }
