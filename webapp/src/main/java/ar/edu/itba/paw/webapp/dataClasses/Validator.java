@@ -6,7 +6,7 @@ package ar.edu.itba.paw.webapp.dataClasses;
 public class Validator {
     private static final int DIM = 100;
 
-    public static boolean validBoardPosition(String pos){
+    public static boolean validBoardPosition(String pos) {
         if(isInteger(pos)){
             if(Integer.parseInt(pos) < DIM){
                 return true;
@@ -15,6 +15,10 @@ public class Validator {
         return false;
     }
     public static boolean isInteger(String pos){
+
+        if(pos == null){
+            return false;
+        }
         String regex = "0*\\d{1,9}";
         return pos.matches(regex);
     }

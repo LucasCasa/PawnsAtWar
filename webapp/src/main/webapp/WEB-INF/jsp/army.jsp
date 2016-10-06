@@ -32,11 +32,11 @@
 <div class="form-inline">
     <div class="form-group">
         <label for="Xval">X:</label>
-        <input type="text" class="form-control" name="x" id="Xval" size="3">
+        <input type="text" class="form-control" name="x" id="Xval" size="3" value="${x}">
     </div>
     <div class="form-group">
         <label for="Yval">Y:</label>
-        <input type="text" class="form-control" name="y" id="Yval" size="3">
+        <input type="text" class="form-control" name="y" id="Yval" size="3" value="${y}">
     </div>
     <input type="submit" class="myButton" value="Atacar"/>
 </div>

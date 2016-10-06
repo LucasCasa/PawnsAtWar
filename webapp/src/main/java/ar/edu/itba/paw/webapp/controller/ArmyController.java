@@ -29,13 +29,16 @@ public class ArmyController {
     private TroopService ts;
 
     @RequestMapping(value="/armies")
-    public ModelAndView showArmies(@ModelAttribute("user") final User user, @RequestParam String x, @RequestParam String y){
+    public ModelAndView showArmies(@ModelAttribute("user") final User user,
+                                   @RequestParam(value= "x",required = false) String x ,
+                                   @RequestParam(value= "y",required = false) String y){
         final ModelAndView mav = new ModelAndView("armies");
         List<Army> armies;
         armies = as.getArmies(0); // aca el id del flaco
 
-        if(Validator.isInteger(x) && Validator.isInteger(y){
-
+        if(Validator.validBoardPosition(x) && Validator.validBoardPosition(y)){
+            mav.addObject("x",x);
+            mav.addObject("y",y);
         }
         if(armies == null){
             armies = new ArrayList<>();
@@ -45,9 +48,20 @@ public class ArmyController {
     }
 
     @RequestMapping(value="/armies/{armyId}")
-    public ModelAndView showArmy(@PathVariable String armyId){
+    public ModelAndView showArmy(@PathVariable String armyId,
+                                 @RequestParam(value= "x",required = false) String x ,
+                                 @RequestParam(value= "y",required = false) String y){
 
         final ModelAndView mav = new ModelAndView("army");
+
+        if(Validator.validBoardPosition(x) && Validator.validBoardPosition(y)){
+            mav.addObject("x",x);
+            mav.addObject("y",y);
+        }else{
+
+            mav.addObject("x","");
+            mav.addObject("y","");
+        }
 
         if(armyId == null || !Validator.isInteger(armyId)) {
             return new ModelAndView("redirect:/error?m=Valor de parametro incorrecto");
@@ -67,7 +81,7 @@ public class ArmyController {
     @RequestMapping(value="/attack", method = RequestMethod.POST)
     public ModelAndView showArmy(@RequestParam String x, @RequestParam String y,@ModelAttribute("user") final User user ){
         final ModelAndView mav = new ModelAndView("attack");
-        if(x == null || y == null || !Validator.validBoardPosition(x) || Validator.validBoardPosition(y) ){
+        if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y) ){
             return new ModelAndView("redirect:/error?m=Posicion invalida");
         }
         int xprime = Integer.parseInt(x);

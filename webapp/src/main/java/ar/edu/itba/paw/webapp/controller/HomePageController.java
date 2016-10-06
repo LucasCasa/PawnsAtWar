@@ -76,8 +76,10 @@ public class HomePageController {
 
 	@RequestMapping("/")
 	public ModelAndView login(){
-		final ModelAndView mav = new ModelAndView("home");
-		return mav;
+		return new ModelAndView("redirect:/map");
+	//	final ModelAndView mav = new ModelAndView("home");
+
+	//	return mav;
 	}
 	@RequestMapping(value= "/login",method = RequestMethod.POST)
 	public ModelAndView redir(@RequestParam(value= "id",required = false,defaultValue = "0") int id,

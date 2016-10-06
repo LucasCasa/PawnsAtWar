@@ -29,7 +29,7 @@
                 </c:choose>
             </td>
             <td>
-                <button class="myButton" onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.getIdArmy()}" />' ">+ Info</button>
+                <button class="myButton" onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.getIdArmy()}?x=${x}&y=${y}" />' ">+ Info</button>
             </td>
         </tr>
             </c:forEach>

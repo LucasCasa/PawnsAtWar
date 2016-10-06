@@ -80,7 +80,7 @@ public class EmpireServiceImpl implements EmpireService{
 		int rate = 1; /*Temporary*/
 		Resource l = ed.getResource(userid, resType);
 		int time = (int)timeLapsed(userid);
-		return l.getQuantity()*time*rate>=amount;
+		return l.getQuantity()+time*rate>=amount;
 	}
 	
 	@Override
