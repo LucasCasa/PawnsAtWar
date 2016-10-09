@@ -74,11 +74,11 @@ public class HomePageController {
 
 	}
 	
-	@RequestMapping("/login")
-	public ModelAndView login(){
-		return new ModelAndView("login");
-		
-	}
+//	@RequestMapping("/login")
+//	public ModelAndView login(){
+//		return new ModelAndView("login");
+//		
+//	}
 	
 	@RequestMapping("/")
 	public ModelAndView home(){
