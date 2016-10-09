@@ -28,7 +28,7 @@ public class UserJdbcDao implements UserDao{
 	}
 
 	@Override
-	public User findbyId(long id) {
+	public User findById(long id) {
 		List<User> resourceList = jdbcTemplate
 				.query("SELECT * FROM userPaw WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
 							return new User(resultSet.getInt("idPlayer"),resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("email"));
@@ -52,6 +52,15 @@ public class UserJdbcDao implements UserDao{
 				.query("SELECT * FROM userPaw WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getString("username");
 						},id);
+		return resourceList.get(0);
+	}
+
+	@Override
+	public User findByUsername(String username) {
+		List<User> resourceList = jdbcTemplate
+				.query("SELECT * FROM userPaw WHERE username = ?",(ResultSet resultSet, int rowNum) -> {
+							return new User(resultSet.getInt("idPlayer"),resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("email"));
+						},username);
 		return resourceList.get(0);
 	}
 

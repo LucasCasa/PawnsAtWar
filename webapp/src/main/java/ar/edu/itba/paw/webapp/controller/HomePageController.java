@@ -73,9 +73,15 @@ public class HomePageController {
 
 
 	}
-
-	@RequestMapping("/")
+	
+	@RequestMapping("/login")
 	public ModelAndView login(){
+		return new ModelAndView("login");
+		
+	}
+	
+	@RequestMapping("/")
+	public ModelAndView home(){
 		return new ModelAndView("redirect:/map");
 	//	final ModelAndView mav = new ModelAndView("home");
 
