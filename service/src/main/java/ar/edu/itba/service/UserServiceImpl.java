@@ -15,10 +15,32 @@ public class UserServiceImpl implements UserService{
 	UserDao ud;
 
 	@Override
-	public User getByUsername(String username) {
+	public User findByUsername(String username) {
 		return ud.findByUsername(username);
 	}
+
+	@Override
+	public User findById(long id) {
+		return ud.findById(id);
+	}
+
+	@Override
+	public User create(String username, String password, String email) {
+		return ud.create(username, password, email);
+	}
+
+	@Override
+	public String getUsername(long id) {
+		return ud.getUsername(id);
+	}
 	
+	public String getEmail (long id){
+		return ud.getEmail(id);
+	}
+	
+	public String getEmail (String username){
+		return ud.getEmail(username);
+	}
 	
 	
 	

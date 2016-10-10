@@ -22,7 +22,7 @@ public class PawUserDetailsService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(final String username) throws UsernameNotFoundException {
-		final User user = us.getByUsername(username);
+		final User user = us.findByUsername(username);
 		if (user == null)
             throw new UsernameNotFoundException("No user by the name " + username);
 		final Collection<? extends GrantedAuthority> authorities = Arrays.asList(

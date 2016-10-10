@@ -29,11 +29,12 @@ public class UserJdbcDao implements UserDao{
 
 	@Override
 	public User findById(long id) {
-		List<User> resourceList = jdbcTemplate
+		List<User> userList = jdbcTemplate
 				.query("SELECT * FROM userPaw WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
 							return new User(resultSet.getInt("idPlayer"),resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("email"));
 						},id);
-		return resourceList.get(0);
+		return userList.isEmpty()?null:userList.get(0);
+
 	}
 	
 	@Override
@@ -48,20 +49,40 @@ public class UserJdbcDao implements UserDao{
 
 	@Override
 	public String getUsername(long id) {
-		List<String> resourceList = jdbcTemplate
+		List<String> userList = jdbcTemplate
 				.query("SELECT * FROM userPaw WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getString("username");
 						},id);
-		return resourceList.get(0);
+		return userList.isEmpty()?null:userList.get(0);
 	}
 
 	@Override
 	public User findByUsername(String username) {
-		List<User> resourceList = jdbcTemplate
+		List<User> userList = jdbcTemplate
 				.query("SELECT * FROM userPaw WHERE username = ?",(ResultSet resultSet, int rowNum) -> {
 							return new User(resultSet.getInt("idPlayer"),resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("email"));
 						},username);
-		return resourceList.get(0);
+		return userList.isEmpty()?null:userList.get(0);
+
+	}
+
+	@Override
+	public String getEmail(long id) {
+		List<String> userList = jdbcTemplate
+				.query("SELECT * FROM userPaw WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
+							return resultSet.getString("email");
+						},id);
+		return userList.isEmpty()?null:userList.get(0);
+	}
+
+	@Override
+	public String getEmail(String username) {
+		List<String> userList = jdbcTemplate
+				.query("SELECT * FROM userPaw WHERE username = ?",(ResultSet resultSet, int rowNum) -> {
+							return resultSet.getString("email");
+						},username);
+		return userList.isEmpty()?null:userList.get(0);
+
 	}
 
 }

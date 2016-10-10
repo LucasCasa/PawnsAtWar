@@ -4,6 +4,13 @@ import ar.edu.itba.model.User;
 
 public interface UserService {
 
-	User getByUsername(String username);
+	public User findByUsername(String username);
+	
+	public User findById(long id);
+	
+	public User create(String username, String password, String email);
+	
+	public String getUsername(long id);	
+	
 
 }
