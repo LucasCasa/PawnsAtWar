@@ -1,23 +1,36 @@
- <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
- <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
- <html>
- <body>
- 	<c:url value="/login" var="loginUrl" />
- 	<form action="${loginUrl}" method="post" enctype="application/x-www-form-urlencoded">
- 		<div>
- 			<label for="username">Username: </label>
- 			<input id="username" name="j_username" type="text"/>
- 		</div>
- 		<div>
- 			<label for="password">Password: </label>
- 			<input id="password" name="j_password" type="password"/>
- 		</div>
- 		<div>
- 			<label><input name="j_rememberme" type="checkbox"/> 
- 			<spring:message code="remember_me"/></label> </div>
- 				<div>
- 					<input type="submit" value="Login!"/>
- 				</div>
- 	</form>
+  <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<html>
+<head>
+  <link rel="stylesheet" href="<c:url value="/css/style.css"/>" />
+</head>
+<body>
+	<h2>Register</h2>
+	<c:url value="/create" var="postPath"/>
+	<form:form modelAttribute="registerForm" action="${postPath}" method="post">
+    <div>
+        <form:label path="username">Username: </form:label>
+        <form:input type="text" path="username"/>
+        <form:errors path="username" cssClass="formError" element="p"/>
+	</div> 
+	<div>
+		<form:label path="password">Password: </form:label>
+		<form:input type="password" path="password"/>
+        <form:errors path="password" cssClass="formError" element="p"/>
+	</div> 
+	<div>
+        <form:label path="repeatPassword">Repeat password: </form:label>
+        <form:input type="password" path="repeatPassword"/>
+		<form:errors path="repeatPassword" cssClass="formError" element="p"/>
+	</div>
+	<div>
+		<form:label path="email">Email: </form:label>
+		<form:input type="email" path="email"/>
+        <form:errors path="email" cssClass="formError" element="p"/>
+	</div> 
+	<div>
+		<input type="submit" value="Register!!"/>
+	</div>
+</form:form>
 </body>
 </html>

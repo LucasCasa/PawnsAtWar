@@ -72,3 +72,6 @@ create table if not exists resource (
 	FOREIGN KEY (idPlayer) REFERENCES userPaw ON DELETE CASCADE
 );
 
+alter sequence userPaw_idplayer_seq restart with 100;
+
+
