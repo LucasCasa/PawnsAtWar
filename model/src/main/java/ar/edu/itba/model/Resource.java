@@ -21,6 +21,11 @@ public class Resource {
 	public int getPlayer() {
 		return idPlayer;
 	}
+	
+	public Resource(int type, int quantity){
+		this.type = type;
+		this.quantity = quantity;
+	}
 
 	public Resource(int type, int idPlayer, int quantity) {
 		this.type = type;

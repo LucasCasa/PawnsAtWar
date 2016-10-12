@@ -144,3 +144,9 @@ p{
     border: 3px solid #ccc;
 
 }
+
+.error {
+    font-size: 30px;
+    color: red;
+    text-shadow: 0 0 1px #000;
+}

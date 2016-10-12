@@ -59,7 +59,7 @@ public class HomePageController {
 		final ModelAndView mav = new ModelAndView("index");
 
 		List<List<Sector>> elements;
-		elements = ss.getSector(new Point(xprime,yprime), 3);
+		elements = ss.getSector(new Point(xprime,yprime), 4);
 		mav.addObject("resList",es.getResources(user.getId()));
 		mav.addObject("ratesList",es.getRates(user.getId()));
 		mav.addObject("map",elements);

@@ -78,7 +78,7 @@ public class ResourceJdbcDao implements ResourceDao {
 				.query("SELECT * FROM resource WHERE idPlayer = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
 							return new Resource(resultSet.getInt("type"),resultSet.getInt("idPlayer"),resultSet.getInt("amount"));
 						},idPlayer,type);
-		return resourceList.get(0);
+		return resourceList.size()>0?resourceList.get(0):null;
 	}
 	
 	

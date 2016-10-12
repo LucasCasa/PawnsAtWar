@@ -2,6 +2,7 @@ package ar.edu.itba.interfaces;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import ar.edu.itba.model.Resource;
 
@@ -12,7 +13,7 @@ public interface EmpireService {
 	 * @param userid The id of the user who owns the empire
 	 * @return The list with all the resources
 	 */
-	public List<Resource> getResources(int userid);
+	public Set<Resource> getResources(int userid);
 
 	/**
 	 * Attempts to build a building on the specified tile
@@ -45,5 +46,29 @@ public interface EmpireService {
 	 * @return A list containing all rates
 	 */
 	public List<Integer> getRates(int userid);
+
+	/**
+	 * Returns the resource of type specified matching the user's id
+	 * @param id The users id
+	 * @param type The resource type
+	 * @return The requested resource
+	 */
+	public Resource getResource(int id, int type);
+
+	/**
+	 * Increases the quantity of resource type of the user with id specified
+	 * @param userid The user's id
+	 * @param type The resource's type
+	 * @param quantity The amount to be increased
+	 */
+	public void addResourceAmount(int userid, int type, int quantity);
+
+	/**
+	 * Subtracts the quantity of resource type of the user with specified id
+	 * @param userid The user's id
+	 * @param type The resource type
+	 * @param quantity The amount to be decreased
+	 */
+	public void subtractResourceAmount(int userid, int type, int quantity);
 	
 }

@@ -27,7 +27,7 @@
 		      <ul class="nav navbar-nav">
 		        <li><a href="<c:url value="/map"/>">Mapa</a></li>
 		        <li><a href="<c:url value="/armies"/>">Ejercitos</a></li>
-		        <li><a><s>Comercio</s></a></li>
+		        <li><a href="<c:url value="/commerce"/>">Comercio</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		        <li><a><s>Ranking</s></a></li>

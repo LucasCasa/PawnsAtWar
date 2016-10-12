@@ -2,10 +2,13 @@ package ar.edu.itba.service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,9 +32,15 @@ public class EmpireServiceImpl implements EmpireService{
 	BuildingService bs;
 
 	@Override
-	public List<Resource> getResources(int userid) {
+	public Set<Resource> getResources(int userid) {
 		updateResources(userid);
-		return ed.getResources(userid);
+		Set<Resource> set = new TreeSet<Resource>(new Comparator<Resource>(){
+			public int compare(Resource r1, Resource r2){
+				return r1.getType()-r2.getType();
+			}
+		});
+		set.addAll(ed.getResources(userid));
+		return set;
 	}
 	
 	/**
@@ -112,6 +121,23 @@ public class EmpireServiceImpl implements EmpireService{
 			l.add(getRate(userid,r.getType()));
 		}
 		return l;
+	}
+
+	@Override
+	public Resource getResource(int id, int type) {
+		return ed.getResource(id, type);
+	}
+
+	@Override
+	public void addResourceAmount(int userid, int type, int quantity) {
+		updateResources(userid);
+		ed.addAmount(userid, type, quantity);
+	}
+
+	@Override
+	public void subtractResourceAmount(int userid, int type, int quantity) {
+		updateResources(userid);
+		ed.substractAmount(userid, type, quantity);
 	}
 	
 	

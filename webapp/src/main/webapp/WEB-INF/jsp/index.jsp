@@ -38,13 +38,9 @@
 					<table style="max-width: 537,6px;">
 						<tr style="background-color:#000;text-align: center;color: #FFF;">
 							<td></td>
-							<td><c:out value="${map.get(0).get(0).getPosition().getX()}"/></td>
-							<td><c:out value="${map.get(0).get(0).getPosition().getX() + 1}"/></td>
-							<td><c:out value="${map.get(0).get(0).getPosition().getX() + 2}"/></td>
-							<td><c:out value="${map.get(0).get(0).getPosition().getX() + 3}"/></td>
-							<td><c:out value="${map.get(0).get(0).getPosition().getX() + 4}"/></td>
-							<td><c:out value="${map.get(0).get(0).getPosition().getX() + 5}"/></td>
-							<td><c:out value="${map.get(0).get(0).getPosition().getX() + 6}"/></td>
+							<c:forEach var="i" items="${map}" varStatus="loop">
+							<td><c:out value="${map.get(0).get(0).getPosition().getX() + loop.index}"/></td>
+							</c:forEach>
 						</tr>
 						<c:forEach var="row" items="${map}">
 							<tr>
