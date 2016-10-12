@@ -70,5 +70,7 @@ public interface EmpireService {
 	 * @param quantity The amount to be decreased
 	 */
 	public void subtractResourceAmount(int userid, int type, int quantity);
+
+	void create(int userid);
 	
 }

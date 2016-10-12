@@ -2,7 +2,9 @@ package ar.edu.itba.persistence;
 
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -35,18 +37,18 @@ public class EmpireJdbcDao implements EmpireDao {
 	private BuildingDao bd;
 
 	@Override
-	public Timestamp getLastTimeUpdate(int userId) {
+	public Timestamp getLastTimeUpdate(int userid) {
 		List<Timestamp> time = jdbcTemplate.query
 				("SELECT * FROM EMPIRE WHERE idPlayer = ?", (ResultSet resultSet, int rowNum) -> {
                     return resultSet.getTimestamp("lastUpdate");
-                },userId);
+                },userid);
 
 	        return time == null ? null : time.get(0);
 	}
 
 	@Override
-	public void setLastTimeUpdate(int userId, Timestamp t) {
-		jdbcTemplate.update("UPDATE EMPIRE SET lastUpdate = ? WHERE idPlayer = ?",t,userId);
+	public void setLastTimeUpdate(int userid, Timestamp t) {
+		jdbcTemplate.update("UPDATE EMPIRE SET lastUpdate = ? WHERE idPlayer = ?",t,userid);
 		
 	}
 
@@ -56,27 +58,35 @@ public class EmpireJdbcDao implements EmpireDao {
 	}
 
 	@Override
-	public void setResource(int userId, int id, int amount) {
-		rd.setAmount(userId, id, amount);
+	public void setResource(int userid, int id, int amount) {
+		rd.setAmount(userid, id, amount);
 	}
 	
 	@Override
-	public List<Resource> getResources(int userId){
-		return rd.getResources(userId);
+	public List<Resource> getResources(int userid){
+		return rd.getResources(userid);
 	}
 
 	@Override
-	public void addAmount(int userID, int id, int amount) {
-		rd.addAmount(userID, id, amount);
+	public void addAmount(int userid, int id, int amount) {
+		rd.addAmount(userid, id, amount);
 	}
 	
 	@Override
-	public void substractAmount(int userID, int id, int amount) {
-		rd.subtractAmount(userID, id, amount);
+	public void substractAmount(int userid, int id, int amount) {
+		rd.subtractAmount(userid, id, amount);
 	}
 
 	@Override
-	public List<Building> getBuilding(int userId, int type) {
-		return bd.getBuildings(userId,type);
+	public List<Building> getBuilding(int userid, int type) {
+		return bd.getBuildings(userid,type);
+	}
+
+	@Override
+	public void createEmpire(int userid, Timestamp timestamp) {
+		final Map<String,Object> args = new HashMap<>();
+		args.put("idPlayer", userid);
+		args.put("lastUpdate", timestamp);
+		jdbcInsert.execute(args);
 	}
 }

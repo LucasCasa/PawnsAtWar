@@ -3,6 +3,7 @@ package ar.edu.itba.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.User;
@@ -13,6 +14,9 @@ public class UserServiceImpl implements UserService{
 
 	@Autowired
 	UserDao ud;
+	
+	@Autowired
+	EmpireService es;
 
 	@Override
 	public User findByUsername(String username) {
@@ -26,7 +30,10 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User create(String username, String password, String email) {
-		return ud.create(username, password, email);
+		User user = ud.create(username, password, email);
+		es.create(user.getId());
+		return user;
+		
 	}
 
 	@Override

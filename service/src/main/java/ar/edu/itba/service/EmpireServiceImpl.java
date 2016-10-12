@@ -2,6 +2,7 @@ package ar.edu.itba.service;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -139,6 +140,14 @@ public class EmpireServiceImpl implements EmpireService{
 		updateResources(userid);
 		ed.substractAmount(userid, type, quantity);
 	}
+	
+	@Override
+	public void create(int userid) {
+		ed.createEmpire(userid, new Timestamp(Calendar.getInstance().getTime().getTime()));
+		//crear cosas QUE COSAS?!?!
+		//HAY QUE CREAR EN QUE POSICION DEL MAPA VA A TENER SU CASTILLO, CUAL VA A SER SU TERRITORIO, 
+	}
+	
 	
 	
 

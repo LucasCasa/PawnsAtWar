@@ -12,13 +12,13 @@ public interface EmpireDao {
 	 * Getter for the last time the resources were updated in the database
 	 * @return The last time resources were updated
 	 */
-	public Timestamp getLastTimeUpdate(int userId);
+	public Timestamp getLastTimeUpdate(int userid);
 	
 	/**
 	 * Getter for the last time the resources were updated in the database
 	 * @param t The time to be set
 	 */
-	public void setLastTimeUpdate(int userId,Timestamp t);
+	public void setLastTimeUpdate(int userid,Timestamp t);
 	
 	/**
 	 * Getter for the resource of type id
@@ -32,7 +32,7 @@ public interface EmpireDao {
 	 * @param id The id of the resource to be set
 	 * @param amount The amount to be set
 	 */
-	public void setResource(int userId, int id, int amount);
+	public void setResource(int userid, int id, int amount);
 	
 	/**
 	 * Adds the specified amount to the resource of type id
@@ -47,9 +47,11 @@ public interface EmpireDao {
 	 * @param userId
 	 * @return
 	 */
-	public List<Resource> getResources(int userId);
+	public List<Resource> getResources(int userid);
 
-	void substractAmount(int userID, int id, int amount);
+	void substractAmount(int userid, int id, int amount);
 	
-	public List<Building> getBuilding (int userId, int type);
+	public List<Building> getBuilding (int userid, int type);
+	
+	public void createEmpire(int userid, Timestamp timestamp);
 }
