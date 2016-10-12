@@ -17,5 +17,16 @@
             <name>clas</name>
             <required>false</required>
         </attribute>
+        <attribute>
+            <name>point</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>ar.edu.itba.model.Point</type>
+        </attribute>
+        <attribute>
+            <name>build</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
     </tag>
 </taglib>

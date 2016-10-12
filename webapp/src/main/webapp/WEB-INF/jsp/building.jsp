@@ -14,67 +14,16 @@
             <div class="col-md-6">
                 <p> ${building.getDescription()}</p>
 
-                <div class="row">
+
                     <c:choose>
                         <c:when test = "${user.getId() == owner}">
-                            <c:if test = "${building.getId() == 0 || building.getId() == 5}">
-                                <div class="col-md-2"><button class="myButton" id="buildBtn">Construir</button></div>
-
-                                <div class="container" id="buildList" style="display: none;">
-                                    <table id="buildListTable">
-                                        <thead>
-                                            <td>Edificio</td>
-                                            <td>Costo</td>
-                                            <td>Construir</td>
-                                        </thead>
-                                        <tbody>
-                                            <c:if test = "${building.getId()== 0}">
-                                                <c:forEach var="b" items="${plainTerrainBuildings}">
-                                                    <tr>
-                                                        <td><bi:BuildingIcon id="${b}"/></td>
-                                                        <td><re:Resource rate="0" type="1" amount="1000"/></td>
-                                                        <td>
-                                                        <form method="post" action="<c:url value="/build"/>">
-                                                        <input type="hidden" name="x" value="${point.getX()}"/>
-                                                        <input type="hidden" name="y" value="${point.getY()}"/>
-                                                        <input type="hidden" name="type" value="${b}"/>
-                                                        <input type="submit" class="myButton" value="OK"/>
-                                                        </form>
-                                                        </td>
-                                                    </tr>
-                                                </c:forEach>
-                                            </c:if>
-                                            <c:if test = "${building.getId()==5}">
-                                                <tr>
-                                                     <td><bi:BuildingIcon id="4"/></td>
-                                                    <td><re:Resource rate="0" type="1" amount="1000"/></td>
-                                                    <td>
-                                                        <form method="post" action="<c:url value="/build"/>">
-                                                        <input type="hidden" name="x" value="${point.getX()}"/>
-                                                        <input type="hidden" name="y" value="${point.getY()}"/>
-                                                        <input type="hidden" name="type" value="4"/>
-                                                        <input type="submit" class="myButton" value="OK"/>
-                                                        </form>
-                                                    </td>
-                                                </tr>
-                                            </c:if>
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                            </c:if>
-                            <c:if test="${building.getId() != 0 && building.getId() != 5}">
-                                <div class="col-md-2"><button class="myButton">Demoler</button></div>
-                                <div class="col-md-6"><button class="myButton" >Aumentar de nivel</button></div>
-                            </c:if>
+                            <build:Building info="${building}" point="${p}" build="${pageContext.request.contextPath}/build"/>
                         </c:when>
                         <c:when test="${user.getId() != owner && building.getId() != 0 && building.getId() != 5}">
-                            <div class="col-md-2" onclick="att()"><a href="<c:url value="/armies?x=${point.getX()}&y=${point.getY()}"/>"><button class="myButton">Atacar</button></a>
+                            <div class="col-md-2" onclick="att()"><a href="<c:url value="/armies?x=${p.getX()}&y=${p.getY()}"/>"><button class="myButton">Atacar</button></a>
                             </div>
                         </c:when>
                     </c:choose>
-                </div>
-
             </div>
         </div>
     </div>

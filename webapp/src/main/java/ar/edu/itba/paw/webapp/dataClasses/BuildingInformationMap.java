@@ -39,4 +39,16 @@ public class BuildingInformationMap {
         return infoList.get(id);
 
     }
+    public ArrayList<InformationBuilding> getConstructable(int type){
+        ArrayList<InformationBuilding> res = new ArrayList<>();
+        if(type == EMPTY){
+            for(InformationBuilding i : infoList) {
+                if(i.getId() != EMPTY && i.getId() != CASTLE && i.getId() != GOLD && i.getId() != TERR_GOLD)
+                    res.add(i);
+            }
+        }else{
+            res.add(infoList.get(type));
+        }
+        return res;
+    }
 }
