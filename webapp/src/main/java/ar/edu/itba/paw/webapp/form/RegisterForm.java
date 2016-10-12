@@ -4,7 +4,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 
-public class LoginForm {
+public class RegisterForm {
 
 	@Size(min = 6, max = 100) @Pattern(regexp = "[a-zA-Z0-9]+") private String username;
 	@Size(min = 6, max = 100) private String email;
