@@ -1,7 +1,3 @@
-drop table terrain;
-drop table building;
-drop table empire;
-
 create table if not exists userPaw (
 	idPlayer SERIAL PRIMARY KEY,
 	username VARCHAR (100),
@@ -72,6 +68,15 @@ create table if not exists resource (
 	FOREIGN KEY (idPlayer) REFERENCES userPaw ON DELETE CASCADE
 );
 
-alter sequence userPaw_idplayer_seq restart with 100;
+create table if not exists commerce (
+	ownerId integer,
+	tradeId SERIAL PRIMARY KEY,
+	offerType integer,
+	offerAmount integer,
+	receiveType integer,
+	receiveAmount integer,
+	FOREIGN KEY (ownerId) REFERENCES userPaw ON DELETE CASCADE
+);
 
+alter sequence userPaw_idplayer_seq restart with 100;
 

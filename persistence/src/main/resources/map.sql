@@ -1,3 +1,5 @@
+DELETE FROM terrain;
+DELETE FROM building;
 INSERT INTO terrain values (79,86,1,0,0);
 INSERT INTO terrain values (80,86,1,5,0);
 INSERT INTO terrain values (81,86,1,0,0);
