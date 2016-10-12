@@ -63,7 +63,7 @@ public class BuildingController {
             mav.addObject("building",ib);
             mav.addObject("owner",sector.getIdPlayer());
             mav.addObject("user",user);
-            mav.addObject("point",new Point(Integer.parseInt(x),Integer.parseInt(y)));
+            mav.addObject("p",new Point(Integer.parseInt(x),Integer.parseInt(y)));
             mav.addObject("plainTerrainBuildings",plainTerrainBuildings);
             mav.addObject("goldTerraunBuilding",goldTerrainBuilding);
             mav.addObject("resList",es.getResources(user.getId()));

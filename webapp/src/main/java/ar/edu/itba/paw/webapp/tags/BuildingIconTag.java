@@ -14,7 +14,7 @@ public class BuildingIconTag extends SimpleTagSupport{
     public void doTag() throws JspException, IOException {
         JspWriter out = getJspContext().getOut();
 
-        switch (id){
+       /* switch (id){
             case BuildingInformationMap.CASTLE:
             	out.print("<img src=\"/webapp/resources/images/castle.png\">");
                 break;
@@ -33,7 +33,7 @@ public class BuildingIconTag extends SimpleTagSupport{
             case BuildingInformationMap.BLACKSMITH:
             	out.print("<img src=\"/webapp/resources/images/blacksmith.png\">");
                 break;
-        }
+        }*/
     }
     
     public int getId() {
