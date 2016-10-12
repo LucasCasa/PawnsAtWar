@@ -24,7 +24,7 @@ public class UserJdbcDao implements UserDao{
 	@Autowired
 	public UserJdbcDao(final DataSource dataSource){
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("userPaw").usingGeneratedKeyColumns("idPlayer");
+		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("userPaw").usingGeneratedKeyColumns("idplayer");
 	}
 
 	@Override
