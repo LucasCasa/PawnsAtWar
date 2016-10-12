@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User create(String username, String password, String email) {
 		User user = ud.create(username, password, email);
-		es.create(user.getId());
+		es.createUser(user.getId()); //devuelve un point esto, para que despues lo use el front
 		return user;
 		
 	}
@@ -47,6 +47,11 @@ public class UserServiceImpl implements UserService{
 	
 	public String getEmail (String username){
 		return ud.getEmail(username);
+	}
+
+	@Override
+	public boolean exists(String username, String password) {
+		return ud.exists(username,password);
 	}
 	
 	

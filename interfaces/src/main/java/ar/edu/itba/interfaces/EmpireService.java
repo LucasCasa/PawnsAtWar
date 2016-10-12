@@ -71,6 +71,12 @@ public interface EmpireService {
 	 */
 	public void subtractResourceAmount(int userid, int type, int quantity);
 
-	void create(int userid);
+	/**
+	 * Creates the empire, resources and castle of the user
+	 * @param userid
+	 * @return the point in which the castle is in
+	 */
+	public void createUser(int userid);
+	
 	
 }

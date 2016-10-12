@@ -10,7 +10,9 @@ public interface UserService {
 	
 	public User create(String username, String password, String email);
 	
-	public String getUsername(long id);	
+	public String getUsername(long id);
+
+	public boolean exists(String username, String password);	
 	
 
 }

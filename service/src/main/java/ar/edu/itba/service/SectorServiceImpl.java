@@ -16,7 +16,6 @@ import ar.edu.itba.model.Sector;
 @Service
 public class SectorServiceImpl implements SectorService {
 	
-	
 	//no esta bien hecho.
 	public static final int CASTLE = 1;
 	public static final int EMPTY = 0;
@@ -120,5 +119,11 @@ public class SectorServiceImpl implements SectorService {
 		}else{
 			bd.addBuilding(p, idPlayer, type);
 		}
+	}
+
+	@Override
+	public void createCastle(int userid) {
+		//MUY MAL HAY QUE HACERLO BIEN
+		bd.addBuilding(new Point (1,1), userid, 1);
 	}
 }

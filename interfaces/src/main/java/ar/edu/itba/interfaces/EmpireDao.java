@@ -54,4 +54,6 @@ public interface EmpireDao {
 	public List<Building> getBuilding (int userid, int type);
 	
 	public void createEmpire(int userid, Timestamp timestamp);
+	
+	public void createResource (int userid,int type, int amount);
 }

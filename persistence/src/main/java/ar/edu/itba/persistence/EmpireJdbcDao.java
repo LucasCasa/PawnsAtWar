@@ -89,4 +89,10 @@ public class EmpireJdbcDao implements EmpireDao {
 		args.put("lastUpdate", timestamp);
 		jdbcInsert.execute(args);
 	}
+
+	@Override
+	public void createResource(int userid, int type, int amount) {
+		rd.addResource(userid, type, amount);
+		
+	}
 }

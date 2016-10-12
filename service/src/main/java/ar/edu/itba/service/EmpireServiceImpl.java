@@ -14,6 +14,7 @@ import java.util.TreeSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.edu.itba.interfaces.ArmyService;
 import ar.edu.itba.interfaces.BuildingService;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.EmpireService;
@@ -25,12 +26,16 @@ import ar.edu.itba.model.Resource;
 @Service
 public class EmpireServiceImpl implements EmpireService{
 	
+	private static final int INITIAL_VALUE = 2000;
+	
 	@Autowired
 	EmpireDao ed;
 	@Autowired
 	SectorService ss;
 	@Autowired
 	BuildingService bs;
+	@Autowired
+	ArmyService as;
 
 	@Override
 	public Set<Resource> getResources(int userid) {
@@ -142,13 +147,12 @@ public class EmpireServiceImpl implements EmpireService{
 	}
 	
 	@Override
-	public void create(int userid) {
+	public void createUser(int userid) {
+		ss.createCastle(userid);
 		ed.createEmpire(userid, new Timestamp(Calendar.getInstance().getTime().getTime()));
-		//crear cosas QUE COSAS?!?!
-		//HAY QUE CREAR EN QUE POSICION DEL MAPA VA A TENER SU CASTILLO, CUAL VA A SER SU TERRITORIO, 
+		ed.createResource(userid, 0, INITIAL_VALUE);
+		ed.createResource(userid, 1, INITIAL_VALUE);
 	}
-	
-	
-	
+
 
 }

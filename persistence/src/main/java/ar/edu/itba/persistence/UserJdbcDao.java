@@ -85,4 +85,13 @@ public class UserJdbcDao implements UserDao{
 
 	}
 
+	@Override
+	public boolean exists(String username, String password) {
+		List<Integer> userList = jdbcTemplate
+				.query("SELECT count(*) as aux FROM userPaw WHERE username = ? AND password = ? ",(ResultSet resultSet, int rowNum) -> {
+							return new Integer(resultSet.getInt("aux"));
+						},username,password);
+		return userList.get(0) == 1 ? true : false;
+	}
+
 }
