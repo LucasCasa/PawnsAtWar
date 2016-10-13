@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.BuildingDao;
+import ar.edu.itba.interfaces.BuildingService;
 import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.interfaces.TerrainDao;
 import ar.edu.itba.model.Point;
@@ -34,6 +35,9 @@ public class SectorServiceImpl implements SectorService {
 	
 	@Autowired
 	TerrainDao td;
+	
+	@Autowired
+	BuildingService bs;
 	
 	@Override
 	public List<List<Sector>> getSector(Point p, int range) {
@@ -123,7 +127,6 @@ public class SectorServiceImpl implements SectorService {
 
 	@Override
 	public void createCastle(int userid) {
-		//MUY MAL HAY QUE HACERLO BIEN
-		bd.addBuilding(new Point (1,1), userid, 1);
+		bs.addCastle(userid);
 	}
 }

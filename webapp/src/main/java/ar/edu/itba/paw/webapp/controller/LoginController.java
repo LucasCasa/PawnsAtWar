@@ -60,9 +60,9 @@ public class LoginController {
 			User u = us.findByUsername(form.getUsername());
 			session.setAttribute(LOGGED_USER_ID, u.getId());
 			return new ModelAndView("redirect:/map");
+		}else{
+			return authenticate(form);
 		}
-			
-		return authenticate(form);
 	}
 	
 }

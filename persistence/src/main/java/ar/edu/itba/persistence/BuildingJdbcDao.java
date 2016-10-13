@@ -165,5 +165,13 @@ public class BuildingJdbcDao implements BuildingDao {
         return buildingList;
 	}
 
+	@Override
+	public List<Point> getAllCastles() {
+		List<Point> buildingList = jdbcTemplate
+                .query("SELECT * FROM building WHERE type = ?",(ResultSet resultSet, int rowNum) -> {
+                    return new Point(resultSet.getInt("x"),resultSet.getInt("y"));
+                },1);
+        return buildingList;
+	}
 
 }
