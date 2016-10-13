@@ -9,17 +9,16 @@
     <div id="terrain" class="container">
 
     <%@ include file="resourceBar.jsp" %>
+        <br><br>
         <div class="row">
-            <div class="col-md-4"> <img class="img-responsive" src="<c:url value="/resources/images/${building.getName()}.png" /> " /></div>
+            <div class="col-md-4"> <img class="img-responsive" src="<c:url value="/resources/images/${building.name}.png" /> " /></div>
             <div class="col-md-6">
-                <p> ${building.getDescription()}</p>
-
-
+                <h3><strong>${building.description}</strong></h3>
                     <c:choose>
-                        <c:when test = "${user.getId() == owner}">
+                        <c:when test = "${user.id == owner}">
                             <build:Building info="${building}" point="${p}" build="${pageContext.request.contextPath}/build"/>
                         </c:when>
-                        <c:when test="${user.getId() != owner && building.getId() != 0 && building.getId() != 5}">
+                        <c:when test="${user.id != owner && building.id != 0 && building.id != 5}">
                             <div class="col-md-2" onclick="att()"><a href="<c:url value="/armies?x=${p.getX()}&y=${p.getY()}"/>"><button class="myButton">Atacar</button></a>
                             </div>
                         </c:when>

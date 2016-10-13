@@ -16,6 +16,10 @@ public class BuildingInformationMap {
     public static final int MILL = 6;
     public static final int BLACKSMITH = 7;
 
+    public static final int WARRIOR = 0;
+    public static final int ARCHER = 1;
+    public static final int HORSEMAN = 2;
+
     private List<InformationBuilding> infoList;
     private static BuildingInformationMap bim = new BuildingInformationMap();
 
