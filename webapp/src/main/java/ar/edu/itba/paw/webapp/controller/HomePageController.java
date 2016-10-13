@@ -21,6 +21,8 @@ import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
 import ar.edu.itba.paw.webapp.dataClasses.Validator;
 
+import static java.lang.System.out;
+
 @Controller
 public class HomePageController {
 
@@ -33,13 +35,23 @@ public class HomePageController {
 	@Autowired
 	private UserService us;
 
+
+
+	@RequestMapping("/")
+	public ModelAndView home(){
+
+		out.println("HOLA VOY A REDIRIGIR JAJAJA");
+		ModelAndView mav = new  ModelAndView("redirect:/login");
+		return mav;
+	}
+
 	@RequestMapping(value={"/map"}, method = RequestMethod.GET)
 	public ModelAndView gridLoader(@RequestParam(value= "x",required = false) String x ,
 								   @RequestParam(value= "y",required = false) String y,
 								   @ModelAttribute("userId") final User user){
 
 
-		System.out.println("ENTRA CON EL USUARIO " + user.getName());
+		out.println("ENTRA CON EL USUARIO " + user.getName());
 		int xprime ;
 		int yprime;
 
@@ -74,22 +86,23 @@ public class HomePageController {
 
 		return mav;
 	}
+
+/*
 	
-	@RequestMapping("/")
-	public ModelAndView home(){
-		return new ModelAndView("redirect:/login");
+	@RequestMapping(value= "/login",method = RequestMethod.POST)
+	public ModelAndView redir(@RequestParam(value= "id",required = false,defaultValue = "0") int id,
+							  @ModelAttribute("user") final User user){
+		final ModelAndView mav = new ModelAndView("login");
+		mav.addObject("id",id);
+		return mav;
 	}
-	
-//	@RequestMapping(value= "/login",method = RequestMethod.POST)
-//	public ModelAndView redir(@RequestParam(value= "id",required = false,defaultValue = "0") int id,
-//							  @ModelAttribute("user") final User user){
-//		final ModelAndView mav = new ModelAndView("login");
-//		mav.addObject("id",id);
-//		return mav;
-//	}
-	
+*/
 	@ModelAttribute("userId")
 	public User loggedUser (final HttpSession session){
-		return us.findById((Integer) session.getAttribute("userId"));
+		out.println("ENTRE ACA WACHIN AMIGO");
+		out.println("EL USUARIO ES: " + (Integer)session.getAttribute("userId"));
+		if(session.getAttribute("userId") != null)
+			return  us.findById((Integer)session.getAttribute("userId"));
+		return null;
 	}
 }
