@@ -12,7 +12,7 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 
 /**
- * Created by root on 9/18/16.
+ * Created by Muffin on 9/18/16.
  */
 public class BuildingTag extends SimpleTagSupport {
     private InformationBuilding info;
@@ -51,23 +51,34 @@ public class BuildingTag extends SimpleTagSupport {
 
     private void printButtons() throws JspException,IOException{
         JspWriter out = getJspContext().getOut();
-        out.println("<div class=\"col-md-2\"><button class=\"myButton\">Demoler</button></div>");
-        out.println("<div class=\"col-md-6\"><button class=\"myButton\" >Aumentar de nivel</button></div>");
+        out.println("<button class=\"myButton\">Demoler</button>");
+        out.println("<button class=\"myButton\" >Aumentar de nivel</button>");
     }
     private void printArchery() throws JspException,IOException{
         JspWriter out = getJspContext().getOut();
         printButtons();
-        out.println("<br>");
-        out.println("<br>");
-        out.println("<br>");
-        out.println("<div class=\"row\"><form class=\"form-inline\">");
-            out.println("<input type=\"number\">");
-            out.println("<input type=\"submit\">");
-        out.println("</form></div>");
-
+        printCreateTroop(BuildingInformationMap.ARCHER);
+        printTable("Tiempo de creacion",BuildingInformationMap.ARCHERY,1);
     }
     private void printBarrack() throws JspException,IOException{
         printButtons();
+        printCreateTroop(BuildingInformationMap.WARRIOR);
+        printTable("Tiempo de creacion",BuildingInformationMap.BARRACKS,1);
+
+    }
+    private void printStable() throws JspException,IOException{
+        printButtons();
+        printCreateTroop(BuildingInformationMap.HORSEMAN);
+        //printTable("Tiempo de creacion",BuildingInformationMap.STABLE,1);
+    }
+    private void printCreateTroop(int type) throws JspException,IOException{
+        JspWriter out = getJspContext().getOut();
+        out.println("<br><br><br>");
+        out.println("<div class=\"row\"><form class=\"form-inline\">");
+        out.println("<input placeholder=\"Cantidad\" type=\"number\" style=\"font-size: 18px;\" name=\"amount\">");
+        out.println("<input  type=\"hidden\" name=\"type\" value=\""+type+"\">");
+        out.println("<input value=\"Entrenar\" class=\"myButton\" type=\"submit\">");
+        out.println("</form></div>");
 
     }
     private void printNew(JspWriter out, boolean gold) throws JspException, IOException  {
@@ -149,9 +160,6 @@ public class BuildingTag extends SimpleTagSupport {
     private void printCastle() throws JspException,IOException{
         printButtons();
     }
-    private void printStable() throws JspException,IOException{
-        printButtons();
-    }
     private void printGoldMine() throws JspException,IOException{
         printButtons();
     }
@@ -176,6 +184,27 @@ public class BuildingTag extends SimpleTagSupport {
                     out.print("<img src=\"/webapp/resources/images/blacksmith.png\">");
                     break;
             }
+    }
+    public void printTable(String text,int type,int level) throws JspException, IOException{
+        JspWriter out = getJspContext().getOut();
+        out.println("<br><br><br>");
+        out.println("<table class=\"table table-striped\" id=\"Level\">");
+        out.println("<thead>");
+        out.println("<td>Nivel</td>");
+        out.println("<td>"+text+"</td>");
+        out.println("<td>Costo</td>");
+        out.println("<td>Tiempo</td>");
+        out.println("</thead>");
+        out.println("<tbody>");
+        for(int i = 1 ; i<=40;i++){
+            out.println("<tr>");
+            out.println("<td>"+i +"</td><td>PlaceHolder</td><td>"+ (1000 + i*i*i*i) +"</td><td>00:"+i+":00</td>");
+            out.println("</tr>");
+        }
+        out.println("</tbody>");
+        out.println("</table>");
+        out.println("</div>");
+
     }
     public void setInfo(InformationBuilding info){
         this.info = info;
