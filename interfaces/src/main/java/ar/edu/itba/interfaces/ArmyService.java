@@ -9,11 +9,13 @@ public interface ArmyService{
 	
 	public List<Army> getArmies(int idPlayer);
 	
-	public Army createArmy(Point p, int idPlayer);
+	public Army getOrCreateArmy(Point p, int idPlayer);
 	
 	public Army getArmyById(int idArmy);
 
 	public boolean belongs(int userId, int idArmy);
+
+	void setAvailable(int idArmy, boolean available);
 	
 	
 }

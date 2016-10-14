@@ -71,14 +71,38 @@ public class ArmyJdbcDao implements ArmyDao{
 		return isAvailable.get(0);
 
 	}
+	
+	@Override
+	public void setAvailable(int idArmy,boolean available) {
+		jdbcTemplate
+		.update("UPDATE ARMY SET available = ? WHERE idArmy = ?",available,idArmy);
+		
+	}
 
 	public boolean belongs(int userId, int idArmy){
-
-		List<Integer> troopList = jdbcTemplate
-				.query("SELECT COUNT(*) as aux FROM TROOP WHERE idPlayer = ? AND WHERE idArmy = ?",(ResultSet resultSet, int rowNum) -> {
+		List<Integer> armyList = jdbcTemplate
+				.query("SELECT COUNT(*) as aux FROM ARMY WHERE idPlayer = ? AND idArmy = ?",(ResultSet resultSet, int rowNum) -> {
 					return resultSet.getInt("aux");
 				},userId, idArmy);
-		return troopList.get(0) == 0 ? false : true;
+		return armyList.get(0) == 0 ? false : true;
+	}
+
+	@Override
+	public boolean exists(Point p, int idPlayer) {
+		List<Integer> armyList = jdbcTemplate
+				.query("SELECT COUNT(*) as aux FROM ARMY WHERE x = ? AND y = ? AND idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
+					return resultSet.getInt("aux");
+				},p.getX(), p.getY(),idPlayer);
+		return armyList.get(0) == 0 ? false : true;
+	}
+
+	@Override
+	public Army getArmy(Point p, int idPlayer) {
+		List<Army> armies = jdbcTemplate
+				.query("SELECT * FROM ARMY WHERE idPlayer = ? AND x = ? AND y = ?",(ResultSet resultSet, int rowNum) -> {
+					return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("idArmy"),resultSet.getBoolean("available"));},
+						idPlayer,p.getX(),p.getY());
+		return armies.isEmpty()? null: armies.get(0);
 	}
 
 }

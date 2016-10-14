@@ -18,6 +18,12 @@ public interface ArmyDao {
 	public boolean isAvailable(Point p);
 
 	public boolean belongs(int userId, int idArmy);
+
+	public boolean exists(Point p, int idPlayer);
+
+	public Army getArmy(Point p, int idPlayer);
+
+	void setAvailable(int idArmy, boolean available);
 	
 	
 }
