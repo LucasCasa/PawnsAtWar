@@ -6,8 +6,6 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 
-import ar.edu.itba.paw.webapp.dataClasses.BuildingInformationMap;
-
 public class BuildingIconTag extends SimpleTagSupport{
 	private int id;
 
@@ -15,22 +13,22 @@ public class BuildingIconTag extends SimpleTagSupport{
         JspWriter out = getJspContext().getOut();
 
        /* switch (id){
-            case BuildingInformationMap.CASTLE:
+            case Info.CASTLE:
             	out.print("<img src=\"/webapp/resources/images/castle.png\">");
                 break;
-            case BuildingInformationMap.ARCHERY:
+            case Info.ARCHERY:
             	out.print("<img src=\"/webapp/resources/images/archery.png\">");
                 break;
-            case BuildingInformationMap.BARRACKS:
+            case Info.BARRACKS:
             	out.print("<img src=\"/webapp/resources/images/barracks.png\">");
                 break;
-            case BuildingInformationMap.GOLD:
+            case Info.GOLD:
             	out.print("<img src=\"/webapp/resources/images/gold.png\">");
                 break;
-            case BuildingInformationMap.MILL:
+            case Info.MILL:
             	out.print("<img src=\"/webapp/resources/images/mill.png\">");
                 break;
-            case BuildingInformationMap.BLACKSMITH:
+            case Info.BLACKSMITH:
             	out.print("<img src=\"/webapp/resources/images/blacksmith.png\">");
                 break;
         }*/

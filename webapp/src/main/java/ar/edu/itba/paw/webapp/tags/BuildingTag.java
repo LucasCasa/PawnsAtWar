@@ -1,13 +1,11 @@
 package ar.edu.itba.paw.webapp.tags;
 
 import ar.edu.itba.model.Point;
-import ar.edu.itba.paw.webapp.dataClasses.BuildingInformationMap;
+import ar.edu.itba.paw.webapp.dataClasses.Info;
 import ar.edu.itba.paw.webapp.dataClasses.InformationBuilding;
-import org.springframework.web.servlet.tags.UrlTag;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
-import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
 
@@ -17,33 +15,33 @@ import java.io.IOException;
 public class BuildingTag extends SimpleTagSupport {
     private InformationBuilding info;
     private String clas= "";
-    private String build;
+    private String path;
     private Point point;
 
 
     public void doTag() throws JspException, IOException {
         JspWriter out = getJspContext().getOut();
         switch (info.getId()) {
-            case BuildingInformationMap.EMPTY:
-            case BuildingInformationMap.TERR_GOLD:
-                printNew(out, info.getId() == BuildingInformationMap.TERR_GOLD);
+            case Info.EMPTY:
+            case Info.TERR_GOLD:
+                printNew(out, info.getId() == Info.TERR_GOLD);
                 break;
-            case BuildingInformationMap.CASTLE:
+            case Info.CASTLE:
                 printCastle();
                 break;
-            case BuildingInformationMap.ARCHERY:
+            case Info.ARCHERY:
                 printArchery();
                 break;
-            case BuildingInformationMap.BARRACKS:
+            case Info.BARRACKS:
                 printBarrack();
                 break;
-            case BuildingInformationMap.GOLD:
+            case Info.GOLD:
                 printGoldMine();
                 break;
-            case BuildingInformationMap.MILL:
+            case Info.MILL:
                 printMill();
                 break;
-            case BuildingInformationMap.BLACKSMITH:
+            case Info.BLACKSMITH:
                 printBlacksmith();
                 break;
         }
@@ -57,26 +55,28 @@ public class BuildingTag extends SimpleTagSupport {
     private void printArchery() throws JspException,IOException{
         JspWriter out = getJspContext().getOut();
         printButtons();
-        printCreateTroop(BuildingInformationMap.ARCHER);
-        printTable("Tiempo de creacion",BuildingInformationMap.ARCHERY,1);
+        printCreateTroop(Info.ARCHER);
+        printTable("Tiempo de creacion", Info.ARCHERY,1);
     }
     private void printBarrack() throws JspException,IOException{
         printButtons();
-        printCreateTroop(BuildingInformationMap.WARRIOR);
-        printTable("Tiempo de creacion",BuildingInformationMap.BARRACKS,1);
+        printCreateTroop(Info.WARRIOR);
+        printTable("Tiempo de creacion", Info.BARRACKS,1);
 
     }
     private void printStable() throws JspException,IOException{
         printButtons();
-        printCreateTroop(BuildingInformationMap.HORSEMAN);
-        //printTable("Tiempo de creacion",BuildingInformationMap.STABLE,1);
+        printCreateTroop(Info.HORSEMAN);
+        //printTable("Tiempo de creacion",Info.STABLE,1);
     }
     private void printCreateTroop(int type) throws JspException,IOException{
         JspWriter out = getJspContext().getOut();
         out.println("<br><br><br>");
-        out.println("<div class=\"row\"><form class=\"form-inline\">");
+        out.println("<div class=\"row\"><form class=\"form-inline\" method=\"post\" action=\""+ path + "/train\" >");
         out.println("<input placeholder=\"Cantidad\" type=\"number\" style=\"font-size: 18px;\" name=\"amount\">");
         out.println("<input  type=\"hidden\" name=\"type\" value=\""+type+"\">");
+        out.println("<input  type=\"hidden\" name=\"px\" value=\""+ point.getX() +"\">");
+        out.println("<input  type=\"hidden\" name=\"py\" value=\""+ point.getY() +"\">");
         out.println("<input value=\"Entrenar\" class=\"myButton\" type=\"submit\">");
         out.println("</form></div>");
 
@@ -92,7 +92,7 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("</thead>");
         out.println("<tbody>");
         if(!gold) {
-            for (InformationBuilding i : BuildingInformationMap.getInstance().getConstructable(info.getId())) {
+            for (InformationBuilding i : Info.getInstance().getConstructable(info.getId())) {
                 out.println("<tr>");
                 out.println("<td>");
                 printImage(out,i.getId());
@@ -112,7 +112,7 @@ public class BuildingTag extends SimpleTagSupport {
                 re2.doTag();
                 out.println("</td>");
                 out.println("<td>");
-                out.println("<form method=\"post\" action=\""+ build +"\">");
+                out.println("<form method=\"post\" action=\""+ path +"/build\">");
                 out.println("<input type=\"hidden\" name=\"x\" value=\"" + point.getX() + "\"/>");
                 out.println("<input type=\"hidden\" name=\"y\" value=\"" + point.getY() + "\"/>");
                 out.println("<input type=\"hidden\" name=\"type\" value=\"" + i.getId() + "\"/>");
@@ -123,10 +123,10 @@ public class BuildingTag extends SimpleTagSupport {
 
             }
         }
-        if(info.getId() == BuildingInformationMap.TERR_GOLD) {
+        if(info.getId() == Info.TERR_GOLD) {
             out.println("<tr>");
             out.println("<td>");
-            printImage(out, BuildingInformationMap.GOLD);
+            printImage(out, Info.GOLD);
             out.println("</td>");
             out.println("<td>");
             ResourceTag re = new ResourceTag();
@@ -137,10 +137,10 @@ public class BuildingTag extends SimpleTagSupport {
             re.doTag();
             out.println("</td>");
             out.println("<td>");
-            out.println("<form method=\"post\" action=\""+ build +"\">");
+            out.println("<form method=\"post\" action=\""+ path +"/build\">");
             out.println("<input type=\"hidden\" name=\"x\" value=\"" + point.getX() + "\"/>");
             out.println("<input type=\"hidden\" name=\"y\" value=\"" + point.getY() + "\"/>");
-            out.println("<input type=\"hidden\" name=\"type\" value=\"" + BuildingInformationMap.GOLD + "\"/>");
+            out.println("<input type=\"hidden\" name=\"type\" value=\"" + Info.GOLD + "\"/>");
             out.println("<input type=\"submit\" class=\"myButton\" value=\"OK\"/>");
             out.println("</form>");
             out.println("</td>");
@@ -165,22 +165,22 @@ public class BuildingTag extends SimpleTagSupport {
     }
     private void printImage(JspWriter out,int id) throws JspException, IOException{
             switch (id){
-                case BuildingInformationMap.CASTLE:
+                case Info.CASTLE:
                     out.print("<img src=\"/webapp/resources/images/castle.png\">");
                     break;
-                case BuildingInformationMap.ARCHERY:
+                case Info.ARCHERY:
                     out.print("<img src=\"/webapp/resources/images/archery.png\">");
                     break;
-                case BuildingInformationMap.BARRACKS:
+                case Info.BARRACKS:
                     out.print("<img src=\"/webapp/resources/images/barracks.png\">");
                     break;
-                case BuildingInformationMap.GOLD:
+                case Info.GOLD:
                     out.print("<img src=\"/webapp/resources/images/gold.png\">");
                     break;
-                case BuildingInformationMap.MILL:
+                case Info.MILL:
                     out.print("<img src=\"/webapp/resources/images/mill.png\">");
                     break;
-                case BuildingInformationMap.BLACKSMITH:
+                case Info.BLACKSMITH:
                     out.print("<img src=\"/webapp/resources/images/blacksmith.png\">");
                     break;
             }
@@ -221,11 +221,11 @@ public class BuildingTag extends SimpleTagSupport {
     public String getClas() {
         return clas;
     }
-    public void setBuild(String build){
-        this.build = build;
+    public void setPath(String path){
+        this.path = path;
     }
-    public String getBuild() {
-        return build;
+    public String getPath() {
+        return path;
     }
 
     public void setClas(String clas){

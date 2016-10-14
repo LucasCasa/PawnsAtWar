@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.tags;
 
-import ar.edu.itba.paw.webapp.dataClasses.BuildingInformationMap;
+import ar.edu.itba.paw.webapp.dataClasses.Info;
 
 import java.io.IOException;
 
@@ -22,28 +22,28 @@ public class TerrainTag extends SimpleTagSupport{
         	status = "hostile";
         }
         switch (id){
-            case BuildingInformationMap.EMPTY:
+            case Info.EMPTY:
                 out.print("<img class=\" " + clas + " " + status + " \" src=\"/webapp/resources/images/terrain.jpg\">");
                 break;
-            case BuildingInformationMap.CASTLE:
+            case Info.CASTLE:
                 out.print("<img class=\" " + clas + " " + status + " \" src=\"/webapp/resources/images/castle.jpg\">");
                 break;
-            case BuildingInformationMap.ARCHERY:
+            case Info.ARCHERY:
                 out.print("<img class=\" " + clas + " " + status+ " \" src=\"/webapp/resources/images/archery.jpg\">");
                 break;
-            case BuildingInformationMap.BARRACKS:
+            case Info.BARRACKS:
                 out.print("<img class=\" " + clas + " " + status+ " \" src=\"/webapp/resources/images/barracks.jpg\">");
                 break;
-            case BuildingInformationMap.GOLD:
+            case Info.GOLD:
                 out.print("<img class=\" " + clas + " " + status + " \" src=\"/webapp/resources/images/gold.jpg\">");
                 break;
-            case BuildingInformationMap.TERR_GOLD:
+            case Info.TERR_GOLD:
                 out.print("<img class=\" " + clas + " " + status + " \" src=\"/webapp/resources/images/terrgold.jpg\">");
                 break;
-            case BuildingInformationMap.MILL:
+            case Info.MILL:
                 out.print("<img class=\" " + clas + " " + status + " \"  src=\"/webapp/resources/images/mill.jpg\">");
                 break;
-            case BuildingInformationMap.BLACKSMITH:
+            case Info.BLACKSMITH:
                 out.print("<img class=\" " + clas + " " + status + " \"  src=\"/webapp/resources/images/blacksmith.jpg\">");
                 break;
 

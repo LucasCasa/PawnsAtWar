@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by root on 9/18/16.
  */
-public class BuildingInformationMap {
+public class Info {
     public static final int EMPTY = 0;
     public static final int CASTLE = 1;
     public static final int ARCHERY = 2;
@@ -19,15 +19,21 @@ public class BuildingInformationMap {
     public static final int WARRIOR = 0;
     public static final int ARCHER = 1;
     public static final int HORSEMAN = 2;
+    public static final int COST_WARRIOR= 30;
+    public static final int COST_ARCHER= 50;
+    public static final int COST_HORSEMAN= 70;
+
+    public static final int RES_FOOD = 0;
+    public static final int RES_GOLD = 1;
 
     private List<InformationBuilding> infoList;
-    private static BuildingInformationMap bim = new BuildingInformationMap();
+    private static Info bim = new Info();
 
-    public static BuildingInformationMap getInstance(){
+    public static Info getInstance(){
         return bim;
     }
 
-    private BuildingInformationMap(){
+    private Info(){
         infoList = new ArrayList<>();
         infoList.add(new InformationBuilding(0,"terrain", "Este es un territorio en el cual podes construir edificios"));
         infoList.add(new InformationBuilding(1,"castle", "Este tipo de edificio es un castillo. Debes cuidarlo muy bien o tus oponentes te lo arrebataran"));

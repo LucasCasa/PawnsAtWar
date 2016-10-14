@@ -47,7 +47,9 @@ public class HomePageController {
 								   @RequestParam(value= "y",required = false) String y,
 								   @ModelAttribute("userId") final User user){
 
-
+		if(user == null){
+			return new ModelAndView("redirect:/");
+		}
 
 
 		out.println("ENTRA CON EL USUARIO " + user.getName());

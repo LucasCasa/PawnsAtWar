@@ -24,7 +24,7 @@
             <type>ar.edu.itba.model.Point</type>
         </attribute>
         <attribute>
-            <name>build</name>
+            <name>path</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>

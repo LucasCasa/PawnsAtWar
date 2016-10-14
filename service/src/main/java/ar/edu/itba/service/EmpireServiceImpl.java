@@ -131,6 +131,7 @@ public class EmpireServiceImpl implements EmpireService{
 
 	@Override
 	public Resource getResource(int id, int type) {
+		updateResources(id);
 		return ed.getResource(id, type);
 	}
 

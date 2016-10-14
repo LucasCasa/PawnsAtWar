@@ -79,4 +79,5 @@ create table if not exists commerce (
 );
 
 alter sequence userPaw_idplayer_seq restart with 100;
+alter sequence army_idarmy_seq restart with 10;
 

@@ -25,7 +25,7 @@ public class ArmyJdbcDao implements ArmyDao{
 	@Autowired
 	public ArmyJdbcDao(final DataSource dataSource){
 		jdbcTemplate = new JdbcTemplate(dataSource);
-		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("ARMY").usingGeneratedKeyColumns("idArmy");
+		jdbcInsert = new SimpleJdbcInsert(jdbcTemplate).withTableName("ARMY").usingGeneratedKeyColumns("idarmy");
 	}
 
 	@Override
