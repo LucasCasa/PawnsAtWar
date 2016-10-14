@@ -13,7 +13,7 @@ public class Army {
 		this.available = available;
 	}
 
-	public boolean isAvailable() {
+	public boolean getAvailable() {
 		return available;
 	}
 	

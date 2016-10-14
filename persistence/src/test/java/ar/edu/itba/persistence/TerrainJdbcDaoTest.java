@@ -31,8 +31,8 @@ public class TerrainJdbcDaoTest {
 	
 	@Before
 	public void setUp(){
-		jdbcTemplate = new JdbcTemplate(ds);
-		JdbcTestUtils.deleteFromTables(jdbcTemplate, "terrain");
+		//jdbcTemplate = new JdbcTemplate(ds);
+		//JdbcTestUtils.deleteFromTables(jdbcTemplate, "terrain");
 		
 	}
 	

@@ -8,8 +8,8 @@
 --%>
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="te" uri="custom.tld"%>
-<%@ taglib prefix="re" uri="resource.tld"%>
+<%@ taglib prefix="te" uri="/WEB-INF/jsp/custom.tld"%>
+<%@ taglib prefix="re" uri="/WEB-INF/jsp/resource.tld"%>
 <%@ include file="header.jsp" %>
 
 

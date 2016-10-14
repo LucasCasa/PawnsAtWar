@@ -39,10 +39,7 @@ public class HomePageController {
 
 	@RequestMapping("/")
 	public ModelAndView home(){
-
-		out.println("HOLA VOY A REDIRIGIR JAJAJA");
-		ModelAndView mav = new  ModelAndView("redirect:/login");
-		return mav;
+		return new  ModelAndView("redirect:/login");
 	}
 
 	@RequestMapping(value={"/map"}, method = RequestMethod.GET)
@@ -72,7 +69,7 @@ public class HomePageController {
 		}
 
 
-		final ModelAndView mav = new ModelAndView("index");
+		final ModelAndView mav = new ModelAndView("map");
 
 		List<List<Sector>> elements;
 		elements = ss.getSector(new Point(xprime,yprime), 4);
@@ -86,20 +83,8 @@ public class HomePageController {
 
 		return mav;
 	}
-
-/*
-	
-	@RequestMapping(value= "/login",method = RequestMethod.POST)
-	public ModelAndView redir(@RequestParam(value= "id",required = false,defaultValue = "0") int id,
-							  @ModelAttribute("user") final User user){
-		final ModelAndView mav = new ModelAndView("login");
-		mav.addObject("id",id);
-		return mav;
-	}
-*/
 	@ModelAttribute("userId")
 	public User loggedUser (final HttpSession session){
-		out.println("ENTRE ACA WACHIN AMIGO");
 		out.println("EL USUARIO ES: " + (Integer)session.getAttribute("userId"));
 		if(session.getAttribute("userId") != null)
 			return  us.findById((Integer)session.getAttribute("userId"));
