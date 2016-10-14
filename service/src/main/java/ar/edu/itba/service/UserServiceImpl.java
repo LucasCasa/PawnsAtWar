@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User create(String username, String password, String email) {
 		User user = ud.create(username, password, email);
-		es.createUser(user.getId()); //devuelve un point esto, para que despues lo use el front
+		es.createUser(user.getId());
 		return user;
 		
 	}

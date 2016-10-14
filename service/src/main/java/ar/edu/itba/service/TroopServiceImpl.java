@@ -46,6 +46,10 @@ public class TroopServiceImpl implements TroopService {
 		if((type < 0 && type >= MAX_TROOP) || amount < 0){
 			return null;
 		}
+		if(td.exists(idArmy,type)){
+			td.changeAmount(idArmy, type, td.getAmount(idArmy, type) + amount);
+			return td.getTroop(idArmy,type);
+		}
 		return td.addTroop(idArmy,type,amount);
 	}
 	

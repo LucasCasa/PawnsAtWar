@@ -68,4 +68,22 @@ public class TroopJdbcDao implements TroopDao {
 		return new Troop(idArmy,type,amount);
 	}
 
+	@Override
+	public boolean exists(int idArmy, int type) {
+		List<Integer> troopList = jdbcTemplate
+				.query("SELECT count(*) from aux FROM TROOP WHERE idArmy = ? AND  type = ?",(ResultSet resultSet, int rowNum) -> {
+							return new Integer(resultSet.getInt("aux"));
+						},idArmy,type);
+		return troopList.get(0) == 0 ? false : true;
+	}
+
+	@Override
+	public Troop getTroop(int idArmy, int type) {
+		List<Troop> troopList = jdbcTemplate
+				.query("SELECT * FROM TROOP WHERE idArmy = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
+							return new Troop(resultSet.getInt("idArmy"),resultSet.getInt("type"),resultSet.getInt("amount"));
+						},idArmy,type);
+		return troopList.get(0);
+	}
+
 }
