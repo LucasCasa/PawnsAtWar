@@ -31,4 +31,10 @@ public class ArmyServiceImpl implements ArmyService {
 		return ad.getArmyById(idArmy);
 	}
 
+	@Override
+	public boolean belongs(int userId, int idArmy) {
+		return ad.belongs(userId, idArmy);
+	}
+
+
 }

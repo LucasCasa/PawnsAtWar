@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.itba.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,6 +20,10 @@ import ar.edu.itba.model.User;
 import ar.edu.itba.paw.webapp.dataClasses.BuildingInformationMap;
 import ar.edu.itba.paw.webapp.dataClasses.InformationBuilding;
 
+import javax.servlet.http.HttpSession;
+
+import static java.lang.System.out;
+
 /**
  * Created by root on 9/18/16.
  */
@@ -29,15 +34,24 @@ public class BuildingController {
     private SectorService ss;
     @Autowired
 	private EmpireService es;
+    @Autowired
+    private UserService us;
+
 
     @RequestMapping(value="/building", method = RequestMethod.GET)
 
 
     public ModelAndView terrainParams(@RequestParam(value="x",required = false) final String x,
                                       @RequestParam(value="y", required = false) final String y,
-                                      @ModelAttribute("user") final User user) {
+                                      @ModelAttribute("userId") final User user) {
 
-            String regex = "^\\d+";
+
+
+        if(user == null)
+            return new ModelAndView("redirect:/login");
+
+        String regex = "^\\d+";
+
 
         if(!x.matches(regex) || !y.matches(regex)) {
             return new ModelAndView("redirect:/error");
@@ -104,11 +118,21 @@ public class BuildingController {
       
     }
 
-
+    /*
     @ModelAttribute("user")
     public User setRandomUser() {
         User bean = new User(69,"lucas","42069","l@l.com");
         return bean;
+    }*/
+
+    @ModelAttribute("userId")
+    public User loggedUser (final HttpSession session){
+        if(session.getAttribute("userId") == null) {
+
+        }
+
+        return  us.findById((Integer)session.getAttribute("userId"));
+
     }
 
 }

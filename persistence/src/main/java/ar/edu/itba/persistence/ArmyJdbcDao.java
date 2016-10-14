@@ -72,4 +72,13 @@ public class ArmyJdbcDao implements ArmyDao{
 
 	}
 
+	public boolean belongs(int userId, int idArmy){
+
+		List<Integer> troopList = jdbcTemplate
+				.query("SELECT COUNT(*) as aux FROM TROOP WHERE idPlayer = ? AND WHERE idArmy = ?",(ResultSet resultSet, int rowNum) -> {
+					return resultSet.getInt("aux");
+				},userId, idArmy);
+		return troopList.get(0) == 0 ? false : true;
+	}
+
 }

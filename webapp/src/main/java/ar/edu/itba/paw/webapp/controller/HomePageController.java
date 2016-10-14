@@ -48,6 +48,8 @@ public class HomePageController {
 								   @ModelAttribute("userId") final User user){
 
 
+
+
 		out.println("ENTRA CON EL USUARIO " + user.getName());
 		int xprime ;
 		int yprime;
@@ -85,7 +87,8 @@ public class HomePageController {
 	}
 	@ModelAttribute("userId")
 	public User loggedUser (final HttpSession session){
-		out.println("EL USUARIO ES: " + (Integer)session.getAttribute("userId"));
+		//out.println("EL USUARIO ES: " + (Integer)session.getAttribute("userId"));
+
 		if(session.getAttribute("userId") != null)
 			return  us.findById((Integer)session.getAttribute("userId"));
 		return null;

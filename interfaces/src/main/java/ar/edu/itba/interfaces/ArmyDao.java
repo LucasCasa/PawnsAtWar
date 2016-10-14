@@ -16,6 +16,8 @@ public interface ArmyDao {
 	public Army getArmyById(int idArmy);
 	
 	public boolean isAvailable(Point p);
+
+	public boolean belongs(int userId, int idArmy);
 	
 	
 }

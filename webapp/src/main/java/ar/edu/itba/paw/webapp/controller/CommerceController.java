@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,6 +15,10 @@ import ar.edu.itba.model.TradeOffer;
 import ar.edu.itba.model.User;
 import ar.edu.itba.paw.webapp.dataClasses.Validator;
 
+import javax.servlet.http.HttpSession;
+
+import static java.lang.System.out;
+
 @Controller
 public class CommerceController {
 	
@@ -22,11 +27,18 @@ public class CommerceController {
 	
 	@Autowired
 	private CommerceService cs;
+
+	@Autowired
+	private UserService us;
 	
 	@RequestMapping(value="/commerce")
     public ModelAndView commerce(@RequestParam(value="insuficientAmount", required = false)boolean insuficientAmount
-    		,@ModelAttribute("user") final User user){
-        final ModelAndView mav = new ModelAndView("commerce");
+    		,@ModelAttribute("userId") final User user){
+
+		if(user == null)
+			return new ModelAndView("redirect:/login");
+
+		final ModelAndView mav = new ModelAndView("commerce");
         
         mav.addObject("myTrades",cs.getAllOffers(user.getId()));
         mav.addObject("tradeList",cs.showOffers(user.getId()));
@@ -98,11 +110,18 @@ public class CommerceController {
 		}
 		return new ModelAndView("redirect:/commerce");
 	}
-	
+	 /*
     @ModelAttribute("user")
     public User setRandomUser() {
         User bean = new User(69,"lucas","42069","l@l.com");
         return bean;
-    }
+    }*/
+
+	@ModelAttribute("userId")
+	public User loggedUser (final HttpSession session){
+		if(session.getAttribute("userId") != null)
+			return  us.findById((Integer)session.getAttribute("userId"));
+		return null;
+	}
 
 }

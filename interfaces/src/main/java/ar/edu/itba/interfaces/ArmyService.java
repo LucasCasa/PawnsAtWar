@@ -12,6 +12,8 @@ public interface ArmyService{
 	public Army createArmy(Point p, int idPlayer);
 	
 	public Army getArmyById(int idArmy);
+
+	public boolean belongs(int userId, int idArmy);
 	
 	
 }

@@ -1,9 +1,6 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import ar.edu.itba.interfaces.ArmyService;
-import ar.edu.itba.interfaces.SectorService;
-import ar.edu.itba.interfaces.TerrainService;
-import ar.edu.itba.interfaces.TroopService;
+import ar.edu.itba.interfaces.*;
 import ar.edu.itba.model.*;
 import ar.edu.itba.paw.webapp.dataClasses.BuildingInformationMap;
 import ar.edu.itba.paw.webapp.dataClasses.Validator;
@@ -12,8 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
 import java.util.List;
+
+import static java.lang.System.out;
 
 /**
  * Created by Team Muffin on 18/09/16.
@@ -27,11 +27,18 @@ public class ArmyController {
     private SectorService ss;
     @Autowired
     private TroopService ts;
+    @Autowired
+    private UserService us;
 
     @RequestMapping(value="/armies")
-    public ModelAndView showArmies(@ModelAttribute("user") final User user,
+    public ModelAndView showArmies(@ModelAttribute("userId") final User user,
                                    @RequestParam(value= "x",required = false) String x ,
-                                   @RequestParam(value= "y",required = false) String y){
+                                   @RequestParam(value= "y",required = false) String y
+                                   ){
+
+        if(user == null)
+            return new ModelAndView("redirect:/login");
+
         final ModelAndView mav = new ModelAndView("armies");
         List<Army> armies;
         armies = as.getArmies(0); // aca el id del flaco
@@ -48,7 +55,8 @@ public class ArmyController {
     }
 
     @RequestMapping(value="/armies/{armyId}")
-    public ModelAndView showArmy(@PathVariable String armyId,
+    public ModelAndView showArmy(@ModelAttribute("userId") final User user,
+                                 @PathVariable String armyId,
                                  @RequestParam(value= "x",required = false) String x ,
                                  @RequestParam(value= "y",required = false) String y){
 
@@ -112,11 +120,18 @@ public class ArmyController {
         return mav;
     }
 
+    /*
     @ModelAttribute("user")
     public User setRandomUser() {
         User bean = new User(69,"lucas","42069","l@l.com");
         return bean;
-    }
+    }*/
 
+    @ModelAttribute("userId")
+    public User loggedUser (final HttpSession session){
+        if(session.getAttribute("userId") != null)
+            return  us.findById((Integer)session.getAttribute("userId"));
+        return null;
+    }
 
 }

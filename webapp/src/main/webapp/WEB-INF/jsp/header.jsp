@@ -26,14 +26,14 @@
 		    <div class="collapse navbar-collapse" id="navbar-brand-centered">
 		      <ul class="nav navbar-nav">
 		        <li><a href="<c:url value="/map"/>">Mapa</a></li>
-		        <li><a href="<c:url value="/armie"/>">Ejercitos</a></li>
+		        <li><a href="<c:url value="/armies"/>">Ejercitos</a></li>
 		        <li><a href="<c:url value="/commerce"/>">Comercio</a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		        <li><a><s>Ranking</s></a></li>
 		        <li><a><s>Mensajes</s></a></li>
 		        <li><a href="<c:url value="/login"/>">Salir</a></li>
-		      </ul>	
+		      </ul>
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->
 		</nav>
