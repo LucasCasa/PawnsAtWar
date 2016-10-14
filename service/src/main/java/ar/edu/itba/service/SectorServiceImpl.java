@@ -17,7 +17,6 @@ import ar.edu.itba.model.Sector;
 @Service
 public class SectorServiceImpl implements SectorService {
 	
-	//no esta bien hecho.
 	public static final int CASTLE = 1;
 	public static final int EMPTY = 0;
 	public static final int ARCHERY = 2;
@@ -28,7 +27,9 @@ public class SectorServiceImpl implements SectorService {
 	public static final int BLACKSMITH = 7;
 	
 	public static final int maxX = 99;
-	public static final int  maxY = 99;
+	public static final int maxY = 99;
+	
+	public static final int initRange = 2;
 	
 	@Autowired
 	BuildingDao bd;
@@ -94,7 +95,7 @@ public class SectorServiceImpl implements SectorService {
 		bd.deleteBuilding(p);
 		if(b.getType() == CASTLE){
 			td.addTerrain(p);
-			updateTerrain(p);
+			updateTerrain(p,null,3);
 		}else if(b.getType() == GOLD){
 			td.addTerrain(p, 1, b.getIdPlayer(),TERR_GOLD);
 		}else{
@@ -102,10 +103,10 @@ public class SectorServiceImpl implements SectorService {
 		}
 	}
 	
-	private void updateTerrain(Point p){
-		List<Sector> listSector = td.getTerrain(p, 3);
+	private void updateTerrain(Point p, Integer newOwner,int range){
+		List<Sector> listSector = td.getTerrain(p, range);
 		for(Sector s: listSector){
-			td.setIdPlayer(s.getPosition(),null);
+			td.setIdPlayer(s.getPosition(),newOwner);
 		}
 		
 	}
@@ -127,6 +128,7 @@ public class SectorServiceImpl implements SectorService {
 
 	@Override
 	public void createCastle(int userid) {
-		bs.addCastle(userid);
+		Point p = bs.addCastle(userid);
+		updateTerrain(p,userid,initRange);
 	}
 }

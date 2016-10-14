@@ -6,7 +6,7 @@
 			<tr>
 				<c:forEach var="res" items="${resList}" varStatus="loop">
 				<td>
-					<re:Resource rate="${1}" type="${res.type}" amount="${res.quantity}" />
+					<re:Resource rate="${ratesList.get(loop.index)}" type="${res.type}" amount="${res.quantity}" />
 				</td>
 				</c:forEach>
 			</tr>

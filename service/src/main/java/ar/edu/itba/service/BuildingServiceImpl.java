@@ -31,14 +31,14 @@ public class BuildingServiceImpl implements BuildingService{
 			int minY = p.getY()-RANGE < 0 ? 0 : p.getY()-RANGE;
 			int maxX = p.getX()+RANGE > MAXVALUE ? MAXVALUE : p.getX() + RANGE;
 			int maxY = p.getY()+RANGE > MAXVALUE ? MAXVALUE : p.getY() + RANGE;
-			for(int i = minX; i <maxX ; i++ ){
-				for (int j = minY ; j< maxY; j++ ){
+			for(int i = minX; i <=maxX ; i++ ){
+				for (int j = minY ; j<=maxY; j++ ){
 					aux[i][j] = true;
 				}
 			}
 		}
-		for(int i = RANGE ; i<=MAXVALUE-RANGE ;i++){
-			for (int j = RANGE ;j<=MAXVALUE-RANGE;j++){
+		for(int i = RANGE ; i<=MAXVALUE-RANGE/2 ;i++){
+			for (int j = RANGE ;j<=MAXVALUE-RANGE/2;j++){
 				if(!aux[i][j]){
 					availableSpots.add(new Point(i,j));
 				}
@@ -93,11 +93,13 @@ public class BuildingServiceImpl implements BuildingService{
 	}
 
 	@Override
-	public void addCastle(int userid) {
+	public Point addCastle(int userid) {
 		LoadSpots();
 		Random random = new Random();
 		int n = random.nextInt(availableSpots.size());
-		addBuilding(availableSpots.get(n),userid,1);
+		Point p = availableSpots.get(n);
+		addBuilding(p,userid,1);
+		return p;
 	}
 	
 	

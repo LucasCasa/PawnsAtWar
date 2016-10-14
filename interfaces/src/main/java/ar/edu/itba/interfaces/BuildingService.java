@@ -23,6 +23,6 @@ public interface BuildingService {
 	boolean belongsTo(Point p, int idPlayer);
 
 	public Point getCastle(int idPlayer);
-
-	public void addCastle(int userid);
+	
+	public Point addCastle(int userid);
 }
