@@ -22,7 +22,10 @@ public class ArmyServiceImpl implements ArmyService {
 	}
 
 	@Override
-	public Army createArmy(Point p, int idPlayer) {
+	public Army getOrCreateArmy(Point p, int idPlayer) {
+		if(ad.exists(p,idPlayer)){
+			return ad.getArmy(p,idPlayer); 
+		}
 		return ad.addArmy(p, idPlayer);
 	}
 
@@ -34,6 +37,11 @@ public class ArmyServiceImpl implements ArmyService {
 	@Override
 	public boolean belongs(int userId, int idArmy) {
 		return ad.belongs(userId, idArmy);
+	}
+	
+	@Override
+	public void setAvailable(int idArmy, boolean available){
+		ad.setAvailable(idArmy, available);
 	}
 
 
