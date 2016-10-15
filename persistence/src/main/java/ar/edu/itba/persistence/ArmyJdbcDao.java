@@ -41,7 +41,7 @@ public class ArmyJdbcDao implements ArmyDao{
 
 	@Override
 	public Army addArmy(Point position, int idPlayer) {
-		return addArmy(position,idPlayer,false);
+		return addArmy(position,idPlayer,true);
 	}
 
 	@Override

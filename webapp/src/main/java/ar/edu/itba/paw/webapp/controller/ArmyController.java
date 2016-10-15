@@ -41,7 +41,7 @@ public class ArmyController {
         }
         final ModelAndView mav = new ModelAndView("armies");
         List<Army> armies;
-        armies = as.getArmies(0); // aca el id del flaco
+        armies = as.getArmies(user.getId());
 
         if(Validator.validBoardPosition(x) && Validator.validBoardPosition(y)){
             mav.addObject("x",x);
@@ -147,27 +147,27 @@ public class ArmyController {
         switch (Integer.valueOf(type)){
             case Info.WARRIOR:
                 if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < a * Info.COST_WARRIOR){
-                    return new ModelAndView("redirect:/building?x=" +x + "y=" +y + "m=No hay suficiente comida");
+                    return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=No hay suficiente comida");
                 }
                 Army ar = as.getOrCreateArmy(new Point(x,y),user.getId());
                 ts.addTroop(ar.getIdArmy(),Info.WARRIOR,a);
                 break;
             case Info.ARCHER:
                 if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < a * Info.COST_ARCHER){
-                    return new ModelAndView("redirect:/building?x=" +x + "y=" +y + "m=No hay suficiente comida");
+                    return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=No hay suficiente comida");
                 }
                 Army ar2 = as.getOrCreateArmy(new Point(x,y),user.getId());
                 ts.addTroop(ar2.getIdArmy(),Info.ARCHER,a);
                 break;
             case Info.HORSEMAN:
                 if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < a * Info.COST_HORSEMAN){
-                    return new ModelAndView("redirect:/building?x=" +x + "y=" +y + "m=No hay suficiente comida");
+                    return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=No hay suficiente comida");
                 }
                 Army ar3 = as.getOrCreateArmy(new Point(x,y),user.getId());
                 ts.addTroop(ar3.getIdArmy(),Info.HORSEMAN,a);
                 break;
         }
-        return new ModelAndView("redirect:/building?x=" +x + "y=" +y + "m=Tropa creada exitosamente");
+        return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=Tropa creada exitosamente");
 
     }
     @ModelAttribute("user")
