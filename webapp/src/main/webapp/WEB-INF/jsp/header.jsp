@@ -32,7 +32,7 @@
 		      <ul class="nav navbar-nav navbar-right">
 		        <li><a><s>Ranking</s></a></li>
 		        <li><a><s>Mensajes</s></a></li>
-		        <li><a href="<c:url value="/login"/>">Salir</a></li>
+		        <li><a href="<c:url value="/logout"/>">Salir</a></li>
 		      </ul>
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->

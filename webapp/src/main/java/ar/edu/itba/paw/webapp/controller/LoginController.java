@@ -64,7 +64,15 @@ public class LoginController {
 			return authenticate(form);
 		}
 	}
-	
+
+
+	@RequestMapping("/logout")
+	public ModelAndView logout(final HttpSession session){
+		session.removeAttribute(LOGGED_USER_ID);
+
+		return new ModelAndView("redirect:/login");
+	}
+
 }
 
 			        
