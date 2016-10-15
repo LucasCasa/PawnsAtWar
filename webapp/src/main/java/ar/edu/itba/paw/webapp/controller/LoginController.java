@@ -40,6 +40,9 @@ public class LoginController {
 		if (errors.hasErrors()) {
 			return login(form);
 		}
+		if(us.exists(form.getUsername(),form.getPassword())){
+			return new ModelAndView("redirect:/error?m=El usuario que ustede quiere crear ya existe.");
+		}
 		us.create(form.getUsername(), form.getPassword(), form.getEmail());
 		User u = us.findByUsername(form.getUsername());
 		session.setAttribute(LOGGED_USER_ID, u.getId());
@@ -61,15 +64,17 @@ public class LoginController {
 			session.setAttribute(LOGGED_USER_ID, u.getId());
 			return new ModelAndView("redirect:/map");
 		}else{
-			return authenticate(form);
+			 return new ModelAndView("redirect:/error?m=El usuario o contrasena ingresados son incorrectos.");
 		}
 	}
 
 
 	@RequestMapping("/logout")
 	public ModelAndView logout(final HttpSession session){
+		if(session.getAttribute(LOGGED_USER_ID) == null){
+			return new ModelAndView("redirect:/error?m=No puede salir si no esta ingresado.");
+		}
 		session.removeAttribute(LOGGED_USER_ID);
-
 		return new ModelAndView("redirect:/login");
 	}
 
