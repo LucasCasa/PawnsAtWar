@@ -127,6 +127,10 @@ INSERT INTO userPaw VALUES (98,'98','42069','mvega@itba.edu.ar');
 INSERT INTO userPaw VALUES (99,'99','42069','mvega@itba.edu.ar');
 INSERT INTO empire VALUES (0,now());
 INSERT INTO empire VALUES (69,now());
+INSERT INTO empire VALUES (1,now());
+INSERT INTO empire VALUES (5,now());
+
+
 
 INSERT INTO resource VALUES (0,0,69);
 INSERT INTO resource VALUES (1,1000,69);

@@ -33,7 +33,7 @@ public class CommerceController {
 	
 	@RequestMapping(value="/commerce")
     public ModelAndView commerce(@RequestParam(value="insuficientAmount", required = false)boolean insuficientAmount
-    		,@ModelAttribute("userId") final User user){
+    		,@ModelAttribute("user") final User user){
 
 		if(user == null)
 			return new ModelAndView("redirect:/login");
@@ -50,7 +50,7 @@ public class CommerceController {
 	}
 	
 	@RequestMapping(value="/commerce/acceptTrade")
-	public ModelAndView acceptTrade(@RequestParam final int id, @ModelAttribute final User user){
+	public ModelAndView acceptTrade(@RequestParam final int id, @ModelAttribute("user") final User user){
 		TradeOffer to = cs.getOffer(id);
 		if(to == null || to.getOwner().getId() == user.getId())
 			return new ModelAndView("redirect:/error");
@@ -65,7 +65,7 @@ public class CommerceController {
 	}
 	
 	@RequestMapping(value="/commerce/delete")
-	public ModelAndView deleteTrade(@RequestParam final int id, @ModelAttribute final User user){
+	public ModelAndView deleteTrade(@RequestParam final int id, @ModelAttribute("user") final User user){
 		TradeOffer to = cs.getOffer(id);
 		if(to == null || to.getOwner().getId() != user.getId())
 			return new ModelAndView("redirect:/error");
@@ -76,7 +76,7 @@ public class CommerceController {
 	
 	@RequestMapping(value="/commerce/create")
 	public ModelAndView createOffer(@RequestParam(value="insuficientAmount", required = false)boolean insuficientAmount,
-			@ModelAttribute final User user){
+			@ModelAttribute("user") final User user){
 		ModelAndView mav = new ModelAndView("createOffer");
 		
 		mav.addObject("insuficientAmount",insuficientAmount);
@@ -110,14 +110,8 @@ public class CommerceController {
 		}
 		return new ModelAndView("redirect:/commerce");
 	}
-	 /*
-    @ModelAttribute("user")
-    public User setRandomUser() {
-        User bean = new User(69,"lucas","42069","l@l.com");
-        return bean;
-    }*/
 
-	@ModelAttribute("userId")
+	@ModelAttribute("user")
 	public User loggedUser (final HttpSession session){
 		if(session.getAttribute("userId") != null)
 			return  us.findById((Integer)session.getAttribute("userId"));
