@@ -7,32 +7,12 @@
 
 
 <div class="container">
-	
-	<%@ include file="resourceBar.jsp" %>
-
-	<div class="form-inline" >
-		<div class="form-group">
-			<label for="Xval">X:</label>
-			<input type="text" class="form-control" id="Xval" size="3">
-
-		</div>
-		<div class="form-group">
-			<label for="Yval">Y:</label>
-			<input type="text" class="form-control" id="Yval" size="3">
-
-		</div>
-		<button class="myButton" id="gotoDir" onclick="redir()">IR
-
-
-		</button>
-		<span id="error" style="display:none; color:#FF0000">Direccion invalida!</span>
-	</div>
-	<br>
 
 	<div>
+		<br>
 		<div class="row">
 			<div class="especial"></div>
-			<div class="col-md-9">
+			<div class="col-md-8 col-sm-9">
 				<div id="Map" class="carousel slide" style="display: inline-block">
 
 					<table style="max-width: 537,6px;">
@@ -70,7 +50,25 @@
 					</a>
 				</div>
 			</div>
+			<div class="col-md-4">
+				<%@ include file="resourceBar.jsp" %>
+				<br>
+				<div class="form-inline" >
+					<div class="form-group">
+						<label for="Xval">X:</label>
+						<input type="text" class="form-control" id="Xval" size="3">
+
+					</div>
+					<div class="form-group">
+						<label for="Yval">Y:</label>
+						<input type="text" class="form-control" id="Yval" size="3">
+
+					</div>
+					<button class="myButton" id="gotoDir" onclick="redir()">IR </button>
+					<div id="error" style="display:none; color:#FF0000">Direccion invalida!</div>
+				</div>
+			</div>
 		</div>
-	</div>	
+	</div>
 </div>
 <%@ include file="footer.jsp" %>

@@ -44,6 +44,9 @@ public class BuildingTag extends SimpleTagSupport {
             case Info.BLACKSMITH:
                 printBlacksmith();
                 break;
+            case Info.STABLE:
+                printStable();
+                break;
         }
     }
 
@@ -67,7 +70,7 @@ public class BuildingTag extends SimpleTagSupport {
     private void printStable() throws JspException,IOException{
         printButtons();
         printCreateTroop(Info.HORSEMAN);
-        //printTable("Tiempo de creacion",Info.STABLE,1);
+        printTable("Tiempo de creacion",Info.STABLE,1);
     }
     private void printCreateTroop(int type) throws JspException,IOException{
         JspWriter out = getJspContext().getOut();
@@ -182,6 +185,9 @@ public class BuildingTag extends SimpleTagSupport {
                     break;
                 case Info.BLACKSMITH:
                     out.print("<img src=\"/webapp/resources/images/blacksmith.png\">");
+                    break;
+                case Info.STABLE:
+                    out.print("<img src=\"/webapp/resources/images/stable.png\">");
                     break;
             }
     }

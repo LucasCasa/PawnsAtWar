@@ -15,6 +15,7 @@ public class Info {
     public static final int TERR_GOLD = 5;
     public static final int MILL = 6;
     public static final int BLACKSMITH = 7;
+    public static final int STABLE = 8;
 
     public static final int WARRIOR = 0;
     public static final int ARCHER = 1;
@@ -43,6 +44,7 @@ public class Info {
         infoList.add(new InformationBuilding(5,"terrgold", "Terreno propicio para construir una mina de oro."));
         infoList.add(new InformationBuilding(6,"mill", "Este tipo de edificio es un molino y se utiliza para obtener comida."));
         infoList.add(new InformationBuilding(7,"blacksmith", "Este tipo de edificio para mejorar a las tropas"));
+        infoList.add(new InformationBuilding(8,"stable", "En este edificio se puede reclutar a los caballeros,la mejor tropa del juego"));
     }
 
     public InformationBuilding getBuildingInformation(int id){

@@ -46,7 +46,9 @@ public class TerrainTag extends SimpleTagSupport{
             case Info.BLACKSMITH:
                 out.print("<img class=\" " + clas + " " + status + " \"  src=\"/webapp/resources/images/blacksmith.jpg\">");
                 break;
-
+            case Info.STABLE:
+                out.print("<img class=\" " + clas + " " + status + " \"  src=\"/webapp/resources/images/stable.jpg\">");
+                break;
         }
     }
     

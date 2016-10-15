@@ -84,6 +84,12 @@
 }
 body{
     font-family: 'Cinzel', serif;
+
+}
+body > .container{
+    background-image: url(../images/backfront.jpg);
+    border: 25px double orange;
+    border-image: url(../images/backborder.jpg)25% stretch;
 }
 .myButton {
     -moz-box-shadow: 0px 1px 0px 0px #1c1b18;
