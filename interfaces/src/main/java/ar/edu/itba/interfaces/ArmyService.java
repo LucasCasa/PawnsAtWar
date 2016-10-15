@@ -15,7 +15,9 @@ public interface ArmyService{
 
 	public boolean belongs(int userId, int idArmy);
 
-	void setAvailable(int idArmy, boolean available);
+	public void setAvailable(int idArmy, boolean available);
+	
+	public void deleteArmy(int idArmy);
 	
 	
 }

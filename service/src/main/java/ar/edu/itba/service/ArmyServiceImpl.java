@@ -44,5 +44,12 @@ public class ArmyServiceImpl implements ArmyService {
 		ad.setAvailable(idArmy, available);
 	}
 
+	@Override
+	public void deleteArmy(int idArmy) {
+		ad.deleteArmy(idArmy);
+	}
+	
+	
+
 
 }

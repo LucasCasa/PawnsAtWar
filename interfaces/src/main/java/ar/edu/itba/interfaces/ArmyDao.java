@@ -24,6 +24,8 @@ public interface ArmyDao {
 	public Army getArmy(Point p, int idPlayer);
 
 	void setAvailable(int idArmy, boolean available);
+
+	public void deleteArmy(int idArmy);
 	
 	
 }

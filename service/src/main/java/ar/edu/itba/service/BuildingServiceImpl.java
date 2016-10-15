@@ -93,13 +93,20 @@ public class BuildingServiceImpl implements BuildingService{
 	}
 
 	@Override
-	public Point addCastle(int userid) {
-		LoadSpots();
+	public Point addCastle(int idPlayer) {
+		if(availableSpots == null)
+			LoadSpots();
 		Random random = new Random();
 		int n = random.nextInt(availableSpots.size());
 		Point p = availableSpots.get(n);
-		addBuilding(p,userid,1);
+		availableSpots.remove(n);
+		addBuilding(p,idPlayer,1);
 		return p;
+	}
+
+	@Override
+	public List<Building> getAllBuildings(int idPlayer) {
+		return bd.getBuildings(idPlayer);
 	}
 	
 	

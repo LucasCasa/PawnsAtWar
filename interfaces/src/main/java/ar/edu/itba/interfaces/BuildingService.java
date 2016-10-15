@@ -1,6 +1,8 @@
 package ar.edu.itba.interfaces;
 
 
+import java.util.List;
+
 import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Point;
 
@@ -24,5 +26,7 @@ public interface BuildingService {
 
 	public Point getCastle(int idPlayer);
 	
-	public Point addCastle(int userid);
+	public Point addCastle(int idPlayer);
+	
+	public List<Building> getAllBuildings(int idPlayer);
 }

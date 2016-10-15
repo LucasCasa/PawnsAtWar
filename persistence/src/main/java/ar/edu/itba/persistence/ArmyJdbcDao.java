@@ -105,4 +105,11 @@ public class ArmyJdbcDao implements ArmyDao{
 		return armies.isEmpty()? null: armies.get(0);
 	}
 
+	@Override
+	public void deleteArmy(int idArmy) {
+		jdbcTemplate
+		.update("DELETE FROM army WHERE idarmy = ?",idArmy);
+		
+	}
+
 }

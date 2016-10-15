@@ -44,6 +44,8 @@ public interface BuildingDao {
 
 	public List<Building> getBuildings(int userId, int type);
 
-	public List<Point> getAllCastles();	
+	public List<Point> getAllCastles();
+
+	public List<Building> getBuildings(int idPlayer);	
 	
 }
