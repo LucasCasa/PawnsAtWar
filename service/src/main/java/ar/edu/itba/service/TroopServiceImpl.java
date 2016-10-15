@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import ar.edu.itba.interfaces.ArmyService;
 import ar.edu.itba.interfaces.TroopDao;
 import ar.edu.itba.interfaces.TroopService;
 import ar.edu.itba.model.Troop;
@@ -16,6 +17,9 @@ public class TroopServiceImpl implements TroopService {
 	
 	@Autowired
 	TroopDao td;
+	
+	@Autowired
+	ArmyService as;
 
 	@Override
 	public List<Troop> getTroopById(int idArmy) {
@@ -31,26 +35,46 @@ public class TroopServiceImpl implements TroopService {
 
 	@Override
 	public void changeAmount(int idArmy, int type, int amount) {
-		if(amount >= 0 || (type >=0 && type <MAX_TROOP))
 			td.changeAmount(idArmy, type, amount);
 	}
 
 	@Override
 	public void deleteTroop(int idArmy, int type) {
 		if(type >= 0 && type < MAX_TROOP)
-			td.deleteTroop(idArmy, type);	
+			td.deleteTroop(idArmy, type);
+		if(td.getAmountTroops(idArmy) == 0){
+			as.deleteArmy(idArmy);
+		}
+		
 	}
 
 	@Override
-	public Troop addTroop(int idArmy, int type, int amount) {
+	public void addTroop(int idArmy, int type, int amount) {
 		if((type < 0 && type >= MAX_TROOP) || amount < 0){
-			return null;
+			return;
 		}
 		if(td.exists(idArmy,type)){
 			td.changeAmount(idArmy, type, td.getAmount(idArmy, type) + amount);
-			return td.getTroop(idArmy,type);
+			return;
 		}
-		return td.addTroop(idArmy,type,amount);
+		td.addTroop(idArmy,type,amount);
+		return;
+	}
+	
+	@Override
+	public void subtractTroop(int idArmy, int type, int amount){
+		if((type < 0 && type >= MAX_TROOP || amount < 0 )){
+			return;
+		}
+		if(!td.exists(idArmy,type)){
+			return;
+		}
+		int originalAmount = td.getAmount(idArmy, type);
+		if(originalAmount <= amount){
+			deleteTroop(idArmy, type);
+			return;
+		}
+		td.changeAmount(idArmy, type, originalAmount-amount);
 	}
 	
 

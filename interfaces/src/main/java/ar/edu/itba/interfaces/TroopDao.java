@@ -12,5 +12,6 @@ public interface TroopDao {
 	public Troop addTroop(int idArmy, int type, int amount);
 	public boolean exists(int idArmy, int type);
 	public Troop getTroop(int idArmy, int type);
+	public int getAmountTroops(int idArmy);
 	
 }

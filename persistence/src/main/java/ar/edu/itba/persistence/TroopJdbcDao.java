@@ -86,4 +86,13 @@ public class TroopJdbcDao implements TroopDao {
 		return troopList.get(0);
 	}
 
+	@Override
+	public int getAmountTroops(int idArmy) {
+		List<Integer> troopList = jdbcTemplate
+				.query("SELECT count(*) AS aux FROM TROOP WHERE idArmy = ?",(ResultSet resultSet, int rowNum) -> {
+							return new Integer(resultSet.getInt("aux"));
+						},idArmy);
+		return troopList.get(0);
+	}
+
 }

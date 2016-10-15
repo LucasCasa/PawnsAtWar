@@ -13,6 +13,9 @@ public interface TroopService {
 	
 	public void deleteTroop (int idArmy, int type);
 	
-	public Troop addTroop (int idArmy, int type, int amount);
+	public void addTroop (int idArmy, int type, int amount);
+
+	void subtractTroop(int idArm, int type, int amount);
+	
 		
 }
