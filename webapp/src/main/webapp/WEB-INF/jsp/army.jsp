@@ -24,26 +24,53 @@
     </c:forEach>
         </tr>
     </table>
-</div>
 <c:choose>
     <c:when test="${army.available}">
     <h1 style="text-align: center;"><b>Atacar</b></h1><br>
 <form style="text-align: center" method="post" action="<c:url value="/attack"/>">
-<div class="form-inline">
-    <div class="form-group">
-        <label for="Xval">X:</label>
-        <input type="text" class="form-control" name="x" id="Xval" size="3" value="${x}">
+    <div class="form-inline">
+        <div class="form-group">
+            <label for="Xval">X:</label>
+            <input type="text" class="form-control" name="x" id="Xval" size="3" value="${x}">
+        </div>
+        <div class="form-group">
+            <label for="Yval">Y:</label>
+            <input type="text" class="form-control" name="y" id="Yval" size="3" value="${y}">
+        </div>
+        <input type="submit" class="myButton" value="Atacar"/>
     </div>
-    <div class="form-group">
-        <label for="Yval">Y:</label>
-        <input type="text" class="form-control" name="y" id="Yval" size="3" value="${y}">
-    </div>
-    <input type="submit" class="myButton" value="Atacar"/>
-</div>
 </form>
+    <h1 style="text-align: center;"><b>Juntar</b></h1><br>
+    <table class="table table-striped">
+        <tr>
+            <th>X</th>
+            <th>Y</th>
+            <th>Juntar</th>
+        </tr>
+        <c:if test="${armySize > 1}">
+        <c:forEach var="other" items="${armies}">
+            <c:if test="${other.available && other.idArmy != army.idArmy}">
+            <tr>
+                <td>
+                    <c:out value="${other.position.x}"/>
+                </td>
+                <td>
+                    <c:out value="${other.position.y}"/>
+                </td>
+                <td>
+                    <a href="<c:url value="/merge?f=${army.idArmy}&t=${other.idArmy}"/>"><button class="myButton">Juntar</button></a>
+                </td>
+            </tr>
+            </c:if>
+        </c:forEach>
+        </c:if>
+    </table>
+
+
     </c:when>
     <c:otherwise>
         <h1 style="text-align: center">Ejercito Ocupado</h1>
     </c:otherwise>
 </c:choose>
+</div>
 <%@ include file="footer.jsp" %>

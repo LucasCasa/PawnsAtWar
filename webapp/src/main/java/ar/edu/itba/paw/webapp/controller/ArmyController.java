@@ -85,7 +85,13 @@ public class ArmyController {
         if(!as.belongs(user.getId(),id)){
             return new ModelAndView("redirect:/error?m=Este ejercito no es tuyo");
         }
+        List<Army> armies = as.getArmies(user.getId());
+        if(armies == null){
+            armies = new ArrayList<>();
+        }
         List<Troop> troops = ts.getTroopById(id);
+        mav.addObject("armies",armies);
+        mav.addObject("armySize",armies.size());
         mav.addObject("army",army);
         mav.addObject("troops",troops);
         return mav;
@@ -149,26 +155,70 @@ public class ArmyController {
                 if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < a * Info.COST_WARRIOR){
                     return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=No hay suficiente comida");
                 }
-                Army ar = as.getOrCreateArmy(new Point(x,y),user.getId());
-                ts.addTroop(ar.getIdArmy(),Info.WARRIOR,a);
+                es.subtractResourceAmount(user.getId(),Info.RES_FOOD,a * Info.COST_WARRIOR);
                 break;
             case Info.ARCHER:
-                if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < a * Info.COST_ARCHER){
-                    return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=No hay suficiente comida");
+                if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < a * Info.COST_ARCHER) {
+                    return new ModelAndView("redirect:/building?x=" + x + "&y=" + y + "&m=No hay suficiente comida");
                 }
-                Army ar2 = as.getOrCreateArmy(new Point(x,y),user.getId());
-                ts.addTroop(ar2.getIdArmy(),Info.ARCHER,a);
+                es.subtractResourceAmount(user.getId(),Info.RES_FOOD,a * Info.COST_ARCHER);
                 break;
             case Info.HORSEMAN:
                 if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < a * Info.COST_HORSEMAN){
                     return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=No hay suficiente comida");
                 }
-                Army ar3 = as.getOrCreateArmy(new Point(x,y),user.getId());
-                ts.addTroop(ar3.getIdArmy(),Info.HORSEMAN,a);
+                es.subtractResourceAmount(user.getId(),Info.RES_FOOD,a * Info.COST_HORSEMAN);
                 break;
+            default:
+                return new ModelAndView("redirect:/error?m=Tipo de tropa invalida");
         }
+        Army ar = as.getOrCreateArmy(new Point(x,y),user.getId());
+        ts.addTroop(ar.getIdArmy(),Integer.valueOf(type),a);
         return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=Tropa creada exitosamente");
 
+    }
+    @RequestMapping(value="/merge")
+    public ModelAndView train(@RequestParam String f,
+                              @RequestParam String t,
+                              @ModelAttribute("user") final User user ){
+        if(user == null){
+            return new ModelAndView("redirect:/");
+        }
+        if(!Validator.isInteger(f) || !Validator.isInteger(t)){
+            return new ModelAndView("redirect:/error?m=Parametros Invalidos");
+        }
+        int from = Integer.valueOf(f);
+        int to = Integer.valueOf(t);
+        List<Army> a = as.getArmies(user.getId());
+        if(!as.belongs(user.getId(),from) || !as.belongs(user.getId(),to)){
+            return new ModelAndView("redirect:/error?m=Uno de los ejercitos no es tuyo");
+        }
+
+        List<Troop> troops = ts.getTroopById(from);
+        for(Troop troop : troops){
+            ts.addTroop(to,troop.getType(),troop.getQuantity());
+        }
+        as.deleteArmy(from);
+        return new ModelAndView("redirect:/armies");
+    }
+    @RequestMapping(value="/armies/{armyId}/split")
+    public ModelAndView train(@PathVariable String armyId,
+                              @ModelAttribute("user") final User user ){
+        if(user == null){
+            return new ModelAndView("redirect:/");
+        }
+        if(!Validator.isInteger(armyId)){
+            return new ModelAndView("redirect:/error?m=Ejercito Invalido");
+        }
+        if(!as.belongs(user.getId(),Integer.valueOf(armyId))){
+            return new ModelAndView("redirect:/error?m=Este Ejercito no te pertenece");
+        }
+        ModelAndView mav = new ModelAndView("split");
+        List<Point> points = new ArrayList<>();
+        mav.addObject("user",user);
+        mav.addObject("armyId",armyId);
+        mav.addObject("posiblePoints",points);
+        return mav;
     }
     @ModelAttribute("user")
     public User loggedUser (final HttpSession session){

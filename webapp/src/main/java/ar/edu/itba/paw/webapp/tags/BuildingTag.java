@@ -73,7 +73,7 @@ public class BuildingTag extends SimpleTagSupport {
         JspWriter out = getJspContext().getOut();
         out.println("<br><br><br>");
         out.println("<div class=\"row\"><form class=\"form-inline\" method=\"post\" action=\""+ path + "/train\" >");
-        out.println("<input placeholder=\"Cantidad\" type=\"number\" style=\"font-size: 18px;\" name=\"amount\">");
+        out.println("<input placeholder=\"Cantidad\" type=\"number\" style=\"font-size: 18px;\" name=\"amount\" min=\"1\">");
         out.println("<input  type=\"hidden\" name=\"type\" value=\""+type+"\">");
         out.println("<input  type=\"hidden\" name=\"px\" value=\""+ point.getX() +"\">");
         out.println("<input  type=\"hidden\" name=\"py\" value=\""+ point.getY() +"\">");
