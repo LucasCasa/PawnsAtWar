@@ -8,7 +8,7 @@
             <th>X</th>
             <th>Y</th>
             <th>Disponible</th>
-            <th>Dirigir</th>
+            <th colspan="2">Dirigir</th>
         </tr>
         <c:forEach var="army" items="${armies}">
         <tr>
@@ -30,6 +30,9 @@
             </td>
             <td>
                 <button class="myButton" onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.idArmy}?x=${x}&y=${y}" />' ">+ Info</button>
+            </td>
+            <td>
+                <button class="myButton" onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.idArmy}/split" />' ">Separar</button>
             </td>
         </tr>
             </c:forEach>

@@ -1,5 +1,7 @@
 package ar.edu.itba.model;
 
+import java.util.Objects;
+
 public class Point {
 	private int x;
 	private int y;
@@ -29,5 +31,18 @@ public class Point {
 	public String toString(){
 		return "(" + this.x + "," + this.y + ")";
 	}
-	
+
+	public boolean equals(Object o){
+		if(o == null)
+			return false;
+		if(!(o instanceof Point))
+			return false;
+		Point p = (Point) o;
+		return x == p.x && y == p.y;
+	}
+
+	@Override
+	public int hashCode() {
+		return x + y*1000;
+	}
 }

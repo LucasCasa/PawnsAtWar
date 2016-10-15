@@ -40,6 +40,7 @@
         <input type="submit" class="myButton" value="Atacar"/>
     </div>
 </form>
+        <c:if test="${armySize > 1}">
     <h1 style="text-align: center;"><b>Juntar</b></h1><br>
     <table class="table table-striped">
         <tr>
@@ -47,7 +48,6 @@
             <th>Y</th>
             <th>Juntar</th>
         </tr>
-        <c:if test="${armySize > 1}">
         <c:forEach var="other" items="${armies}">
             <c:if test="${other.available && other.idArmy != army.idArmy}">
             <tr>

@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.tagext.ValidationMessage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +32,8 @@ public class ArmyController {
     private UserService us;
     @Autowired
     private EmpireService es;
+    @Autowired
+    private BuildingService bs;
 
     @RequestMapping(value="/armies")
     public ModelAndView showArmies(@ModelAttribute("user") final User user,
@@ -214,11 +217,60 @@ public class ArmyController {
             return new ModelAndView("redirect:/error?m=Este Ejercito no te pertenece");
         }
         ModelAndView mav = new ModelAndView("split");
+        Army a = as.getArmyById(Integer.parseInt(armyId));
         List<Point> points = new ArrayList<>();
+        for(Building b : bs.getAllBuildings(user.getId())){
+            if(!b.getPosition().equals(a.getPosition())) {
+                points.add(b.getPosition());
+            }
+        }
+        List<Troop> t = ts.getTroopById(Integer.parseInt(armyId));
         mav.addObject("user",user);
-        mav.addObject("armyId",armyId);
-        mav.addObject("posiblePoints",points);
+        mav.addObject("army",a);
+        mav.addObject("troops",t);
+        mav.addObject("possiblePoints",points);
         return mav;
+    }
+    @RequestMapping(value="/split",method = RequestMethod.POST)
+    public ModelAndView train(@RequestParam(value= "0",required = false,defaultValue = "0") String t1,
+                              @RequestParam(value= "1",required = false,defaultValue = "0") String t2,
+                              @RequestParam(value= "2",required = false,defaultValue = "0") String t3,
+                              @RequestParam(value= "pos") String pos,
+                              @RequestParam(value= "army") String armyId,
+                              @ModelAttribute("user") final User user ){
+        String[] po = pos.split(",");
+        if(!Validator.validBoardPosition(po[0]) || !Validator.validBoardPosition(po[1])){
+            return new ModelAndView("redirect:/error?m=Posición invalida");
+        }
+        Point p = new Point(Integer.parseInt(po[0]),Integer.parseInt(po[1]));
+        if(!Validator.isInteger(t1) || !Validator.isInteger(t2) || !Validator.isInteger(t3)){
+            return new ModelAndView("redirect:/error?m=Cantidad de tropas invalida");
+        }
+        if(!Validator.isInteger(armyId)){
+            return new ModelAndView("redirect:/error?m=Ejercito invalido");
+        }
+        int id = Integer.parseInt(armyId);
+        if(!as.belongs(user.getId(),id)){
+            return new ModelAndView("redirect:/error?m=Ese ejercito no es tuyo");
+        }
+        int warriors = Integer.parseInt(t1);
+        int archers = Integer.parseInt(t2);
+        int horsemen = Integer.parseInt(t3);
+
+        Army newArmy = as.getOrCreateArmy(p,user.getId());
+        if(warriors != 0){
+            ts.addTroop(newArmy.getIdArmy(),Info.WARRIOR,warriors);
+            ts.subtractTroop(id,Info.WARRIOR,warriors);
+        }
+        if(archers != 0){
+            ts.addTroop(newArmy.getIdArmy(),Info.ARCHER,archers);
+            ts.subtractTroop(id,Info.ARCHER,archers);
+        }
+        if(horsemen != 0){
+            ts.addTroop(newArmy.getIdArmy(),Info.HORSEMAN,horsemen);
+            ts.subtractTroop(id,Info.HORSEMAN,horsemen);
+        }
+        return new ModelAndView("redirect:/armies");
     }
     @ModelAttribute("user")
     public User loggedUser (final HttpSession session){

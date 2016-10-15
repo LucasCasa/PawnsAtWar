@@ -129,6 +129,7 @@ body{
 .table > tbody > tr > td, .table > tbody > tr > th, .table > tfoot > tr > td, .table > tfoot > tr > th, .table > thead > tr > td, .table > thead > tr > th{
     background-color: #DEB887 ;
     border-top: 1px solid #000;
+    text-align: center;
 }
 
 p{
@@ -138,6 +139,10 @@ p{
 
 }
 
+.checkbox, .radio{
+    margin-top: 0px;
+    margin-bottom: 0px;
+}
 
 .form-control{
 
