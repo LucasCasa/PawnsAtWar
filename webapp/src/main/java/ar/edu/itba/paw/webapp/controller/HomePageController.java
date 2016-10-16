@@ -38,8 +38,11 @@ public class HomePageController {
 
 
 	@RequestMapping("/")
-	public ModelAndView home(){
-		return new  ModelAndView("redirect:/login");
+	public ModelAndView home(@ModelAttribute("userId") final User user){
+		if(user == null) {
+			return new ModelAndView("redirect:/login");
+		}
+		return new ModelAndView("redirect:/map");
 	}
 
 	@RequestMapping(value={"/map"}, method = RequestMethod.GET)

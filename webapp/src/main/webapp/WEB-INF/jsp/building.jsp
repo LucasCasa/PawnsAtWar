@@ -12,7 +12,7 @@
         <br><br>
         <div class="row">
             <div class="col-md-4"> <img class="img-responsive" src="<c:url value="/resources/images/${building.name}.png" /> " /></div>
-            <div class="col-md-6">
+            <div class="col-md-8">
                 <h2 class="error" style="text-align: center">${message}</h2>
                 <h3><strong>${building.description}</strong></h3>
                     <c:choose>
