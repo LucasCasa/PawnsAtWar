@@ -24,31 +24,39 @@ public class LoginController {
 	UserService us;
 	
 	private final static String LOGGED_USER_ID = "userId";
-	
+
 	@RequestMapping("/register")
-	public ModelAndView login(@ModelAttribute("registerForm") final RegisterForm form){
+	public ModelAndView login(@ModelAttribute("registerForm") final RegisterForm form1){
 		return new ModelAndView("register");
 	}
 	
 	@RequestMapping("/login")
-	public ModelAndView authenticate(@ModelAttribute("loginForm") final LoginForm form){
+	public ModelAndView authenticate(@ModelAttribute("loginForm") final LoginForm form1, @ModelAttribute("registerForm") final RegisterForm form2){
 		return new ModelAndView("login");
 	}
 	
 	@RequestMapping(value = "/create", method = { RequestMethod.POST })
-	public ModelAndView create(@Valid @ModelAttribute("registerForm") final RegisterForm form, final BindingResult errors, final HttpSession session) {
+	public ModelAndView create(@Valid @ModelAttribute("registerForm") final RegisterForm form1,final BindingResult errors, final HttpSession session) {
 		if (errors.hasErrors()) {
-			return login(form);
+			return login2(form1);
 		}
-		if(us.exists(form.getUsername(),form.getPassword())){
-			return new ModelAndView("redirect:/error?m=El usuario que ustede quiere crear ya existe.");
+		if(!(form1.getPassword().equals(form1.getRepeatPassword()))){
+			return new ModelAndView("redirect:/error?m=Las contrasenas no coinciden.");
 		}
-		us.create(form.getUsername(), form.getPassword(), form.getEmail());
-		User u = us.findByUsername(form.getUsername());
+		if(us.exists(form1.getUsername(),form1.getPassword())){
+			return new ModelAndView("redirect:/error?m=El usuario que usted quiere crear ya existe.");
+		}
+
+		us.create(form1.getUsername(), form1.getPassword(), form1.getEmail());
+		User u = us.findByUsername(form1.getUsername());
 		session.setAttribute(LOGGED_USER_ID, u.getId());
 		return new ModelAndView("redirect:/map");
 	}
-	
+
+	private ModelAndView login2(RegisterForm form1) {
+		return new ModelAndView("redirect:/login");
+	}
+
 	@ModelAttribute("userId")
 	public Integer loggedUser (final HttpSession session){
 		return (Integer) session.getAttribute(LOGGED_USER_ID);
@@ -56,6 +64,7 @@ public class LoginController {
 	
 	@RequestMapping(value = "/authenticate", method = { RequestMethod.POST })
 	public ModelAndView create(@Valid @ModelAttribute("loginForm") final LoginForm form, final BindingResult errors, final HttpSession session) {
+
 		if (errors.hasErrors()) {
 			return authenticate(form);
 		}
@@ -68,6 +77,9 @@ public class LoginController {
 		}
 	}
 
+	private ModelAndView authenticate(LoginForm form) {
+		return new ModelAndView("redirect:/login");
+	}
 
 	@RequestMapping("/logout")
 	public ModelAndView logout(final HttpSession session){
