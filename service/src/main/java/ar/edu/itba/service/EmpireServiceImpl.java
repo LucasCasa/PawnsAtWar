@@ -87,7 +87,7 @@ public class EmpireServiceImpl implements EmpireService{
 		}
 		updateResources(id);
 		ed.substractAmount(id, resType, 1000);
-		bs.addBuilding(p, id, type);
+		ss.addBuilding(p, id, type);
 		return true;
 	}
 	

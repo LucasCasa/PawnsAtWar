@@ -101,13 +101,23 @@ public class ArmyController {
     }
 
     @RequestMapping(value="/attack", method = RequestMethod.POST)
-    public ModelAndView attack(@RequestParam String x, @RequestParam String y,@ModelAttribute("user") final User user ){
+    public ModelAndView attack(@RequestParam String x,
+                               @RequestParam String y,
+                               @RequestParam String army,
+                               @ModelAttribute("user") final User user ){
         if(user == null){
             return new ModelAndView("redirect:/");
         }
         final ModelAndView mav = new ModelAndView("attack");
         if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y) ){
             return new ModelAndView("redirect:/error?m=Posicion invalida");
+        }
+        if(!Validator.isInteger(army)){
+            return new ModelAndView("redirect:/error?m=Ejercito invalido");
+        }
+        int id = Integer.parseInt(army);
+        if(!as.belongs(user.getId(),id)){
+            return new ModelAndView("redirect:/error?m=El ejercito no es tuyo");
         }
         int xprime = Integer.parseInt(x);
         int yprime = Integer.parseInt(y);
@@ -117,21 +127,56 @@ public class ArmyController {
         Sector s = ss.getSector(new Point(xprime,yprime));
         if(s == null){
             return new ModelAndView("redirect:/error?m=No existe edificio en esa direccion");
+
         }
         if(s.getIdPlayer() == user.getId()){
             mav.addObject("message","No se puede atacar un edificio tuyo...");
+            return mav;
         }else if(s.getType() == 0 || s.getType() == 5){
             mav.addObject("message","No se puede atacar un Terreno sin edificio");
+            return mav;
         }else {
             if(s.getType() == Info.CASTLE){
-              /*if(ss.isCastleAlone()){
-                  mav.addObject("message", "ATAQUE EXITOSO!");
-              }else{
+              if(!ss.isCastleAlone(new Point(xprime,yprime),3)){
                   mav.addObject("message","Para atacar un castillo primero se tienen que destruir todos los demas edificios");
                   return mav;
-              }*/
+              }
             }
-            mav.addObject("message", "ATAQUE EXITOSO!");
+            Army a = as.getStrongest(s.getIdPlayer());
+            if(a != null){
+                System.out.println("Se enfentraron " + id+" vs " + a.getIdArmy());
+                int defenderP = (int) ts.getValue(a.getIdArmy());
+                int atackerP = (int) ts.getValue(id);
+                System.out.println("Ejercito " + id+" tiene power " + atackerP);
+                System.out.println("Ehercito " + id+" tiene power " + defenderP);
+                int adef = 0;
+                int avic = 0;
+                if(defenderP > atackerP){
+                    adef = id;
+                    avic = a.getIdArmy();
+                    System.out.println("Gano " + a.getIdArmy());
+                }else if(atackerP > defenderP){
+                    avic = id;
+                    adef = a.getIdArmy();
+                    ss.deleteBuilding(new Point(xprime,yprime));
+                    System.out.println("Gano " + id);
+                }else{
+                    as.deleteArmy(id);
+                    as.deleteArmy(a.getIdArmy());
+                }
+                as.deleteArmy(adef);
+                List<Troop> victor = ts.getTroopById(avic);
+                for(Troop t : victor){
+                    if(t.getQuantity()*(t.getType()+1) > defenderP){
+                        ts.subtractTroop(avic,t.getType(),defenderP/(t.getType()+1));
+                        break;
+                    }else{
+                        ts.deleteTroop(avic,t.getType());
+                        defenderP-= (t.getType()+1)*t.getQuantity();
+                    }
+                }
+                return mav;
+            }
             ss.deleteBuilding(new Point(xprime,yprime));
         }
         return mav;

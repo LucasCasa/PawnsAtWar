@@ -13,8 +13,8 @@ import ar.edu.itba.model.Troop;
 @Service
 public class TroopServiceImpl implements TroopService {
 	private static final double POW0 = 1;
-	private static final double POW1 = 1.7;
-	private static final double POW2 = 2.5;
+	private static final double POW1 = 2;
+	private static final double POW2 = 3;
 	
 	private static final int MAX_TROOP = 3;
 	
