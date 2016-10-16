@@ -12,6 +12,9 @@ import ar.edu.itba.model.Troop;
 
 @Service
 public class TroopServiceImpl implements TroopService {
+	private static final double POW0 = 1;
+	private static final double POW1 = 1.7;
+	private static final double POW2 = 2.5;
 	
 	private static final int MAX_TROOP = 3;
 	
@@ -74,8 +77,17 @@ public class TroopServiceImpl implements TroopService {
 			deleteTroop(idArmy, type);
 			return;
 		}
-		td.changeAmount(idArmy, type, originalAmount-amount);
+		td.changeAmount(idArmy, type, originalAmount-amount);	
 	}
+
+	@Override
+	public double getValue(int idArmy) {
+		int amount0 = td.getAmount(idArmy, 0);
+		int amount1 = td.getAmount(idArmy, 1);
+		int amount2 = td.getAmount(idArmy, 2);
+		return POW0 * (amount0 == -1 ? 0:amount0) + POW1 *(amount1 == -1 ? 0:amount1) + POW2 * (amount2 == -1 ? 0:amount2);
+	}
+
 	
 
 }

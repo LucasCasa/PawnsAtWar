@@ -19,5 +19,7 @@ public interface ArmyService{
 	
 	public void deleteArmy(int idArmy);
 	
+	public Army getStrongest(int userId);
+	
 	
 }

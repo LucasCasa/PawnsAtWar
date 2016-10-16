@@ -15,7 +15,9 @@ public interface TroopService {
 	
 	public void addTroop (int idArmy, int type, int amount);
 
-	void subtractTroop(int idArm, int type, int amount);
+	public void subtractTroop(int idArmy, int type, int amount);
 	
+	public double getValue(int idArmy);
+
 		
 }

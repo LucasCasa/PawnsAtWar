@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.ArmyDao;
 import ar.edu.itba.interfaces.ArmyService;
+import ar.edu.itba.interfaces.TroopService;
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
 
@@ -15,6 +16,9 @@ public class ArmyServiceImpl implements ArmyService {
 	
 	@Autowired
 	private ArmyDao ad;
+	
+	@Autowired
+	private TroopService ts;
 
 	@Override
 	public List<Army> getArmies(int idPlayer) {
@@ -47,6 +51,23 @@ public class ArmyServiceImpl implements ArmyService {
 	@Override
 	public void deleteArmy(int idArmy) {
 		ad.deleteArmy(idArmy);
+	}
+
+	@Override
+	public Army getStrongest(int userId) {
+		Army strongest = null;
+		double value = 0;
+		List<Army> armies = ad.getArmiesByUserId(userId);
+		for(Army a: armies){
+			if(a.getAvailable()){
+				double aux = ts.getValue(a.getIdArmy());
+				if(new Double(aux).compareTo(value) > 0){
+					value = aux;
+					strongest = a;
+				}
+			}	
+		}
+		return strongest;
 	}
 	
 	
