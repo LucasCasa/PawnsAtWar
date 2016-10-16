@@ -141,6 +141,12 @@ public class TerrainJdbcDao implements TerrainDao {
 						},p.getX(),p.getY());
 		return terrainList.isEmpty() ? null:terrainList.get(0);
 	}
+
+	@Override
+	public void deleteTerrain(Point p) {
+		jdbcTemplate.update("DELETE FROM TERRAIN WHERE x = ? AND y = ?",p.getX(),p.getY());
+		
+	}
 	
 	
 

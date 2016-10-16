@@ -103,6 +103,13 @@ public class SectorServiceImpl implements SectorService {
 		}
 	}
 	
+	public void addBuilding(Point p, int idPlayer, int type){
+		if(td.getId(p) == idPlayer){
+			td.deleteTerrain(p);
+			bd.addBuilding(p, idPlayer, type);
+		}
+	}
+	
 	private void updateTerrain(Point p, Integer newOwner,int range){
 		List<Sector> listSector = td.getTerrain(p, range);
 		for(Sector s: listSector){

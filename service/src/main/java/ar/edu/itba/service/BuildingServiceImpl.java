@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.BuildingService;
+import ar.edu.itba.interfaces.TerrainDao;
 import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Point;
 
@@ -21,6 +22,9 @@ public class BuildingServiceImpl implements BuildingService{
 	
 	@Autowired
 	BuildingDao bd;
+	
+	@Autowired
+	TerrainDao td;
 	
 	public void LoadSpots(){
 		availableSpots = new ArrayList<Point>();
@@ -67,16 +71,6 @@ public class BuildingServiceImpl implements BuildingService{
 	}
 
 	@Override
-	public Building addBuilding(Point p, int level, int idPlayer, int type) {
-		return bd.addBuilding(p, level, idPlayer, type);
-	}
-
-	@Override
-	public Building addBuilding(Point p, int idPlayer, int type) {
-		return bd.addBuilding(p, idPlayer, type);
-	}
-
-	@Override
 	public boolean belongsTo(Point p, int idPlayer) {
 		return bd.belongsTo(p, idPlayer);
 	}
@@ -100,13 +94,18 @@ public class BuildingServiceImpl implements BuildingService{
 		int n = random.nextInt(availableSpots.size());
 		Point p = availableSpots.get(n);
 		availableSpots.remove(n);
-		addBuilding(p,idPlayer,1);
+		bd.addBuilding(p, idPlayer, 1);
 		return p;
 	}
 
 	@Override
 	public List<Building> getAllBuildings(int idPlayer) {
 		return bd.getBuildings(idPlayer);
+	}
+
+	@Override
+	public void addBuilding(Point p, int idPlayer, int type) {
+		bd.addBuilding(p, idPlayer, type);
 	}
 	
 	

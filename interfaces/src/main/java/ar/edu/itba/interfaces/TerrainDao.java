@@ -49,6 +49,8 @@ public interface TerrainDao {
 	public Integer getId(Point p);
 
 	public void setIdPlayer(Point p, Integer idPlayer);
+
+	public void deleteTerrain(Point p);
 	
 	
 	
