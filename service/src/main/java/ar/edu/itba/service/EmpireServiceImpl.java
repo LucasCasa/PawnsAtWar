@@ -79,14 +79,15 @@ public class EmpireServiceImpl implements EmpireService{
 	public boolean build(int id, int xprime, int yprime, int type) {
 		final int resType = 1; /*Temporary*/
 		final Point p = new Point(xprime,yprime);
-		if(!hasResourcesAvailable(id, 1000, resType)){
+		final int value = bs.getPrice(p, id);
+		if(!hasResourcesAvailable(id, value, resType)){
 			return false;
 		}
 		if(ss.getSector(p).getType() == 5 && type != 4){
 			return false;
 		}
 		updateResources(id);
-		ed.substractAmount(id, resType, 1000);
+		ed.substractAmount(id, resType, value);
 		ss.addBuilding(p, id, type);
 		return true;
 	}

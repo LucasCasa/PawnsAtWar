@@ -24,6 +24,7 @@ public class BuildingTag extends SimpleTagSupport {
     private String path;
     private Point point;
     private Integer level;
+    private Integer price;
 
 
     public void doTag() throws JspException, IOException {
@@ -119,13 +120,15 @@ public class BuildingTag extends SimpleTagSupport {
                 out.println("<td>");
                 ResourceTag re = new ResourceTag();
                 re.setJspContext(getJspContext());
-                re.setAmount(1000);
+                re.setAmount(price);
                 re.setRate(0);
                 re.setType(1);
                 re.doTag();
                 ResourceTag re2 = new ResourceTag();
                 re2.setJspContext(getJspContext());
-                re2.setAmount(1000);
+                re2.setAmount(price);
+                System.out.println("PRECIOOOOOO ES " + price);
+                System.out.println("LEVEL ESSSS" + level);
                 re2.setRate(0);
                 re2.setType(0);
                 re2.doTag();
@@ -150,7 +153,7 @@ public class BuildingTag extends SimpleTagSupport {
             out.println("<td>");
             ResourceTag re = new ResourceTag();
             re.setJspContext(getJspContext());
-            re.setAmount(1000);
+            re.setAmount(price);
             re.setRate(0);
             re.setType(1);
             re.doTag();
@@ -219,11 +222,11 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("</thead>");
         out.println("<tbody>");
         out.println("<tr>");
-        out.println("<td><b>"+level +"</b></td><td><b>PlaceHolder</b></td><td><b>"+ (1000 + level*level*level*level) +"</b></td><td><b>00:"+level+":00</b></td>");
+        out.println("<td><b>"+level +"</b></td><td><b>PlaceHolder</b></td><td><b>"+ (price + level*level*level*level) +"</b></td><td><b>00:"+level+":00</b></td>");
         out.println("</tr>");
         for(int i = level+1 ; i<=40;i++){
             out.println("<tr>");
-            out.println("<td>"+i +"</td><td>PlaceHolder</td><td>"+ (1000 + i*i*i*i) +"</td><td>00:"+i+":00</td>");
+            out.println("<td>"+i +"</td><td>PlaceHolder</td><td>"+ (price + i*i*i*i) +"</td><td>00:"+i+":00</td>");
             out.println("</tr>");
 
         }
@@ -273,5 +276,11 @@ public class BuildingTag extends SimpleTagSupport {
     }
     public void setLevel(Integer level){
         this.level = level;
+    }
+    public Integer getPrice(){
+    	return price;
+    }
+    public void setPrice(Integer price){
+    	this.price=price;
     }
 }

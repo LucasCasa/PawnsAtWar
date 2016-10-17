@@ -112,6 +112,13 @@ public class BuildingServiceImpl implements BuildingService{
 	public int getType(Point p) {
 		return bd.getType(p);
 	}
+
+	@Override
+	public int getPrice(Point point,int userId) {
+		System.out.println("ENTRO A GET PRICE");
+		System.out.println("LEVEL ESSSS : " + getLevel(getCastle(userId)));
+		return 1000-10*getLevel(getCastle(userId));
+	}
 	
 	
 }

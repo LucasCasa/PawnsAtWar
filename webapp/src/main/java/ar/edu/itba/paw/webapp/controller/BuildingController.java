@@ -27,10 +27,9 @@ import ar.edu.itba.paw.webapp.dataClasses.InformationBuilding;
 
 import javax.servlet.http.HttpSession;
 
-import static java.lang.System.out;
 
 /**
- * Created by root on 9/18/16.
+ * Created by Muffin Team on 9/18/16.
  */
 @Controller
 public class BuildingController {
@@ -91,6 +90,7 @@ public class BuildingController {
             mav.addObject("p",new Point(Integer.parseInt(x),Integer.parseInt(y)));
             mav.addObject("plainTerrainBuildings",plainTerrainBuildings);
             mav.addObject("goldTerraunBuilding",goldTerrainBuilding);
+            mav.addObject("price", bs.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user.getId()));
             if(sector instanceof Building){
                 mav.addObject("level",((Building) sector).getLevel());
             }else{
@@ -179,8 +179,6 @@ public class BuildingController {
         if(bs.getType(p) == Info.ARCHERY || bs.getType(p) == Info.BARRACKS || bs.getType(p) == Info.BLACKSMITH || bs.getType(p) == Info.STABLE){
            // TODO
         }
-
-
 
         return new ModelAndView("redirect:/building?x="+x+"&y=" + y);
     }

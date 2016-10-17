@@ -29,4 +29,6 @@ public interface BuildingService {
 	public void addBuilding(Point p, int idPlayer, int type);
 	
 	public int getType(Point p);
+
+	public int getPrice(Point point,int userId);
 }
