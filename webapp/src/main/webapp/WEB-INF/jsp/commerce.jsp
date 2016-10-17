@@ -5,15 +5,15 @@
 
 <div class="container">
 	<c:if test="${insuficientAmount}">
-		<div class="error">No tienes suficientes Recursos</div>
+		<div class="error"><spring:message code="commerce.error"/></div>
 	</c:if>
 
 	<table class="table">
 		<thead>
-			<td>Usuario</td>
-			<td>Ofrece</td>
-			<td>Recibe</td>
-			<td>Aceptar</td>
+			<td><spring:message code="commerce.user"/></td>
+			<td><spring:message code="commerce.offer"/></td>
+			<td><spring:message code="commerce.receive"/></td>
+			<td><spring:message code="commerce.accept"/></td>
 		</thead>
 		<tbody>
 			<c:forEach var="offer" items="${tradeList}">
@@ -23,7 +23,7 @@
 					<td><re:Resource rate="0" type="${offer.getReceives().getType()}" amount="${offer.getReceives().getQuantity()}"/></td>
 					<td><form method="post" action="<c:url value="/commerce/acceptTrade"/>">
 	                    <input type="hidden" name="id" value="${offer.getId()}"/>
-	                    <input type="submit" class="myButton" value="Aceptar"/>
+	                    <input type="submit" class="myButton" value="<spring:message code="commerce.accept"/>"/>
                     </form></td>
 				</tr>
 			</c:forEach>
@@ -32,10 +32,10 @@
 	<h1>Mis Ofertas</h1>
 	<table class="table">
 		<thead>
-			<td>Usuario</td>
-			<td>Ofrece</td>
-			<td>Recibe</td>
-			<td>Remover</td>
+			<td><spring:message code="commerce.user"/></td>
+			<td><spring:message code="commerce.offer"/></td>
+			<td><spring:message code="commerce.receive"/></td>
+			<td><spring:message code="commerce.accept"/></td>
 		</thead>
 		<tbody>
 			<c:forEach var="offer" items="${myTrades}">
@@ -45,13 +45,13 @@
 					<td><re:Resource rate="0" type="${offer.getReceives().getType()}" amount="${offer.getReceives().getQuantity()}"/></td>
 					<td><form method="post" action="<c:url value="/commerce/delete"/>">
 	                    <input type="hidden" name="id" value="${offer.getId()}"/>
-	                    <input type="submit" class="myButton" value="Remover"/>
+	                    <input type="submit" class="myButton" value="<spring:message code="commerce.remove"/>"/>
                     </form></td>
 				</tr>
 			</c:forEach>
 		</tbody>
 	</table>
-	<a href="<c:url value="/commerce/create"/>"><button class="myButton">Realizar nueva Oferta</button></a>
+	<a href="<c:url value="/commerce/create"/>"><button class="myButton"><spring:message code="commerce.makeNewOffer"/></button></a>
 
 </div>
 

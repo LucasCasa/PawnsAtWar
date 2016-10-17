@@ -6,13 +6,13 @@
 
 <div class="container">
 	<c:if test="${insuficientAmount}">
-		<div class="error">No tienes suficientes Recursos</div>
+		<div class="error"><spring:message code="commerce.error"/></div>
 	</c:if>
 	<table class="table">
 		<thead>
-			<td>Ofrecer</td>
-			<td>Recibir</td>
-			<td>Crear</td>
+			<td><spring:message code="commerce.cOffer"/></td>
+			<td><spring:message code="commerce.cReceive"/></td>
+			<td><spring:message code="commerce.cCreate"/></td>
 		</thead>
 		<tbody>
 			<form method="post" action="<c:url value="/commerce/create/submit"/>">
@@ -21,7 +21,7 @@
 					<c:forEach var="res" items="${resList}">
 						  <input type="radio" name="giveType" value="${res.getType()}"><re:Resource rate="0" type="${res.getType()}" amount=""/></input>
 					</c:forEach>
-					Cantidad:
+						<spring:message code="commerce.Quantity"/>
 					<input type="number" name="giveQty" min="1">
 					<label>
 					</td>
@@ -29,11 +29,11 @@
 					<c:forEach var="res" items="${resList}">
 						  <input type="radio" name="getType" value="${res.getType()}"><re:Resource rate="0" type="${res.getType()}" amount=""/></input>
 					</c:forEach>
-					Cantidad:
+						<spring:message code="commerce.Quantity"/>
 					<input type="number" name="getQty" min="1">
 					</td>
 					<td>
-						<input id="register" type="submit" class="myButton" value="Crear"/>
+						<input id="register" type="submit" class="myButton" value="<spring:message code="button.create"/>"/>
 					</td>
 				</tr>
 			</form>
