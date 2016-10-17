@@ -183,4 +183,14 @@ public class BuildingJdbcDao implements BuildingDao {
         return buildingList;
 	}
 
+	@Override
+	public int getType(Point p) {
+		 List<Integer> type = jdbcTemplate
+	                .query("SELECT * FROM BUILDING WHERE x = ? AND y = ?",(ResultSet resultSet, int rowNum) -> {
+	                    return resultSet.getInt("type");
+	                },p.getX(),p.getY());
+
+	     return type.isEmpty() ? -1 : type.get(0);
+	}
+
 }

@@ -46,6 +46,8 @@ public interface BuildingDao {
 
 	public List<Point> getAllCastles();
 
-	public List<Building> getBuildings(int idPlayer);	
+	public List<Building> getBuildings(int idPlayer);
+	
+	public int getType(Point p);
 	
 }

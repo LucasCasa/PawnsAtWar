@@ -27,4 +27,6 @@ public interface BuildingService {
 	public List<Building> getAllBuildings(int idPlayer);
 
 	public void addBuilding(Point p, int idPlayer, int type);
+	
+	public int getType(Point p);
 }
