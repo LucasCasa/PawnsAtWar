@@ -19,14 +19,14 @@
 				<c:url value="/authenticate" var="postPath"/>
 				<form:form modelAttribute="loginForm" cssClass="form-horizontal" action="${postPath}" method="post">
 					<div class="form-group">
-						<form:label cssClass="col-md-3" path="username">Username: </form:label>
+						<form:label cssClass="col-md-3" path="username">Usuario: </form:label>
 						<form:input cssClass="col-md-4" type="text" path="username"/>
-						<form:errors path="username" cssClass="formError" element="p"/>
+						<form:errors path="username" cssClass="formError" element="label cssClass=col-md-2 style=color:red"/>
 					</div>
 					<div class="form-group">
-						<form:label cssClass="col-md-3" path="password">Password: </form:label>
+						<form:label cssClass="col-md-3" path="password">Contrasena: </form:label>
 						<form:input cssClass="col-md-4" type="password" path="password"/>
-						<form:errors path="password" cssClass="formError" element="p"/>
+						<form:errors path="password" cssClass="formError" element="label cssClass=col-md-2 style=color:red"/>
 					</div>
 					<div>
 						<input type="submit" value="Login"/>
@@ -41,27 +41,27 @@
 				<form:form modelAttribute="registerForm" cssClass="form-horizontal" action="${postPath}" method="post">
 
 					<div class="form-group">
-						<form:label cssClass="col-md-4" path="username">Username: </form:label>
+						<form:label cssClass="col-md-4" path="username">Usuario: </form:label>
 						<form:input cssClass="col-md-6" type="text" path="username"/>
-						<form:errors path="username" cssClass="has-error" element="span"/>
+						<form:errors path="username" cssClass="has-error" element="label cssClass=col-md-3 style=color:red"/>
 					</div >
 					<div class="form-group">
-						<form:label cssClass="col-md-4" path="password">Password: </form:label>
+						<form:label cssClass="col-md-4" path="password">Contrasena: </form:label>
 						<form:input cssClass="col-md-6" type="password" path="password"/>
-						<form:errors path="password" cssClass="has-error" element="span"/>
+						<form:errors path="password" cssClass="has-error" element="label cssClass=col-md-2 style=color:red"/>
 					</div>
 					<div class="form-group">
-						<form:label cssClass="col-md-4" path="repeatPassword">Repeat password: </form:label>
+						<form:label cssClass="col-md-4" path="repeatPassword">Repetir contrasena: </form:label>
 						<form:input cssClass="col-md-6" type="password" path="repeatPassword"/>
-						<form:errors path="repeatPassword" cssClass="has-error" element="span"/>
+						<form:errors path="repeatPassword" cssClass="has-error" element="label cssClass=col-md-2 style=color:red"/>
 					</div>
 					<div class="form-group">
 						<form:label cssClass="col-md-4" path="email">Email: </form:label>
 						<form:input cssClass="col-md-6" type="email" path="email"/>
-						<form:errors path="email" cssClass="has-error" element="span"/>
+						<form:errors path="email" cssClass="has-error" element="label cssClass=col-md-2 style=color:red"/>
 					</div>
 					<div class="form-group">
-						<input type="submit" value="Register!!"/>
+						<input type="submit" value="Registrarse!"/>
 					</div>
 
 
