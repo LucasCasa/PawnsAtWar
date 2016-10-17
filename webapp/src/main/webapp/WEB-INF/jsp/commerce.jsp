@@ -29,7 +29,7 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	<h1>Mis Ofertas</h1>
+	<h1><spring:message code="commerce.myOffers"/></h1>
 	<table class="table">
 		<thead>
 			<td><spring:message code="commerce.user"/></td>
