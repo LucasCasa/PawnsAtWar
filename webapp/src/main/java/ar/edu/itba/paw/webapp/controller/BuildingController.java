@@ -165,6 +165,23 @@ public class BuildingController {
             return new ModelAndView("redirect:/error?m=Esta posicion no te pertenece");
         }
         bs.levelUp(p);
+
+        if(bs.getType(p) == Info.GOLD ){
+            es.addResourceAmount(user.getId(),1, 5000);//1=GOLD
+            return new ModelAndView("redirect:/map");
+        }
+
+        if(bs.getType(p) == Info.MILL ){
+            es.addResourceAmount(user.getId(),0, 5000); //O=FOOD
+            return new ModelAndView("redirect:/map");
+        }
+
+        if(bs.getType(p) == Info.ARCHERY || bs.getType(p) == Info.BARRACKS || bs.getType(p) == Info.BLACKSMITH || bs.getType(p) == Info.STABLE){
+           // TODO
+        }
+
+
+
         return new ModelAndView("redirect:/building?x="+x+"&y=" + y);
     }
 
