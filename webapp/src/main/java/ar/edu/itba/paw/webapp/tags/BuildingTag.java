@@ -3,16 +3,22 @@ package ar.edu.itba.paw.webapp.tags;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.paw.webapp.dataClasses.Info;
 import ar.edu.itba.paw.webapp.dataClasses.InformationBuilding;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
 import java.io.IOException;
+import java.util.Locale;
 
 /**
  * Created by Muffin on 9/18/16.
  */
 public class BuildingTag extends SimpleTagSupport {
+
+    private MessageSource messageSource;
+    private Locale locale;
     private InformationBuilding info;
     private String clas= "";
     private String path;
@@ -52,46 +58,46 @@ public class BuildingTag extends SimpleTagSupport {
 
     private void printButtons() throws JspException,IOException{
         JspWriter out = getJspContext().getOut();
-        out.println("<button class=\"myButton\">Demoler</button>");
-        out.println("<button class=\"myButton\" >Aumentar de nivel</button>");
+        out.println("<button class=\"myButton\">"+messageSource.getMessage("demolish",null,locale)+"</button>");
+        out.println("<button class=\"myButton\" >"+ messageSource.getMessage("levelup",null,locale)+"</button>");
     }
     private void printArchery() throws JspException,IOException{
         JspWriter out = getJspContext().getOut();
         printButtons();
         printCreateTroop(Info.ARCHER);
-        printTable("Tiempo de creacion", Info.ARCHERY,1);
+        printTable(messageSource.getMessage("creationTime",null,locale), Info.ARCHERY,1);
     }
     private void printBarrack() throws JspException,IOException{
         printButtons();
         printCreateTroop(Info.WARRIOR);
-        printTable("Tiempo de creacion", Info.BARRACKS,1);
+        printTable(messageSource.getMessage("creationTime",null,locale), Info.BARRACKS,1);
 
     }
     private void printStable() throws JspException,IOException{
         printButtons();
         printCreateTroop(Info.HORSEMAN);
-        printTable("Tiempo de creacion",Info.STABLE,1);
+        printTable(messageSource.getMessage("creationTime",null,locale),Info.STABLE,1);
     }
     private void printCreateTroop(int type) throws JspException,IOException{
         JspWriter out = getJspContext().getOut();
         out.println("<br><br><br>");
         out.println("<div class=\"row\"><form class=\"form-inline\" method=\"post\" action=\""+ path + "/train\" >");
-        out.println("<input placeholder=\"Cantidad\" type=\"number\" style=\"font-size: 18px;\" name=\"amount\" min=\"1\">");
+        out.println("<input placeholder=\""+messageSource.getMessage("amount",null,locale)+"\" type=\"number\" style=\"font-size: 18px;\" name=\"amount\" min=\"1\">");
         out.println("<input  type=\"hidden\" name=\"type\" value=\""+type+"\">");
         out.println("<input  type=\"hidden\" name=\"px\" value=\""+ point.getX() +"\">");
         out.println("<input  type=\"hidden\" name=\"py\" value=\""+ point.getY() +"\">");
-        out.println("<input value=\"Entrenar\" class=\"myButton\" type=\"submit\">");
+        out.println("<input value=\""+messageSource.getMessage("train",null,locale)+"\" class=\"myButton\" type=\"submit\">");
         out.println("</form></div>");
 
     }
     private void printNew(JspWriter out, boolean gold) throws JspException, IOException  {
-        out.println("<div class=\"col-md-2\"><button class=\"myButton\" id=\"buildBtn\">Construir</button></div>");
+        out.println("<div class=\"col-md-2\"><button class=\"myButton\" id=\"buildBtn\">"+messageSource.getMessage("build",null,locale)+"</button></div>");
         out.println("<div class=\"container\" id=\"buildList\" style=\"display: none;\">");
         out.println("<table id=\"buildListTable\">");
         out.println("<thead>");
-        out.println("<td>Edificio</td>");
-        out.println("<td>Costo</td>");
-        out.println("<td>Construir</td>");
+        out.println("<td>"+messageSource.getMessage("building",null,locale)+"</td>");
+        out.println("<td>"+messageSource.getMessage("cost",null,locale)+"</td>");
+        out.println("<td>"+messageSource.getMessage("build",null,locale)+"</td>");
         out.println("</thead>");
         out.println("<tbody>");
         if(!gold) {
@@ -196,10 +202,10 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("<br><br><br>");
         out.println("<table class=\"table table-striped\" id=\"Level\">");
         out.println("<thead>");
-        out.println("<td>Nivel</td>");
+        out.println("<td>"+messageSource.getMessage("level",null,locale)+"</td>");
         out.println("<td>"+text+"</td>");
-        out.println("<td>Costo</td>");
-        out.println("<td>Tiempo</td>");
+        out.println("<td>"+messageSource.getMessage("cost",null,locale)+"</td>");
+        out.println("<td>"+messageSource.getMessage("time",null,locale)+"</td>");
         out.println("</thead>");
         out.println("<tbody>");
         for(int i = 1 ; i<=40;i++){
@@ -233,8 +239,19 @@ public class BuildingTag extends SimpleTagSupport {
     public String getPath() {
         return path;
     }
-
     public void setClas(String clas){
         this.clas = clas;
+    }
+    public void setLocale(Locale l){
+        this.locale = l;
+    }
+    public Locale getLocale(){
+        return locale;
+    }
+    public void setMessageSource(MessageSource ms){
+        messageSource = ms;
+    }
+    public MessageSource getMessageSource(){
+        return messageSource;
     }
 }

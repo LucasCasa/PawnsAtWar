@@ -26,7 +26,7 @@
     </table>
 <c:choose>
     <c:when test="${army.available}">
-    <h1 style="text-align: center;"><b>Atacar</b></h1><br>
+    <h1 style="text-align: center;"><b><spring:message code="button.attack"/></b></h1><br>
 <form style="text-align: center" method="post" action="<c:url value="/attack"/>">
     <div class="form-inline">
         <div class="form-group">
@@ -38,16 +38,16 @@
             <input type="text" class="form-control" name="y" id="Yval" size="3" value="${y}">
         </div>
         <input type="hidden" name="army" value="${army.idArmy}">
-        <input type="submit" class="myButton" value="Atacar"/>
+        <input type="submit" class="myButton" value="<spring:message code="button.attack"/>"/>
     </div>
 </form>
         <c:if test="${armySize > 1}">
-    <h1 style="text-align: center;"><b>Juntar</b></h1><br>
+    <h1 style="text-align: center;"><b><spring:message code="merge" /></b></h1><br>
     <table class="table table-striped">
         <tr>
             <th>X</th>
             <th>Y</th>
-            <th>Juntar</th>
+            <th><spring:message code="merge" /></th>
         </tr>
         <c:forEach var="other" items="${armies}">
             <c:if test="${other.available && other.idArmy != army.idArmy}">
@@ -59,7 +59,7 @@
                     <c:out value="${other.position.y}"/>
                 </td>
                 <td>
-                    <a href="<c:url value="/merge?f=${army.idArmy}&t=${other.idArmy}"/>"><button class="myButton">Juntar</button></a>
+                    <a href="<c:url value="/merge?f=${army.idArmy}&t=${other.idArmy}"/>"><button class="myButton"><spring:message code="merge" /></button></a>
                 </td>
             </tr>
             </c:if>

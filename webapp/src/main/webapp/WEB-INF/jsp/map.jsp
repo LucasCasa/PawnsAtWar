@@ -64,7 +64,7 @@
 						<input type="text" class="form-control" id="Yval" size="3">
 
 					</div>
-					<button class="myButton" id="gotoDir" onclick="redir()">IR </button>
+					<button class="myButton" id="gotoDir" onclick="redir()"><spring:message code="button.go" text="IR"/> </button>
 					<div id="error" style="display:none; color:#FF0000">Direccion invalida!</div>
 				</div>
 			</div>

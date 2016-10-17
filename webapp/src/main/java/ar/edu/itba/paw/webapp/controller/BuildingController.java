@@ -2,11 +2,13 @@ package ar.edu.itba.paw.webapp.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import ar.edu.itba.paw.webapp.dataClasses.Info;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.paw.webapp.dataClasses.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,12 +39,15 @@ public class BuildingController {
 	private EmpireService es;
     @Autowired
     private UserService us;
+    @Autowired
+    private MessageSource messageSource;
 
 
     @RequestMapping(value="/building", method = RequestMethod.GET)
 
 
-    public ModelAndView terrainParams(@RequestParam(value="x",required = false) final String x,
+    public ModelAndView terrainParams(Locale locale,
+                                      @RequestParam(value="x",required = false) final String x,
                                       @RequestParam(value="y", required = false) final String y,
                                       @RequestParam(value="m", required = false,defaultValue = "") final String message,
                                       @ModelAttribute("userId") final User user) {
@@ -74,7 +79,7 @@ public class BuildingController {
             final ModelAndView mav = new ModelAndView("building");
 
             Sector sector = ss.getSector(new Point(Integer.parseInt(x),Integer.parseInt(y)));
-            InformationBuilding ib  = Info.getInstance().getBuildingInformation(sector.getType());
+            InformationBuilding ib  = Info.getInstance().getBuildingInformation(sector.getType(),locale.getLanguage());
 
             mav.addObject("building",ib);
             mav.addObject("owner",sector.getIdPlayer());
@@ -85,6 +90,8 @@ public class BuildingController {
             mav.addObject("resList",es.getResources(user.getId()));
             mav.addObject("ratesList",es.getRates(user.getId()));
             mav.addObject("message",message);
+            mav.addObject("locale",locale);
+            mav.addObject("messageSource",messageSource);
             return mav;
 
         }

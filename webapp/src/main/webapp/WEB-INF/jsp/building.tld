@@ -28,5 +28,17 @@
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+        <attribute>
+            <name>locale</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.util.Locale</type>
+        </attribute>
+        <attribute>
+            <name>messageSource</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>org.springframework.context.MessageSource</type>
+        </attribute>
     </tag>
 </taglib>

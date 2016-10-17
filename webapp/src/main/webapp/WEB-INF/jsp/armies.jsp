@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="te" uri="/WEB-INF/jsp/custom.tld"%>
+<%@ taglib prefix="sprint" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="header.jsp" %>
 
 <div class="container">
@@ -7,8 +8,8 @@
         <tr>
             <th>X</th>
             <th>Y</th>
-            <th>Disponible</th>
-            <th colspan="2">Dirigir</th>
+            <th><spring:message code="table.available" text="Disponible"/> </th>
+            <th colspan="2"><spring:message code="table.manage"/></th>
         </tr>
         <c:forEach var="army" items="${armies}">
         <tr>
@@ -21,18 +22,18 @@
             <td>
                 <c:choose>
                     <c:when test="${army.available}">
-                        <c:out value="Si"/>
+                        <spring:message code="yes"/>
                     </c:when>
                     <c:otherwise>
-                        <c:out value="No"/>
+                        <spring:message code="no"/>
                     </c:otherwise>
                 </c:choose>
             </td>
             <td>
-                <button class="myButton" onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.idArmy}?x=${x}&y=${y}" />' ">+ Info</button>
+                <button class="myButton" onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.idArmy}?x=${x}&y=${y}" />' "><spring:message code="button.attack" /></button>
             </td>
             <td>
-                <button class="myButton" onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.idArmy}/split" />' ">Separar</button>
+                <button class="myButton" onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.idArmy}/split" />' "><spring:message code="button.split" /></button>
             </td>
         </tr>
             </c:forEach>

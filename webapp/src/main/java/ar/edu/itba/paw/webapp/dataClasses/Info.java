@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.dataClasses;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by root on 9/18/16.
@@ -28,8 +29,8 @@ public class Info {
     public static final int RES_GOLD = 1;
 
     private List<InformationBuilding> infoList;
+    private List<String> engDesc;
     private static Info bim = new Info();
-
     public static Info getInstance(){
         return bim;
     }
@@ -45,10 +46,27 @@ public class Info {
         infoList.add(new InformationBuilding(6,"mill", "Este tipo de edificio es un molino y se utiliza para obtener comida."));
         infoList.add(new InformationBuilding(7,"blacksmith", "Este tipo de edificio para mejorar a las tropas"));
         infoList.add(new InformationBuilding(8,"stable", "En este edificio se puede reclutar a los caballeros,la mejor tropa del juego"));
+        engDesc = new ArrayList<>();
+        engDesc.add("TODO");
+        engDesc.add("TODO");
+        engDesc.add("TODO");
+        engDesc.add("TODO");
+        engDesc.add("TODO");
+        engDesc.add("TODO");
+        engDesc.add("TODO");
+        engDesc.add("TODO");
+        engDesc.add("TODO");
+
     }
 
-    public InformationBuilding getBuildingInformation(int id){
-        return infoList.get(id);
+    public InformationBuilding getBuildingInformation(int id,String language){
+        String desc;
+        if(language.equals(new Locale("en").getLanguage())){
+            desc = engDesc.get(id);
+        }else{
+            desc = infoList.get(id).getDescription();
+        }
+        return new InformationBuilding(infoList.get(id).getId(),infoList.get(id).getName(),desc);
 
     }
     public ArrayList<InformationBuilding> getConstructable(int type){
