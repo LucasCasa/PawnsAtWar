@@ -19,7 +19,7 @@
         <tr>
     <c:forEach var="troop" items="${troops}" >
         <td>
-        <h1 style=" background-color: rgba(0,0,0,0.7); color: #FF0;margin-left:40%;margin-right:40%;text-align: center"><c:out value="${troop.quantity}"/></h1>
+        <h1 class="troop-size"><c:out value="${troop.quantity}"/></h1>
         </td>
     </c:forEach>
         </tr>

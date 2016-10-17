@@ -12,7 +12,9 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.tagext.ValidationMessage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static java.lang.System.out;
 
@@ -130,63 +132,97 @@ public class ArmyController {
 
         }
         if(s.getIdPlayer() == user.getId()){
-            mav.addObject("message","No se puede atacar un edificio tuyo...");
-            return mav;
+            return new ModelAndView("redirect:/error?m=No se puede atacar un edificio tuyo...");
         }else if(s.getType() == 0 || s.getType() == 5){
-            mav.addObject("message","No se puede atacar un Terreno sin edificio");
-            return mav;
+            return new ModelAndView("redirect:/error?m=No se puede atacar un Terreno sin edificio");
         }else {
             if(s.getType() == Info.CASTLE){
-              if(!ss.isCastleAlone(new Point(xprime,yprime),3)){
-                  mav.addObject("message","Para atacar un castillo primero se tienen que destruir todos los demas edificios");
-                  return mav;
-              }
+                if(!ss.isCastleAlone(new Point(xprime,yprime),3)){
+                    return new ModelAndView("redirect:/error?m=Para atacar un castillo primero se tienen que destruir todos los demas edificios");
+                }
             }
             Army a = as.getStrongest(s.getIdPlayer());
+            Map<String,Object> values = new HashMap<>();
+            values.put("a0b",new Integer(0));
+            values.put("a1b",new Integer(0));
+            values.put("a2b",new Integer(0));
+            values.put("d0b",new Integer(0));
+            values.put("d1b",new Integer(0)); // QUE WASADA POR DIOS
+            values.put("d2b",new Integer(0));
+            values.put("a0l",new Integer(0));
+            values.put("a1l",new Integer(0));
+            values.put("a2l",new Integer(0));
+            values.put("d0l",new Integer(0));
+            values.put("d1l",new Integer(0));
+            values.put("d2l",new Integer(0));
             if(a != null){
-                System.out.println("Se enfentraron " + id+" vs " + a.getIdArmy());
                 int defenderP = (int) ts.getValue(a.getIdArmy());
                 int atackerP = (int) ts.getValue(id);
-                System.out.println("Ejercito " + id+" tiene power " + atackerP);
-                System.out.println("Ehercito " + id+" tiene power " + defenderP);
+                int loserP = 0;
                 int adef = 0;
-                int avic = 0;
+                int awin = 0;
+                String prefixW = "";
+                String prefixD = "";
                 if(defenderP > atackerP){
+                    mav.addObject("result","Ataque no exitoso!! Perdiste");
                     adef = id;
-                    avic = a.getIdArmy();
-                    System.out.println("Gano " + a.getIdArmy());
+                    awin = a.getIdArmy();
+                    loserP = atackerP;
+                    prefixD ="a";
+                    prefixW ="d";
                 }else if(atackerP > defenderP){
-                    avic = id;
+                    mav.addObject("result","Ataque Exitoso!! Ganaste");
+                    awin = id;
                     adef = a.getIdArmy();
+                    loserP = defenderP;
+                    prefixD ="d";
+                    prefixW ="a";
                     ss.deleteBuilding(new Point(xprime,yprime));
-                    System.out.println("Gano " + id);
                 }else{
+                    mav.addObject("result","Empate");
                     as.deleteArmy(id);
                     as.deleteArmy(a.getIdArmy());
                 }
+                List<Troop> defeated = ts.getTroopById(adef);
                 as.deleteArmy(adef);
-                List<Troop> victor = ts.getTroopById(avic);
-                for(Troop t : victor){
-                    if(t.getQuantity()*(t.getType()+1) > defenderP){
-                        ts.subtractTroop(avic,t.getType(),defenderP/(t.getType()+1));
+                List<Troop> winner = ts.getTroopById(awin);
+                for(Troop t : winner){
+                    if(t.getQuantity()*(t.getType()+1) > loserP){
+                        values.put(prefixW+t.getType()+"b",t.getQuantity());
+                        ts.subtractTroop(awin,t.getType(),loserP/(t.getType()+1));
+                        values.put(prefixW+t.getType()+"l",loserP/(t.getType()+1));
                         break;
                     }else{
-                        ts.deleteTroop(avic,t.getType());
-                        defenderP-= (t.getType()+1)*t.getQuantity();
+                        values.put(prefixW+t.getType()+"b",t.getQuantity());
+                        values.put(prefixW+t.getType()+"l",t.getQuantity());
+                        ts.deleteTroop(awin,t.getType());
+                        loserP-= (t.getType()+1)*t.getQuantity();
+
                     }
                 }
+                for(Troop t: defeated){
+                    values.put(prefixD+t.getType()+"b",t.getQuantity());
+                    values.put(prefixD+t.getType()+"l",t.getQuantity());
+                }
+                mav.addAllObjects(values);
                 return mav;
             }
+            mav.addObject("result","Ataque Exitoso!! No habia nadie para defender");
+            for(Troop t : ts.getTroopById(id)){
+                values.put("a"+t.getType()+"b",t.getQuantity());
+                values.put("a"+t.getType()+"l",0);
+            }
             ss.deleteBuilding(new Point(xprime,yprime));
+            mav.addAllObjects(values);
         }
         return mav;
     }
     @RequestMapping(value="/train", method = RequestMethod.POST)
     public ModelAndView train(@RequestParam String type,
-                                 @RequestParam String amount,
-                                 @RequestParam String px,
-                                 @RequestParam String py,
-                                 @ModelAttribute("user") final User user ){
+                              @RequestParam String amount,
+                              @RequestParam String px,
+                              @RequestParam String py,
+                              @ModelAttribute("user") final User user ){
         if(user == null){
             return new ModelAndView("redirect:/");
         }
