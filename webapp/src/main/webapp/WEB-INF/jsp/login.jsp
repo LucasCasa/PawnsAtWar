@@ -10,7 +10,7 @@
 	<link rel="stylesheet" href="<c:url value= "/resources/css/style.css" /> ">
 </head>
 
-<body style="background-image:url(/webapp/resources/images/back2.jpg);">
+<body class="back-image">
 <br><br>
 <div class="container">
 		<h2 class="pawtitle"><spring:message code="welcome.message"/></h2>

@@ -173,3 +173,6 @@ p{
     margin-right:40%;
     text-align: center;
 }
+.back-image{
+    background-image:url(../images/back2.jpg);
+}

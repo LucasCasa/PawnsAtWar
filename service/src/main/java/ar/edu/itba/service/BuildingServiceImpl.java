@@ -91,6 +91,9 @@ public class BuildingServiceImpl implements BuildingService{
 		if(availableSpots == null)
 			LoadSpots();
 		Random random = new Random();
+		if(availableSpots.size() == 0){
+			return null;
+		}
 		int n = random.nextInt(availableSpots.size());
 		Point p = availableSpots.get(n);
 		availableSpots.remove(n);
@@ -115,8 +118,6 @@ public class BuildingServiceImpl implements BuildingService{
 
 	@Override
 	public int getPrice(Point point,int userId) {
-		System.out.println("ENTRO A GET PRICE");
-		System.out.println("LEVEL ESSSS : " + getLevel(getCastle(userId)));
 		return 1000-10*getLevel(getCastle(userId));
 	}
 	

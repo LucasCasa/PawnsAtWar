@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="<c:url value= "/resources/css/style.css" /> ">
 </head>
 
-<body style="background-image:url(/webapp/resources/images/back2.jpg);">
+<body class="back-image">
 
         <nav class="navbar navbar-default" role="navigation">
     	  <div class="container">
