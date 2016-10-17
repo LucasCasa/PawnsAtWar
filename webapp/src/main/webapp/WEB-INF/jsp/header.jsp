@@ -1,3 +1,4 @@
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,14 +26,14 @@
 		    <!-- Collect the nav links, forms, and other content for toggling -->
 		    <div class="collapse navbar-collapse" id="navbar-brand-centered">
 		      <ul class="nav navbar-nav">
-		        <li><a href="<c:url value="/map"/>">Mapa</a></li>
-		        <li><a href="<c:url value="/armies"/>">Ejercitos</a></li>
-		        <li><a href="<c:url value="/commerce"/>">Comercio</a></li>
+		        <li><a href="<c:url value="/map"/>"><spring:message code="header.map"/></a></li>
+		        <li><a href="<c:url value="/armies"/>"><spring:message code="header.army"/></a></li>
+		        <li><a href="<c:url value="/commerce"/>"><spring:message code="header.commerce"/></a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		        <li><a><s>Ranking</s></a></li>
-		        <li><a><s>Mensajes</s></a></li>
-		        <li><a href="<c:url value="/logout"/>">Salir</a></li>
+		        <li><a><s><spring:message code="header.ranking"/></s></a></li>
+		        <li><a><s><spring:message code="header.messages"/></s></a></li>
+		        <li><a href="<c:url value="/logout"/>"><spring:message code="header.logout"/></a></li>
 		      </ul>
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->
