@@ -2,6 +2,7 @@ package ar.edu.itba.persistence;
 
 import javax.sql.DataSource;
 
+import org.hsqldb.jdbc.JDBCDriver;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -13,8 +14,13 @@ public class TestConfig {
 	
 	@Bean
 	public DataSource dataSource(){
-		final SimpleDriverDataSource ds = new SimpleDriverDataSource();
-		return ds;
+		final SimpleDriverDataSource dataSource = new SimpleDriverDataSource();
+		dataSource.setDriverClass(JDBCDriver.class);
+		dataSource.setUrl("jdbc:hsqldb:mem:paw");
+		dataSource.setUsername("Magdalena");
+		dataSource.setPassword("hoyquiero");
+
+		return dataSource;
 	}
 
 }

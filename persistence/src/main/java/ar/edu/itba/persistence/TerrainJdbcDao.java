@@ -88,15 +88,15 @@ public class TerrainJdbcDao implements TerrainDao {
 
 
 	@Override
-	public Terrain addTerrain(Point p, int power,int idPlayer ,int t) {
+	public Terrain addTerrain(Point p, int power,int idPlayer ,int type) {
 		final Map<String,Object> args = new HashMap<>();
 		args.put("x", p.getX());
 		args.put("y", p.getY());
 		args.put("power",power);
 		args.put("idPlayer", idPlayer);
-		args.put("type", t);
+		args.put("type", type);
 		jdbcInsert.execute(args);
-		return new Terrain(p,power,t,idPlayer);
+		return new Terrain(p,power,type,idPlayer);
 	}
 
 

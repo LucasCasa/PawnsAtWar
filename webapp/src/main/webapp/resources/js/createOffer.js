@@ -12,20 +12,20 @@ $(document).ready(function() {
 
 function handleClick() {
     var empty = false;
-        $('input').each(function() {
-        	var numChecked
-            if ($(this).val() == '') {
-                empty = true;
-            }
-        });
-
-        if($('input[name=giveType]:checked').length==0 || $('input[name=getType]:checked').length==0){
-        	empty = true;
+    $('input').each(function() {
+    	var numChecked
+        if ($(this).val() == '') {
+            empty = true;
         }
+    });
 
-        if (empty) {
-            $('#register').attr('disabled', 'disabled');
-        } else {
-            $('#register').removeAttr('disabled');
-        }
+    if($('input[name=giveType]:checked').length==0 || $('input[name=getType]:checked').length==0){
+    	empty = true;
+    }
+
+    if (empty) {
+        $('#register').attr('disabled', 'disabled');
+    } else {
+        $('#register').removeAttr('disabled');
+    }
 }
