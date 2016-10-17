@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import ar.edu.itba.interfaces.BuildingService;
+import ar.edu.itba.model.Building;
 import ar.edu.itba.paw.webapp.dataClasses.Info;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.paw.webapp.dataClasses.Validator;
@@ -35,6 +37,8 @@ public class BuildingController {
 
     @Autowired
     private SectorService ss;
+    @Autowired
+    private BuildingService bs;
     @Autowired
 	private EmpireService es;
     @Autowired
@@ -87,6 +91,11 @@ public class BuildingController {
             mav.addObject("p",new Point(Integer.parseInt(x),Integer.parseInt(y)));
             mav.addObject("plainTerrainBuildings",plainTerrainBuildings);
             mav.addObject("goldTerraunBuilding",goldTerrainBuilding);
+            if(sector instanceof Building){
+                mav.addObject("level",((Building) sector).getLevel());
+            }else{
+                mav.addObject("level",1);
+            }
             mav.addObject("resList",es.getResources(user.getId()));
             mav.addObject("ratesList",es.getRates(user.getId()));
             mav.addObject("message",message);
@@ -100,7 +109,7 @@ public class BuildingController {
     }
     
     @RequestMapping(value="/build", method = RequestMethod.POST)
-    public ModelAndView showArmy(@RequestParam String x,
+    public ModelAndView build(@RequestParam String x,
                                  @RequestParam String y,
                                  @RequestParam String type,
                                  @ModelAttribute("userId") final User user ){
@@ -127,6 +136,38 @@ public class BuildingController {
         }
       
     }
+    @RequestMapping(value="/demolish", method = RequestMethod.POST)
+    public ModelAndView demolish(@RequestParam String x,
+                                 @RequestParam String y,
+                                 @ModelAttribute("userId") final User user){
+        if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y)){
+            return new ModelAndView("redirect:/error?m=Direccion invalida");
+        }
+        Point p = new Point(Integer.parseInt(x),Integer.parseInt(y));
+        Sector s = ss.getSector(p);
+        if(s.getIdPlayer() != user.getId()){
+            return new ModelAndView("redirect:/error?m=Esta posicion no te pertenece");
+        }
+        ss.deleteBuilding(p);
+        return new ModelAndView("redirect:/map");
+    }
+
+    @RequestMapping(value="/levelup", method = RequestMethod.POST)
+    public ModelAndView levelup(@RequestParam String x,
+                                 @RequestParam String y,
+                                 @ModelAttribute("userId") final User user){
+        if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y)){
+            return new ModelAndView("redirect:/error?m=Direccion invalida");
+        }
+        Point p = new Point(Integer.parseInt(x),Integer.parseInt(y));
+        Sector s = ss.getSector(p);
+        if(s.getIdPlayer() != user.getId()){
+            return new ModelAndView("redirect:/error?m=Esta posicion no te pertenece");
+        }
+        bs.levelUp(p);
+        return new ModelAndView("redirect:/building?x="+x+"&y=" + y);
+    }
+
 
     /*
     @ModelAttribute("user")

@@ -55,7 +55,7 @@ public class BuildingJdbcDao implements BuildingDao {
 			
 	        List<Sector> buildingList = jdbcTemplate
 	                .query("SELECT * FROM BUILDING WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
-	                    return new Sector(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"),resultSet.getInt("idPlayer"));
+	                    return new Building(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("type"),resultSet.getInt("level"));
 	                },p.getX()-range,p.getX() + range, p.getY() - range, p.getY()+range);
 	        return buildingList;
 	}
@@ -88,14 +88,14 @@ public class BuildingJdbcDao implements BuildingDao {
 		args.put("y", p.getY());
 		args.put("type",type);
 		args.put("idPlayer", idPlayer);
-		args.put("type", type);
+		args.put("level", level);
 		jdbcInsert.execute(args);
 		return new Building(p,idPlayer,type,level);
 	}
 
 	@Override
 	public Building addBuilding(Point p, int idPlayer, int type) {
-		return addBuilding(p,0,idPlayer,type);
+		return addBuilding(p,1,idPlayer,type);
 	}
 
 	@Override
