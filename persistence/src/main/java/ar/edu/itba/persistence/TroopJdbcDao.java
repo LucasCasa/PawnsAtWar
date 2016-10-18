@@ -12,6 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import ar.edu.itba.interfaces.ArmyDao;
 import ar.edu.itba.interfaces.TroopDao;
 import ar.edu.itba.model.Troop;
 
@@ -21,6 +22,9 @@ public class TroopJdbcDao implements TroopDao {
 	
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
+	
+	@Autowired
+	ArmyDao ad;
 	
 	@Autowired
 	public TroopJdbcDao(final DataSource dataSource){
@@ -81,7 +85,7 @@ public class TroopJdbcDao implements TroopDao {
 	public Troop getTroop(int idArmy, int type) {
 		List<Troop> troopList = jdbcTemplate
 				.query("SELECT * FROM TROOP WHERE idArmy = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
-							return new Troop(resultSet.getInt("idArmy"),resultSet.getInt("type"),resultSet.getInt("amount"));
+							return new Troop(idArmy,resultSet.getInt("type"),resultSet.getInt("amount"));
 						},idArmy,type);
 		return troopList.get(0);
 	}

@@ -13,12 +13,16 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ResourceDao;
+import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Resource;
 
 @Repository
 public class ResourceJdbcDao implements ResourceDao {
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
+	
+	@Autowired
+	UserDao ud;
 	
 	@Autowired
 	public ResourceJdbcDao(final DataSource dataSource){
@@ -55,7 +59,7 @@ public class ResourceJdbcDao implements ResourceDao {
 		args.put("amount", amount);
 		args.put("idPlayer",idPlayer);
 		jdbcInsert.execute(args);
-		return new Resource(type,idPlayer,amount);
+		return new Resource(type,ud.findById(idPlayer),amount);
 	}
 
 	@Override
@@ -67,7 +71,7 @@ public class ResourceJdbcDao implements ResourceDao {
 	public List<Resource> getResources(int idPlayer) {
 		List<Resource> resourceList = jdbcTemplate
 				.query("SELECT * FROM resource WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
-							return new Resource(resultSet.getInt("type"),resultSet.getInt("idPlayer"),resultSet.getInt("amount"));
+							return new Resource(resultSet.getInt("type"),ud.findById(resultSet.getInt("idPlayer")),resultSet.getInt("amount"));
 						},idPlayer);
 		return resourceList;
 	}
@@ -76,7 +80,7 @@ public class ResourceJdbcDao implements ResourceDao {
 	public Resource getResource(int idPlayer, int type) {
 		List<Resource> resourceList = jdbcTemplate
 				.query("SELECT * FROM resource WHERE idPlayer = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
-							return new Resource(resultSet.getInt("type"),resultSet.getInt("idPlayer"),resultSet.getInt("amount"));
+							return new Resource(resultSet.getInt("type"),ud.findById(resultSet.getInt("idPlayer")),resultSet.getInt("amount"));
 						},idPlayer,type);
 		return resourceList.size()>0?resourceList.get(0):null;
 	}

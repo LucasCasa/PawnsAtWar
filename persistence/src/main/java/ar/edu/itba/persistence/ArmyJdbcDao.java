@@ -13,6 +13,8 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ArmyDao;
+import ar.edu.itba.interfaces.TroopDao;
+import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
 
@@ -21,6 +23,12 @@ public class ArmyJdbcDao implements ArmyDao{
 	
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
+	
+	@Autowired
+	UserDao ud;
+	
+	@Autowired
+	TroopDao td;
 	
 	@Autowired
 	public ArmyJdbcDao(final DataSource dataSource){
@@ -36,7 +44,7 @@ public class ArmyJdbcDao implements ArmyDao{
 		args.put("idPlayer",idPlayer);
 		args.put("available", available);
 		final Number key = jdbcInsert.executeAndReturnKey(args);
-		return new Army(position,idPlayer,key.intValue(),available);
+		return new Army(position,ud.findById(idPlayer),key.intValue(),available,td.getAllTroop(key.intValue()));
 	}
 
 	@Override
@@ -48,17 +56,22 @@ public class ArmyJdbcDao implements ArmyDao{
 	public List<Army> getArmiesByUserId(int userId) {
 		 List<Army> armyList = jdbcTemplate
 	                .query("SELECT * FROM ARMY WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
-	                    return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("idArmy"),resultSet.getBoolean("available"));
+	                    return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),ud.findById(resultSet.getInt("idPlayer")),
+	                    		resultSet.getInt("idArmy"),resultSet.getBoolean("available"),td.getAllTroop(resultSet.getInt("idArmy")));
 	                },userId);
-
-	        return armyList;
+	     return armyList;
 	}
 
 	public Army getArmyById(int idArmy){
 		List<Army> armies = jdbcTemplate
 				.query("SELECT * FROM ARMY WHERE idArmy = ?",(ResultSet resultSet, int rowNum) -> {
-					return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("idArmy"),resultSet.getBoolean("available"));},idArmy);
-		return armies.isEmpty()? null: armies.get(0);
+					 return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),ud.findById(resultSet.getInt("idPlayer")),
+	                    		resultSet.getInt("idArmy"),resultSet.getBoolean("available"),null);},idArmy);
+		if(armies.isEmpty()){
+			return null;
+		}
+		armies.get(0).setTroop(td.getAllTroop(idArmy));
+		return armies.get(0);
 	}
 
 	@Override
@@ -100,9 +113,10 @@ public class ArmyJdbcDao implements ArmyDao{
 	public Army getArmy(Point p, int idPlayer) {
 		List<Army> armies = jdbcTemplate
 				.query("SELECT * FROM ARMY WHERE idPlayer = ? AND x = ? AND y = ?",(ResultSet resultSet, int rowNum) -> {
-					return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("idArmy"),resultSet.getBoolean("available"));},
+					 return new Army(new Point(resultSet.getInt("x"),resultSet.getInt("y")),ud.findById(resultSet.getInt("idPlayer")),
+	                    		resultSet.getInt("idArmy"),resultSet.getBoolean("available"),td.getAllTroop(resultSet.getInt("idArmy")));},
 						idPlayer,p.getX(),p.getY());
-		return armies.isEmpty()? null: armies.get(0);
+		return armies.isEmpty() ? null : armies.get(0);
 	}
 
 	@Override

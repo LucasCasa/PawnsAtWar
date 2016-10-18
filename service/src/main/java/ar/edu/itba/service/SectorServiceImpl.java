@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.edu.itba.model.Terrain;
+import ar.edu.itba.model.User;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,13 +56,6 @@ public class SectorServiceImpl implements SectorService {
 		for(Sector s:buildingList){
 				aux[s.getPosition().getY() - (p.getY() - range)][s.getPosition().getX() - (p.getX() - range)] = s;
 		}
-		for(int i = 0; i< size;i++){
-			for(int j = 0; j<size ;j++){
-				if(aux[i][j] == null){
-					aux[i][j] = new Terrain(new Point(p.getX() - range + j, p.getY() - range + i),0 ,0,0);
-				}
-			}
-		}
 		for(int i=0; i<size; i++){
 			sectorList.add(new ArrayList<>(size));
 			for(int j=0; j<size; j++){
@@ -78,7 +73,7 @@ public class SectorServiceImpl implements SectorService {
 		Sector building = bd.getBuilding(p);
 		Sector terrain = td.getTerrain(p);
 		if(building == null && terrain == null){
-			return new Sector(p,0,0);
+			return new Sector(p,0,new User(0,null,null,null));
 		}else if(building == null){
 			return terrain;
 		}
@@ -97,9 +92,9 @@ public class SectorServiceImpl implements SectorService {
 			td.addTerrain(p);
 			updateTerrain(p,null,3);
 		}else if(b.getType() == GOLD){
-			td.addTerrain(p, 1, b.getIdPlayer(),TERR_GOLD);
+			td.addTerrain(p, 1, b.getUser().getId(),TERR_GOLD);
 		}else{
-			td.addTerrain(p, 1, b.getIdPlayer(), EMPTY);
+			td.addTerrain(p, 1, b.getUser().getId(), EMPTY);
 		}
 	}
 	

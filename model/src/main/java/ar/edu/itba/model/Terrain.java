@@ -3,8 +3,8 @@ package ar.edu.itba.model;
 public class Terrain extends Sector {
 	private int power;
 	
-	public Terrain(Point position, int type, int power,int idPlayer) {
-		super(position,type,idPlayer);
+	public Terrain(Point position, int type, int power,User user) {
+		super(position,type,user);
 		this.power = power;
 	}
 
@@ -16,16 +16,16 @@ public class Terrain extends Sector {
 		return super.getType();
 	}
 	
-	public int getidPlayer(){
-		return super.getIdPlayer();
+	public User getUser(){
+		return super.getUser();
 	}
 
 	public int getPower() {
 		return power;
 	}
 	
-	public void setidPlayer(int idPlayer){
-		super.setIdPlayer(idPlayer);
+	public void setUser(User user){
+		super.setUser(user);
 	}
 	
 	public String toString(){

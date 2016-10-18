@@ -131,7 +131,7 @@ public class ArmyController {
             return new ModelAndView("redirect:/error?m=No existe edificio en esa direccion");
 
         }
-        if(s.getIdPlayer() == user.getId()){
+        if(s.getUser().getId() == user.getId()){
             return new ModelAndView("redirect:/error?m=No se puede atacar un edificio tuyo...");
         }else if(s.getType() == 0 || s.getType() == 5){
             return new ModelAndView("redirect:/error?m=No se puede atacar un Terreno sin edificio");
@@ -141,7 +141,7 @@ public class ArmyController {
                     return new ModelAndView("redirect:/error?m=Para atacar un castillo primero se tienen que destruir todos los demas edificios");
                 }
             }
-            Army a = as.getStrongest(s.getIdPlayer());
+            Army a = as.getStrongest(s.getUser().getId());
             Map<String,Object> values = new HashMap<>();
             values.put("a0b",new Integer(0));
             values.put("a1b",new Integer(0));

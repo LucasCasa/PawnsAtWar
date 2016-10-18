@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BuildingDao;
+import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
@@ -22,6 +23,9 @@ public class BuildingJdbcDao implements BuildingDao {
 	
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
+	
+	@Autowired
+	UserDao ud;
 	
 	@Autowired
 	public BuildingJdbcDao(final DataSource dataSource){
@@ -55,7 +59,7 @@ public class BuildingJdbcDao implements BuildingDao {
 			
 	        List<Sector> buildingList = jdbcTemplate
 	                .query("SELECT * FROM BUILDING WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
-	                    return new Building(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("type"),resultSet.getInt("level"));
+	                    return new Building(new Point(resultSet.getInt("x"),resultSet.getInt("y")),ud.findById(resultSet.getInt("idPlayer")),resultSet.getInt("type"),resultSet.getInt("level"));
 	                },p.getX()-range,p.getX() + range, p.getY() - range, p.getY()+range);
 	        return buildingList;
 	}
@@ -90,7 +94,7 @@ public class BuildingJdbcDao implements BuildingDao {
 		args.put("idPlayer", idPlayer);
 		args.put("level", level);
 		jdbcInsert.execute(args);
-		return new Building(p,idPlayer,type,level);
+		return new Building(p,ud.findById(idPlayer),type,level);
 	}
 
 	@Override
@@ -160,7 +164,7 @@ public class BuildingJdbcDao implements BuildingDao {
 	public List<Building> getBuildings(int userId, int type) {
 		List<Building> buildingList = jdbcTemplate
                 .query("SELECT * FROM building WHERE type = ? AND idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
-                    return new Building(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("type"),resultSet.getInt("level"));
+                    return new Building(new Point(resultSet.getInt("x"),resultSet.getInt("y")),ud.findById(resultSet.getInt("idPlayer")),resultSet.getInt("type"),resultSet.getInt("level"));
                 },type,userId);
         return buildingList;
 	}
@@ -178,7 +182,7 @@ public class BuildingJdbcDao implements BuildingDao {
 	public List<Building> getBuildings(int idPlayer) {
 		List<Building> buildingList = jdbcTemplate
                 .query("SELECT * FROM building WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
-                    return new Building(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("idPlayer"),resultSet.getInt("type"),resultSet.getInt("level"));
+                    return new Building(new Point(resultSet.getInt("x"),resultSet.getInt("y")),ud.findById(resultSet.getInt("idPlayer")),resultSet.getInt("type"),resultSet.getInt("level"));
                 },idPlayer);
         return buildingList;
 	}

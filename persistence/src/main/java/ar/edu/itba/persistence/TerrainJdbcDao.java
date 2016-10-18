@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.TerrainDao;
+import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.Terrain;
@@ -22,6 +23,9 @@ public class TerrainJdbcDao implements TerrainDao {
 	
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
+	
+	@Autowired
+	UserDao ud;
 	
 	@Autowired
 	public TerrainJdbcDao(final DataSource dataSource){
@@ -57,7 +61,7 @@ public class TerrainJdbcDao implements TerrainDao {
 	public List<Sector> getTerrain(Point p, int range) {
         List<Sector> terrainList = jdbcTemplate
                 .query("SELECT * FROM TERRAIN WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
-                    return new Sector(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"),resultSet.getInt("idPlayer"));
+                    return new Sector(new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"),ud.findById(resultSet.getInt("idPlayer")));
                 },p.getX()-range,p.getX() + range, p.getY() - range, p.getY()+range);
 
         return terrainList;
@@ -96,7 +100,7 @@ public class TerrainJdbcDao implements TerrainDao {
 		args.put("idPlayer", idPlayer);
 		args.put("type", type);
 		jdbcInsert.execute(args);
-		return new Terrain(p,power,type,idPlayer);
+		return new Terrain(p,power,type,ud.findById(idPlayer));
 	}
 
 

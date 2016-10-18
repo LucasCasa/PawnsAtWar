@@ -3,28 +3,28 @@ package ar.edu.itba.model;
 public class Sector {
 	private Point p;
 	private int type;
-	private int idPlayer;
+	private User user;
 	
-	public Sector(Point p, int type, int idPlayer) {
+	public Sector(Point p, int type, User user) {
 		this.p = p;
 		this.type = type;
-		this.idPlayer = idPlayer;
+		this.user = user;
 	}
 
 	public int getType() {
 		return type;
 	}
 	
-	public int getIdPlayer(){
-		return idPlayer;
+	public User getUser(){
+		return user;
 	}
 
 	public void setType(int type) {
 		this.type = type;
 	}
 	
-	public void setIdPlayer(int idPlayer){
-		this.idPlayer = idPlayer;
+	public void setUser(User user){
+		this.user = user;
 	}
 
 	public Point getPosition() {

@@ -26,7 +26,7 @@
 							<tr>
 								<td style="background-color:#000;text-align: center;color: #FFF;"><c:out value="${row.get(0).getPosition().getY()}"/></td>
 								<c:forEach var="item" items="${row}">
-								<td style="width:76px;height: 76px" onmouseover="describe()" onmouseleave="deleteDescription()"><a href="<c:url value="/building?x=${item.getPosition().getX()}&y=${item.getPosition().getY()}" />" ><te:Terrain clas="img-responsive" userid="${user.getId()}" ownerid="${item.getIdPlayer()}" id="${item.getType()}" path="${pageContext.request.contextPath}" /></a></td>
+								<td style="width:76px;height: 76px" onmouseover="describe()" onmouseleave="deleteDescription()"><a href="<c:url value="/building?x=${item.getPosition().getX()}&y=${item.getPosition().getY()}" />" ><te:Terrain clas="img-responsive" userid="${user.getId()}" ownerid="${item.getUser().getId()}" id="${item.getType()}" path="${pageContext.request.contextPath}" /></a></td>
 								</c:forEach>
 							</tr>
 						</c:forEach>

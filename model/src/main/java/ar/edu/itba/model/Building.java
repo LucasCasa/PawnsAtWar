@@ -2,18 +2,17 @@ package ar.edu.itba.model;
 
 public class Building extends Sector {
 	private int level;
-	private int idPlayer;
 	
-	public Building(Point position, int idPlayer, int type, int level) {
-		super(position,type,idPlayer);
+	public Building(Point position, User user, int type, int level) {
+		super(position,type,user);
 		this.level = level;
 	}
 	
 	public int getLevel() {
 		return level;
 	}
-	public int getPlayer() {
-		return idPlayer;
+	public User getUser() {
+		return super.getUser();
 	}
 	public void setLevel(int level) {
 		this.level = level;

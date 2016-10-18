@@ -85,7 +85,7 @@ public class BuildingController {
             InformationBuilding ib  = Info.getInstance().getBuildingInformation(sector.getType(),locale.getLanguage());
 
             mav.addObject("building",ib);
-            mav.addObject("owner",sector.getIdPlayer());
+            mav.addObject("owner",sector.getUser().getId());
             mav.addObject("user",user);
             mav.addObject("p",new Point(Integer.parseInt(x),Integer.parseInt(y)));
             mav.addObject("plainTerrainBuildings",plainTerrainBuildings);
@@ -125,7 +125,7 @@ public class BuildingController {
 
         Sector s = ss.getSector(new Point(xprime,yprime));
         
-        if(s == null || s.getIdPlayer() != user.getId() || (s.getType() != Info.TERR_GOLD && s.getType() != Info.EMPTY) ){
+        if(s == null || !s.getUser().equals(user)|| (s.getType() != Info.TERR_GOLD && s.getType() != Info.EMPTY) ){
             return new ModelAndView("redirect:/error?m=No se puede construir en esta posicion");
         }
         
@@ -145,7 +145,7 @@ public class BuildingController {
         }
         Point p = new Point(Integer.parseInt(x),Integer.parseInt(y));
         Sector s = ss.getSector(p);
-        if(s.getIdPlayer() != user.getId()){
+        if(!s.getUser().equals(user)){
             return new ModelAndView("redirect:/error?m=Esta posicion no te pertenece");
         }
         ss.deleteBuilding(p);
@@ -161,7 +161,7 @@ public class BuildingController {
         }
         Point p = new Point(Integer.parseInt(x),Integer.parseInt(y));
         Sector s = ss.getSector(p);
-        if(s.getIdPlayer() != user.getId()){
+        if(!s.getUser().equals(user)){
             return new ModelAndView("redirect:/error?m=Esta posicion no te pertenece");
         }
         bs.levelUp(p);

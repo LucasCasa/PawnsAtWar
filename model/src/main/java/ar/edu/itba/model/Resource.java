@@ -3,7 +3,7 @@ package ar.edu.itba.model;
 public class Resource {
 	private int type;
 	private int quantity;
-	private int idPlayer;
+	private User user;
 
 	
 	public int getQuantity() {
@@ -18,8 +18,8 @@ public class Resource {
 		return type;
 	}
 	
-	public int getPlayer() {
-		return idPlayer;
+	public User getUser() {
+		return user;
 	}
 	
 	public Resource(int type, int quantity){
@@ -27,15 +27,15 @@ public class Resource {
 		this.quantity = quantity;
 	}
 
-	public Resource(int type, int idPlayer, int quantity) {
+	public Resource(int type, User user, int quantity) {
 		this.type = type;
-		this.idPlayer = idPlayer;
+		this.user = user;
 		this.quantity = quantity;
 	}
 	
 	@Override
 	public String toString() {
-		return "Type: " + type + " - Qty: " + quantity + "  | userid: " + idPlayer;
+		return "Type: " + type + " - Qty: " + quantity + "  | userid: " + user.getId();
 	}
 	
 	
