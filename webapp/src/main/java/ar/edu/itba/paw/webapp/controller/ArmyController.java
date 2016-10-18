@@ -180,6 +180,14 @@ public class ArmyController {
                     ss.deleteBuilding(new Point(xprime,yprime));
                 }else{
                     mav.addObject("result","Empate");
+                    for(Troop t : ts.getTroopById(id)){
+                        values.put("a"+t.getType()+"b",t.getQuantity());
+                        values.put("a"+t.getType()+"l",t.getQuantity());
+                    }
+                    for(Troop t : ts.getTroopById(a.getIdArmy())){
+                        values.put("d"+t.getType()+"b",t.getQuantity());
+                        values.put("d"+t.getType()+"l",t.getQuantity());
+                    }
                     as.deleteArmy(id);
                     as.deleteArmy(a.getIdArmy());
                 }
