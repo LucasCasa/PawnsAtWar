@@ -8,6 +8,10 @@ import java.util.Locale;
  * Created by root on 9/18/16.
  */
 public class Info {
+
+	public static final int MAP_SIZE = 99;
+	public static final int VIEW_RANGE = 4;
+	
     public static final int EMPTY = 0;
     public static final int CASTLE = 1;
     public static final int ARCHERY = 2;

@@ -4,11 +4,10 @@ package ar.edu.itba.paw.webapp.dataClasses;
  * Created by lucas on 05/10/16.
  */
 public class Validator {
-    private static final int DIM = 100;
 
     public static boolean validBoardPosition(String pos) {
         if(isInteger(pos)){
-            if(Integer.parseInt(pos) < DIM){
+            if(Integer.parseInt(pos) < Info.MAP_SIZE){
                 return true;
             }
         }
@@ -22,4 +21,11 @@ public class Validator {
         String regex = "0*\\d{1,9}";
         return pos.matches(regex);
     }
+	public static int getValidPos(int num) {
+		if(num<Info.VIEW_RANGE)
+			num = Info.VIEW_RANGE;
+		else if(num>Info.MAP_SIZE-Info.VIEW_RANGE)
+			num = Info.MAP_SIZE-Info.VIEW_RANGE;
+		return num;
+	}
 }

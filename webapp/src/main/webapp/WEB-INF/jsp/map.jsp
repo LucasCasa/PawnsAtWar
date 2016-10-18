@@ -13,7 +13,7 @@
 		<div class="row">
 			<div class="especial"></div>
 			<div class="col-md-8 col-sm-9">
-				<div id="Map" class="carousel slide" style="display: inline-block">
+				<div id="Map" range="${range}" class="carousel slide" style="display: inline-block">
 
 					<table style="max-width: 537,6px;">
 						<tr style="background-color:#000;text-align: center;color: #FFF;">

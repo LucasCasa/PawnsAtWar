@@ -3,7 +3,6 @@ package ar.edu.itba.paw.webapp.controller;
 import java.util.List;
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +21,8 @@ import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.dataClasses.Info;
 import ar.edu.itba.paw.webapp.dataClasses.Validator;
-
-import static java.lang.System.out;
 
 @Controller
 public class HomePageController {
@@ -59,35 +57,32 @@ public class HomePageController {
 		if(user == null){
 			return new ModelAndView("redirect:/");
 		}
-		int xprime;
-		int yprime;
+		int xPrime;
+		int yPrime;
 
 		if(x == null && y == null){
 			Point p = bs.getCastle(user.getId());
-
-			 xprime = p.getX();
-			 yprime = p.getY();
+			xPrime = p.getX();
+			yPrime = p.getY();
 		}else{
-
-
-			if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y) ) {
+			if(!Validator.isInteger(x) || !Validator.isInteger(y) ) {
 				return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidParam",null,locale));
 			}
-			xprime = Integer.parseInt(x);
-			yprime = Integer.parseInt(y);
-
+			xPrime = Validator.getValidPos(Integer.parseInt(x));
+			yPrime = Validator.getValidPos(Integer.parseInt(y));
 		}
 
 
 		final ModelAndView mav = new ModelAndView("map");
 
 		List<List<Sector>> elements;
-		elements = ss.getSector(new Point(xprime,yprime), 4);
+		elements = ss.getSector(new Point(xPrime,yPrime), Info.VIEW_RANGE);
 		mav.addObject("resList",es.getResources(user.getId()));
 		mav.addObject("ratesList",es.getRates(user.getId()));
 		mav.addObject("map",elements);
-		mav.addObject("x",xprime);
-		mav.addObject("y",yprime);
+		mav.addObject("x",xPrime);
+		mav.addObject("y",yPrime);
+		mav.addObject("range",Info.VIEW_RANGE);
 
 		mav.addObject("user",user);
 

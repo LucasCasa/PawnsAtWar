@@ -4,40 +4,27 @@
 
 function redir() {
 
-
-   // var hidden = false;;
     if(!isNumber($('#Xval').val()) || !isNumber($('#Yval').val())){
-
 
         $('.form-inline').addClass('has-error');
         $('#error').show();
-        //window.location = ;
-//        hidden = !hidden;
-    //    if(hidden) {
-  //          document.getElementById('goToDir').style.visibility = 'hidden';
-//
-  //      } else {
-//            document.getElementById('goToDir').style.visibility = 'visible';
 
-        }
-
-    else{
-            //console.log(window.location.pathname + "?x=" + $('#Xval').val() + "&y=" + $('#Yval').val());
-            window.location = window.location.pathname + "?x=" + $('#Xval').val() + "&y=" + $('#Yval').val();
-
+    }else{
+        window.location = window.location.pathname + "?x=" + $('#Xval').val() + "&y=" + $('#Yval').val();
     }
 
 
 };
 
 function move(x, y){
-    var range = 3;
+    var range = parseInt($('#Map').attr('range'));
+
     if(x<range || x>=100-range || y<range || y>=100-range){
         console.log("invalid position");
     }else{
         window.location = window.location.pathname + "?x=" + x + "&y=" + y;
     }
-}
+};
 
 function isNumber(s)
 {
