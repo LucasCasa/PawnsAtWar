@@ -81,4 +81,16 @@ public class Info {
         }
         return res;
     }
+    public int getCost(int type){
+        switch (type){
+            case ARCHERY:
+                return COST_ARCHER;
+            case STABLE:
+                return COST_HORSEMAN;
+            case BARRACKS:
+                return COST_WARRIOR;
+            default:
+                return 0;
+        }
+    }
 }

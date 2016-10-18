@@ -94,7 +94,7 @@ public class ArmyController {
         if(armies == null){
             armies = new ArrayList<>();
         }
-        List<Troop> troops = ts.getTroopById(id);
+        List<Troop> troops = army.getTroops();
         mav.addObject("armies",armies);
         mav.addObject("armySize",armies.size());
         mav.addObject("army",army);
@@ -141,69 +141,72 @@ public class ArmyController {
                     return new ModelAndView("redirect:/error?m=Para atacar un castillo primero se tienen que destruir todos los demas edificios");
                 }
             }
-            Army a = as.getStrongest(s.getUser().getId());
+            Army d = as.getStrongest(s.getUser().getId());
+            Army a = as.getArmyById(id);
             Map<String,Object> values = new HashMap<>();
-            values.put("a0b",new Integer(0));
-            values.put("a1b",new Integer(0));
-            values.put("a2b",new Integer(0));
-            values.put("d0b",new Integer(0));
-            values.put("d1b",new Integer(0)); // QUE WASADA POR DIOS
-            values.put("d2b",new Integer(0));
-            values.put("a0l",new Integer(0));
-            values.put("a1l",new Integer(0));
-            values.put("a2l",new Integer(0));
-            values.put("d0l",new Integer(0));
-            values.put("d1l",new Integer(0));
-            values.put("d2l",new Integer(0));
+            values.put("a0b",0);
+            values.put("a1b",0);
+            values.put("a2b",0);
+            values.put("d0b",0);
+            values.put("d1b",0); // QUE WASADA POR DIOS
+            values.put("d2b",0);
+            values.put("a0l",0);
+            values.put("a1l",0);
+            values.put("a2l",0);
+            values.put("d0l",0);
+            values.put("d1l",0);
+            values.put("d2l",0);
             if(a != null){
-                int defenderP = (int) ts.getValue(a.getIdArmy());
-                int atackerP = (int) ts.getValue(id);
-                int loserP = 0;
-                int adef = 0;
-                int awin = 0;
-                String prefixW = "";
-                String prefixD = "";
-                if(defenderP > atackerP){
+                int defenderP = (int) ts.getValue(d.getIdArmy());
+                int attackerP = (int) ts.getValue(id);
+                int loserP;
+                Army adef;
+                Army awin;
+                String prefixW;
+                String prefixD;
+                if(defenderP > attackerP){
                     mav.addObject("result","Ataque no exitoso!! Perdiste");
-                    adef = id;
-                    awin = a.getIdArmy();
-                    loserP = atackerP;
+                    adef = a;
+                    awin = d;
+                    loserP = attackerP;
                     prefixD ="a";
                     prefixW ="d";
-                }else if(atackerP > defenderP){
+                }else if(attackerP > defenderP){
                     mav.addObject("result","Ataque Exitoso!! Ganaste");
-                    awin = id;
-                    adef = a.getIdArmy();
+                    awin = a;
+                    adef = d;
                     loserP = defenderP;
                     prefixD ="d";
                     prefixW ="a";
                     ss.deleteBuilding(new Point(xprime,yprime));
                 }else{
                     mav.addObject("result","Empate");
-                    for(Troop t : ts.getTroopById(id)){
+                    for(Troop t : a.getTroops()){
                         values.put("a"+t.getType()+"b",t.getQuantity());
                         values.put("a"+t.getType()+"l",t.getQuantity());
                     }
-                    for(Troop t : ts.getTroopById(a.getIdArmy())){
+                    for(Troop t : d.getTroops()){
                         values.put("d"+t.getType()+"b",t.getQuantity());
                         values.put("d"+t.getType()+"l",t.getQuantity());
                     }
                     as.deleteArmy(id);
-                    as.deleteArmy(a.getIdArmy());
+                    as.deleteArmy(d.getIdArmy());
+                    mav.addAllObjects(values);
+                    return mav;
                 }
-                List<Troop> defeated = ts.getTroopById(adef);
-                as.deleteArmy(adef);
-                List<Troop> winner = ts.getTroopById(awin);
+                List<Troop> defeated = adef.getTroops();
+                as.deleteArmy(adef.getIdArmy());
+                List<Troop> winner = awin.getTroops();
                 for(Troop t : winner){
                     if(t.getQuantity()*(t.getType()+1) > loserP){
                         values.put(prefixW+t.getType()+"b",t.getQuantity());
-                        ts.subtractTroop(awin,t.getType(),loserP/(t.getType()+1));
+                        ts.subtractTroop(awin.getIdArmy(),t.getType(),loserP/(t.getType()+1));
                         values.put(prefixW+t.getType()+"l",loserP/(t.getType()+1));
                         break;
                     }else{
                         values.put(prefixW+t.getType()+"b",t.getQuantity());
                         values.put(prefixW+t.getType()+"l",t.getQuantity());
-                        ts.deleteTroop(awin,t.getType());
+                        ts.deleteTroop(awin.getIdArmy(),t.getType());
                         loserP-= (t.getType()+1)*t.getQuantity();
 
                     }
@@ -241,29 +244,30 @@ public class ArmyController {
         int a = Integer.valueOf(amount);
         int x = Integer.valueOf(px);
         int y = Integer.valueOf(py);
+        Sector s =ss.getSector(new Point(x,y));
+        if(!(s instanceof Building)){
+            return new ModelAndView("redirect:/error?m=Un terreno no puede reclutar tropas");
+        }
+        Building b = (Building) s;
 
+        int cost;
         switch (Integer.valueOf(type)){
             case Info.WARRIOR:
-                if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < a * Info.COST_WARRIOR){
-                    return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=No hay suficiente comida");
-                }
-                es.subtractResourceAmount(user.getId(),Info.RES_FOOD,a * Info.COST_WARRIOR);
+                    cost = (Info.COST_WARRIOR - (b.getLevel() - 1))*a;
                 break;
             case Info.ARCHER:
-                if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < a * Info.COST_ARCHER) {
-                    return new ModelAndView("redirect:/building?x=" + x + "&y=" + y + "&m=No hay suficiente comida");
-                }
-                es.subtractResourceAmount(user.getId(),Info.RES_FOOD,a * Info.COST_ARCHER);
+                cost = (Info.COST_ARCHER - (b.getLevel() - 1))*a;
                 break;
             case Info.HORSEMAN:
-                if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < a * Info.COST_HORSEMAN){
-                    return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=No hay suficiente comida");
-                }
-                es.subtractResourceAmount(user.getId(),Info.RES_FOOD,a * Info.COST_HORSEMAN);
+                cost = (Info.COST_HORSEMAN - (b.getLevel() - 1))*a;
                 break;
             default:
                 return new ModelAndView("redirect:/error?m=Tipo de tropa invalida");
         }
+        if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < cost){
+            return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=No hay suficiente comida");
+        }
+        es.subtractResourceAmount(user.getId(),Info.RES_FOOD,cost);
         Army ar = as.getOrCreateArmy(new Point(x,y),user.getId());
         ts.addTroop(ar.getIdArmy(),Integer.valueOf(type),a);
         return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=Tropa creada exitosamente");
@@ -313,7 +317,7 @@ public class ArmyController {
                 points.add(b.getPosition());
             }
         }
-        List<Troop> t = ts.getTroopById(Integer.parseInt(armyId));
+        List<Troop> t = a.getTroops();
         mav.addObject("user",user);
         mav.addObject("army",a);
         mav.addObject("troops",t);

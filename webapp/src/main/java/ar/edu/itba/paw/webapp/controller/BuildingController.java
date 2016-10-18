@@ -164,7 +164,15 @@ public class BuildingController {
         if(!s.getUser().equals(user)){
             return new ModelAndView("redirect:/error?m=Esta posicion no te pertenece");
         }
-        bs.levelUp(p);
+        if(!(s instanceof Building)){
+            return new ModelAndView("redirect:/error?m=No se puede subir de nivel un terreno");
+        }
+        if(((Building) s).getLevel() < 20){
+            bs.levelUp(p);
+        }else{
+            return new ModelAndView("redirect:/error?m=Ya no se puede subir de nivel al edificio");
+        }
+
 
         if(bs.getType(p) == Info.GOLD ){
             es.addResourceAmount(user.getId(),1, 5000);//1=GOLD
@@ -177,7 +185,7 @@ public class BuildingController {
         }
 
         if(bs.getType(p) == Info.ARCHERY || bs.getType(p) == Info.BARRACKS || bs.getType(p) == Info.BLACKSMITH || bs.getType(p) == Info.STABLE){
-           // TODO
+           // TODO WUT???
         }
 
         return new ModelAndView("redirect:/building?x="+x+"&y=" + y);

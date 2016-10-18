@@ -77,18 +77,18 @@ public class BuildingTag extends SimpleTagSupport {
         JspWriter out = getJspContext().getOut();
         printButtons();
         printCreateTroop(Info.ARCHER);
-        printTable(messageSource.getMessage("creationTime",null,locale), Info.ARCHERY,level);
+        printTable(messageSource.getMessage("troopCost",null,locale), Info.ARCHERY,level);
     }
     private void printBarrack() throws JspException,IOException{
         printButtons();
         printCreateTroop(Info.WARRIOR);
-        printTable(messageSource.getMessage("creationTime",null,locale), Info.BARRACKS,level);
+        printTable(messageSource.getMessage("troopCost",null,locale), Info.BARRACKS,level);
 
     }
     private void printStable() throws JspException,IOException{
         printButtons();
         printCreateTroop(Info.HORSEMAN);
-        printTable(messageSource.getMessage("creationTime",null,locale),Info.STABLE,level);
+        printTable(messageSource.getMessage("troopCost",null,locale),Info.STABLE,level);
     }
     private void printCreateTroop(int type) throws JspException,IOException{
         JspWriter out = getJspContext().getOut();
@@ -126,13 +126,13 @@ public class BuildingTag extends SimpleTagSupport {
                 re.setType(1);
                 re.setPath(path);
                 re.doTag();
-                ResourceTag re2 = new ResourceTag();
+                /*ResourceTag re2 = new ResourceTag();
                 re2.setJspContext(getJspContext());
                 re2.setAmount(price);
                 re2.setPath(path);
                 re2.setRate(0);
                 re2.setType(0);
-                re2.doTag();
+                re2.doTag();*/
                 out.println("</td>");
                 out.println("<td>");
                 out.println("<form method=\"post\" action=\""+ path +"/build\">");
@@ -220,15 +220,15 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("<td>"+messageSource.getMessage("level",null,locale)+"</td>");
         out.println("<td>"+text+"</td>");
         out.println("<td>"+messageSource.getMessage("cost",null,locale)+"</td>");
-        out.println("<td>"+messageSource.getMessage("time",null,locale)+"</td>");
+        //out.println("<td>"+messageSource.getMessage("time",null,locale)+"</td>");
         out.println("</thead>");
         out.println("<tbody>");
         out.println("<tr>");
-        out.println("<td><b>"+level +"</b></td><td><b>PlaceHolder</b></td><td><b>"+ (price + level*level*level*level) +"</b></td><td><b>00:"+level+":00</b></td>");
+        out.println("<td><b>"+level +"</b></td><td><b>"+(Info.getInstance().getCost(type)-(level-1))+"</b></td><td><b>"+ (price + level*level*level*level) +"</b></td>");//<td><b>00:"+level+":00</b></td>");
         out.println("</tr>");
-        for(int i = level+1 ; i<=40;i++){
+        for(int i = level+1 ; i<=20;i++){
             out.println("<tr>");
-            out.println("<td>"+i +"</td><td>PlaceHolder</td><td>"+ (price + i*i*i*i) +"</td><td>00:"+i+":00</td>");
+            out.println("<td>"+i +"</td><td>"+(Info.getInstance().getCost(type)-(i-1))+"</td><td>"+ (price + i*i*i*i) +"</td>");//<td>00:"+i+":00</td>");
             out.println("</tr>");
 
         }
