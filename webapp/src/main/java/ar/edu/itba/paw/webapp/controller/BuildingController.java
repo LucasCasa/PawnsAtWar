@@ -60,11 +60,8 @@ public class BuildingController {
         if(user == null)
             return new ModelAndView("redirect:/login");
 
-        String regex = "^\\d+";
-
-
         if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y)) {
-            return new ModelAndView("redirect:/error?m=Posicion invalida para construir");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidPosition",null,locale));
         }else{
         	
         	/* Should be somewhere else (?) */
@@ -110,12 +107,13 @@ public class BuildingController {
     
     @RequestMapping(value="/build", method = RequestMethod.POST)
     public ModelAndView build(@RequestParam String x,
-                                 @RequestParam String y,
-                                 @RequestParam String type,
-                                 @ModelAttribute("userId") final User user ){
+                              @RequestParam String y,
+                              @RequestParam String type,
+                              @ModelAttribute("userId") final User user,
+                              Locale locale){
 
         if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y) || !Validator.isInteger(type)){
-            return new ModelAndView("redirect:/error?m=Parametro Invalido");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidParam",null,locale));
         }
         int xprime = Integer.parseInt(x);
         int yprime = Integer.parseInt(y);
@@ -126,7 +124,7 @@ public class BuildingController {
         Sector s = ss.getSector(new Point(xprime,yprime));
         
         if(s == null || !s.getUser().equals(user)|| (s.getType() != Info.TERR_GOLD && s.getType() != Info.EMPTY) ){
-            return new ModelAndView("redirect:/error?m=No se puede construir en esta posicion");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantConstruct",null,locale));
         }
         
         if(es.build(user.getId(),xprime,yprime,typep)){
@@ -139,14 +137,15 @@ public class BuildingController {
     @RequestMapping(value="/demolish", method = RequestMethod.POST)
     public ModelAndView demolish(@RequestParam String x,
                                  @RequestParam String y,
-                                 @ModelAttribute("userId") final User user){
+                                 @ModelAttribute("userId") final User user,
+                                 Locale locale){
         if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y)){
-            return new ModelAndView("redirect:/error?m=Direccion invalida");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidPosition",null,locale));
         }
         Point p = new Point(Integer.parseInt(x),Integer.parseInt(y));
         Sector s = ss.getSector(p);
         if(!s.getUser().equals(user)){
-            return new ModelAndView("redirect:/error?m=Esta posicion no te pertenece");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYourPosition",null,locale));
         }
         ss.deleteBuilding(p);
         return new ModelAndView("redirect:/map");
@@ -154,23 +153,24 @@ public class BuildingController {
 
     @RequestMapping(value="/levelup", method = RequestMethod.POST)
     public ModelAndView levelup(@RequestParam String x,
-                                 @RequestParam String y,
-                                 @ModelAttribute("userId") final User user){
+                                @RequestParam String y,
+                                @ModelAttribute("userId") final User user,
+                                Locale locale){
         if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y)){
-            return new ModelAndView("redirect:/error?m=Direccion invalida");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidPosition",null,locale));
         }
         Point p = new Point(Integer.parseInt(x),Integer.parseInt(y));
         Sector s = ss.getSector(p);
         if(!s.getUser().equals(user)){
-            return new ModelAndView("redirect:/error?m=Esta posicion no te pertenece");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYourPosition",null,locale));
         }
         if(!(s instanceof Building)){
-            return new ModelAndView("redirect:/error?m=No se puede subir de nivel un terreno");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantLevelUpTerrain",null,locale));
         }
         if(((Building) s).getLevel() < 20){
             bs.levelUp(p);
         }else{
-            return new ModelAndView("redirect:/error?m=Ya no se puede subir de nivel al edificio");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.maxLevel",null,locale));
         }
 
 
@@ -190,14 +190,6 @@ public class BuildingController {
 
         return new ModelAndView("redirect:/building?x="+x+"&y=" + y);
     }
-
-
-    /*
-    @ModelAttribute("user")
-    public User setRandomUser() {
-        User bean = new User(69,"lucas","42069","l@l.com");
-        return bean;
-    }*/
 
     @ModelAttribute("userId")
     public User loggedUser (final HttpSession session){

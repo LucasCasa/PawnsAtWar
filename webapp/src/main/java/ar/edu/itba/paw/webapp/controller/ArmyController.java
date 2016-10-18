@@ -5,16 +5,14 @@ import ar.edu.itba.model.*;
 import ar.edu.itba.paw.webapp.dataClasses.Info;
 import ar.edu.itba.paw.webapp.dataClasses.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.servlet.jsp.tagext.ValidationMessage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static java.lang.System.out;
 
@@ -36,6 +34,8 @@ public class ArmyController {
     private EmpireService es;
     @Autowired
     private BuildingService bs;
+    @Autowired
+    private MessageSource messageSource;
 
     @RequestMapping(value="/armies")
     public ModelAndView showArmies(@ModelAttribute("user") final User user,
@@ -63,7 +63,8 @@ public class ArmyController {
     public ModelAndView showArmy(@PathVariable String armyId,
                                  @RequestParam(value= "x",required = false) String x ,
                                  @RequestParam(value= "y",required = false) String y,
-                                 @ModelAttribute("user") final User user){
+                                 @ModelAttribute("user") final User user,
+                                 Locale locale){
         if(user == null){
             return new ModelAndView("redirect:/");
         }
@@ -79,16 +80,16 @@ public class ArmyController {
         }
 
         if(armyId == null || !Validator.isInteger(armyId)) {
-            return new ModelAndView("redirect:/error?m=Ejercito incorrecto");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidArmy",null,locale));
         }
         int id = Integer.parseInt(armyId);
 
         Army army = as.getArmyById(id);
         if(army == null){
-            return new ModelAndView("redirect:/error?m=el ejercito no existe");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notExistArmy",null,locale));
         }
         if(!as.belongs(user.getId(),id)){
-            return new ModelAndView("redirect:/error?m=Este ejercito no es tuyo");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
         }
         List<Army> armies = as.getArmies(user.getId());
         if(armies == null){
@@ -106,20 +107,21 @@ public class ArmyController {
     public ModelAndView attack(@RequestParam String x,
                                @RequestParam String y,
                                @RequestParam String army,
-                               @ModelAttribute("user") final User user ){
+                               @ModelAttribute("user") final User user,
+                               Locale locale){
         if(user == null){
             return new ModelAndView("redirect:/");
         }
         final ModelAndView mav = new ModelAndView("attack");
         if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y) ){
-            return new ModelAndView("redirect:/error?m=Posicion invalida");
+            return new ModelAndView("redirect:/error?"+ messageSource.getMessage("error.invalidPosition",null,locale));
         }
         if(!Validator.isInteger(army)){
-            return new ModelAndView("redirect:/error?m=Ejercito invalido");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidArmy",null,locale));
         }
         int id = Integer.parseInt(army);
         if(!as.belongs(user.getId(),id)){
-            return new ModelAndView("redirect:/error?m=El ejercito no es tuyo");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
         }
         int xprime = Integer.parseInt(x);
         int yprime = Integer.parseInt(y);
@@ -128,17 +130,17 @@ public class ArmyController {
 
         Sector s = ss.getSector(new Point(xprime,yprime));
         if(s == null){
-            return new ModelAndView("redirect:/error?m=No existe edificio en esa direccion");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notBuildingInPosition",null,locale));
 
         }
         if(s.getUser().getId() == user.getId()){
-            return new ModelAndView("redirect:/error?m=No se puede atacar un edificio tuyo...");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.attackSelfBuilding",null,locale));
         }else if(s.getType() == 0 || s.getType() == 5){
-            return new ModelAndView("redirect:/error?m=No se puede atacar un Terreno sin edificio");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.attackTerrain",null,locale));
         }else {
             if(s.getType() == Info.CASTLE){
                 if(!ss.isCastleAlone(new Point(xprime,yprime),3)){
-                    return new ModelAndView("redirect:/error?m=Para atacar un castillo primero se tienen que destruir todos los demas edificios");
+                    return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.attackCastle",null,locale));
                 }
             }
             Army d = as.getStrongest(s.getUser().getId());
@@ -165,14 +167,14 @@ public class ArmyController {
                 String prefixW;
                 String prefixD;
                 if(defenderP > attackerP){
-                    mav.addObject("result","Ataque no exitoso!! Perdiste");
+                    mav.addObject("result",messageSource.getMessage("defenderWin",null,locale));
                     adef = a;
                     awin = d;
                     loserP = attackerP;
                     prefixD ="a";
                     prefixW ="d";
                 }else if(attackerP > defenderP){
-                    mav.addObject("result","Ataque Exitoso!! Ganaste");
+                    mav.addObject("result",messageSource.getMessage("attackerWin",null,locale));
                     awin = a;
                     adef = d;
                     loserP = defenderP;
@@ -180,7 +182,7 @@ public class ArmyController {
                     prefixW ="a";
                     ss.deleteBuilding(new Point(xprime,yprime));
                 }else{
-                    mav.addObject("result","Empate");
+                    mav.addObject("result",messageSource.getMessage("draw",null,locale));
                     for(Troop t : a.getTroops()){
                         values.put("a"+t.getType()+"b",t.getQuantity());
                         values.put("a"+t.getType()+"l",t.getQuantity());
@@ -218,7 +220,7 @@ public class ArmyController {
                 mav.addAllObjects(values);
                 return mav;
             }
-            mav.addObject("result","Ataque Exitoso!! No habia nadie para defender");
+            mav.addObject("result",messageSource.getMessage("noArmy",null,locale));
             for(Troop t : ts.getTroopById(id)){
                 values.put("a"+t.getType()+"b",t.getQuantity());
                 values.put("a"+t.getType()+"l",0);
@@ -233,20 +235,21 @@ public class ArmyController {
                               @RequestParam String amount,
                               @RequestParam String px,
                               @RequestParam String py,
-                              @ModelAttribute("user") final User user ){
+                              @ModelAttribute("user") final User user,
+                              Locale locale){
         if(user == null){
             return new ModelAndView("redirect:/");
         }
         if(!Validator.isInteger(type) || !Validator.isInteger(amount)
                 || !Validator.validBoardPosition(px) || !Validator.validBoardPosition(py)){
-            return new ModelAndView("redirect:/error?m=Parametros Invalidos");
+            return new ModelAndView("redirect:/error?"+ messageSource.getMessage("error.invalidParam",null,locale));
         }
         int a = Integer.valueOf(amount);
         int x = Integer.valueOf(px);
         int y = Integer.valueOf(py);
         Sector s =ss.getSector(new Point(x,y));
         if(!(s instanceof Building)){
-            return new ModelAndView("redirect:/error?m=Un terreno no puede reclutar tropas");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.terrainRecruit",null,locale));
         }
         Building b = (Building) s;
 
@@ -262,32 +265,33 @@ public class ArmyController {
                 cost = (Info.COST_HORSEMAN - (b.getLevel() - 1))*a;
                 break;
             default:
-                return new ModelAndView("redirect:/error?m=Tipo de tropa invalida");
+                return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidTroop",null,locale));
         }
         if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < cost){
-            return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=No hay suficiente comida");
+            return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m="+ messageSource.getMessage("error.noFood",null,locale));
         }
         es.subtractResourceAmount(user.getId(),Info.RES_FOOD,cost);
         Army ar = as.getOrCreateArmy(new Point(x,y),user.getId());
         ts.addTroop(ar.getIdArmy(),Integer.valueOf(type),a);
-        return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m=Tropa creada exitosamente");
+        return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m="+ messageSource.getMessage("troopSuccess",null,locale));
 
     }
     @RequestMapping(value="/merge")
     public ModelAndView train(@RequestParam String f,
                               @RequestParam String t,
-                              @ModelAttribute("user") final User user ){
+                              @ModelAttribute("user") final User user,
+                              Locale locale){
         if(user == null){
             return new ModelAndView("redirect:/");
         }
         if(!Validator.isInteger(f) || !Validator.isInteger(t)){
-            return new ModelAndView("redirect:/error?m=Parametros Invalidos");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidParam",null,locale));
         }
         int from = Integer.valueOf(f);
         int to = Integer.valueOf(t);
         List<Army> a = as.getArmies(user.getId());
         if(!as.belongs(user.getId(),from) || !as.belongs(user.getId(),to)){
-            return new ModelAndView("redirect:/error?m=Uno de los ejercitos no es tuyo");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
         }
 
         List<Troop> troops = ts.getTroopById(from);
@@ -299,15 +303,16 @@ public class ArmyController {
     }
     @RequestMapping(value="/armies/{armyId}/split")
     public ModelAndView train(@PathVariable String armyId,
-                              @ModelAttribute("user") final User user ){
+                              @ModelAttribute("user") final User user,
+                              Locale locale){
         if(user == null){
             return new ModelAndView("redirect:/");
         }
         if(!Validator.isInteger(armyId)){
-            return new ModelAndView("redirect:/error?m=Ejercito Invalido");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidArmy",null,locale));
         }
         if(!as.belongs(user.getId(),Integer.valueOf(armyId))){
-            return new ModelAndView("redirect:/error?m=Este Ejercito no te pertenece");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
         }
         ModelAndView mav = new ModelAndView("split");
         Army a = as.getArmyById(Integer.parseInt(armyId));
@@ -330,21 +335,22 @@ public class ArmyController {
                               @RequestParam(value= "2",required = false,defaultValue = "0") String t3,
                               @RequestParam(value= "pos") String pos,
                               @RequestParam(value= "army") String armyId,
-                              @ModelAttribute("user") final User user ){
+                              @ModelAttribute("user") final User user,
+                              Locale locale){
         String[] po = pos.split(",");
         if(!Validator.validBoardPosition(po[0]) || !Validator.validBoardPosition(po[1])){
-            return new ModelAndView("redirect:/error?m=Posición invalida");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidPosition",null,locale));
         }
         Point p = new Point(Integer.parseInt(po[0]),Integer.parseInt(po[1]));
         if(!Validator.isInteger(t1) || !Validator.isInteger(t2) || !Validator.isInteger(t3)){
-            return new ModelAndView("redirect:/error?m=Cantidad de tropas invalida");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidTroopAmount",null,locale));
         }
         if(!Validator.isInteger(armyId)){
-            return new ModelAndView("redirect:/error?m=Ejercito invalido");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidArmy",null,locale));
         }
         int id = Integer.parseInt(armyId);
         if(!as.belongs(user.getId(),id)){
-            return new ModelAndView("redirect:/error?m=Ese ejercito no es tuyo");
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
         }
         int warriors = Integer.parseInt(t1);
         int archers = Integer.parseInt(t2);

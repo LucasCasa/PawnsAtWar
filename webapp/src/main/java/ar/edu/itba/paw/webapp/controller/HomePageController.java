@@ -1,11 +1,13 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import java.util.List;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,6 +37,8 @@ public class HomePageController {
 	private BuildingService bs;
 	@Autowired
 	private UserService us;
+	@Autowired
+	private MessageSource messageSource;
 
 
 
@@ -50,15 +54,12 @@ public class HomePageController {
 	public ModelAndView gridLoader(@RequestParam(value= "x",required = false) String x ,
 								   @RequestParam(value= "y",required = false) String y,
 								   @ModelAttribute("userId") final User user,
-								   HttpServletRequest request){
+								   Locale locale){
 
 		if(user == null){
 			return new ModelAndView("redirect:/");
 		}
-
-		out.println(request.getContextPath());
-		out.println("ENTRA CON EL USUARIO " + user.getName());
-		int xprime ;
+		int xprime;
 		int yprime;
 
 		if(x == null && y == null){
@@ -70,7 +71,7 @@ public class HomePageController {
 
 
 			if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y) ) {
-				return new ModelAndView("redirect:/error?m=Posicion Invalida");
+				return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidParam",null,locale));
 			}
 			xprime = Integer.parseInt(x);
 			yprime = Integer.parseInt(y);
@@ -94,8 +95,6 @@ public class HomePageController {
 	}
 	@ModelAttribute("userId")
 	public User loggedUser (final HttpSession session){
-		//out.println("EL USUARIO ES: " + (Integer)session.getAttribute("userId"));
-
 		if(session.getAttribute("userId") != null)
 			return  us.findById((Integer)session.getAttribute("userId"));
 		return null;
