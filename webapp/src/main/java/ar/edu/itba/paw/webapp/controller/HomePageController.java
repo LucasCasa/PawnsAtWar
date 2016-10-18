@@ -52,10 +52,15 @@ public class HomePageController {
 	public ModelAndView gridLoader(@RequestParam(value= "x",required = false) String x ,
 								   @RequestParam(value= "y",required = false) String y,
 								   @ModelAttribute("userId") final User user,
-								   Locale locale){
+								   Locale locale,
+								   final HttpSession session){
 
 		if(user == null){
 			return new ModelAndView("redirect:/");
+		}
+		if(bs.getCastle(user.getId()) == null){
+			session.removeAttribute("userId");
+			return new ModelAndView("redirect:/error?m=" + "su castillo fue destruido, perdio. Ingrese con otro usuario");
 		}
 		int xPrime;
 		int yPrime;

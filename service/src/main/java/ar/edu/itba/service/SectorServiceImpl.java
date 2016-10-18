@@ -3,7 +3,6 @@ package ar.edu.itba.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.itba.model.Terrain;
 import ar.edu.itba.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -129,8 +128,12 @@ public class SectorServiceImpl implements SectorService {
 	}
 
 	@Override
-	public void createCastle(int userid) {
+	public boolean createCastle(int userid) {
 		Point p = bs.addCastle(userid);
+		if(p == null){
+			return false;
+		}
 		updateTerrain(p,userid,initRange);
+		return true;
 	}
 }

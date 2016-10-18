@@ -150,10 +150,13 @@ public class EmpireServiceImpl implements EmpireService{
 	
 	@Override
 	public void createUser(int userid) {
-		ss.createCastle(userid);
-		ed.createEmpire(userid, new Timestamp(Calendar.getInstance().getTime().getTime()));
+		boolean resp = ss.createCastle(userid);
+		if(resp){
+			ed.createEmpire(userid, new Timestamp(Calendar.getInstance().getTime().getTime()));
 		ed.createResource(userid, 0, INITIAL_VALUE);
 		ed.createResource(userid, 1, INITIAL_VALUE);
+		}
+		
 	}
 
 

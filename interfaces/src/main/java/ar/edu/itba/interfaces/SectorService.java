@@ -15,7 +15,7 @@ public interface SectorService {
 	
 	public boolean isCastleAlone(Point p, int range);
 
-	public void createCastle(int userid);
+	public boolean createCastle(int userid);
 
 	public void addBuilding(Point p, int idPlayer, int type);
 }

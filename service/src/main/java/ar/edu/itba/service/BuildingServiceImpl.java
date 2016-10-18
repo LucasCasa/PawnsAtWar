@@ -41,8 +41,8 @@ public class BuildingServiceImpl implements BuildingService{
 				}
 			}
 		}
-		for(int i = RANGE ; i<=MAXVALUE-RANGE/2 ;i++){
-			for (int j = RANGE ;j<=MAXVALUE-RANGE/2;j++){
+		for(int i = RANGE/2 ; i<=MAXVALUE-RANGE/2 ;i++){
+			for (int j = RANGE/2 ;j<=MAXVALUE-RANGE/2;j++){
 				if(!aux[i][j]){
 					availableSpots.add(new Point(i,j));
 				}
@@ -88,15 +88,13 @@ public class BuildingServiceImpl implements BuildingService{
 
 	@Override
 	public Point addCastle(int idPlayer) {
-		if(availableSpots == null)
-			LoadSpots();
+		LoadSpots();
 		Random random = new Random();
 		if(availableSpots.size() == 0){
 			return null;
 		}
 		int n = random.nextInt(availableSpots.size());
 		Point p = availableSpots.get(n);
-		availableSpots.remove(n);
 		bd.addBuilding(p, idPlayer, 1);
 		return p;
 	}
@@ -118,7 +116,7 @@ public class BuildingServiceImpl implements BuildingService{
 
 	@Override
 	public int getPrice(Point point,int userId) {
-		return 1000-10*getLevel(getCastle(userId));
+		return 1000-10*(getLevel(getCastle(userId))-1);
 	}
 	
 	
