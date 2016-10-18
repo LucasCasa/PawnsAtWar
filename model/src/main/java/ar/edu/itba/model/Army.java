@@ -6,15 +6,15 @@ public class Army {
 	private Point position;
 	private int idArmy;
 	private User user;
-	private List<Troop> troop;
+	private List<Troop> troops;
 	private boolean available;
 	
-	public Army(Point position, User user,int idArmy, boolean available,List<Troop> troop) {
+	public Army(Point position, User user,int idArmy, boolean available,List<Troop> troops) {
 		this.position = position;
 		this.idArmy = idArmy;
 		this.user = user;
 		this.available = available;
-		this.troop = troop;
+		this.troops = troops;
 	}
 
 	public boolean getAvailable() {
@@ -37,15 +37,15 @@ public class Army {
 	}
 	
 	public void addTroop(Troop t){
-		troop.add(t);
+		troops.add(t);
 	}
 	
 	public void setTroop(List<Troop> troop){
-		this.troop=troop;
+		this.troops=troops;
 	}
 	
 	public List<Troop> getTroops(){
-		return troop;
+		return troops;
 	}
 
 	public void setUser(User user) {
