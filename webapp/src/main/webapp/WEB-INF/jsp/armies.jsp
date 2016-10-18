@@ -23,13 +23,25 @@
                 <c:out value="${army.position.y}"/>
             </td>
             <td>
-                TODO
+                <c:forEach var="troop" items="${army.troops}">
+                    <c:if test="${troop.type == 0}">
+                        <c:out value="${troop.quantity}" />
+                    </c:if>
+                </c:forEach>
             </td>
             <td>
-                TODO
+                <c:forEach var="troop" items="${army.troops}">
+                    <c:if test="${troop.type == 1}">
+                        <c:out value="${troop.quantity}" />
+                    </c:if>
+                </c:forEach>
             </td>
             <td>
-                TODO
+                <c:forEach var="troop" items="${army.troops}">
+                    <c:if test="${troop.type == 2}">
+                        <c:out value="${troop.quantity}" />
+                    </c:if>
+                </c:forEach>
             </td>
             <td>
                 <c:choose>
