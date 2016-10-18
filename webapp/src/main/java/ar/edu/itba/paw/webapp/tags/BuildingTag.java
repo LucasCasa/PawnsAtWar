@@ -29,6 +29,7 @@ public class BuildingTag extends SimpleTagSupport {
 
     public void doTag() throws JspException, IOException {
         JspWriter out = getJspContext().getOut();
+        System.out.println(path);
         switch (info.getId()) {
             case Info.EMPTY:
             case Info.TERR_GOLD:
@@ -123,12 +124,12 @@ public class BuildingTag extends SimpleTagSupport {
                 re.setAmount(price);
                 re.setRate(0);
                 re.setType(1);
+                re.setPath(path);
                 re.doTag();
                 ResourceTag re2 = new ResourceTag();
                 re2.setJspContext(getJspContext());
                 re2.setAmount(price);
-                System.out.println("PRECIOOOOOO ES " + price);
-                System.out.println("LEVEL ESSSS" + level);
+                re2.setPath(path);
                 re2.setRate(0);
                 re2.setType(0);
                 re2.doTag();
@@ -156,6 +157,7 @@ public class BuildingTag extends SimpleTagSupport {
             re.setAmount(price);
             re.setRate(0);
             re.setType(1);
+            re.setPath(path);
             re.doTag();
             out.println("</td>");
             out.println("<td>");
@@ -188,25 +190,25 @@ public class BuildingTag extends SimpleTagSupport {
     private void printImage(JspWriter out,int id) throws JspException, IOException{
             switch (id){
                 case Info.CASTLE:
-                    out.print("<img src=\"/webapp/resources/images/castle.png\">");
+                    out.print("<img src=\""+ path +"/resources/images/castle.png\">");
                     break;
                 case Info.ARCHERY:
-                    out.print("<img src=\"/webapp/resources/images/archery.png\">");
+                    out.print("<img src=\""+ path +"/resources/images/archery.png\">");
                     break;
                 case Info.BARRACKS:
-                    out.print("<img src=\"/webapp/resources/images/barracks.png\">");
+                    out.print("<img src=\""+ path +"/resources/images/barracks.png\">");
                     break;
                 case Info.GOLD:
-                    out.print("<img src=\"/webapp/resources/images/gold.png\">");
+                    out.print("<img src=\""+ path +"/resources/images/gold.png\">");
                     break;
                 case Info.MILL:
-                    out.print("<img src=\"/webapp/resources/images/mill.png\">");
+                    out.print("<img src=\""+ path +"/resources/images/mill.png\">");
                     break;
                 case Info.BLACKSMITH:
-                    out.print("<img src=\"/webapp/resources/images/blacksmith.png\">");
+                    out.print("<img src=\""+ path +"/resources/images/blacksmith.png\">");
                     break;
                 case Info.STABLE:
-                    out.print("<img src=\"/webapp/resources/images/stable.png\">");
+                    out.print("<img src=\""+ path +"/resources/images/stable.png\">");
                     break;
             }
     }

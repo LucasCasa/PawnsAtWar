@@ -29,6 +29,13 @@
             <name>clas</name>
             <required>false</required>
         </attribute>
+        <attribute>
+            <name>path</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.String</type>
+        </attribute>
+
     </tag>
 
 

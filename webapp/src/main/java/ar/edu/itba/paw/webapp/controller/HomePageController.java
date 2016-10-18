@@ -2,6 +2,7 @@ package ar.edu.itba.paw.webapp.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,13 +49,14 @@ public class HomePageController {
 	@RequestMapping(value={"/map"}, method = RequestMethod.GET)
 	public ModelAndView gridLoader(@RequestParam(value= "x",required = false) String x ,
 								   @RequestParam(value= "y",required = false) String y,
-								   @ModelAttribute("userId") final User user){
+								   @ModelAttribute("userId") final User user,
+								   HttpServletRequest request){
 
 		if(user == null){
 			return new ModelAndView("redirect:/");
 		}
 
-
+		out.println(request.getContextPath());
 		out.println("ENTRA CON EL USUARIO " + user.getName());
 		int xprime ;
 		int yprime;

@@ -19,7 +19,7 @@
 				<tr>
 					<td>
 					<c:forEach var="res" items="${resList}">
-						  <input type="radio" name="giveType" onclick="handleClick();"value="${res.getType()}"><re:Resource rate="0" type="${res.getType()}" amount=""/></input>
+						  <input type="radio" name="giveType" onclick="handleClick();"value="${res.getType()}"><re:Resource rate="0" type="${res.getType()}" amount="" path="${pageContext.request.contextPath}"/></input>
 					</c:forEach>
 						<spring:message code="commerce.Quantity"/>
 					<input type="number" name="giveQty" min="1">
@@ -27,7 +27,7 @@
 					</td>
 					<td>
 					<c:forEach var="res" items="${resList}">
-						  <input type="radio" name="getType" onclick="handleClick();" value="${res.getType()}"><re:Resource rate="0" type="${res.getType()}" amount=""/></input>
+						  <input type="radio" name="getType" onclick="handleClick();" value="${res.getType()}"><re:Resource rate="0" type="${res.getType()}" amount="" path="${pageContext.request.contextPath}"/></input>
 					</c:forEach>
 						<spring:message code="commerce.Quantity"/>
 					<input type="number" name="getQty" min="1">
