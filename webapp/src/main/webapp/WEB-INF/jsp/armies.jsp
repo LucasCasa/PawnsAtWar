@@ -8,6 +8,9 @@
         <tr>
             <th>X</th>
             <th>Y</th>
+            <th><spring:message code="warrior" text="Disponible"/></th>
+            <th><spring:message code="archer" text="Disponible"/></th>
+            <th><spring:message code="horseman" text="Disponible"/></th>
             <th><spring:message code="table.available" text="Disponible"/> </th>
             <th colspan="2"><spring:message code="table.manage"/></th>
         </tr>
@@ -18,6 +21,15 @@
            </td>
             <td>
                 <c:out value="${army.position.y}"/>
+            </td>
+            <td>
+                TODO
+            </td>
+            <td>
+                TODO
+            </td>
+            <td>
+                TODO
             </td>
             <td>
                 <c:choose>
