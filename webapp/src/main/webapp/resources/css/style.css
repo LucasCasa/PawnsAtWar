@@ -1,7 +1,3 @@
-@font-face {
-    font-family: 'YourFontName'; /*a name to be used later*/
-    src: url('http://domain.com/fonts/font.ttf'); /*URL to font*/
-}
 
 .carousel-control.up{
     width: 100%;
@@ -83,8 +79,7 @@
     font-size: 22px;
 }
 body{
-    font-family: 'Cinzel', serif;
-
+    font-family: 'Courgette', cursive;
 }
 body > .container{
     background-image: url(../images/backfront.jpg);

@@ -33,21 +33,5 @@ function isNumber(s)
 
 function toMap() {
     window.location = "/webapp/map";
-
 };
 
-
-function describe(){
-
-    var elemento = document.createElement("img");
-    document.getElementById("elemDescription").appendChild(elemento);
-    elemento.src = '/webapp/resources/images/archery.png';
-};
-
-function deleteDescription(){
-    var d = document.getElementById("elemDescription");
-
-    while (d.firstChild) {
-        d.removeChild(d.firstChild);
-    }
-}

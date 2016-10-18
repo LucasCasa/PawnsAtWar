@@ -175,12 +175,12 @@ public class BuildingController {
 
 
         if(bs.getType(p) == Info.GOLD ){
-            es.addResourceAmount(user.getId(),1, 5000);//1=GOLD
+            es.addResourceAmount(user.getId(),Info.RES_GOLD, 5000);
             return new ModelAndView("redirect:/map");
         }
 
         if(bs.getType(p) == Info.MILL ){
-            es.addResourceAmount(user.getId(),0, 5000); //O=FOOD
+            es.addResourceAmount(user.getId(),Info.RES_FOOD, 5000);
             return new ModelAndView("redirect:/map");
         }
 

@@ -53,6 +53,13 @@
 						<form:errors path="username" cssClass="has-error" element="label cssClass=col-md-3 style=color:red"/>
 					</div >
 					<div class="form-group">
+						<form:label cssClass="col-md-4" path="email">
+						<spring:message code="user.email"/> 
+						</form:label>
+						<form:input cssClass="col-md-6" type="email" path="email"/>
+						<form:errors path="email" cssClass="has-error" element="label cssClass=col-md-2 style=color:red"/>
+					</div>
+					<div class="form-group">
 						<form:label cssClass="col-md-4" path="password">
 						<spring:message code="user.password"/>
 						</form:label>
@@ -65,13 +72,6 @@
 						</form:label>
 						<form:input cssClass="col-md-6" type="password" path="repeatPassword"/>
 						<form:errors path="repeatPassword" cssClass="has-error" element="label cssClass=col-md-2 style=color:red"/>
-					</div>
-					<div class="form-group">
-						<form:label cssClass="col-md-4" path="email">
-						<spring:message code="user.email"/> 
-						</form:label>
-						<form:input cssClass="col-md-6" type="email" path="email"/>
-						<form:errors path="email" cssClass="has-error" element="label cssClass=col-md-2 style=color:red"/>
 					</div>
 					<div class="form-group">
 						<input type="submit" value="<spring:message code="button.register"/>"/>
