@@ -158,7 +158,7 @@ public class ArmyController {
             values.put("d0l",0);
             values.put("d1l",0);
             values.put("d2l",0);
-            if(a != null){
+            if(d != null){
                 int defenderP = (int) ts.getValue(d.getIdArmy());
                 int attackerP = (int) ts.getValue(id);
                 int loserP;
