@@ -96,10 +96,12 @@ public class CommerceController {
 		if(!(Validator.isInteger(giveType)&&Validator.isInteger(getType))){
 			return new ModelAndView("redirect:/error");
 		}
-		System.out.println("giveT: " + giveType);
-		System.out.println("getT: " + getType);
 		int giveTyp = Integer.parseInt(giveType);
 		int getTyp = Integer.parseInt(getType);
+		
+		if(giveTyp == getTyp)
+			return new ModelAndView("redirect:/error");
+		
 		int giveAmount = Integer.parseInt(giveQty);
 		int receiveAmount = Integer.parseInt(getQty);
 		boolean res = cs.createOffer(user.getId(),giveTyp,giveAmount,getTyp,receiveAmount);
