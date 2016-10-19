@@ -60,7 +60,7 @@ public class HomePageController {
 		}
 		if(bs.getCastle(user.getId()) == null){
 			session.removeAttribute("userId");
-			return new ModelAndView("redirect:/error?m=" + "su castillo fue destruido, perdio. Ingrese con otro usuario");
+			return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.gameOver",null,locale));
 		}
 		int xPrime;
 		int yPrime;
