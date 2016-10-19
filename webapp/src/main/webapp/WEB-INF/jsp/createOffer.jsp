@@ -5,9 +5,7 @@
 
 <div class="container">
 	<%@ include file="resourceBar.jsp" %>
-	<c:if test="${insuficientAmount}">
-		<div class="error"><spring:message code="commerce.error"/></div>
-	</c:if>
+	
 	<br/>
 	<table class="table">
 		<thead>
@@ -40,6 +38,10 @@
 			</form>
 		</tbody>
 	</table>
+	<div class="error" style="display:none;" id="sameType"><spring:message code="commerce.sameType"/></div>
+	<c:if test="${insuficientAmount}">
+		<div class="error" id="insAmount"><spring:message code="commerce.error"/></div>
+	</c:if>
 </div>
 
 <%@ include file="footer.jsp" %>

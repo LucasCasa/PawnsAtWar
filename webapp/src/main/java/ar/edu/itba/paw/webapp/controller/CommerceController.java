@@ -96,7 +96,7 @@ public class CommerceController {
     public ModelAndView sumbitCreate(@RequestParam(required = false) String giveType, @RequestParam(required = false) String getType,@RequestParam(required = false) String giveQty,@RequestParam(required = false) String getQty,@ModelAttribute("user") final User user ){
 		if(getQty==null || giveQty==null || giveType==null || getType==null)
 			return new ModelAndView("redirect:/commerce/create");
-		if(!(Validator.isInteger(giveQty)&&Validator.isInteger(getQty)&&Integer.parseInt(giveQty)>0&&Integer.parseInt(getQty)>0)){
+		if(!(Validator.isInteger(giveQty)&&Validator.isInteger(getQty)&&Long.parseLong(giveQty)>0&&Long.parseLong(getQty)>0)){
 			return new ModelAndView("redirect:/error");
 		}
 		if(!(Validator.isInteger(giveType)&&Validator.isInteger(getType))){
@@ -112,9 +112,7 @@ public class CommerceController {
 		int receiveAmount = Integer.parseInt(getQty);
 		boolean res = cs.createOffer(user.getId(),giveTyp,giveAmount,getTyp,receiveAmount);
 		if(!res){
-			ModelAndView mav = new ModelAndView("redirect:/commerce/create");
-			mav.addObject("insuficientAmount",true);
-			return mav;
+			return createOffer(true,user);
 		}
 		return new ModelAndView("redirect:/commerce");
 	}

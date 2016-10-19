@@ -24,8 +24,12 @@ function checkSumbitAvailability() {
     	empty = true;
     }else{
         // Different resources are selected
-        if($('input[name=giveType]:checked').val() == $('input[name=getType]:checked').val())
+        if($('input[name=giveType]:checked').val() == $('input[name=getType]:checked').val()){
             empty = true;
+            $('#sameType').css("display", "block");
+        }else{
+            $('#sameType').css("display", "none");
+        }
     }
 
     if (empty) {
@@ -33,4 +37,7 @@ function checkSumbitAvailability() {
     } else {
         $('#register').removeAttr('disabled');
     }
+
+    // Remove possible existing warning
+    $('#insAmount').css("display","none");
 }

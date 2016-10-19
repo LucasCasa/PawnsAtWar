@@ -48,7 +48,7 @@
 				<td><spring:message code="commerce.user"/></td>
 				<td><spring:message code="commerce.offer"/></td>
 				<td><spring:message code="commerce.receive"/></td>
-				<td><spring:message code="commerce.accept"/></td>
+				<td><spring:message code="commerce.remove"/></td>
 				</thead>
 				<tbody>
 				<c:forEach var="offer" items="${myTrades}">
