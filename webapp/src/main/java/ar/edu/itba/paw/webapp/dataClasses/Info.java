@@ -86,7 +86,7 @@ public class Info {
         ArrayList<InformationBuilding> res = new ArrayList<>();
         if(type == EMPTY){
             for(InformationBuilding i : infoList) {
-                if(i.getId() != EMPTY && i.getId() != CASTLE && i.getId() != GOLD && i.getId() != TERR_GOLD)
+                if(i.getId() != EMPTY && i.getId() != CASTLE && i.getId() != GOLD && i.getId() != TERR_GOLD && i.getId() != BLACKSMITH)
                     res.add(i);
             }
         }else{

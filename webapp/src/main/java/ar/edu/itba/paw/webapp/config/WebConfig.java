@@ -92,5 +92,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	 public PlatformTransactionManager transactionManager(final DataSource ds) {
 		 return new DataSourceTransactionManager(ds);
 	 }
+
+	@Bean
+	public org.springframework.web.filter.CharacterEncodingFilter characterEncodingFilter() {
+		org.springframework.web.filter.CharacterEncodingFilter characterEncodingFilter = new org.springframework.web.filter.CharacterEncodingFilter();
+		characterEncodingFilter.setEncoding("UTF-8");
+		characterEncodingFilter.setForceEncoding(true);
+		return characterEncodingFilter;
+	}
 	
 }

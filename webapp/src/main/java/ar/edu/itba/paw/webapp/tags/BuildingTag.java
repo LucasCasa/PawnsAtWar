@@ -50,9 +50,9 @@ public class BuildingTag extends SimpleTagSupport {
             case Info.MILL:
                 printMill();
                 break;
-            case Info.BLACKSMITH:
+            /*case Info.BLACKSMITH:
                 printBlacksmith();
-                break;
+                break;*/
             case Info.STABLE:
                 printStable();
                 break;
@@ -197,9 +197,9 @@ public class BuildingTag extends SimpleTagSupport {
                 case Info.ARCHERY:
                     out.print("<img src=\""+ path +"/resources/images/archery.png\">");
                     break;
-                case Info.BARRACKS:
+                /*case Info.BARRACKS:
                     out.print("<img src=\""+ path +"/resources/images/barracks.png\">");
-                    break;
+                    break;*/
                 case Info.GOLD:
                     out.print("<img src=\""+ path +"/resources/images/gold.png\">");
                     break;
