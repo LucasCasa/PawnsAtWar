@@ -64,15 +64,8 @@ public class BuildingController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidPosition",null,locale));
         }else{
         	
-        	/* Should be somewhere else (?) */
-        	List<Integer> plainTerrainBuildings = new ArrayList<Integer>();
-        	plainTerrainBuildings.add(Info.CASTLE);
-        	plainTerrainBuildings.add(Info.ARCHERY);
-        	plainTerrainBuildings.add(Info.BARRACKS);
-        	plainTerrainBuildings.add(Info.MILL);
-        	plainTerrainBuildings.add(Info.BLACKSMITH);
+        	List<Integer> plainTerrainBuildings = Info.getInstance().getPlainTerrainBuildings();
         	
-        	/* Should be somewhere else (?) */
         	Integer goldTerrainBuilding = Info.GOLD;
 
         	

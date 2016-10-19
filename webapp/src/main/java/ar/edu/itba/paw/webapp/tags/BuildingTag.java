@@ -74,7 +74,6 @@ public class BuildingTag extends SimpleTagSupport {
 
     }
     private void printArchery() throws JspException,IOException{
-        JspWriter out = getJspContext().getOut();
         printButtons();
         printCreateTroop(Info.ARCHER);
         printTable(messageSource.getMessage("troopCost",null,locale), Info.ARCHERY,level);
@@ -217,6 +216,21 @@ public class BuildingTag extends SimpleTagSupport {
     }
     public void printTable(String text,int type,int level) throws JspException, IOException{
         JspWriter out = getJspContext().getOut();
+        
+        ResourceTag cost = new ResourceTag();
+        cost.setJspContext(getJspContext());
+        cost.setAmount(price + level*level*level*level);
+        cost.setRate(0);
+        cost.setType(1);
+        cost.setPath(path);
+        
+        ResourceTag bonus = new ResourceTag();
+        bonus.setJspContext(getJspContext());
+        bonus.setAmount(getBonus(type, level));
+        bonus.setRate(0);
+        bonus.setType(getBonusType(type));
+        bonus.setPath(path);
+        
         out.println("<br><br><br>");
         out.println("<table class=\"table table-striped\" id=\"Level\">");
         out.println("<thead>");
@@ -227,11 +241,33 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("</thead>");
         out.println("<tbody>");
         out.println("<tr>");
-        out.println("<td><b>"+level +"</b></td><td><b>"+printBonus(type,level)+"</b></td><td><b>"+ (price + level*level*level*level) +"</b></td>");//<td><b>00:"+level+":00</b></td>");
+        out.println("<td><b>"+level +"</b></td><td><b>");
+        bonus.doTag();
+        out.println("</b></td><td><b>");
+        cost.doTag();
+        out.println("</b></td>");//<td><b>00:"+level+":00</b></td>");
         out.println("</tr>");
         for(int i = level+1 ; i<=20;i++){
+        	ResourceTag c = new ResourceTag();
+            c.setJspContext(getJspContext());
+            c.setAmount(price + i*i*i*i);
+            c.setRate(0);
+            c.setType(1);
+            c.setPath(path);
+            
+            ResourceTag re = new ResourceTag();
+            re.setJspContext(getJspContext());
+            re.setAmount(getBonus(type, i));
+            re.setRate(0);
+            re.setType(getBonusType(type));
+            re.setPath(path);
+     
             out.println("<tr>");
-            out.println("<td>"+i +"</td><td>"+printBonus(type,i)+"</td><td>"+ (price + i*i*i*i) +"</td>");//<td>00:"+i+":00</td>");
+            out.println("<td>"+i +"</td><td>");
+            re.doTag();
+            out.println("</td><td>");
+            c.doTag();
+            out.println("</td>");//<td>00:"+i+":00</td>");
             out.println("</tr>");
 
         }
@@ -240,20 +276,35 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("</div>");
 
     }
-    private String printBonus(int type, int level){
+    private int getBonus(int type, int level){
         switch (type){
             case Info.ARCHERY:
             case Info.BARRACKS:
             case Info.STABLE:
-                return String.valueOf(Info.getInstance().getCost(type)-(level-1));
+                return (Info.getInstance().getCost(type)-(level-1));
             case Info.GOLD:
             case Info.MILL:
-                return String.valueOf(level);
+                return (level);
             case Info.CASTLE:
-                return String.valueOf(level*10);
+                return (level*10);
         }
-        return "";
+        return 0;
     }
+    
+    private int getBonusType(int type){
+    	switch (type){
+	        case Info.ARCHERY:
+	        case Info.BARRACKS:
+	        case Info.STABLE:
+	        case Info.MILL:
+	            return Info.RES_FOOD;
+	        case Info.GOLD:
+	        case Info.CASTLE:
+	            return Info.RES_GOLD;
+    	}
+    	return 0;
+    }
+    
     public void setInfo(InformationBuilding info){
         this.info = info;
     }
