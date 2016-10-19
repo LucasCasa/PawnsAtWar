@@ -89,6 +89,9 @@ public class SectorServiceImpl implements SectorService {
 			return;
 		}
 		Sector b = bd.getBuilding(p);
+		if(b == null){
+			return;
+		}
 		bd.deleteBuilding(p);
 		if(b.getType() == CASTLE){
 			//td.addTerrain(p);
