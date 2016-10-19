@@ -197,18 +197,18 @@ public class BuildingTag extends SimpleTagSupport {
                 case Info.ARCHERY:
                     out.print("<img src=\""+ path +"/resources/images/archery.png\">");
                     break;
-                /*case Info.BARRACKS:
+                case Info.BARRACKS:
                     out.print("<img src=\""+ path +"/resources/images/barracks.png\">");
-                    break;*/
+                    break;
                 case Info.GOLD:
                     out.print("<img src=\""+ path +"/resources/images/gold.png\">");
                     break;
                 case Info.MILL:
                     out.print("<img src=\""+ path +"/resources/images/mill.png\">");
                     break;
-                case Info.BLACKSMITH:
+                /*case Info.BLACKSMITH:
                     out.print("<img src=\""+ path +"/resources/images/blacksmith.png\">");
-                    break;
+                    break;*/
                 case Info.STABLE:
                     out.print("<img src=\""+ path +"/resources/images/stable.png\">");
                     break;
