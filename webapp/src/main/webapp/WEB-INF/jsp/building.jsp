@@ -9,17 +9,21 @@
     <div id="terrain" class="container">
 
     <%@ include file="resourceBar.jsp" %>
-        <br><br>
+        <br>
+        <c:if test="${owner.name != null}">
+        <h3 style="text-align: center;"><spring:message code="buildingBelongs" /><c:out value=" ${owner.name}"/></h3>
+        </c:if>
+        <br>
         <div class="row">
             <div class="col-md-4"> <img class="img-responsive" src="<c:url value="/resources/images/${building.name}.png" /> " /></div>
             <div class="col-md-8">
                 <h2 class="error" style="text-align: center">${message}</h2>
                 <h3><strong>${building.description}</strong></h3>
                     <c:choose>
-                        <c:when test = "${user.id == owner}">
+                        <c:when test = "${user.id == owner.id}">
                             <build:Building info="${building}" level="${level}" point="${p}" locale="${locale}" price="${price}" messageSource="${messageSource}" path="${pageContext.request.contextPath}"/>
                         </c:when>
-                        <c:when test="${user.id != owner && building.id != 0 && building.id != 5}">
+                        <c:when test="${user.id != owner.id && building.id != 0 && building.id != 5}">
                             <div class="col-md-2" onclick="att()"><a href="<c:url value="/armies?x=${p.getX()}&y=${p.getY()}"/>"><button class="myButton"><spring:message code="button.attack"/></button></a>
                             </div>
                         </c:when>

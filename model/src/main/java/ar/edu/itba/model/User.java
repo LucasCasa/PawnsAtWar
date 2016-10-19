@@ -33,6 +33,20 @@ public class User {
 		return email;
 	}
 	
+	public void setName(String name){
+		this.name = name;
+	}
+	
+	public void setPassword(String pass){
+		this.password = pass;
+	}
+	
+	public void setEmail(String email){
+		this.email = email;
+	}
+	
+	
+	
 	
 
 	@Override

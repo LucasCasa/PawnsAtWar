@@ -20,14 +20,16 @@
     <div class="row">
         <c:choose>
             <c:when test="${message == null}">
-                <div style="background-color: #997744;text-align: center" class="col-md-offset-4 col-md-4"> <p>Lo sentimos, pero la pagina que usted busca no esta disponible.</p></div>
+                <div style="background-color: #997744;text-align: center" class="col-md-offset-4 col-md-4"> <p><spring:message code="error.notAvailable"/></p></div>
+                <div class="col-md-offset-4 col-md-4" style="text-align: center"><a href="<c:url value="/" />"/><button class="myButton" id="gotoDir"><spring:message code="error.goBack" /></button></a></div>
             </c:when>
             <c:otherwise>
                 <div style="background-color: #997744;text-align: center" class="col-md-offset-4 col-md-4"> <p><c:out value="${message}"/></p></div>
+                <div class="col-md-offset-4 col-md-4" style="text-align: center"><button class="myButton" id="gotoDir" onclick="history.go(-1)"><spring:message code="error.goBack" /></button></div>
             </c:otherwise>
         </c:choose>
     </div>
-        <div class="col-md-offset-4 col-md-4" style="text-align: center"><button class="myButton" id="gotoDir" onclick="toMap()">Volver a Home</button></div>
+        
 </div>
 
 
