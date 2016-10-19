@@ -168,7 +168,13 @@ public class BuildingController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantLevelUpTerrain",null,locale));
         }
         if(((Building) s).getLevel() < 20){
-            bs.levelUp(p);
+            int price = bs.getPrice(p,user.getId()) + (int) Math.pow(((Building) s).getLevel(),4);
+            if(es.getResource(user.getId(),Info.RES_GOLD).getQuantity() >= price ) {
+                bs.levelUp(p);
+                es.subtractResourceAmount(user.getId(), Info.RES_GOLD, price);
+            }else{
+               return new ModelAndView("redirect:/building?x="+x+"&y=" +y+"&m="+ messageSource.getMessage("error.noGold",null,locale));
+            }
         }else{
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.maxLevel",null,locale));
         }

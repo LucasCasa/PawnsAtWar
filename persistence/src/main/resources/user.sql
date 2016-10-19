@@ -1,10 +1,3 @@
-DELETE FROM troop;
-DELETE FROM army;
-DELETE FROM resource;
-DELETE FROM empire;
-DELETE FROM userPaw;
-DELETE FROM	commerce;
-
 INSERT INTO userPaw VALUES (0,'0','42069','mvega@itba.edu.ar');
 INSERT INTO resource VALUES (0,0,0);
 INSERT INTO resource VALUES (1,1000,0);

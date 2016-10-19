@@ -17,6 +17,8 @@ import ar.edu.itba.paw.webapp.dataClasses.Validator;
 
 import javax.servlet.http.HttpSession;
 
+import java.util.List;
+
 import static java.lang.System.out;
 
 @Controller
@@ -39,9 +41,13 @@ public class CommerceController {
 			return new ModelAndView("redirect:/login");
 
 		final ModelAndView mav = new ModelAndView("commerce");
-        
-        mav.addObject("myTrades",cs.getAllOffers(user.getId()));
-        mav.addObject("tradeList",cs.showOffers(user.getId()));
+
+        List<TradeOffer> myTrades = cs.getAllOffers(user.getId());
+		List<TradeOffer> tradeList = cs.showOffers(user.getId());
+        mav.addObject("myTrades",myTrades);
+		mav.addObject("myTradesSize",myTrades.size());
+        mav.addObject("tradeList",tradeList);
+		mav.addObject("tradeListSize",tradeList.size());
         mav.addObject("insuficientAmount",insuficientAmount);
         mav.addObject("ratesList",es.getRates(user.getId()));
         mav.addObject("resList",es.getResources(user.getId()));

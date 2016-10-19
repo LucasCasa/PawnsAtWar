@@ -50,6 +50,9 @@ public class SectorServiceImpl implements SectorService {
 		List<Sector> terrainList = td.getTerrain(p, range);
 
 		for(Sector s:terrainList){
+			if(s.getUser() == null){
+				s.setUser(new User(-1,null,null,null));
+			}
 			aux[s.getPosition().getY() - (p.getY() - range)][s.getPosition().getX() - (p.getX() - range)] = s;
 		}
 		for(Sector s:buildingList){
@@ -88,18 +91,21 @@ public class SectorServiceImpl implements SectorService {
 		Sector b = bd.getBuilding(p);
 		bd.deleteBuilding(p);
 		if(b.getType() == CASTLE){
-			td.addTerrain(p);
+			//td.addTerrain(p);
+			updateTerrain(p,null,0);
 			updateTerrain(p,null,3);
 		}else if(b.getType() == GOLD){
-			td.addTerrain(p, 1, b.getUser().getId(),TERR_GOLD);
+			//td.addTerrain(p, 1, b.getUser().getId(),TERR_GOLD);
+
 		}else{
-			td.addTerrain(p, 1, b.getUser().getId(), EMPTY);
+			//td.addTerrain(p, 1, b.getUser().getId(), EMPTY);
+
 		}
 	}
 	
 	public void addBuilding(Point p, int idPlayer, int type){
 		if(td.getId(p) == idPlayer){
-			td.deleteTerrain(p);
+			//td.deleteTerrain(p);
 			bd.addBuilding(p, idPlayer, type);
 		}
 	}
