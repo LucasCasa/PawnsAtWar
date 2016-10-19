@@ -70,7 +70,7 @@ public class ArmyJdbcDao implements ArmyDao{
 		if(armies.isEmpty()){
 			return null;
 		}
-		armies.get(0).setTroop(td.getAllTroop(idArmy));
+		armies.get(0).setTroops(td.getAllTroop(idArmy));
 		return armies.get(0);
 	}
 

@@ -173,21 +173,6 @@ public class BuildingController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.maxLevel",null,locale));
         }
 
-
-        if(bs.getType(p) == Info.GOLD ){
-            es.addResourceAmount(user.getId(),Info.RES_GOLD, 5000);
-            return new ModelAndView("redirect:/map");
-        }
-
-        if(bs.getType(p) == Info.MILL ){
-            es.addResourceAmount(user.getId(),Info.RES_FOOD, 5000);
-            return new ModelAndView("redirect:/map");
-        }
-
-        if(bs.getType(p) == Info.ARCHERY || bs.getType(p) == Info.BARRACKS || bs.getType(p) == Info.BLACKSMITH || bs.getType(p) == Info.STABLE){
-           // TODO WUT???
-        }
-
         return new ModelAndView("redirect:/building?x="+x+"&y=" + y);
     }
 

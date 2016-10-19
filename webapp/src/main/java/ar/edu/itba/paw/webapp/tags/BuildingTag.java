@@ -177,15 +177,18 @@ public class BuildingTag extends SimpleTagSupport {
     }
     private void printMill() throws JspException,IOException{
         printButtons();
+        printTable(messageSource.getMessage("foodGen",null,locale), Info.MILL,level);
     }
     private void printBlacksmith() throws JspException,IOException{
         printButtons();
     }
     private void printCastle() throws JspException,IOException{
         printButtons();
+        printTable(messageSource.getMessage("buildCost",null,locale), Info.CASTLE,level);
     }
     private void printGoldMine() throws JspException,IOException{
         printButtons();
+        printTable(messageSource.getMessage("goldGen",null,locale), Info.GOLD,level);
     }
     private void printImage(JspWriter out,int id) throws JspException, IOException{
             switch (id){
@@ -224,11 +227,11 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("</thead>");
         out.println("<tbody>");
         out.println("<tr>");
-        out.println("<td><b>"+level +"</b></td><td><b>"+(Info.getInstance().getCost(type)-(level-1))+"</b></td><td><b>"+ (price + level*level*level*level) +"</b></td>");//<td><b>00:"+level+":00</b></td>");
+        out.println("<td><b>"+level +"</b></td><td><b>"+printBonus(type,level)+"</b></td><td><b>"+ (price + level*level*level*level) +"</b></td>");//<td><b>00:"+level+":00</b></td>");
         out.println("</tr>");
         for(int i = level+1 ; i<=20;i++){
             out.println("<tr>");
-            out.println("<td>"+i +"</td><td>"+(Info.getInstance().getCost(type)-(i-1))+"</td><td>"+ (price + i*i*i*i) +"</td>");//<td>00:"+i+":00</td>");
+            out.println("<td>"+i +"</td><td>"+printBonus(type,i)+"</td><td>"+ (price + i*i*i*i) +"</td>");//<td>00:"+i+":00</td>");
             out.println("</tr>");
 
         }
@@ -236,6 +239,20 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("</table>");
         out.println("</div>");
 
+    }
+    private String printBonus(int type, int level){
+        switch (type){
+            case Info.ARCHERY:
+            case Info.BARRACKS:
+            case Info.STABLE:
+                return String.valueOf(Info.getInstance().getCost(type)-(level-1));
+            case Info.GOLD:
+            case Info.MILL:
+                return String.valueOf(level);
+            case Info.CASTLE:
+                return String.valueOf(level*10);
+        }
+        return "";
     }
     public void setInfo(InformationBuilding info){
         this.info = info;
