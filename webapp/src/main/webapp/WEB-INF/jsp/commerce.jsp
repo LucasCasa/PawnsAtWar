@@ -1,13 +1,13 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="re" uri="resource.tld"%>
 <%@ include file="header.jsp" %>
-<%@ include file="resourceBar.jsp" %>
 
 <div class="container">
+	<%@ include file="resourceBar.jsp" %>
 	<c:if test="${insuficientAmount}">
 		<div class="error"><spring:message code="commerce.error"/></div>
 	</c:if>
-
+	<br/>
 	<table class="table">
 		<thead>
 			<td><spring:message code="commerce.user"/></td>
@@ -54,5 +54,5 @@
 	<a href="<c:url value="/commerce/create"/>"><button class="myButton"><spring:message code="commerce.makeNewOffer"/></button></a>
 
 </div>
-
+<br/>
 <%@ include file="footer.jsp" %>

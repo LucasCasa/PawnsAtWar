@@ -28,7 +28,7 @@
 	border: 1px solid black;
 }
 
-#buildListTable > th, td {
+#buildListTable th, #buildListTable td {
    align-content: center;
    border: 2px solid black;
    width: 200px;

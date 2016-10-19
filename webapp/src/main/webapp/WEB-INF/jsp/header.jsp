@@ -4,7 +4,7 @@
 <head>
 	<!-- Latest compiled and minified CSS -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-	<link href="https://fonts.googleapis.com/css?family=Courgette" rel="stylesheet"> 
+	<link href="https://fonts.googleapis.com/css?family=Maitree" rel="stylesheet"> 
 	<link rel="stylesheet" href="<c:url value= "/resources/css/style.css" /> ">
 </head>
 
@@ -31,8 +31,6 @@
 		        <li><a href="<c:url value="/commerce"/>"><spring:message code="header.commerce"/></a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-		        <li><a><s><spring:message code="header.ranking"/></s></a></li>
-		        <li><a><s><spring:message code="header.messages"/></s></a></li>
 		        <li><a href="<c:url value="/logout"/>"><spring:message code="header.logout"/></a></li>
 		      </ul>
 		    </div><!-- /.navbar-collapse -->
