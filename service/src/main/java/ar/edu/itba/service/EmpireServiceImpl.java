@@ -102,13 +102,20 @@ public class EmpireServiceImpl implements EmpireService{
 	@Override
 	public int getRate(int userid, int type){
 		List<Building> list;
+		int rate = 1;
 		switch(type){
-			case 0: list = ed.getBuilding(userid, SectorServiceImpl.MILL);//food
-					return list.size()+1;
-			case 1: list = ed.getBuilding(userid, SectorServiceImpl.GOLD);//gold
-					return list.size()+1;
+			case 0:
+				list = ed.getBuilding(userid, SectorServiceImpl.MILL);//food
+				break;
+			case 1:
+				list = ed.getBuilding(userid, SectorServiceImpl.GOLD);//gold
+				break;
 			default: return 1;
 		}
+		for(Building b : list){
+			rate += b.getLevel();
+		}
+		return rate;
 	}
 
 	@Override

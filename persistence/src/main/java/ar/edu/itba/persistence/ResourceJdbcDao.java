@@ -1,9 +1,7 @@
 package ar.edu.itba.persistence;
 
 import java.sql.ResultSet;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.sql.DataSource;
 
@@ -73,6 +71,12 @@ public class ResourceJdbcDao implements ResourceDao {
 				.query("SELECT * FROM resource WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
 							return new Resource(resultSet.getInt("type"),ud.findById(resultSet.getInt("idPlayer")),resultSet.getInt("amount"));
 						},idPlayer);
+		Collections.sort(resourceList, new Comparator<Resource>() {
+			@Override
+			public int compare(Resource o1, Resource o2) {
+				return o1.getType() - o2.getType();
+			}
+		});
 		return resourceList;
 	}
 

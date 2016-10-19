@@ -56,6 +56,7 @@ public class ArmyController {
             armies = new ArrayList<>();
         }
         mav.addObject("armies",armies);
+        mav.addObject("size",armies.size());
         return mav;
     }
 
@@ -220,7 +221,7 @@ public class ArmyController {
                 mav.addAllObjects(values);
                 return mav;
             }
-            mav.addObject("result",messageSource.getMessage("noArmy",null,locale));
+            mav.addObject("result",messageSource.getMessage("noDefenderArmy",null,locale));
             for(Troop t : ts.getTroopById(id)){
                 values.put("a"+t.getType()+"b",t.getQuantity());
                 values.put("a"+t.getType()+"l",0);
@@ -322,10 +323,8 @@ public class ArmyController {
                 points.add(b.getPosition());
             }
         }
-        List<Troop> t = a.getTroops();
         mav.addObject("user",user);
         mav.addObject("army",a);
-        mav.addObject("troops",t);
         mav.addObject("possiblePoints",points);
         return mav;
     }

@@ -40,7 +40,7 @@ public class Army {
 		troops.add(t);
 	}
 	
-	public void setTroop(List<Troop> troop){
+	public void setTroops(List<Troop> troops){
 		this.troops=troops;
 	}
 	

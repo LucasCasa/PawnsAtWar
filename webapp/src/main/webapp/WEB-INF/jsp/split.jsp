@@ -7,7 +7,7 @@
     <form method="post" action="<c:url value="/split"/>">
     <table style="width: 100%">
         <tr>
-    <c:forEach var="troop" items="${troops}" >
+    <c:forEach var="troop" items="${army.troops}" >
         <td style="text-align: center">
             <c:choose>
                 <c:when test="${troop.type == 0}"><img src="<c:url value="/resources/images/warrior.png"/>"/></c:when>
@@ -19,14 +19,14 @@
     </c:forEach>
         </tr>
         <tr>
-            <c:forEach var="troop" items="${troops}" >
+            <c:forEach var="troop" items="${army.troops}" >
                 <td>
                     <h1 style=" background-color: rgba(0,0,0,0.7); color: #FF0;margin-left:40%;margin-right:40%;text-align: center"><c:out value="${troop.quantity}"/></h1>
                 </td>
             </c:forEach>
         </tr>
         <tr>
-            <c:forEach var="troop" items="${troops}" >
+            <c:forEach var="troop" items="${army.troops}" >
                 <td style="text-align: center">
                     <input type="number" min="0" max="${troop.quantity}" value="0" name="${troop.type}" >
                 </td>
