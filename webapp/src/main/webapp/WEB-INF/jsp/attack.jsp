@@ -3,7 +3,7 @@
 <%@ taglib prefix="re" uri="resource.tld"%>
 <%@ include file="header.jsp" %>
 <div class="container">
-    <h1><c:out value="${result}"/></h1>
+    <h2><c:out value="${result}"/></h2>
 
     <table style="width: 100%">
         <thead>

@@ -152,6 +152,9 @@ public class BuildingTag extends SimpleTagSupport {
             printImage(out, Info.GOLD);
             out.println("</td>");
             out.println("<td>");
+            out.println(Info.getInstance().getBuildingInformation(Info.TERR_GOLD,locale.getLanguage()).getDescription());
+            out.println("</td>");
+            out.println("<td style=\" text-align: center;\">");
             ResourceTag re = new ResourceTag();
             re.setJspContext(getJspContext());
             re.setAmount(price);
