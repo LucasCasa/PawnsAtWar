@@ -19,6 +19,10 @@
       <version>3.8.1</version>
       <scope>test</scope>
     </dependency>
+     <dependency> 
+      <groupId>org.hibernate.javax.persistence</groupId> 
+      <artifactId>hibernate-jpa-2.1-api</artifactId>
+    </dependency>
   </dependencies>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

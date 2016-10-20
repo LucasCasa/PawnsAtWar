@@ -30,6 +30,9 @@
     <org.slf4j.version>1.7.5</org.slf4j.version> 
     <logback.version>1.1.2</logback.version> 
     <logback-ext-spring.version>0.1.1</logback-ext-spring.version>
+     <org.hibernate.version>5.1.0.Final
+     </org.hibernate.version>
+    <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
   </properties>
 
   <dependencyManagement>
@@ -75,6 +78,12 @@
         <groupId>org.hibernate</groupId>
         <artifactId>hibernate-validator</artifactId>
         <version>${hibernate-validator.version}</version>
+        <exclusions>
+          <exclusion> 
+            <groupId>org.jboss.logging</groupId> 
+            <artifactId>jboss-logging</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
@@ -88,7 +97,6 @@
         <version>${org.hsqldb.version}</version>
         <scope>test</scope>
       </dependency>
-
       <dependency>
         <groupId>org.springframework.security</groupId>
         <artifactId>spring-security-core</artifactId>
@@ -139,8 +147,28 @@
       </dependency>
        <dependency>
           <groupId>org.springframework</groupId> 
-          <artifactId>spring-tx</artifactId> 
+          <artifactId>spring-tx</artifactId>
           <version>${org.springframework.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.springframework</groupId>
+        <artifactId>spring-orm</artifactId> 
+        <version>${org.springframework.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId> 
+        <artifactId>hibernate-core</artifactId> 
+        <version>${org.hibernate.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate</groupId> 
+        <artifactId>hibernate-entitymanager</artifactId> 
+        <version>${org.hibernate.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.hibernate.javax.persistence</groupId>
+        <artifactId>hibernate-jpa-2.1-api</artifactId>
+        <version>${org.hibernate.jpa.version}</version> 
       </dependency>
     </dependencies>
   </dependencyManagement>
