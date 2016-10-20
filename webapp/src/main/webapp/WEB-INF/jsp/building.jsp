@@ -10,14 +10,18 @@
 
     <%@ include file="resourceBar.jsp" %>
         <br>
+        <div class="row">
         <c:if test="${owner.name != null}">
         <h3 style="text-align: center;"><spring:message code="buildingBelongs" /><c:out value=" ${owner.name}"/></h3>
         </c:if>
+        </div>
         <br>
         <div class="row">
             <div class="col-md-4"> <img class="img-responsive" src="<c:url value="/resources/images/${building.name}.png" /> " /></div>
             <div class="col-md-8">
-                <h2 class="error" style="text-align: center">${message}</h2>
+                <div class ="row">
+                <h2 style="color: green">${message}</h2>
+                </div>
                 <h3><strong>${building.description}</strong></h3>
                     <c:choose>
                         <c:when test = "${user.id == owner.id}">

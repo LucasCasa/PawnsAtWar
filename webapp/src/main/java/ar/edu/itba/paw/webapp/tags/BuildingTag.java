@@ -61,9 +61,8 @@ public class BuildingTag extends SimpleTagSupport {
 
     private void printButtons() throws JspException,IOException{
         JspWriter out = getJspContext().getOut();
-        out.println("<div class=\"container\">");
         out.println("<div class=\"row\">");
-        out.println("<div class=\"col-md-1\">");
+        out.println("<div class=\"col-md-2\">");
         out.println("<form action=\"demolish\" method=\"post\">");
         out.println("<input type=\"hidden\" name=\"x\" value=\""+point.getX()+"\"/>");
         out.println("<input type=\"hidden\" name=\"y\" value=\""+point.getY()+"\"/>");
@@ -76,7 +75,6 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("<input type=\"hidden\" name=\"y\" value=\""+point.getY()+"\"/>");
         out.println("<input type=\"submit\" class=\"myButton\"value=\""+ messageSource.getMessage("levelup",null,locale)+"\"/>");
         out.println("</form>");
-        out.println("</div>");
         out.println("</div>");
         out.println("</div>");
 
@@ -238,7 +236,7 @@ public class BuildingTag extends SimpleTagSupport {
         bonus.setRate(0);
         bonus.setType(getBonusType(type));
         bonus.setPath(path);
-        
+        out.println("<div class=\"row\">");
         out.println("<br><br><br>");
         out.println("<table class=\"table table-striped\" id=\"Level\">");
         out.println("<thead>");
@@ -281,6 +279,7 @@ public class BuildingTag extends SimpleTagSupport {
         }
         out.println("</tbody>");
         out.println("</table>");
+        out.println("</div>");
         out.println("</div>");
 
     }
