@@ -98,7 +98,7 @@ public class BuildingTag extends SimpleTagSupport {
     private void printCreateTroop(int type) throws JspException,IOException{
         JspWriter out = getJspContext().getOut();
         out.println("<br><br><br>");
-        out.println("<div class=\"row\"><form class=\"form-inline\" method=\"post\" action=\""+ path + "/train\" >");
+        out.println("<div class=\"row\" style=\"margin-left: 0px;\"><form class=\"form-inline\" method=\"post\" action=\""+ path + "/train\" >");
         out.println("<input placeholder=\""+messageSource.getMessage("amount",null,locale)+"\" type=\"number\" style=\"font-size: 18px;\" name=\"amount\" min=\"1\">");
         out.println("<input  type=\"hidden\" name=\"type\" value=\""+type+"\">");
         out.println("<input  type=\"hidden\" name=\"px\" value=\""+ point.getX() +"\">");
@@ -230,7 +230,7 @@ public class BuildingTag extends SimpleTagSupport {
         bonus.setRate(0);
         bonus.setType(getBonusType(type));
         bonus.setPath(path);
-        out.println("<div class=\"row\">");
+        out.println("<div class=\"row\" style=\"margin-left: 0px;\">");
         out.println("<br><br><br>");
         out.println("<table class=\"table table-striped\" id=\"Level\">");
         out.println("<thead>");
