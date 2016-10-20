@@ -50,7 +50,8 @@ public class ArmyServiceImpl implements ArmyService {
 
 	@Override
 	public void deleteArmy(int idArmy) {
-		ad.deleteArmy(idArmy);
+		if(ad.getArmyById(idArmy) != null)
+			ad.deleteArmy(idArmy);
 	}
 
 	@Override

@@ -134,6 +134,9 @@ public class ArmyController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notBuildingInPosition",null,locale));
 
         }
+        if(s.getUser() == null){
+        	return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.noUserInPosition",null,locale));
+        }
         if(s.getUser().getId() == user.getId()){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.attackSelfBuilding",null,locale));
         }else if(s.getType() == 0 || s.getType() == 5){

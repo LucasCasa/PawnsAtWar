@@ -34,7 +34,12 @@
    width: 200px;
 }
 
-#buildListTable > tbody > tr > td > img >.resource {
+#buildListTable .resource {
 	height: 40px;
+	width: auto;
+}
+
+#Level img {
+	height: 20px;
 	width: auto;
 }

@@ -106,7 +106,9 @@ public class BuildingServiceImpl implements BuildingService{
 
 	@Override
 	public void addBuilding(Point p, int idPlayer, int type) {
-		bd.addBuilding(p, idPlayer, type);
+		if(bd.getBuilding(p) == null){
+			bd.addBuilding(p, idPlayer, type);
+		}
 	}
 
 	@Override

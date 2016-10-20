@@ -53,6 +53,11 @@ public class UserServiceImpl implements UserService{
 	public boolean exists(String username, String password) {
 		return ud.exists(username,password);
 	}
+
+	@Override
+	public boolean exists(String username) {
+		return ud.exists(username);
+	}
 	
 	
 	

@@ -64,15 +64,8 @@ public class BuildingController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidPosition",null,locale));
         }else{
         	
-        	/* Should be somewhere else (?) */
-        	List<Integer> plainTerrainBuildings = new ArrayList<Integer>();
-        	plainTerrainBuildings.add(Info.CASTLE);
-        	plainTerrainBuildings.add(Info.ARCHERY);
-        	plainTerrainBuildings.add(Info.BARRACKS);
-        	plainTerrainBuildings.add(Info.MILL);
-        	plainTerrainBuildings.add(Info.BLACKSMITH);
+        	List<Integer> plainTerrainBuildings = Info.getInstance().getPlainTerrainBuildings();
         	
-        	/* Should be somewhere else (?) */
         	Integer goldTerrainBuilding = Info.GOLD;
 
         	
@@ -82,7 +75,7 @@ public class BuildingController {
             InformationBuilding ib  = Info.getInstance().getBuildingInformation(sector.getType(),locale.getLanguage());
 
             mav.addObject("building",ib);
-            mav.addObject("owner",sector.getUser().getId());
+            mav.addObject("owner",sector.getUser());
             mav.addObject("user",user);
             mav.addObject("p",new Point(Integer.parseInt(x),Integer.parseInt(y)));
             mav.addObject("plainTerrainBuildings",plainTerrainBuildings);

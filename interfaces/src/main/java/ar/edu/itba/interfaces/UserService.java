@@ -12,6 +12,8 @@ public interface UserService {
 	
 	public String getUsername(long id);
 
+	public boolean exists(String username);
+
 	public boolean exists(String username, String password);	
 	
 

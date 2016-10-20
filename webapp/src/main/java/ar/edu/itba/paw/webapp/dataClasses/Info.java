@@ -41,26 +41,35 @@ public class Info {
 
     private Info(){
         infoList = new ArrayList<>();
-        infoList.add(new InformationBuilding(0,"terrain", "Este es un territorio en el cual podés construir edificios."));
-        infoList.add(new InformationBuilding(1,"castle", "Este tipo de edificio es un castillo. Debes cuidarlo muy bien o tus oponentes te lo arrebatarán."));
-        infoList.add(new InformationBuilding(2,"archery", "Este tipo de edificio es una arquería. Aquí trabajan los arqueros, responsables de defender tu territorio."));
-        infoList.add(new InformationBuilding(3,"barracks", "Este tipo de edificio te ayuda a defenderte de los ataques enemigos."));
-        infoList.add(new InformationBuilding(4,"gold", "Este tipo de edificio te ayudará a generar oro para mejorar tus tropas y construcciones."));
+        infoList.add(new InformationBuilding(0,"terrain", "Este es un territorio en el cual puedes construir edificios."));
+        infoList.add(new InformationBuilding(1,"castle", "Este edificio es un castillo. Aumentarlo de nivel disminuye el costo de construir otros edificios. Si un jugador se queda sin castillos pierde."));
+        infoList.add(new InformationBuilding(2,"archery", "Este edificio es una arquería. Aquí se pueden entrenar arqueros."));
+        infoList.add(new InformationBuilding(3,"barracks", "Este edificio es un cuartel. Aquí se pueden entrenar guerreros."));
+        infoList.add(new InformationBuilding(4,"gold", "Este edificio genera oro."));
         infoList.add(new InformationBuilding(5,"terrgold", "Terreno propicio para construir una mina de oro."));
-        infoList.add(new InformationBuilding(6,"mill", "Este tipo de edificio es un molino y se utiliza para obtener comida."));
+        infoList.add(new InformationBuilding(6,"mill", "Este edificio genera comida."));
         infoList.add(new InformationBuilding(7,"blacksmith", "Este tipo de edificio te permite mejorar a las tropas."));
-        infoList.add(new InformationBuilding(8,"stable", "En este edificio se puede reclutar a los caballeros, la mejor tropa del juego."));
+        infoList.add(new InformationBuilding(8,"stable", "Este edificio es un establo. Aquí se pueden entrenar caballeros."));
         engDesc = new ArrayList<>();
         engDesc.add("This is an area available for building construction.");
-        engDesc.add("This type of building is a castle. You must take good care of it. If not, your opponents will destroy it.");
-        engDesc.add("This type of building is the archery house. Here, archers work hard in order to defend your territory.");
-        engDesc.add("This type of building helps you defend from enemy attacks.");
-        engDesc.add("This type of building generates gold to upgrade your troops and buildings.");
+        engDesc.add("This building is a castle. Leveling up will reduce the cost of other buildings. If a player is left with no castles he loses.");
+        engDesc.add("This building is an archery where archers can be recruited.");
+        engDesc.add("This building is a barracks where warriors can be recruited.");
+        engDesc.add("This building generates gold.");
         engDesc.add("This is an area available for gold mine construction.");
-        engDesc.add("This type of building is a mill where you can get food.");
-        engDesc.add("This type of building allows you to level up your troops.");
-        engDesc.add("This type of building allows you to reclute the knights, best troop of all.");
+        engDesc.add("This building generates food.");
+        engDesc.add("This building is a blacksmith where you may level up your troops.");
+        engDesc.add("This building is a stable where knights can be recruited.");
 
+    }
+    
+    public List<Integer> getPlainTerrainBuildings(){
+    	List<Integer> plainTerrainBuildings = new ArrayList<Integer>();
+    	plainTerrainBuildings.add(Info.STABLE);
+    	plainTerrainBuildings.add(Info.ARCHERY);
+    	plainTerrainBuildings.add(Info.BARRACKS);
+    	plainTerrainBuildings.add(Info.MILL);
+    	return plainTerrainBuildings;
     }
 
     public InformationBuilding getBuildingInformation(int id,String language){
@@ -77,7 +86,7 @@ public class Info {
         ArrayList<InformationBuilding> res = new ArrayList<>();
         if(type == EMPTY){
             for(InformationBuilding i : infoList) {
-                if(i.getId() != EMPTY && i.getId() != CASTLE && i.getId() != GOLD && i.getId() != TERR_GOLD)
+                if(i.getId() != EMPTY && i.getId() != CASTLE && i.getId() != GOLD && i.getId() != TERR_GOLD && i.getId() != BLACKSMITH)
                     res.add(i);
             }
         }else{

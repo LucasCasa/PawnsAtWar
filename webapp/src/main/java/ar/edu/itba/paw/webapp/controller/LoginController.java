@@ -52,18 +52,13 @@ public class LoginController {
 		if(!(form.getPassword().equals(form.getRepeatPassword()))){
 			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.passwordNoMatch",null,locale));
 		}
-		if(us.exists(form.getUsername(),form.getPassword())){
+		if(us.exists(form.getUsername())){
 			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
 		}
-
 		us.create(form.getUsername(), form.getPassword(), form.getEmail());
 		User u = us.findByUsername(form.getUsername());
 		session.setAttribute(LOGGED_USER_ID, u.getId());
 		return new ModelAndView("redirect:/map");
-	}
-
-	private ModelAndView login2(RegisterForm form1) {
-		return new ModelAndView("redirect:/login");
 	}
 
 	@ModelAttribute("userId")

@@ -89,6 +89,9 @@ public class SectorServiceImpl implements SectorService {
 			return;
 		}
 		Sector b = bd.getBuilding(p);
+		if(b == null){
+			return;
+		}
 		bd.deleteBuilding(p);
 		if(b.getType() == CASTLE){
 			//td.addTerrain(p);
@@ -106,7 +109,7 @@ public class SectorServiceImpl implements SectorService {
 	public void addBuilding(Point p, int idPlayer, int type){
 		if(td.getId(p) == idPlayer){
 			//td.deleteTerrain(p);
-			bd.addBuilding(p, idPlayer, type);
+			bs.addBuilding(p, idPlayer, type);
 		}
 	}
 	
@@ -129,7 +132,7 @@ public class SectorServiceImpl implements SectorService {
 		if(type == EMPTY || type == TERR_GOLD){
 			td.addTerrain(p, 0, idPlayer, type);
 		}else{
-			bd.addBuilding(p, idPlayer, type);
+			bs.addBuilding(p, idPlayer, type);
 		}
 	}
 

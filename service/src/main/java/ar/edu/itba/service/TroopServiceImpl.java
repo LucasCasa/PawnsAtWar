@@ -43,6 +43,8 @@ public class TroopServiceImpl implements TroopService {
 
 	@Override
 	public void deleteTroop(int idArmy, int type) {
+		if(td.getTroop(idArmy, type) == null)
+			return;
 		if(type >= 0 && type < MAX_TROOP)
 			td.deleteTroop(idArmy, type);
 		if(td.getAmountTroops(idArmy) == 0){

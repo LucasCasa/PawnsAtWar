@@ -36,9 +36,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Value("classpath:map.sql")
 	private Resource mapSql;
-	
-	@Value("classpath:user.sql")
-	private Resource userSql;
 
 	@Bean
 	public ViewResolver viewResolver(){
@@ -73,7 +70,6 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	private DatabasePopulator databasePopulator(){
 		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
 		dbp.addScript(schemaSql);
-		//dbp.addScript(userSql);
 		dbp.addScript(mapSql);
 		return dbp;
 	}
@@ -96,5 +92,13 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 	 public PlatformTransactionManager transactionManager(final DataSource ds) {
 		 return new DataSourceTransactionManager(ds);
 	 }
+
+	@Bean
+	public org.springframework.web.filter.CharacterEncodingFilter characterEncodingFilter() {
+		org.springframework.web.filter.CharacterEncodingFilter characterEncodingFilter = new org.springframework.web.filter.CharacterEncodingFilter();
+		characterEncodingFilter.setEncoding("UTF-8");
+		characterEncodingFilter.setForceEncoding(true);
+		return characterEncodingFilter;
+	}
 	
 }

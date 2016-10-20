@@ -17,5 +17,7 @@ public interface UserDao {
 	public String getEmail(String username);
 
 	public boolean exists(String username, String password);
+
+	public boolean exists(String username);
 	
 }

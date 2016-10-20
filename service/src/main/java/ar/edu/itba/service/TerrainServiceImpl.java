@@ -14,45 +14,46 @@ public class TerrainServiceImpl implements TerrainService{
 	
 
 	@Autowired
-	private TerrainDao terrainDao;
+	private TerrainDao td;
 
 	@Override
 	public Integer getPower(Point position) {
-		return terrainDao.getPower(position);
+		return td.getPower(position);
 	}
 
 	@Override
 	public Integer getType(Point position) {
-		return terrainDao.getType(position);
+		return td.getType(position);
 	}
 
 	@Override
 	public void setPower(Point p, int power) {
-		terrainDao.setPower(p, power);
+		td.setPower(p, power);
 	}
 
 	@Override
 	public void setType(Point p, int t) {
-		terrainDao.setType(p, t);
+		td.setType(p, t);
 	}
 
 	@Override
 	public Terrain addTerrain(Point p, int power, int t,int idPlayer) {
-		return terrainDao.addTerrain(p, power, t,idPlayer);
+		if(td.getTerrain(p) != null)
+			return null;
+		return td.addTerrain(p, power, t,idPlayer);
 	}
 
 	@Override
 	public Terrain addTerrain(Point p, int t) {
-		return terrainDao.addTerrain(p,t);
+		return addTerrain(p,0,t,-1);
 	}
 
 	@Override
 	public Terrain addTerrain(Point p) {
-		// TODO Auto-generated method stub
-		return terrainDao.addTerrain(p);
+		return addTerrain(p,0,0,-1);
 	}
 	
 	public int getUserId(Point p){
-		return terrainDao.getId(p);
+		return td.getId(p);
 	}
 }
