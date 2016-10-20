@@ -108,11 +108,10 @@ public class BuildingTag extends SimpleTagSupport {
 
     }
     private void printNew(JspWriter out, boolean gold) throws JspException, IOException  {
-        out.println("<div class=\"col-md-2\"><button class=\"myButton\" id=\"buildBtn\">"+messageSource.getMessage("build",null,locale)+"</button></div>");
-        out.println("<div class=\"container\" id=\"buildList\" style=\"display: none;\">");
-        out.println("<table id=\"buildListTable\">");
+        out.println("<table style=\"table-layout: fixed;\"id=\"buildListTable\">");
         out.println("<thead>");
         out.println("<td>"+messageSource.getMessage("building",null,locale)+"</td>");
+        out.println("<td>"+messageSource.getMessage("description",null,locale)+"</td>");
         out.println("<td>"+messageSource.getMessage("cost",null,locale)+"</td>");
         out.println("<td>"+messageSource.getMessage("build",null,locale)+"</td>");
         out.println("</thead>");
@@ -124,6 +123,9 @@ public class BuildingTag extends SimpleTagSupport {
                 printImage(out,i.getId());
                 out.println("</td>");
                 out.println("<td>");
+                out.println(Info.getInstance().getBuildingInformation(i.getId(),locale.getLanguage()).getDescription());
+                out.println("</td>");
+                out.println("<td style=\"text-align: center;\">");
                 ResourceTag re = new ResourceTag();
                 re.setJspContext(getJspContext());
                 re.setAmount(price);
@@ -131,20 +133,13 @@ public class BuildingTag extends SimpleTagSupport {
                 re.setType(1);
                 re.setPath(path);
                 re.doTag();
-                /*ResourceTag re2 = new ResourceTag();
-                re2.setJspContext(getJspContext());
-                re2.setAmount(price);
-                re2.setPath(path);
-                re2.setRate(0);
-                re2.setType(0);
-                re2.doTag();*/
                 out.println("</td>");
                 out.println("<td>");
                 out.println("<form method=\"post\" action=\""+ path +"/build\">");
                 out.println("<input type=\"hidden\" name=\"x\" value=\"" + point.getX() + "\"/>");
                 out.println("<input type=\"hidden\" name=\"y\" value=\"" + point.getY() + "\"/>");
                 out.println("<input type=\"hidden\" name=\"type\" value=\"" + i.getId() + "\"/>");
-                out.println("<input type=\"submit\" class=\"myButton\" value=\"OK\"/>");
+                out.println("<input type=\"submit\" class=\"myButton\" value=\""+messageSource.getMessage("build",null,locale)+"\"/>");
                 out.println("</form>");
                 out.println("</td>");
                 out.println("</tr>");
@@ -178,7 +173,6 @@ public class BuildingTag extends SimpleTagSupport {
         }
         out.println("</tbody>");
         out.println("</table>");
-        out.println("</div>");
     }
     private void printMill() throws JspException,IOException{
         printButtons();

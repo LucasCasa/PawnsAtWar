@@ -12,6 +12,7 @@ import ar.edu.itba.paw.webapp.dataClasses.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,7 +53,8 @@ public class BuildingController {
     public ModelAndView terrainParams(Locale locale,
                                       @RequestParam(value="x",required = false) final String x,
                                       @RequestParam(value="y", required = false) final String y,
-                                      @RequestParam(value="m", required = false,defaultValue = "") final String message,
+                                      @RequestParam(value="e", required = false,defaultValue = "") final String error,
+                                      @RequestParam(value="s", required = false,defaultValue = "") final String success,
                                       @ModelAttribute("userId") final User user) {
 
 
@@ -88,7 +90,8 @@ public class BuildingController {
             }
             mav.addObject("resList",es.getResources(user.getId()));
             mav.addObject("ratesList",es.getRates(user.getId()));
-            mav.addObject("message",message);
+            mav.addObject("error",error);
+            mav.addObject("success",success);
             mav.addObject("locale",locale);
             mav.addObject("messageSource",messageSource);
             return mav;
@@ -97,7 +100,8 @@ public class BuildingController {
 
 
     }
-    
+
+    @Transactional
     @RequestMapping(value="/build", method = RequestMethod.POST)
     public ModelAndView build(@RequestParam String x,
                               @RequestParam String y,
@@ -123,10 +127,12 @@ public class BuildingController {
         if(es.build(user.getId(),xprime,yprime,typep)){
         	return new ModelAndView("redirect:/map");
         }else{
-        	return new ModelAndView("redirect:/building?x=" + xprime + "&y=" + yprime);
+        	return new ModelAndView("redirect:/building?x=" + xprime + "&y=" + yprime+ "&e=" + messageSource.getMessage("error.noGold",null,locale));
         }
       
     }
+
+    @Transactional
     @RequestMapping(value="/demolish", method = RequestMethod.POST)
     public ModelAndView demolish(@RequestParam String x,
                                  @RequestParam String y,
@@ -143,7 +149,7 @@ public class BuildingController {
         ss.deleteBuilding(p);
         return new ModelAndView("redirect:/map");
     }
-
+    @Transactional
     @RequestMapping(value="/levelup", method = RequestMethod.POST)
     public ModelAndView levelup(@RequestParam String x,
                                 @RequestParam String y,

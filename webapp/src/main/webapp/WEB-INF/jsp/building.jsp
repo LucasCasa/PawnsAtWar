@@ -19,9 +19,8 @@
         <div class="row">
             <div class="col-md-4"> <img class="img-responsive" src="<c:url value="/resources/images/${building.name}.png" /> " /></div>
             <div class="col-md-8">
-                <div class ="row">
-                <h2 style="color: green">${message}</h2>
-                </div>
+                <h2 class="success" style="text-align: center">${success}</h2>
+                <h2 class="error" style="text-align: center">${error}</h2>
                 <h3><strong>${building.description}</strong></h3>
                     <c:choose>
                         <c:when test = "${user.id == owner.id}">

@@ -7,6 +7,7 @@ import ar.edu.itba.paw.webapp.dataClasses.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -104,6 +105,7 @@ public class ArmyController {
         return mav;
     }
 
+    @Transactional
     @RequestMapping(value="/attack", method = RequestMethod.POST)
     public ModelAndView attack(@RequestParam String x,
                                @RequestParam String y,
@@ -234,6 +236,8 @@ public class ArmyController {
         }
         return mav;
     }
+
+    @Transactional
     @RequestMapping(value="/train", method = RequestMethod.POST)
     public ModelAndView train(@RequestParam String type,
                               @RequestParam String amount,
@@ -280,6 +284,8 @@ public class ArmyController {
         return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&m="+ messageSource.getMessage("troopSuccess",null,locale));
 
     }
+
+    @Transactional
     @RequestMapping(value="/merge")
     public ModelAndView train(@RequestParam String f,
                               @RequestParam String t,
@@ -305,6 +311,8 @@ public class ArmyController {
         as.deleteArmy(from);
         return new ModelAndView("redirect:/armies");
     }
+
+    @Transactional
     @RequestMapping(value="/armies/{armyId}/split")
     public ModelAndView train(@PathVariable String armyId,
                               @ModelAttribute("user") final User user,

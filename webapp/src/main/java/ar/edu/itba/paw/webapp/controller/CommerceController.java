@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.interfaces.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,7 +33,7 @@ public class CommerceController {
 
 	@Autowired
 	private UserService us;
-	
+
 	@RequestMapping(value="/commerce")
     public ModelAndView commerce(@RequestParam(value="insuficientAmount", required = false)boolean insuficientAmount
     		,@ModelAttribute("user") final User user){
@@ -54,7 +55,7 @@ public class CommerceController {
         
         return mav;
 	}
-	
+	@Transactional
 	@RequestMapping(value="/commerce/acceptTrade")
 	public ModelAndView acceptTrade(@RequestParam final int id, @ModelAttribute("user") final User user){
 		TradeOffer to = cs.getOffer(id);
@@ -69,7 +70,7 @@ public class CommerceController {
 		cs.acceptOffer(to, user.getId());
 		return new ModelAndView("redirect:/commerce");
 	}
-	
+	@Transactional
 	@RequestMapping(value="/commerce/delete")
 	public ModelAndView deleteTrade(@RequestParam final int id, @ModelAttribute("user") final User user){
 		TradeOffer to = cs.getOffer(id);
@@ -79,7 +80,7 @@ public class CommerceController {
 		cs.removeOffer(to);
 		return new ModelAndView("redirect:/commerce");
 	}
-	
+
 	@RequestMapping(value="/commerce/create")
 	public ModelAndView createOffer(@RequestParam(value="insuficientAmount", required = false)boolean insuficientAmount,
 			@ModelAttribute("user") final User user){
@@ -91,7 +92,7 @@ public class CommerceController {
 		
 		return mav;
 	}
-	
+	@Transactional
 	@RequestMapping(value="/commerce/create/submit", method = RequestMethod.POST)
     public ModelAndView sumbitCreate(@RequestParam(required = false) String giveType, @RequestParam(required = false) String getType,@RequestParam(required = false) String giveQty,@RequestParam(required = false) String getQty,@ModelAttribute("user") final User user ){
 		if(getQty==null || giveQty==null || giveType==null || getType==null)
