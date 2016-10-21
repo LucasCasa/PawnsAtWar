@@ -10,7 +10,9 @@
 	<br/>
 	<c:choose>
 		<c:when test="${tradeListSize == 0}">
-			<h2 style="text-align: center"><spring:message code="noOffers" /></h2>
+			<div class="row">
+				<h2 style="text-align: center"><spring:message code="noOffers" /></h2>
+			</div>
 		</c:when>
 		<c:otherwise>
 			<table class="table">
@@ -23,10 +25,10 @@
 				<tbody>
 				<c:forEach var="offer" items="${tradeList}">
 					<tr>
-						<td>${offer.getOwner().getName()}</td>
+						<td><br><br>${offer.getOwner().getName()}</td>
 						<td><re:Resource rate="0" type="${offer.getOffer().getType()}" amount="${offer.getOffer().getQuantity()}" path="${pageContext.request.contextPath}"/></td>
 						<td><re:Resource rate="0" type="${offer.getReceives().getType()}" amount="${offer.getReceives().getQuantity()}" path="${pageContext.request.contextPath}"/></td>
-						<td><form method="post" action="<c:url value="/commerce/acceptTrade"/>">
+						<td><br><form method="post" action="<c:url value="/commerce/acceptTrade"/>">
 							<input type="hidden" name="id" value="${offer.getId()}"/>
 							<input type="submit" class="myButton" value="<spring:message code="commerce.accept"/>"/>
 						</form></td>
@@ -37,10 +39,15 @@
 		</c:otherwise>
 	</c:choose>
 
+
 	<h1><spring:message code="commerce.myOffers"/></h1>
+
 	<c:choose>
 		<c:when test="${myTradesSize == 0}">
-			<h2 style="text-align: center"><spring:message code="noMyOffers" /></h2>
+			<div class="row">
+				<h2 style="text-align: center"><spring:message code="noMyOffers" /></h2>
+			</div>
+
 		</c:when>
 		<c:otherwise>
 			<table class="table">
@@ -53,10 +60,10 @@
 				<tbody>
 				<c:forEach var="offer" items="${myTrades}">
 					<tr>
-						<td>${offer.getOwner().getName()}</td>
+						<td><br><br>${offer.getOwner().getName()}</td>
 						<td><re:Resource rate="0" type="${offer.getOffer().getType()}" amount="${offer.getOffer().getQuantity()}" path="${pageContext.request.contextPath}"/></td>
 						<td><re:Resource rate="0" type="${offer.getReceives().getType()}" amount="${offer.getReceives().getQuantity()}" path="${pageContext.request.contextPath}"/></td>
-						<td><form method="post" action="<c:url value="/commerce/delete"/>">
+						<td><br><form method="post" action="<c:url value="/commerce/delete"/>">
 							<input type="hidden" name="id" value="${offer.getId()}"/>
 							<input type="submit" class="myButton" value="<spring:message code="commerce.remove"/>"/>
 						</form></td>

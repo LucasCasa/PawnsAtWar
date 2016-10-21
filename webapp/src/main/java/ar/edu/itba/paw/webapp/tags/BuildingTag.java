@@ -110,8 +110,8 @@ public class BuildingTag extends SimpleTagSupport {
     private void printNew(JspWriter out, boolean gold) throws JspException, IOException  {
         out.println("<table style=\"table-layout: fixed;\"id=\"buildListTable\">");
         out.println("<thead>");
-        out.println("<td>"+messageSource.getMessage("building",null,locale)+"</td>");
-        out.println("<td>"+messageSource.getMessage("description",null,locale)+"</td>");
+        out.println("<td >"+messageSource.getMessage("building",null,locale)+"</td>");
+        out.println("<td >"+messageSource.getMessage("description",null,locale)+"</td>");
         out.println("<td>"+messageSource.getMessage("cost",null,locale)+"</td>");
         out.println("<td>"+messageSource.getMessage("build",null,locale)+"</td>");
         out.println("</thead>");
@@ -122,7 +122,7 @@ public class BuildingTag extends SimpleTagSupport {
                 out.println("<td>");
                 printImage(out,i.getId());
                 out.println("</td>");
-                out.println("<td>");
+                out.println("<td style=\"text-align: center;\">");
                 out.println(Info.getInstance().getBuildingInformation(i.getId(),locale.getLanguage()).getDescription());
                 out.println("</td>");
                 out.println("<td style=\"text-align: center;\">");
