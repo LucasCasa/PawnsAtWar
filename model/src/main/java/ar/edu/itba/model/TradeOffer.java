@@ -15,6 +15,16 @@ public class TradeOffer {
 		this.receives = receives;
 	}
 	
+	public TradeOffer(final User owner,final Resource offers,final Resource receives){
+		this.owner = owner;
+		this.offers = offers;
+		this.receives = receives;
+	}
+	
+	/* package */ TradeOffer(){
+		
+	}
+	
 	public int getId() {
 		return id;
 	}

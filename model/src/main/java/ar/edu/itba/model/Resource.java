@@ -4,6 +4,10 @@ public class Resource {
 	private int type;
 	private int quantity;
 	private User user;
+	
+	/* package */ Resource(){
+		
+	}
 
 	
 	public int getQuantity() {

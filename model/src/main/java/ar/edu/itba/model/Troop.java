@@ -11,6 +11,10 @@ public class Troop {
 		this.quantity = quantity;
 	}
 	
+	/* package */ Troop(){
+		
+	}
+	
 	public int getQuantity() {
 		return quantity;
 	}

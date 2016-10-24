@@ -10,6 +10,10 @@ public class Sector {
 		this.type = type;
 		this.user = user;
 	}
+	
+	/* package */ Sector(){
+		
+	}
 
 	public int getType() {
 		return type;

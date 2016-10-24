@@ -17,6 +17,10 @@ public class Point {
 		return y;
 	}
 	
+	/* package */ Point(){
+		
+	}
+	
 	public double getDistance(Point p){
 		return Math.sqrt(Math.pow(x-p.getX(), 2) +Math.pow(y-p.getY(), 2) );
 	}

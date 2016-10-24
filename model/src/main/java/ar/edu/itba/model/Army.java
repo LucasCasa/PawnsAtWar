@@ -9,12 +9,23 @@ public class Army {
 	private List<Troop> troops;
 	private boolean available;
 	
-	public Army(Point position, User user,int idArmy, boolean available,List<Troop> troops) {
+	/* SOLO PARA JDBC */
+	public Army(Point position, User user, int idArmy,boolean available,List<Troop> troops) {
 		this.position = position;
+		this.user = user;
 		this.idArmy = idArmy;
+		this.available = available;
+		this.troops = troops;
+	}
+	public Army(Point position, User user,boolean available,List<Troop> troops) {
+		this.position = position;
 		this.user = user;
 		this.available = available;
 		this.troops = troops;
+	}
+	
+	/* package */ Army(){
+		
 	}
 
 	public boolean getAvailable() {

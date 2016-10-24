@@ -42,10 +42,6 @@ public interface TerrainDao {
 	
 	public Terrain addTerrain(Point p);
 	
-	public int getMaxX();
-	
-	public int getMaxY();
-	
 	public Integer getId(Point p);
 
 	public void setIdPlayer(Point p, Integer idPlayer);

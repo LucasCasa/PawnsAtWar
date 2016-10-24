@@ -2,50 +2,86 @@ package ar.edu.itba.persistence;
 
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import ar.edu.itba.interfaces.ResourceDao;
+import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Resource;
+import ar.edu.itba.model.User;
 
 public class ResourceHibernateDao implements ResourceDao {
+	
+	@PersistenceContext
+    private EntityManager em;
+	
+	@Autowired
+	private UserDao ud;
 
 	@Override
 	public void addAmount(int idPlayer, int type, int value) {
-		// TODO Auto-generated method stub
+		Resource amount = getResource(idPlayer,type);
+		final Query query = em.createQuery("update Resource set amount = :amount where idPlayer = :idPlayer and type = :type");
+		query.setParameter("amount", amount.getQuantity() + value);
+		query.setParameter("idPlayer", idPlayer);
+		query.setParameter("type", type);
+		query.executeUpdate();
 
 	}
 
 	@Override
 	public void subtractAmount(int idPlayer, int type, int value) {
-		// TODO Auto-generated method stub
+		Resource amount = getResource(idPlayer,type);
+		int cant = amount.getQuantity() <= value ? 0 : amount.getQuantity() - value;
+		final Query query = em.createQuery("update Resource set amount = :amount where idPlayer = :idPlayer and type = :type");
+		query.setParameter("amount", cant);
+		query.setParameter("idPlayer", idPlayer);
+		query.setParameter("type", type);
+		query.executeUpdate();
 
 	}
 
 	@Override
 	public Resource addResource(int idPlayer, int type, int amount) {
-		// TODO Auto-generated method stub
-		return null;
+		User u = ud.findById(idPlayer);
+		Resource r = new Resource(type,u,amount);
+		em.persist(r);
+		return r;
 	}
 
 	@Override
 	public Resource addResource(int idPlayer, int type) {
-		// TODO Auto-generated method stub
-		return null;
+		return addResource(idPlayer,type,0);
 	}
 
 	@Override
 	public List<Resource> getResources(int idPlayer) {
-		// TODO Auto-generated method stub
-		return null;
+		final TypedQuery<Resource> query = em.createQuery("from Resource as r where r.idPlayer = :idPlayer", Resource.class);
+		query.setParameter("idPlayer", idPlayer);
+		final List<Resource> list = query.getResultList();
+		return list;
 	}
 
 	@Override
 	public Resource getResource(int idPlayer, int type) {
-		// TODO Auto-generated method stub
-		return null;
+		final TypedQuery<Resource> query = em.createQuery("from Resource as r where idPlayer = :idPlayer and type = :type",Resource.class);
+		query.setParameter("idPlayer", idPlayer);
+		query.setParameter("type", type);
+		final List<Resource> list = query.getResultList();
+		return list.isEmpty() ? null : list.get(0);
 	}
 
 	@Override
 	public void setAmount(int idPlayer, int type, int value) {
-		// TODO Auto-generated method stub
+		final Query query = em.createQuery("update Resource set amount = :amount where idPlayer = :idPlayer and type = :type");
+		query.setParameter("amount", value);
+		query.setParameter("idPlayer", idPlayer);
+		query.setParameter("type", type);
+		query.executeUpdate();
 
 	}
 

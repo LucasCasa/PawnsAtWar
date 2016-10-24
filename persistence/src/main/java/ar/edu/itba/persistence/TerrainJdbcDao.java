@@ -116,28 +116,6 @@ public class TerrainJdbcDao implements TerrainDao {
 	}
 
 	@Override
-	public int getMaxX() {
-		 List<Integer> maxX = jdbcTemplate
-	                .query("SELECT max(x) as aux FROM TERRAIN",(ResultSet resultSet, int rowNum) -> {
-	                    return resultSet.getInt("aux");
-	                });
-
-	        return maxX.isEmpty() ? -1 : maxX.get(0);
-		
-	}
-	
-	@Override
-	public int getMaxY() {
-		 List<Integer> maxY = jdbcTemplate
-	                .query("SELECT max(y) as aux FROM TERRAIN",(ResultSet resultSet, int rowNum) -> {
-	                    return resultSet.getInt("aux");
-	                });
-
-	        return maxY.isEmpty() ? -1 : maxY.get(0);
-		
-	}
-
-	@Override
 	public Integer getId(Point p) {
 		List<Integer> terrainList = jdbcTemplate
 				.query("SELECT * FROM TERRAIN WHERE x = ?  AND y = ?",(ResultSet resultSet, int rowNum) -> {
