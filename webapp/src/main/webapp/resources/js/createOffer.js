@@ -7,9 +7,25 @@ $(document).ready(function() {
     });
 });
 
+function selectRadioGet(type) {
+    $('input[name=giveType]').each(function(i) {
+        if($(this).attr('value') == type){
+            $(this).removeAttr('checked');
+        }
+    });
+    checkSumbitAvailability();
+};
+
+function selectRadioGive(type) {
+    $('input[name=getType]').each(function(i) {
+       if($(this).attr('value') == type){
+            $(this).removeAttr('checked');
+        }
+    });
+    checkSumbitAvailability();
+};
 
 function checkSumbitAvailability() {
-
     var empty = false;
     // Input labels have values
     $('input').each(function() {
@@ -40,4 +56,4 @@ function checkSumbitAvailability() {
 
     // Remove possible existing warning
     $('#insAmount').css("display","none");
-}
+};
