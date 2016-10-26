@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="re" uri="resource.tld"%>
 <%@ include file="header.jsp" %>
+<link rel="stylesheet" href="<c:url value= "/resources/css/commerce.css" /> ">
 
 <div class="container">
 	<%@ include file="resourceBar.jsp" %>
