@@ -16,7 +16,6 @@ import ar.edu.itba.interfaces.ArmyDao;
 import ar.edu.itba.interfaces.TroopDao;
 import ar.edu.itba.model.Troop;
 
-@Repository
 public class TroopJdbcDao implements TroopDao {
 
 	
@@ -45,7 +44,7 @@ public class TroopJdbcDao implements TroopDao {
 	public List<Troop> getAllTroop(int idArmy) {
 		List<Troop> troopList = jdbcTemplate
 				.query("SELECT * FROM TROOP WHERE idArmy = ?",(ResultSet resultSet, int rowNum) -> {
-							return new Troop(resultSet.getInt("idArmy"),resultSet.getInt("type"),resultSet.getInt("amount"));
+							return new Troop(ad.getArmyById(idArmy),resultSet.getInt("type"),resultSet.getInt("amount"));
 						},idArmy);
 		return troopList;
 	}
@@ -69,7 +68,7 @@ public class TroopJdbcDao implements TroopDao {
 		args.put("type", type);
 		args.put("amount", amount);
 		jdbcInsert.execute(args);
-		return new Troop(idArmy,type,amount);
+		return new Troop(ad.getArmyById(idArmy),type,amount);
 	}
 
 	@Override
@@ -85,7 +84,7 @@ public class TroopJdbcDao implements TroopDao {
 	public Troop getTroop(int idArmy, int type) {
 		List<Troop> troopList = jdbcTemplate
 				.query("SELECT * FROM TROOP WHERE idArmy = ? AND type = ?",(ResultSet resultSet, int rowNum) -> {
-							return new Troop(idArmy,resultSet.getInt("type"),resultSet.getInt("amount"));
+							return new Troop(ad.getArmyById(idArmy),resultSet.getInt("type"),resultSet.getInt("amount"));
 						},idArmy,type);
 		return troopList.get(0);
 	}

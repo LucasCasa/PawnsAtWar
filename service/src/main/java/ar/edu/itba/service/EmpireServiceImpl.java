@@ -13,17 +13,19 @@ import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.ArmyService;
-import ar.edu.itba.interfaces.BuildingService;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.SectorService;
-import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
+import ar.edu.itba.model.Sector;
+import ar.edu.itba.model.User;
 
 @Service
+@Transactional
 public class EmpireServiceImpl implements EmpireService{
 	
 	private static final int INITIAL_VALUE = 2000;
@@ -33,7 +35,7 @@ public class EmpireServiceImpl implements EmpireService{
 	@Autowired
 	SectorService ss;
 	@Autowired
-	BuildingService bs;
+	SectorService bs;
 	@Autowired
 	ArmyService as;
 
@@ -69,8 +71,7 @@ public class EmpireServiceImpl implements EmpireService{
 	 */
 	private long timeLapsed(int userid){
 		Timestamp oldTime = ed.getLastTimeUpdate(userid);
-		Date date= new Date();
-		Timestamp currentTime = new Timestamp(date.getTime());
+		Timestamp currentTime = new Timestamp(new Date().getTime());
 		ed.setLastTimeUpdate(userid, currentTime);
 		return (currentTime.getTime()-oldTime.getTime())/1000;
 	}
@@ -101,7 +102,7 @@ public class EmpireServiceImpl implements EmpireService{
 	
 	@Override
 	public int getRate(int userid, int type){
-		List<Building> list;
+		List<Sector> list;
 		int rate = 1;
 		switch(type){
 			case 0:
@@ -112,7 +113,7 @@ public class EmpireServiceImpl implements EmpireService{
 				break;
 			default: return 1;
 		}
-		for(Building b : list){
+		for(Sector b : list){
 			rate += b.getLevel();
 		}
 		return rate;
@@ -156,12 +157,12 @@ public class EmpireServiceImpl implements EmpireService{
 	}
 	
 	@Override
-	public void createUser(int userid) {
-		boolean resp = ss.createCastle(userid);
+	public void createUser(User user) {
+		boolean resp = ss.createCastle(user.getId());
 		if(resp){
-			ed.createEmpire(userid, new Timestamp(Calendar.getInstance().getTime().getTime()));
-		ed.createResource(userid, 0, INITIAL_VALUE);
-		ed.createResource(userid, 1, INITIAL_VALUE);
+			ed.createEmpire(user, new Timestamp(Calendar.getInstance().getTime().getTime()));
+		ed.createResource(user, 0, INITIAL_VALUE);
+		ed.createResource(user, 1, INITIAL_VALUE);
 		}
 		
 	}

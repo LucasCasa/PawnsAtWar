@@ -34,8 +34,6 @@ public class ArmyController {
     @Autowired
     private EmpireService es;
     @Autowired
-    private BuildingService bs;
-    @Autowired
     private MessageSource messageSource;
 
     @RequestMapping(value="/armies")
@@ -256,21 +254,20 @@ public class ArmyController {
         int x = Integer.valueOf(px);
         int y = Integer.valueOf(py);
         Sector s =ss.getSector(new Point(x,y));
-        if(!(s instanceof Building)){
-            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.terrainRecruit",null,locale));
-        }
-        Building b = (Building) s;
+//        if(!(s instanceof Building)){
+//            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.terrainRecruit",null,locale));
+//        }
 
         int cost;
         switch (Integer.valueOf(type)){
             case Info.WARRIOR:
-                    cost = (Info.COST_WARRIOR - (b.getLevel() - 1))*a;
+                    cost = (Info.COST_WARRIOR - (s.getLevel() - 1))*a;
                 break;
             case Info.ARCHER:
-                cost = (Info.COST_ARCHER - (b.getLevel() - 1))*a;
+                cost = (Info.COST_ARCHER - (s.getLevel() - 1))*a;
                 break;
             case Info.HORSEMAN:
-                cost = (Info.COST_HORSEMAN - (b.getLevel() - 1))*a;
+                cost = (Info.COST_HORSEMAN - (s.getLevel() - 1))*a;
                 break;
             default:
                 return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidTroop",null,locale));
@@ -329,7 +326,7 @@ public class ArmyController {
         ModelAndView mav = new ModelAndView("split");
         Army a = as.getArmyById(Integer.parseInt(armyId));
         List<Point> points = new ArrayList<>();
-        for(Building b : bs.getAllBuildings(user.getId())){
+        for(Sector b : ss.getAllBuildings(user.getId())){
             if(!b.getPosition().equals(a.getPosition())) {
                 points.add(b.getPosition());
             }

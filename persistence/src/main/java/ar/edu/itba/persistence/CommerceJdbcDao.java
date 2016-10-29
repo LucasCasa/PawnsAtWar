@@ -17,7 +17,6 @@ import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Resource;
 import ar.edu.itba.model.TradeOffer;
 
-@Repository
 public class CommerceJdbcDao implements CommerceDao{
 	
 	@Autowired

@@ -1,14 +1,33 @@
 package ar.edu.itba.model;
 
-import java.sql.Time;
+import java.io.Serializable;
 import java.sql.Timestamp;
 
-public class Empire {
-	private User user;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "empire")
+public class Empire implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@OneToOne(optional=false)
+    @JoinColumn(name="idPlayer", nullable=false, updatable=false)
+	private User userEmpire;
+	
+	@Column(nullable = false)
 	private Timestamp lastUpdate;
 	
-	public Empire(User user, Timestamp timestamp) {
-		this.user = user;
+	public Empire(User u, Timestamp timestamp) {
+		this.userEmpire = u;
 		this.lastUpdate = timestamp;
 	}
 	
@@ -25,7 +44,7 @@ public class Empire {
 	}
 
 	public User getUser() {
-		return user;
+		return userEmpire;
 	}
 }
 

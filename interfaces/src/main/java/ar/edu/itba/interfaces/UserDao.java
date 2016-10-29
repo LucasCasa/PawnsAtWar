@@ -4,15 +4,15 @@ import ar.edu.itba.model.User;
 
 public interface UserDao {
 	
-	public User findById(long id);
+	public User findById(int id);
 	
 	public User create(String username, String password, String email);
 	
-	public String getUsername(long id);
+	public String getUsername(int id);
 
 	public User findByUsername(String username);
 
-	public String getEmail(long id);
+	public String getEmail(int id);
 	
 	public String getEmail(String username);
 

@@ -9,16 +9,17 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.ResourceDao;
-import ar.edu.itba.interfaces.UserDao;
-import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Empire;
 import ar.edu.itba.model.Resource;
+import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
 
+@Repository
 public class EmpireHibernateDao implements EmpireDao {
 
 	@PersistenceContext
@@ -30,12 +31,9 @@ public class EmpireHibernateDao implements EmpireDao {
 	@Autowired
 	private BuildingDao bd;
 	
-	@Autowired
-	private UserDao ud;
-	
 	@Override
 	public Timestamp getLastTimeUpdate(int userid) {
-		final TypedQuery<Empire> query = em.createQuery("from Empire as e where e.idPlayer = :idPlayer",Empire.class);
+		final TypedQuery<Empire> query = em.createQuery("from Empire where userEmpire.id = :idPlayer",Empire.class);
 		query.setParameter("idPlayer", userid);
 		final List<Empire> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0).getLastUpdate();
@@ -43,11 +41,10 @@ public class EmpireHibernateDao implements EmpireDao {
 
 	@Override
 	public void setLastTimeUpdate(int userid, Timestamp t) {
-		final Query query = em.createQuery("update Empire as e set e.lastUpdate = :lastUpdate where e.idPlayer = :idPlayer");
+		final Query query = em.createQuery("update Empire set lastUpdate = :lastUpdate where userEmpire.id = :idPlayer");
 		query.setParameter("lastUpdate", t);
 		query.setParameter("idPlayer", userid);
 		query.executeUpdate();
-
 	}
 
 	@Override
@@ -71,21 +68,20 @@ public class EmpireHibernateDao implements EmpireDao {
 	}
 
 	@Override
-	public List<Building> getBuilding(int userid, int type) {
+	public List<Sector> getBuilding(int userid, int type) {
 		return bd.getBuildings(userid,type);
 	}
 
 	@Override
-	public void createEmpire(int userid, Timestamp timestamp) {
-		User u = ud.findById(userid);
+	public void createEmpire(User u, Timestamp timestamp) {
 		Empire e = new Empire(u, timestamp);
 		em.persist(e);
 
 	}
 
 	@Override
-	public void createResource(int userid, int type, int amount) {
-		rd.addResource(userid, type, amount);
+	public void createResource(User user, int type, int amount) {
+		rd.addResource(user, type, amount);
 
 	}
 

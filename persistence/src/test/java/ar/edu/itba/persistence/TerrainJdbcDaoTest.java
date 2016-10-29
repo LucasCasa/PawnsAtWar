@@ -16,7 +16,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.jdbc.JdbcTestUtils;
 
 import ar.edu.itba.model.Point;
-import ar.edu.itba.model.Terrain;
+import ar.edu.itba.model.Sector;
 
 @RunWith(SpringJUnit4ClassRunner.class) 
 @ContextConfiguration(classes = TestConfig.class)
@@ -31,7 +31,7 @@ public class TerrainJdbcDaoTest {
 	private DataSource ds;
 	
 	@Autowired
-	private TerrainJdbcDao terrainDao;
+	private BuildingJdbcDao buildingDao;
 	
 	private JdbcTemplate jdbcTemplate;
 	
@@ -46,10 +46,10 @@ public class TerrainJdbcDaoTest {
 	public void testCreate(){
 		final int posX = (int)Math.random()*100;
 		final int posY = (int)Math.random()*100;
-		final int power = 1;
+		final int level = 1;
 		final int type = 3;
 		
-		Terrain t = terrainDao.addTerrain(new Point(posX,posY), power, idPlayer, type);
+		Sector t = buildingDao.addBuilding(new Point(posX,posY), level, idPlayer, type);
 		
 		assertNotNull(t);
 		assertEquals(posX, t.getPosition().getX());

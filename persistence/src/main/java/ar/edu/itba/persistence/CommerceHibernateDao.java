@@ -8,6 +8,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.CommerceDao;
 import ar.edu.itba.interfaces.ResourceDao;
@@ -16,6 +17,7 @@ import ar.edu.itba.model.Resource;
 import ar.edu.itba.model.TradeOffer;
 import ar.edu.itba.model.User;
 
+@Repository
 public class CommerceHibernateDao implements CommerceDao {
 	
 	@PersistenceContext
@@ -29,7 +31,7 @@ public class CommerceHibernateDao implements CommerceDao {
 	
 	@Override
 	public List<TradeOffer> getAllOffers() {
-		final TypedQuery<TradeOffer> query = em.createQuery("from commerce as c", TradeOffer.class);
+		final TypedQuery<TradeOffer> query = em.createQuery("from TradeOffer as c", TradeOffer.class);
 		final List<TradeOffer> list = query.getResultList();
 		return list;
 	}
@@ -41,7 +43,7 @@ public class CommerceHibernateDao implements CommerceDao {
 
 	@Override
 	public void removeOffer(int id) {
-		final Query query = em.createQuery("delete Commerce where tradeId = :id");
+		final Query query = em.createQuery("delete TradeOffer where tradeId = :id");
 		query.setParameter("id", id);
 		query.executeUpdate();
 
@@ -49,7 +51,7 @@ public class CommerceHibernateDao implements CommerceDao {
 
 	@Override
 	public List<TradeOffer> getAllOffers(int userid) {
-		final TypedQuery<TradeOffer> query = em.createQuery("from commerce as c where c.ownerId = :userId", TradeOffer.class);
+		final TypedQuery<TradeOffer> query = em.createQuery("from TradeOffer as c where c.ownerId = :userId", TradeOffer.class);
 		query.setParameter("userId", userid);
 		final List<TradeOffer> list = query.getResultList();
 		return list;

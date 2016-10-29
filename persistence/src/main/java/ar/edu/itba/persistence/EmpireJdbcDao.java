@@ -11,15 +11,14 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.ResourceDao;
-import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Resource;
+import ar.edu.itba.model.Sector;
+import ar.edu.itba.model.User;
 
-@Repository
 public class EmpireJdbcDao implements EmpireDao {
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
@@ -78,21 +77,21 @@ public class EmpireJdbcDao implements EmpireDao {
 	}
 
 	@Override
-	public List<Building> getBuilding(int userid, int type) {
+	public List<Sector> getBuilding(int userid, int type) {
 		return bd.getBuildings(userid,type);
 	}
 
 	@Override
-	public void createEmpire(int userid, Timestamp timestamp) {
+	public void createEmpire(User u, Timestamp timestamp) {
 		final Map<String,Object> args = new HashMap<>();
-		args.put("idPlayer", userid);
+		args.put("idPlayer", u.getId());
 		args.put("lastUpdate", timestamp);
 		jdbcInsert.execute(args);
 	}
 
 	@Override
-	public void createResource(int userid, int type, int amount) {
-		rd.addResource(userid, type, amount);
+	public void createResource(User user, int type, int amount) {
+		rd.addResource(user, type, amount);
 		
 	}
 }

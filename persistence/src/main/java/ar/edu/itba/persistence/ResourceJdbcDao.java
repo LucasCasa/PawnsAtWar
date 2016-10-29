@@ -8,13 +8,12 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
-import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ResourceDao;
 import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Resource;
+import ar.edu.itba.model.User;
 
-@Repository
 public class ResourceJdbcDao implements ResourceDao {
 	private final JdbcTemplate jdbcTemplate;
 	private final SimpleJdbcInsert jdbcInsert;
@@ -51,18 +50,18 @@ public class ResourceJdbcDao implements ResourceDao {
 
 
 	@Override
-	public Resource addResource(int idPlayer, int type, int amount) {
+	public Resource addResource(User u, int type, int amount) {
 		final Map<String,Object> args = new HashMap<>();
 		args.put("type", type);
 		args.put("amount", amount);
-		args.put("idPlayer",idPlayer);
+		args.put("idPlayer",u.getId());
 		jdbcInsert.execute(args);
-		return new Resource(type,ud.findById(idPlayer),amount);
+		return new Resource(type,u,amount);
 	}
 
 	@Override
 	public Resource addResource(int idPlayer, int type) {
-		return addResource(idPlayer, type, 0);
+		return addResource(ud.findById(idPlayer), type, 0);
 	}
 
 	@Override

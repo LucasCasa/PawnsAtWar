@@ -15,7 +15,6 @@ import org.springframework.stereotype.Repository;
 import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.User;
 
-@Repository
 public class UserJdbcDao implements UserDao{
 	
 	private final JdbcTemplate jdbcTemplate;
@@ -28,10 +27,10 @@ public class UserJdbcDao implements UserDao{
 	}
 
 	@Override
-	public User findById(long id) {
+	public User findById(int id) {
 		List<User> userList = jdbcTemplate
 				.query("SELECT * FROM userPaw WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
-							return new User(resultSet.getInt("idPlayer"),resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("email"));
+							return new User(resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("email"));
 						},id);
 		return userList.isEmpty()?null:userList.get(0);
 
@@ -44,11 +43,11 @@ public class UserJdbcDao implements UserDao{
 		args.put("password", password);
 		args.put("email",email);
 		final Number key = jdbcInsert.executeAndReturnKey(args);
-		return new User(key.intValue(),username,password,email);
+		return new User(username,password,email);
 	}
 
 	@Override
-	public String getUsername(long id) {
+	public String getUsername(int id) {
 		List<String> userList = jdbcTemplate
 				.query("SELECT * FROM userPaw WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getString("username");
@@ -60,14 +59,14 @@ public class UserJdbcDao implements UserDao{
 	public User findByUsername(String username) {
 		List<User> userList = jdbcTemplate
 				.query("SELECT * FROM userPaw WHERE username = ?",(ResultSet resultSet, int rowNum) -> {
-							return new User(resultSet.getInt("idPlayer"),resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("email"));
+							return new User(resultSet.getString("username"),resultSet.getString("password"),resultSet.getString("email"));
 						},username);
 		return userList.isEmpty()?null:userList.get(0);
 
 	}
 
 	@Override
-	public String getEmail(long id) {
+	public String getEmail(int id) {
 		List<String> userList = jdbcTemplate
 				.query("SELECT * FROM userPaw WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
 							return resultSet.getString("email");

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ar.edu.itba.model.Resource;
+import ar.edu.itba.model.User;
 
 public interface EmpireService {
 	
@@ -73,10 +74,10 @@ public interface EmpireService {
 
 	/**
 	 * Creates the empire, resources and castle of the user
-	 * @param userid
+	 * @param user
 	 * @return the point in which the castle is in
 	 */
-	public void createUser(int userid);
+	public void createUser(User user);
 	
 	
 }

@@ -63,21 +63,21 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return dataSource;
 	}
 
-	@Bean
-	public DataSourceInitializer dataSourceInitializer (final DataSource ds){
-		DataSourceInitializer dsi= new DataSourceInitializer();
-		dsi.setDataSource(ds);
-		dsi.setDatabasePopulator(databasePopulator());
-		return dsi;
-
-	}
-	
-	private DatabasePopulator databasePopulator(){
-		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-		dbp.addScript(schemaSql);
-		dbp.addScript(mapSql);
-		return dbp;
-	}
+//	@Bean
+//	public DataSourceInitializer dataSourceInitializer (final DataSource ds){
+//		DataSourceInitializer dsi= new DataSourceInitializer();
+//		dsi.setDataSource(ds);
+//		dsi.setDatabasePopulator(databasePopulator());
+//		return dsi;
+//
+//	}
+//	
+//	private DatabasePopulator databasePopulator(){
+//		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
+//		dbp.addScript(schemaSql);
+//		dbp.addScript(mapSql);
+//		return dbp;
+//	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -93,15 +93,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		return messageSource;
 	}
 	
-	 @Bean
-	 public PlatformTransactionManager transactionManager(final DataSource ds) {
-		 return new DataSourceTransactionManager(ds);
-	 }
-	 
 //	 @Bean
-//	    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
-//	         return new JpaTransactionManager(emf);
-//	    }
+//	 public PlatformTransactionManager transactionManager(final DataSource ds) {
+//		 return new DataSourceTransactionManager(ds);
+//	 }
+	 
+	 @Bean
+	    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
+	         return new JpaTransactionManager(emf);
+	    }
 
 	@Bean
 	public org.springframework.web.filter.CharacterEncodingFilter characterEncodingFilter() {
@@ -122,9 +122,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		properties.setProperty("hibernate.hbm2ddl.auto", "update");
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
 		// Si ponen esto en prod, hay tabla!!
-//		properties.setProperty("hibernate.show_sql", "true");
-//		properties.setProperty("format_sql", "true");
-//		factoryBean.setJpaProperties(properties);
+		properties.setProperty("hibernate.show_sql", "true");
+		properties.setProperty("format_sql", "true");
+		factoryBean.setJpaProperties(properties);
 		return factoryBean;
 	}
 	
