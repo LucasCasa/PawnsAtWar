@@ -26,17 +26,7 @@
 							<tr>
 								<td style="background-color:#000;text-align: center;color: #FFF;"><c:out value="${row.get(0).getPosition().getY()}"/></td>
 								<c:forEach var="item" items="${row}">
-								<td style="width:76px;height: 76px"><a href="<c:url value="/building?x=${item.getPosition().getX()}&y=${item.getPosition().getY()}" />" >
-									<c:choose>
-										<c:when test="${item.user == null}">
-											<te:Terrain clas="img-responsive" userid="${user.id}" ownerid="${0}" id="${item.type}" path="${pageContext.request.contextPath}" />
-										</c:when>
-										<c:otherwise>
-											<te:Terrain clas="img-responsive" userid="${user.id}" ownerid="${item.user.id}" id="${item.type}" path="${pageContext.request.contextPath}" />
-										</c:otherwise>
-									</c:choose>
-
-								</a></td>
+								<td style="width:76px;height: 76px"><a href="<c:url value="/building?x=${item.getPosition().getX()}&y=${item.getPosition().getY()}" />" ><te:Terrain clas="img-responsive" userid="${user.getId()}" ownerid="${item.getUser().getId()}" id="${item.getType()}" path="${pageContext.request.contextPath}" /></a></td>
 								</c:forEach>
 							</tr>
 						</c:forEach>
