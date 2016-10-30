@@ -31,7 +31,7 @@ public class Sector {
 	@Column(name = "type" , nullable = false)
 	private int type;
 	
-	@ManyToOne(fetch = FetchType.LAZY,optional = false)
+	@ManyToOne(fetch = FetchType.EAGER,optional = false)
 	@JoinColumn(name="idPlayer")
 	private User userBuilding;
 	

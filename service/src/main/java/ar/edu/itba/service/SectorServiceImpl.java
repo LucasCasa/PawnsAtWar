@@ -67,12 +67,7 @@ public class SectorServiceImpl implements SectorService {
 		if(p.getX()> maxX || p.getY()> maxY){
 			return null;
 		}
-		Sector building = bd.getBuilding(p);
-		if(building == null){
-			return new Sector(new User(null,null,null),p,0);
-		}
-
-		return building;
+		return bd.getBuilding(p);
 	}
 	
 	@Override

@@ -34,7 +34,7 @@ public class Army {
 	@JoinColumn(name="idPlayer")
 	private User userArmy;
 	
-	@OneToMany(fetch = FetchType.LAZY,orphanRemoval = false, mappedBy="army")
+	@OneToMany(fetch = FetchType.EAGER,orphanRemoval = false, mappedBy="army")
 	private List<Troop> troops;
 	
 	
