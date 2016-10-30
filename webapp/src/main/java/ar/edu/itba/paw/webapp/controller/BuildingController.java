@@ -1,8 +1,11 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import ar.edu.itba.interfaces.BuildingService;
+import ar.edu.itba.model.Building;
 import ar.edu.itba.paw.webapp.dataClasses.Info;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.paw.webapp.dataClasses.Validator;
@@ -34,6 +37,8 @@ public class BuildingController {
 
     @Autowired
     private SectorService ss;
+    @Autowired
+    private BuildingService bs;
     @Autowired
 	private EmpireService es;
     @Autowired
@@ -77,8 +82,12 @@ public class BuildingController {
             mav.addObject("p",new Point(Integer.parseInt(x),Integer.parseInt(y)));
             mav.addObject("plainTerrainBuildings",plainTerrainBuildings);
             mav.addObject("goldTerraunBuilding",goldTerrainBuilding);
-            mav.addObject("price", ss.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user.getId()));
-            mav.addObject("level",sector.getLevel());
+            mav.addObject("price", bs.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user.getId()));
+            if(sector instanceof Building){
+                mav.addObject("level",((Building) sector).getLevel());
+            }else{
+                mav.addObject("level",1);
+            }
             mav.addObject("resList",es.getResources(user.getId()));
             mav.addObject("ratesList",es.getRates(user.getId()));
             mav.addObject("error",error);
@@ -154,13 +163,13 @@ public class BuildingController {
         if(!s.getUser().equals(user)){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYourPosition",null,locale));
         }
-//        if(!(s.getLevel() == 1)){
-//            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantLevelUpTerrain",null,locale));
-//        }
-        if(s.getLevel() < 20){
-            int price = ss.getPrice(p,user.getId()) + (int) Math.pow(s.getLevel(),4);
+        if(!(s instanceof Building)){
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantLevelUpTerrain",null,locale));
+        }
+        if(((Building) s).getLevel() < 20){
+            int price = bs.getPrice(p,user.getId()) + (int) Math.pow(((Building) s).getLevel(),4);
             if(es.getResource(user.getId(),Info.RES_GOLD).getQuantity() >= price ) {
-                ss.levelUp(p);
+                bs.levelUp(p);
                 es.subtractResourceAmount(user.getId(), Info.RES_GOLD, price);
             }else{
                return new ModelAndView("redirect:/building?x="+x+"&y=" +y+"&m="+ messageSource.getMessage("error.noGold",null,locale));

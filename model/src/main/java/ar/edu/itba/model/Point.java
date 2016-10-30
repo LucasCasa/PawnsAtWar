@@ -1,13 +1,9 @@
 package ar.edu.itba.model;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
+import java.util.Objects;
 
-@Embeddable
 public class Point {
-	@Column(name = "x", nullable = false)
 	private int x;
-	@Column(name = "y", nullable = false)
 	private int y;
 	public Point(int x, int y) {
 		super();
@@ -23,6 +19,10 @@ public class Point {
 	
 	/* package */ Point(){
 		
+	}
+	
+	public double getDistance(Point p){
+		return Math.sqrt(Math.pow(x-p.getX(), 2) +Math.pow(y-p.getY(), 2) );
 	}
 	
 	public void setX(int x) {

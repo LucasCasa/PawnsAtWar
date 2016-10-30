@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import ar.edu.itba.interfaces.BuildingService;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.interfaces.UserService;
@@ -30,6 +31,8 @@ public class HomePageController {
 	private SectorService ss;
 	@Autowired
 	private EmpireService es;
+	@Autowired
+	private BuildingService bs;
 	@Autowired
 	private UserService us;
 	@Autowired
@@ -55,7 +58,7 @@ public class HomePageController {
 		if(user == null){
 			return new ModelAndView("redirect:/");
 		}
-		if(ss.getCastle(user.getId()) == null){
+		if(bs.getCastle(user.getId()) == null){
 			session.removeAttribute("userId");
 			return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.gameOver",null,locale));
 		}
@@ -63,7 +66,7 @@ public class HomePageController {
 		int yPrime;
 
 		if(x == null && y == null){
-			Point p = ss.getCastle(user.getId());
+			Point p = bs.getCastle(user.getId());
 			xPrime = p.getX();
 			yPrime = p.getY();
 		}else{
@@ -79,7 +82,7 @@ public class HomePageController {
 
 		List<List<Sector>> elements;
 		elements = ss.getSector(new Point(xPrime,yPrime), Info.VIEW_RANGE);
-		mav.addObject("resList",user.getResources());
+		mav.addObject("resList",es.getResources(user.getId()));
 		mav.addObject("ratesList",es.getRates(user.getId()));
 		mav.addObject("map",elements);
 		mav.addObject("x",xPrime);

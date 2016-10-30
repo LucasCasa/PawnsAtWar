@@ -10,12 +10,15 @@ import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
+import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 
+@Repository
 public class BuildingJdbcDao implements BuildingDao {
 	
 	private final JdbcTemplate jdbcTemplate;
@@ -53,8 +56,10 @@ public class BuildingJdbcDao implements BuildingDao {
 			if(range < 0){
 				return null;
 			}
-	        List<Sector> buildingList = jdbcTemplate.query("SELECT * FROM BUILDING WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
-	                    return new Sector(ud.findById(resultSet.getInt("idPlayer")),new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"),resultSet.getInt("level"));
+			
+	        List<Sector> buildingList = jdbcTemplate
+	                .query("SELECT * FROM BUILDING WHERE ((x BETWEEN ? AND ?) AND (y BETWEEN ? AND ?))",(ResultSet resultSet, int rowNum) -> {
+	                    return new Building(new Point(resultSet.getInt("x"),resultSet.getInt("y")),ud.findById(resultSet.getInt("idPlayer")),resultSet.getInt("type"),resultSet.getInt("level"));
 	                },p.getX()-range,p.getX() + range, p.getY() - range, p.getY()+range);
 	        return buildingList;
 	}
@@ -81,7 +86,7 @@ public class BuildingJdbcDao implements BuildingDao {
 	}
 
 	@Override
-	public Sector addBuilding(Point p, int level, int idPlayer, int type) {
+	public Building addBuilding(Point p, int level, int idPlayer, int type) {
 		final Map<String,Object> args = new HashMap<>();
 		args.put("x", p.getX());
 		args.put("y", p.getY());
@@ -89,11 +94,11 @@ public class BuildingJdbcDao implements BuildingDao {
 		args.put("idPlayer", idPlayer);
 		args.put("level", level);
 		jdbcInsert.execute(args);
-		return new Sector(ud.findById(idPlayer),p,type,level);
+		return new Building(p,ud.findById(idPlayer),type,level);
 	}
 
 	@Override
-	public Sector addBuilding(Point p, int idPlayer, int type) {
+	public Building addBuilding(Point p, int idPlayer, int type) {
 		return addBuilding(p,1,idPlayer,type);
 	}
 
@@ -135,10 +140,10 @@ public class BuildingJdbcDao implements BuildingDao {
 	}
 
 	@Override
-	public List<Sector> getBuildings(int userId, int type) {
-		List<Sector> buildingList = jdbcTemplate
+	public List<Building> getBuildings(int userId, int type) {
+		List<Building> buildingList = jdbcTemplate
                 .query("SELECT * FROM building WHERE type = ? AND idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
-                    return new Sector(ud.findById(resultSet.getInt("idPlayer")),new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"),resultSet.getInt("level"));
+                    return new Building(new Point(resultSet.getInt("x"),resultSet.getInt("y")),ud.findById(resultSet.getInt("idPlayer")),resultSet.getInt("type"),resultSet.getInt("level"));
                 },type,userId);
         return buildingList;
 	}
@@ -153,10 +158,10 @@ public class BuildingJdbcDao implements BuildingDao {
 	}
 
 	@Override
-	public List<Sector> getBuildings(int idPlayer) {
-		List<Sector> buildingList = jdbcTemplate
+	public List<Building> getBuildings(int idPlayer) {
+		List<Building> buildingList = jdbcTemplate
                 .query("SELECT * FROM building WHERE idPlayer = ?",(ResultSet resultSet, int rowNum) -> {
-                    return new Sector(ud.findById(resultSet.getInt("idPlayer")),new Point(resultSet.getInt("x"),resultSet.getInt("y")),resultSet.getInt("type"));
+                    return new Building(new Point(resultSet.getInt("x"),resultSet.getInt("y")),ud.findById(resultSet.getInt("idPlayer")),resultSet.getInt("type"),resultSet.getInt("level"));
                 },idPlayer);
         return buildingList;
 	}
@@ -169,12 +174,6 @@ public class BuildingJdbcDao implements BuildingDao {
 	                },p.getX(),p.getY());
 
 	     return type.isEmpty() ? -1 : type.get(0);
-	}
-
-	@Override
-	public void setType(Point p, int type) {
-		// TODO Auto-generated method stub
-		
 	}
 
 }

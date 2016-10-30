@@ -3,9 +3,8 @@ package ar.edu.itba.interfaces;
 import java.sql.Timestamp;
 import java.util.List;
 
+import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Resource;
-import ar.edu.itba.model.Sector;
-import ar.edu.itba.model.User;
 
 public interface EmpireDao {
 	
@@ -52,9 +51,9 @@ public interface EmpireDao {
 
 	void substractAmount(int userid, int id, int amount);
 	
-	public List<Sector> getBuilding (int userid, int type);
+	public List<Building> getBuilding (int userid, int type);
 	
-	public void createEmpire(User user, Timestamp timestamp);
+	public void createEmpire(int userid, Timestamp timestamp);
 	
-	public void createResource (User user,int type, int amount);
+	public void createResource (int userid,int type, int amount);
 }

@@ -7,20 +7,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-import ar.edu.itba.interfaces.ArmyDao;
 import ar.edu.itba.interfaces.TroopDao;
 import ar.edu.itba.model.Troop;
 
-@Repository
 public class TroopHibernateDao implements TroopDao {
 	 @PersistenceContext
 	 private EntityManager em;
-	 
-	 @Autowired
-	 ArmyDao ad;
 
 	@Override
 	public int getAmount(int idArmy, int type) {
@@ -30,7 +22,7 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public List<Troop> getAllTroop(int idArmy) {
-		final TypedQuery<Troop> query = em.createQuery("from Troop as t where t.army.idArmy = :idArmy",Troop.class);
+		final TypedQuery<Troop> query = em.createQuery("from Troop as t where t.idArmy = :idArmy",Troop.class);
 		query.setParameter("idArmy", idArmy);
 		final List<Troop> list = query.getResultList();
 		return list;
@@ -38,7 +30,7 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public void changeAmount(int idArmy, int type, int amount) {
-		final Query query = em.createQuery("update Troop set amount = :amount where army.idArmy = :idArmy and type = :type");
+		final Query query = em.createQuery("update Troop set amount = :amount where idArmy = :idArmy and type = :type");
 		query.setParameter("amount", amount);
 		query.setParameter("idArmy", idArmy);
 		query.setParameter("type", type);
@@ -47,7 +39,7 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public void deleteTroop(int idArmy, int type) {
-		final Query query = em.createQuery("delete Troop where army.idArmy = :idArmy and type = :type");
+		final Query query = em.createQuery("delete Troop where idArmy = :idArmy and type = :type");
 		query.setParameter("idArmy", idArmy);
 		query.setParameter("type", type);
 		query.executeUpdate();
@@ -55,7 +47,7 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public Troop addTroop(int idArmy, int type, int amount) {
-		final Troop troop = new Troop(ad.getArmyById(idArmy),type,amount);
+		final Troop troop = new Troop(idArmy,type,amount);
 		em.persist(troop);
 		return troop;
 	}
@@ -70,7 +62,7 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public Troop getTroop(int idArmy, int type) {
-		final TypedQuery<Troop> query = em.createQuery("from Troop as t where t.army.idArmy = :idArmy and t.type = :type",Troop.class);
+		final TypedQuery<Troop> query = em.createQuery("from Troop as t where t.idArmy = :idArmy and t.type = :type",Troop.class);
 		query.setParameter("idArmy", idArmy);
 		query.setParameter("type", type);
 		final List<Troop> list = query.getResultList();

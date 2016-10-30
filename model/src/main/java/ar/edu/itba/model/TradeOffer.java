@@ -1,32 +1,11 @@
 package ar.edu.itba.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "commerce")
 public class TradeOffer {
 	
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commerce_tradeid_seq")
-	@SequenceGenerator(sequenceName = "commerce_tradeid_seq", name = "commerce_tradeid_seq", allocationSize = 1)
-	@Column(name = "tradeId")
 	private int id;
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name="idPlayer")
 	private User owner;
-	@OneToOne(fetch = FetchType.LAZY)
 	private Resource offers;
-	@OneToOne(fetch = FetchType.LAZY)
 	private Resource receives;
 	
 	public TradeOffer(final int id,final User owner,final Resource offers,final Resource receives){
