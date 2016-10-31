@@ -67,12 +67,8 @@ public class SectorServiceImpl implements SectorService {
 		if(p.getX()> maxX || p.getY()> maxY){
 			return null;
 		}
-		Sector building = bd.getBuilding(p);
-		if(building == null){
-			return new Sector(new User(null,null,null),p,0);
-		}
+		return bd.getBuilding(p);
 
-		return building;
 	}
 	
 	@Override
@@ -84,24 +80,20 @@ public class SectorServiceImpl implements SectorService {
 		if(b == null){
 			return;
 		}
-		bd.deleteBuilding(p);
 		if(b.getType() == CASTLE){
-			//td.addTerrain(p);
 			updateTerrain(p,null,0);
 			updateTerrain(p,null,3);
 		}else if(b.getType() == GOLD){
-			//td.addTerrain(p, 1, b.getUser().getId(),TERR_GOLD);
-
+			b.setType(TERR_GOLD);
 		}else{
-			//td.addTerrain(p, 1, b.getUser().getId(), EMPTY);
-
+			b.setType(EMPTY);
 		}
 	}
 	
-	private void updateTerrain(Point p, Integer newOwner,int range){
+	private void updateTerrain(Point p, User u,int range){
 		List<Sector> listSector = bd.getBuildings(p, range);
 		for(Sector s: listSector){
-			bd.setIdPlayer(s.getPosition(),newOwner);
+			s.setUser(u);
 		}
 		
 	}
@@ -112,18 +104,15 @@ public class SectorServiceImpl implements SectorService {
 			return false;
 		return bd.isCastleAlone(p, range);
 	}
-	
-	public void buildSector(Point p, int idPlayer, int type){
-		bd.addBuilding(p, idPlayer, type);
-	}
+
 
 	@Override
-	public boolean createCastle(int userid) {
-		Point p = addCastle(userid);
+	public boolean createCastle(User u) {
+		Point p = addCastle(u);
 		if(p == null){
 			return false;
 		}
-		updateTerrain(p,userid,initRange);
+		updateTerrain(p,u,initRange);
 		return true;
 	}
 	
@@ -157,18 +146,18 @@ public class SectorServiceImpl implements SectorService {
 	}
 
 	@Override
-	public void setIdPlayer(Point p,int idPlayer) {
-		bd.setIdPlayer(p,idPlayer);
+	public void setIdPlayer(Point p,User u) {
+		bd.setIdPlayer(p,u);
 	}
 
 	@Override
-	public boolean belongsTo(Point p, int idPlayer) {
-		return bd.belongsTo(p, idPlayer);
+	public boolean belongsTo(Point p, User u) {
+		return bd.belongsTo(p, u);
 	}
 
 	@Override
-	public Point getCastle(int idPlayer){ 
-		return bd.getCastle(idPlayer);
+	public Point getCastle(User u){ 
+		return bd.getCastle(u);
 	}
 
 	@Override
@@ -178,8 +167,7 @@ public class SectorServiceImpl implements SectorService {
 	}
 
 	@Override
-	public Point addCastle(int idPlayer) {
-		User u = ud.findById(idPlayer);
+	public Point addCastle(User u) {
 		LoadSpots();
 		Random random = new Random();
 		if(availableSpots.size() == 0){
@@ -194,16 +182,15 @@ public class SectorServiceImpl implements SectorService {
 	}
 
 	@Override
-	public List<Sector> getAllBuildings(int idPlayer) {
-		return bd.getBuildings(idPlayer);
+	public List<Sector> getAllBuildings(User u) {
+		return u.getSector();
 	}
 
 	@Override
-	public void addBuilding(Point p, int idPlayer, int type) {
-		if(bd.getBuilding(p) == null){
-			bd.setIdPlayer(p, idPlayer);
-			bd.setType(p,type);
-		}
+	public void addBuilding(Point p,User u, int type) {
+		Sector s = bd.getBuilding(p);
+		s.setUser(u);
+		s.setType(type);
 	}
 
 	@Override
@@ -212,13 +199,12 @@ public class SectorServiceImpl implements SectorService {
 	}
 
 	@Override
-	public int getPrice(Point point,int userId) {
-		return 1000-10*(getLevel(getCastle(userId))-1);
+	public int getPrice(Point point,User u) {
+		return 1000-10*(getLevel(getCastle(u))-1);
 	}
 
 	
-	private int getLevel(Point castle2) {
-		// TODO Auto-generated method stub
-		return 0;
+	private int getLevel(Point p) {
+		return bd.getBuilding(p).getLevel();
 	}
 }

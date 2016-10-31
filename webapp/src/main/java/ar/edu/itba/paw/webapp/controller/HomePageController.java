@@ -55,7 +55,7 @@ public class HomePageController {
 		if(user == null){
 			return new ModelAndView("redirect:/");
 		}
-		if(ss.getCastle(user.getId()) == null){
+		if(ss.getCastle(user) == null){
 			session.removeAttribute("userId");
 			return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.gameOver",null,locale));
 		}
@@ -63,7 +63,7 @@ public class HomePageController {
 		int yPrime;
 
 		if(x == null && y == null){
-			Point p = ss.getCastle(user.getId());
+			Point p = ss.getCastle(user);
 			xPrime = p.getX();
 			yPrime = p.getY();
 		}else{
@@ -79,8 +79,9 @@ public class HomePageController {
 
 		List<List<Sector>> elements;
 		elements = ss.getSector(new Point(xPrime,yPrime), Info.VIEW_RANGE);
+		System.err.println("-------" + user.getResources().size() + "--------");
 		mav.addObject("resList",user.getResources());
-		mav.addObject("ratesList",es.getRates(user.getId()));
+		mav.addObject("ratesList",es.getRates(user));
 		mav.addObject("map",elements);
 		mav.addObject("x",xPrime);
 		mav.addObject("y",yPrime);

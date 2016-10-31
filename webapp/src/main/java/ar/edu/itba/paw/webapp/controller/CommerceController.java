@@ -43,15 +43,15 @@ public class CommerceController {
 
 		final ModelAndView mav = new ModelAndView("commerce");
 
-        List<TradeOffer> myTrades = cs.getAllOffers(user.getId());
-		List<TradeOffer> tradeList = cs.showOffers(user.getId());
+        List<TradeOffer> myTrades = cs.getAllOffers(user);
+		List<TradeOffer> tradeList = cs.showOffers(user);
         mav.addObject("myTrades",myTrades);
 		mav.addObject("myTradesSize",myTrades.size());
         mav.addObject("tradeList",tradeList);
 		mav.addObject("tradeListSize",tradeList.size());
         mav.addObject("insuficientAmount",insuficientAmount);
-        mav.addObject("ratesList",es.getRates(user.getId()));
-        mav.addObject("resList",es.getResources(user.getId()));
+        mav.addObject("ratesList",es.getRates(user));
+        mav.addObject("resList",user.getResources());
         
         return mav;
 	}
@@ -62,12 +62,12 @@ public class CommerceController {
 		if(to == null || to.getOwner().getId() == user.getId())
 			return new ModelAndView("redirect:/error");
 		
-		if(es.getResource(user.getId(),to.getReceives().getType()).getQuantity() < to.getReceives().getQuantity()){
+		if(es.getResource(user,to.getReceives().getType()).getQuantity() < to.getReceives().getQuantity()){
 			ModelAndView mav = new ModelAndView("redirect:/commerce");
 			mav.addObject("insuficientAmount",true);
 			return mav;
 		}
-		cs.acceptOffer(to, user.getId());
+		cs.acceptOffer(to, user);
 		return new ModelAndView("redirect:/commerce");
 	}
 	@Transactional
@@ -87,8 +87,8 @@ public class CommerceController {
 		ModelAndView mav = new ModelAndView("createOffer");
 		
 		mav.addObject("insuficientAmount",insuficientAmount);
-		mav.addObject("ratesList",es.getRates(user.getId()));
-		mav.addObject("resList",es.getResources(user.getId()));
+		mav.addObject("ratesList",es.getRates(user));
+		mav.addObject("resList",es.getResources(user));
 		
 		return mav;
 	}
@@ -111,7 +111,7 @@ public class CommerceController {
 		
 		int giveAmount = Integer.parseInt(giveQty);
 		int receiveAmount = Integer.parseInt(getQty);
-		boolean res = cs.createOffer(user.getId(),giveTyp,giveAmount,getTyp,receiveAmount);
+		boolean res = cs.createOffer(user,giveTyp,giveAmount,getTyp,receiveAmount);
 		if(!res){
 			return createOffer(true,user);
 		}

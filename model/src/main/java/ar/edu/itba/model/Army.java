@@ -30,11 +30,11 @@ public class Army {
 	@Column(nullable = false, name = "available")
 	private boolean available;
 	
-	@ManyToOne(fetch =FetchType.EAGER, optional = false)
+	@ManyToOne(fetch =FetchType.LAZY, optional = false)
 	@JoinColumn(name="idPlayer")
 	private User userArmy;
 	
-	@OneToMany(fetch = FetchType.LAZY,orphanRemoval = false, mappedBy="army")
+	@OneToMany(fetch = FetchType.EAGER,orphanRemoval = false, mappedBy="army")
 	private List<Troop> troops;
 	
 	

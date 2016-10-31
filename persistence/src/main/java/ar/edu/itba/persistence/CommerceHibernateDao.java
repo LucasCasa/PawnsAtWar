@@ -50,18 +50,17 @@ public class CommerceHibernateDao implements CommerceDao {
 	}
 
 	@Override
-	public List<TradeOffer> getAllOffers(int userid) {
-		final TypedQuery<TradeOffer> query = em.createQuery("from TradeOffer as c where c.ownerId = :userId", TradeOffer.class);
-		query.setParameter("userId", userid);
+	public List<TradeOffer> getAllOffers(User u) {
+		final TypedQuery<TradeOffer> query = em.createQuery("from TradeOffer as c where c.ownerId = :u", TradeOffer.class);
+		query.setParameter("userId", u);
 		final List<TradeOffer> list = query.getResultList();
 		return list;
 	}
 
 	@Override
-	public void createOffer(int id, int giveType, int giveAmount, int getType, int receiveAmount) {
-		Resource give = rd.getResource(giveType, giveAmount);
-		Resource receive = rd.getResource(getType, receiveAmount);
-		User u = ud.findById(id);
+	public void createOffer(User u, int giveType, int giveAmount, int getType, int receiveAmount) {
+		Resource give = rd.getResource(u, giveAmount);
+		Resource receive = rd.getResource(u, receiveAmount);
 		TradeOffer td = new TradeOffer(u, give, receive);
 		em.persist(td);
 	}

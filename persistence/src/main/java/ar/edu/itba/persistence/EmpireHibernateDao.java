@@ -15,6 +15,7 @@ import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.ResourceDao;
 import ar.edu.itba.model.Empire;
+import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
 import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
@@ -32,44 +33,44 @@ public class EmpireHibernateDao implements EmpireDao {
 	private BuildingDao bd;
 	
 	@Override
-	public Timestamp getLastTimeUpdate(int userid) {
-		final TypedQuery<Empire> query = em.createQuery("from Empire where userEmpire.id = :idPlayer",Empire.class);
-		query.setParameter("idPlayer", userid);
+	public Timestamp getLastTimeUpdate(User u) {
+		final TypedQuery<Empire> query = em.createQuery("from Empire where userEmpire = :user",Empire.class);
+		query.setParameter("user", u);
 		final List<Empire> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0).getLastUpdate();
 	}
 
 	@Override
-	public void setLastTimeUpdate(int userid, Timestamp t) {
-		final Query query = em.createQuery("update Empire set lastUpdate = :lastUpdate where userEmpire.id = :idPlayer");
+	public void setLastTimeUpdate(User u, Timestamp t) {
+		final Query query = em.createQuery("update Empire set lastUpdate = :lastUpdate where userEmpire = :user");
 		query.setParameter("lastUpdate", t);
-		query.setParameter("idPlayer", userid);
+		query.setParameter("user", u);
 		query.executeUpdate();
 	}
 
 	@Override
-	public Resource getResource(int userid, int id) {
-		return rd.getResource(userid, id);
+	public Resource getResource(User u, int id) {
+		return rd.getResource(u, id);
 	}
 
 	@Override
-	public void setResource(int userid, int id, int amount) {
-		rd.setAmount(userid, id, amount);
+	public void setResource(User u, int id, int amount) {
+		rd.setAmount(u, id, amount);
 	}
 	
 	@Override
-	public List<Resource> getResources(int userid){
-		return rd.getResources(userid);
+	public List<Resource> getResources(User u){
+		return u.getResources();
 	}
 
 	@Override
-	public void substractAmount(int userid, int id, int amount) {
-		rd.subtractAmount(userid, id, amount);
+	public void substractAmount(User u, int id, int amount) {
+		rd.subtractAmount(u, id, amount);
 	}
 
 	@Override
-	public List<Sector> getBuilding(int userid, int type) {
-		return bd.getBuildings(userid,type);
+	public List<Sector> getBuilding(Point p, int type) {
+		return bd.getBuildings(p,type);
 	}
 
 	@Override
@@ -86,9 +87,15 @@ public class EmpireHibernateDao implements EmpireDao {
 	}
 
 	@Override
-	public void addAmount(int userID, int id, int amount) {
-		rd.addAmount(userID, id, amount);
+	public void addAmount(User u, int id, int amount) {
+		rd.addAmount(u, id, amount);
 		
 	}
+
+	@Override
+	public List<Sector> getBuilding(User u, int type) {
+		return bd.getBuildings(u, type);
+	}
+
 
 }

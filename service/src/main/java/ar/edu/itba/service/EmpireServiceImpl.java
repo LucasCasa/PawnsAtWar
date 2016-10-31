@@ -19,6 +19,7 @@ import ar.edu.itba.interfaces.ArmyService;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.SectorService;
+import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
 import ar.edu.itba.model.Sector;
@@ -35,32 +36,33 @@ public class EmpireServiceImpl implements EmpireService{
 	@Autowired
 	SectorService ss;
 	@Autowired
-	SectorService bs;
-	@Autowired
 	ArmyService as;
+	@Autowired
+	UserDao ud;
+	
 
 	@Override
-	public Set<Resource> getResources(int userid) {
-		updateResources(userid);
+	public Set<Resource> getResources(User u) {
+		updateResources(u);
 		Set<Resource> set = new TreeSet<Resource>(new Comparator<Resource>(){
 			public int compare(Resource r1, Resource r2){
 				return r1.getType()-r2.getType();
 			}
 		});
-		set.addAll(ed.getResources(userid));
+		set.addAll(ed.getResources(u));
 		return set;
 	}
 	
 	/**
 	 * Updates all resources by calculating the previous amount plus the rate times the time lasped in
 	 * seconds since the last update
-	 * @param userid The id of the user
+	 * @param u The id of the user
 	 */
-	private void updateResources(int userid){
-		List<Resource> list = ed.getResources(userid);
-		int seconds = (int)timeLapsed(userid);
+	private void updateResources(User u){
+		List<Resource> list = ed.getResources(u);
+		int seconds = (int)timeLapsed(u);
 		for(Resource r: list){
-			ed.addAmount(userid, r.getType(), seconds*getRate(userid, r.getType()));
+			ed.addAmount(u, r.getType(), seconds*getRate(u, r.getType()));
 		}
 	}
 	
@@ -69,47 +71,47 @@ public class EmpireServiceImpl implements EmpireService{
 	 * @param userid The id of the user whose resources are queried
 	 * @return The time lapsed in seconds
 	 */
-	private long timeLapsed(int userid){
-		Timestamp oldTime = ed.getLastTimeUpdate(userid);
+	private long timeLapsed(User u){
+		Timestamp oldTime = u.getEmpire().getLastUpdate();
 		Timestamp currentTime = new Timestamp(new Date().getTime());
-		ed.setLastTimeUpdate(userid, currentTime);
+		u.getEmpire().setLastUpdate(currentTime);
 		return (currentTime.getTime()-oldTime.getTime())/1000;
 	}
 
 	@Override
-	public boolean build(int id, int xprime, int yprime, int type) {
+	public boolean build(User u, int xprime, int yprime, int type) {
 		final int resType = 1; /*Temporary*/
 		final Point p = new Point(xprime,yprime);
-		final int value = bs.getPrice(p, id);
-		if(!hasResourcesAvailable(id, value, resType)){
+		final int value = ss.getPrice(p, u);
+		if(!hasResourcesAvailable(u, value, resType)){
 			return false;
 		}
 		if(ss.getSector(p).getType() == 5 && type != 4){
 			return false;
 		}
-		updateResources(id);
-		ed.substractAmount(id, resType, value);
-		ss.addBuilding(p, id, type);
+		updateResources(u);
+		ed.substractAmount(u, resType, value);
+		ss.addBuilding(p, u, type);
 		return true;
 	}
 	
-	private boolean hasResourcesAvailable(int userid, int amount, int resType){
+	private boolean hasResourcesAvailable(User u, int amount, int resType){
 		int rate = 1; /*Temporary*/
-		Resource l = ed.getResource(userid, resType);
-		int time = (int)timeLapsed(userid);
+		Resource l = ed.getResource(u,resType);
+		int time = (int)timeLapsed(u);
 		return l.getQuantity()+time*rate>=amount;
 	}
 	
 	@Override
-	public int getRate(int userid, int type){
+	public int getRate(User u, int type){
 		List<Sector> list;
 		int rate = 1;
 		switch(type){
 			case 0:
-				list = ed.getBuilding(userid, SectorServiceImpl.MILL);//food
+				list = ed.getBuilding(u, SectorServiceImpl.MILL);//food
 				break;
 			case 1:
-				list = ed.getBuilding(userid, SectorServiceImpl.GOLD);//gold
+				list = ed.getBuilding(u, SectorServiceImpl.GOLD);//gold
 				break;
 			default: return 1;
 		}
@@ -120,45 +122,45 @@ public class EmpireServiceImpl implements EmpireService{
 	}
 
 	@Override
-	public Map<Resource, Integer> getResourceMap(int userid) {
+	public Map<Resource, Integer> getResourceMap(User u) {
 		Map<Resource,Integer> map = new HashMap<>();
-		List<Resource> l = ed.getResources(userid);
+		List<Resource> l = ed.getResources(u);
 		for(Resource r: l){
-			map.put(r, getRate(userid,r.getType()));
+			map.put(r, getRate(u,r.getType()));
 		}
 		return map;
 	}
 	
 	@Override
-	public List<Integer> getRates(int userid){
+	public List<Integer> getRates(User u){
 		List<Integer> l = new ArrayList<>();
-		for(Resource r: ed.getResources(userid)){
-			l.add(getRate(userid,r.getType()));
+		for(Resource r: u.getResources()){
+			l.add(getRate(u,r.getType()));
 		}
 		return l;
 	}
 
 	@Override
-	public Resource getResource(int id, int type) {
-		updateResources(id);
-		return ed.getResource(id, type);
+	public Resource getResource(User u, int type) {
+		updateResources(u);
+		return ed.getResource(u, type);
 	}
 
 	@Override
-	public void addResourceAmount(int userid, int type, int quantity) {
-		updateResources(userid);
-		ed.addAmount(userid, type, quantity);
+	public void addResourceAmount(User u, int type, int quantity) {
+		updateResources(u);
+		ed.addAmount(u, type, quantity);
 	}
 
 	@Override
-	public void subtractResourceAmount(int userid, int type, int quantity) {
-		updateResources(userid);
-		ed.substractAmount(userid, type, quantity);
+	public void subtractResourceAmount(User u, int type, int quantity) {
+		updateResources(u);
+		ed.substractAmount(u, type, quantity);
 	}
 	
 	@Override
 	public void createUser(User user) {
-		boolean resp = ss.createCastle(user.getId());
+		boolean resp = ss.createCastle(user);
 		if(resp){
 			ed.createEmpire(user, new Timestamp(Calendar.getInstance().getTime().getTime()));
 		ed.createResource(user, 0, INITIAL_VALUE);

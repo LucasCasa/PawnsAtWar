@@ -30,7 +30,7 @@ public class Resource {
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="idPlayer")
-	private User user;
+	private User userResource;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	private TradeOffer offers;
@@ -56,7 +56,7 @@ public class Resource {
 	}
 	
 	public User getUser() {
-		return user;
+		return userResource;
 	}
 	
 	public Resource(int type, int quantity){
@@ -66,13 +66,35 @@ public class Resource {
 
 	public Resource(int type, User user, int quantity) {
 		this.type = type;
-		this.user = user;
+		this.userResource = user;
 		this.quantity = quantity;
 	}
 	
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (int) (id ^ (id >>> 32));
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Resource other = (Resource) obj;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
-		return "Type: " + type + " - Qty: " + quantity + "  | userid: " + user.getId();
+		return "Type: " + type + " - Qty: " + quantity + "  | userid: " + userResource.getId();
 	}
 	
 	

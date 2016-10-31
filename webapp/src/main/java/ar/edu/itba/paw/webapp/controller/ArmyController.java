@@ -272,10 +272,10 @@ public class ArmyController {
             default:
                 return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidTroop",null,locale));
         }
-        if(es.getResource(user.getId(), Info.RES_FOOD).getQuantity() < cost){
+        if(es.getResource(user, Info.RES_FOOD).getQuantity() < cost){
             return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&e="+ messageSource.getMessage("error.noFood",null,locale));
         }
-        es.subtractResourceAmount(user.getId(),Info.RES_FOOD,cost);
+        es.subtractResourceAmount(user,Info.RES_FOOD,cost);
         Army ar = as.getOrCreateArmy(new Point(x,y),user.getId());
         ts.addTroop(ar.getIdArmy(),Integer.valueOf(type),a);
         return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&s="+ messageSource.getMessage("troopSuccess",null,locale));
@@ -326,7 +326,7 @@ public class ArmyController {
         ModelAndView mav = new ModelAndView("split");
         Army a = as.getArmyById(Integer.parseInt(armyId));
         List<Point> points = new ArrayList<>();
-        for(Sector b : ss.getAllBuildings(user.getId())){
+        for(Sector b : ss.getAllBuildings(user)){
             if(!b.getPosition().equals(a.getPosition())) {
                 points.add(b.getPosition());
             }

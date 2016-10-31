@@ -77,10 +77,10 @@ public class BuildingController {
             mav.addObject("p",new Point(Integer.parseInt(x),Integer.parseInt(y)));
             mav.addObject("plainTerrainBuildings",plainTerrainBuildings);
             mav.addObject("goldTerraunBuilding",goldTerrainBuilding);
-            mav.addObject("price", ss.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user.getId()));
+            mav.addObject("price", ss.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user));
             mav.addObject("level",sector.getLevel());
-            mav.addObject("resList",es.getResources(user.getId()));
-            mav.addObject("ratesList",es.getRates(user.getId()));
+            mav.addObject("resList",user.getResources());
+            mav.addObject("ratesList",es.getRates(user));
             mav.addObject("error",error);
             mav.addObject("success",success);
             mav.addObject("locale",locale);
@@ -115,7 +115,7 @@ public class BuildingController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantConstruct",null,locale));
         }
         
-        if(es.build(user.getId(),xprime,yprime,typep)){
+        if(es.build(user,xprime,yprime,typep)){
         	return new ModelAndView("redirect:/map");
         }else{
         	return new ModelAndView("redirect:/building?x=" + xprime + "&y=" + yprime+ "&e=" + messageSource.getMessage("error.noGold",null,locale));
@@ -158,10 +158,10 @@ public class BuildingController {
 //            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantLevelUpTerrain",null,locale));
 //        }
         if(s.getLevel() < 20){
-            int price = ss.getPrice(p,user.getId()) + (int) Math.pow(s.getLevel(),4);
-            if(es.getResource(user.getId(),Info.RES_GOLD).getQuantity() >= price ) {
+            int price = ss.getPrice(p,user) + (int) Math.pow(s.getLevel(),4);
+            if(es.getResource(user,Info.RES_GOLD).getQuantity() >= price ) {
                 ss.levelUp(p);
-                es.subtractResourceAmount(user.getId(), Info.RES_GOLD, price);
+                es.subtractResourceAmount(user, Info.RES_GOLD, price);
             }else{
                return new ModelAndView("redirect:/building?x="+x+"&y=" +y+"&m="+ messageSource.getMessage("error.noGold",null,locale));
             }

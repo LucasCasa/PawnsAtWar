@@ -15,6 +15,7 @@ import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
+import ar.edu.itba.model.User;
 
 @Repository
 public class BuildingHibernateDao implements BuildingDao {
@@ -68,9 +69,9 @@ public class BuildingHibernateDao implements BuildingDao {
 	}
 
 	@Override
-	public void setIdPlayer(Point p, int idPlayer) {
+	public void setIdPlayer(Point p, User u) {
 		final Query query = em.createQuery("update Sector set userBuilding.id = :idPlayer where p = :p");
-		query.setParameter("idPlayer",idPlayer);
+		query.setParameter("idPlayer",u);
 		query.setParameter("p",p);
 		query.executeUpdate();
 
@@ -89,7 +90,7 @@ public class BuildingHibernateDao implements BuildingDao {
 	}
 
 	@Override
-	public boolean belongsTo(Point p, int idPlayer) {
+	public boolean belongsTo(Point p, User u) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -103,9 +104,9 @@ public class BuildingHibernateDao implements BuildingDao {
 	}
 
 	@Override
-	public Point getCastle(int idPlayer) {
-		final TypedQuery<Sector> query = em.createQuery("from Sector where userBuilding.id = :idPlayer and type = :type",Sector.class);
-		query.setParameter("idPlayer",idPlayer);
+	public Point getCastle(User u) {
+		final TypedQuery<Sector> query = em.createQuery("from Sector where userBuilding = :u and type = :type",Sector.class);
+		query.setParameter("u",u);
 		query.setParameter("type", 1);
 		final List<Sector> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0).getPosition();
@@ -121,9 +122,9 @@ public class BuildingHibernateDao implements BuildingDao {
 	}
 
 	@Override
-	public List<Sector> getBuildings(int userId, int type) {
-		final TypedQuery<Sector> query = em.createQuery("from Sector as t where t.userBuilding.id = :idPlayer and t.type = :type",Sector.class);
-		query.setParameter("idPlayer", userId);
+	public List<Sector> getBuildings(User u, int type) {
+		final TypedQuery<Sector> query = em.createQuery("from Sector as t where t.userBuilding = :u and t.type = :type",Sector.class);
+		query.setParameter("u", u);
 		query.setParameter("type", type);
 		List<Sector> list = query.getResultList();
 		return list;

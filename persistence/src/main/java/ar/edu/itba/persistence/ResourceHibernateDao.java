@@ -25,25 +25,17 @@ public class ResourceHibernateDao implements ResourceDao {
 	private UserDao ud;
 
 	@Override
-	public void addAmount(int idPlayer, int type, int value) {
-		Resource amount = getResource(idPlayer,type);
-		final Query query = em.createQuery("update Resource set amount = :amount where user.id = :idPlayer and type = :type");
-		query.setParameter("amount", amount.getQuantity() + value);
-		query.setParameter("idPlayer", idPlayer);
-		query.setParameter("type", type);
-		query.executeUpdate();
+	public void addAmount(User u, int type, int value) {
+		Resource amount = getResource(u,type);
+		amount.setQuantity(value + amount.getQuantity());
 
 	}
 
 	@Override
-	public void subtractAmount(int idPlayer, int type, int value) {
-		Resource amount = getResource(idPlayer,type);
+	public void subtractAmount(User u, int type, int value) {
+		Resource amount = getResource(u,type);
 		int cant = amount.getQuantity() <= value ? 0 : amount.getQuantity() - value;
-		final Query query = em.createQuery("update Resource set amount = :amount where user.id = :idPlayer and type = :type");
-		query.setParameter("amount", cant);
-		query.setParameter("idPlayer", idPlayer);
-		query.setParameter("type", type);
-		query.executeUpdate();
+		amount.setQuantity(cant);
 
 	}
 
@@ -55,32 +47,29 @@ public class ResourceHibernateDao implements ResourceDao {
 	}
 
 	@Override
-	public Resource addResource(int idPlayer, int type) {
-		return addResource(ud.findById(idPlayer),type,0);
+	public Resource addResource(User u, int type) {
+		return addResource(u,type,0);
 	}
 
 	@Override
-	public List<Resource> getResources(int idPlayer) {
-		final TypedQuery<Resource> query = em.createQuery("from Resource as r where r.user.id = :idPlayer", Resource.class);
-		query.setParameter("idPlayer", idPlayer);
-		final List<Resource> list = query.getResultList();
-		return list;
+	public List<Resource> getResources(User u) {
+		return u.getResources();
 	}
 
 	@Override
-	public Resource getResource(int idPlayer, int type) {
-		final TypedQuery<Resource> query = em.createQuery("from Resource as r where r.user.id = :idPlayer and r.type = :type",Resource.class);
-		query.setParameter("idPlayer", idPlayer);
+	public Resource getResource(User u, int type) {
+		final TypedQuery<Resource> query = em.createQuery("from Resource as r where r.userResource = :u and r.type = :type",Resource.class);
+		query.setParameter("u", u);
 		query.setParameter("type", type);
 		final List<Resource> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0);
 	}
 
 	@Override
-	public void setAmount(int idPlayer, int type, int value) {
-		final Query query = em.createQuery("update Resource set amount = :amount where user.id = :idPlayer and type = :type");
+	public void setAmount(User u, int type, int value) {
+		final Query query = em.createQuery("update Resource set amount = :amount where userResource = :u and type = :type");
 		query.setParameter("amount", value);
-		query.setParameter("idPlayer", idPlayer);
+		query.setParameter("u", u);
 		query.setParameter("type", type);
 		query.executeUpdate();
 

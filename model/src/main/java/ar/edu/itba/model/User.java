@@ -31,7 +31,7 @@ public class User {
 	@Column(length = 100,nullable = false, name = "email")
 	private String email;
 
-	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = false, mappedBy = "user")
+	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = false, mappedBy = "userResource")
 	private List<Resource> resources;
 	
 	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = false, mappedBy = "owner")

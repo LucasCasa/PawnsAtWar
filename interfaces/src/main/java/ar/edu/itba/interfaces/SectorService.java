@@ -4,6 +4,7 @@ import java.util.List;
 
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
+import ar.edu.itba.model.User;
 
 public interface SectorService {
 	
@@ -15,26 +16,26 @@ public interface SectorService {
 
 	public Integer getIdPlayer(Point p);
 
-	public void setIdPlayer(Point p,int idPlayer);
+	public void setIdPlayer(Point p,User u);
 
 	public int getType(Point p);
 
-	public List<Sector> getAllBuildings(int idPlayer);
+	public List<Sector> getAllBuildings(User u);
 	
 	public void deleteBuilding(Point p);
 
-	public boolean belongsTo(Point p, int idPlayer);
+	public boolean belongsTo(Point p,User u);
 	
 	public boolean isCastleAlone(Point p, int range);
 
-	public boolean createCastle(int userid);
+	public boolean createCastle(User u);
 
-	public Point getCastle(int idPlayer);
+	public Point getCastle(User u);
 	
-	public Point addCastle(int idPlayer);
+	public Point addCastle(User u);
 
-	public int getPrice(Point point,int userId);
+	public int getPrice(Point point,User u);
 
-	public void addBuilding(Point p, int idPlayer, int type);
+	public void addBuilding(Point p, User u, int type);
 
 }
