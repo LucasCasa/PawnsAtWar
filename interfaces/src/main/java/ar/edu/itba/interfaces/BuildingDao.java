@@ -43,9 +43,6 @@ public interface BuildingDao {
 	public List<Point> getAllCastles();
 
 	public List<Sector> getBuildings(User u);
-	
-	public int getType(Point p);
 
-	public void setType(Point p, int type);
 	
 }

@@ -18,8 +18,6 @@ public interface SectorService {
 
 	public void setIdPlayer(Point p,User u);
 
-	public int getType(Point p);
-
 	public List<Sector> getAllBuildings(User u);
 	
 	public void deleteBuilding(Point p);

@@ -150,20 +150,4 @@ public class BuildingHibernateDao implements BuildingDao {
 		return list;
 	}
 
-	@Override
-	public int getType(Point p) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setType(Point p, int type) {
-		final Query query = em.createQuery("update Sector set type = :type where x = :x AND y = :y");
-		query.setParameter("type",type);
-		query.setParameter("x", p.getX());
-		query.setParameter("y", p.getY());
-		query.executeUpdate();
-		
-	}
-
 }

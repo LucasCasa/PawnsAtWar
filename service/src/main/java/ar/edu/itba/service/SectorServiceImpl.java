@@ -28,7 +28,7 @@ public class SectorServiceImpl implements SectorService {
 	public static final int EMPTY = 0;
 	public static final int ARCHERY = 2;
 	public static final int BARRAKS = 3;
-	public static final int GOLD = 4;
+	public static final int GOLD =4;
 	public static final int TERR_GOLD = 5;
 	public static final int MILL = 6;
 	public static final int BLACKSMITH = 7;
@@ -100,11 +100,6 @@ public class SectorServiceImpl implements SectorService {
 		List<Sector> listSector = bd.getBuildings(p, range);
 		for(Sector s: listSector){
 			s.setUser(u);
-			if(s.getType() == GOLD){
-				s.setType(TERR_GOLD);
-			}else{
-				s.setType(EMPTY);
-			}
 		}
 		
 	}
@@ -186,10 +181,7 @@ public class SectorServiceImpl implements SectorService {
 		}
 		int n = random.nextInt(availableSpots.size());
 		Point p = availableSpots.get(n);
-		Sector s = bd.getBuilding(p);
-		s.setUser(u);
-		s.setType(1);
-		s.setLevel(1);
+		addBuilding(p,u,1);
 		return p;
 	}
 
@@ -206,11 +198,6 @@ public class SectorServiceImpl implements SectorService {
 		}
 		s.setUser(u);
 		s.setType(type);
-	}
-
-	@Override
-	public int getType(Point p) {
-		return bd.getType(p);
 	}
 
 	@Override
