@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.ArmyService;
 import ar.edu.itba.interfaces.TroopDao;
@@ -11,6 +12,7 @@ import ar.edu.itba.interfaces.TroopService;
 import ar.edu.itba.model.Troop;
 
 @Service
+@Transactional
 public class TroopServiceImpl implements TroopService {
 	private static final double POW0 = 1;
 	private static final double POW1 = 2;

@@ -7,12 +7,10 @@ import ar.edu.itba.paw.webapp.dataClasses.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import javax.servlet.jsp.tagext.ValidationMessage;
 import java.util.*;
 
 import static java.lang.System.out;
@@ -45,7 +43,7 @@ public class ArmyController {
         }
         final ModelAndView mav = new ModelAndView("armies");
         List<Army> armies;
-        armies = as.getArmies(user.getId());
+        armies = as.getArmies(user);
 
         if(Validator.validBoardPosition(x) && Validator.validBoardPosition(y)){
             mav.addObject("x",x);
@@ -88,10 +86,10 @@ public class ArmyController {
         if(army == null){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notExistArmy",null,locale));
         }
-        if(!as.belongs(user.getId(),id)){
+        if(!as.belongs(user ,id)){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
         }
-        List<Army> armies = as.getArmies(user.getId());
+        List<Army> armies = as.getArmies(user );
         if(armies == null){
             armies = new ArrayList<>();
         }
@@ -103,7 +101,6 @@ public class ArmyController {
         return mav;
     }
 
-    @Transactional
     @RequestMapping(value="/attack", method = RequestMethod.POST)
     public ModelAndView attack(@RequestParam String x,
                                @RequestParam String y,
@@ -121,7 +118,7 @@ public class ArmyController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidArmy",null,locale));
         }
         int id = Integer.parseInt(army);
-        if(!as.belongs(user.getId(),id)){
+        if(!as.belongs(user ,id)){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
         }
         int xprime = Integer.parseInt(x);
@@ -137,7 +134,7 @@ public class ArmyController {
         if(s.getUser() == null){
         	return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.noUserInPosition",null,locale));
         }
-        if(s.getUser().getId() == user.getId()){
+        if(s.getUser()  == user ){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.attackSelfBuilding",null,locale));
         }else if(s.getType() == 0 || s.getType() == 5){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.attackTerrain",null,locale));
@@ -147,7 +144,7 @@ public class ArmyController {
                     return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.attackCastle",null,locale));
                 }
             }
-            Army d = as.getStrongest(s.getUser().getId());
+            Army d = as.getStrongest(s.getUser() );
             Army a = as.getArmyById(id);
             Map<String,Object> values = new HashMap<>();
             values.put("a0b",0);
@@ -235,7 +232,6 @@ public class ArmyController {
         return mav;
     }
 
-    @Transactional
     @RequestMapping(value="/train", method = RequestMethod.POST)
     public ModelAndView train(@RequestParam String type,
                               @RequestParam String amount,
@@ -276,13 +272,12 @@ public class ArmyController {
             return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&e="+ messageSource.getMessage("error.noFood",null,locale));
         }
         es.subtractResourceAmount(user,Info.RES_FOOD,cost);
-        Army ar = as.getOrCreateArmy(new Point(x,y),user.getId());
+        Army ar = as.getOrCreateArmy(new Point(x,y),user );
         ts.addTroop(ar.getIdArmy(),Integer.valueOf(type),a);
         return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&s="+ messageSource.getMessage("troopSuccess",null,locale));
 
     }
 
-    @Transactional
     @RequestMapping(value="/merge")
     public ModelAndView train(@RequestParam String f,
                               @RequestParam String t,
@@ -296,8 +291,7 @@ public class ArmyController {
         }
         int from = Integer.valueOf(f);
         int to = Integer.valueOf(t);
-        List<Army> a = as.getArmies(user.getId());
-        if(!as.belongs(user.getId(),from) || !as.belongs(user.getId(),to)){
+        if(!as.belongs(user ,from) || !as.belongs(user ,to)){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
         }
 
@@ -309,7 +303,6 @@ public class ArmyController {
         return new ModelAndView("redirect:/armies");
     }
 
-    @Transactional
     @RequestMapping(value="/armies/{armyId}/split")
     public ModelAndView train(@PathVariable String armyId,
                               @ModelAttribute("user") final User user,
@@ -320,7 +313,7 @@ public class ArmyController {
         if(!Validator.isInteger(armyId)){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidArmy",null,locale));
         }
-        if(!as.belongs(user.getId(),Integer.valueOf(armyId))){
+        if(!as.belongs(user ,Integer.valueOf(armyId))){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
         }
         ModelAndView mav = new ModelAndView("split");
@@ -356,14 +349,14 @@ public class ArmyController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidArmy",null,locale));
         }
         int id = Integer.parseInt(armyId);
-        if(!as.belongs(user.getId(),id)){
+        if(!as.belongs(user ,id)){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
         }
         int warriors = Integer.parseInt(t1);
         int archers = Integer.parseInt(t2);
         int horsemen = Integer.parseInt(t3);
 
-        Army newArmy = as.getOrCreateArmy(p,user.getId());
+        Army newArmy = as.getOrCreateArmy(p,user);
         if(warriors != 0){
             ts.addTroop(newArmy.getIdArmy(),Info.WARRIOR,warriors);
             ts.subtractTroop(id,Info.WARRIOR,warriors);

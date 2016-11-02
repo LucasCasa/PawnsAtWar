@@ -7,11 +7,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ArmyDao;
-import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.User;
@@ -21,30 +19,23 @@ public class ArmyHibernateDao implements ArmyDao {
 
 	@PersistenceContext
     private EntityManager em;
-	
-	@Autowired
-	private UserDao ud;
-	
+
 	
 	@Override
-	public Army addArmy(Point position, int idPlayer, boolean available) {
-		User u = ud.findById(idPlayer);
+	public Army addArmy(Point position, User u, boolean available) {
 		Army a = new Army(position, u, available);
 		em.persist(a);
 		return a;
 	}
 
 	@Override
-	public Army addArmy(Point position, int idPlayer) {
-		return addArmy(position,idPlayer,true);
+	public Army addArmy(Point position, User u) {
+		return addArmy(position,u,true);
 	}
 
 	@Override
-	public List<Army> getArmiesByUserId(int userId) {
-		final TypedQuery<Army> query = em.createQuery("from Army as a where userArmy.id = :idPlayer",Army.class); 
-		query.setParameter("idPlayer", userId);
-		final List<Army> list = query.getResultList();
-		return list;
+	public List<Army> getArmiesByUserId(User u) {
+		return u.getArmy();
 	}
 
 	@Override
@@ -61,25 +52,25 @@ public class ArmyHibernateDao implements ArmyDao {
 	}
 
 	@Override
-	public boolean belongs(int userId, int idArmy) {
-		final TypedQuery<Army> query = em.createQuery("from Army as a where userArmy.id = :idPlayer and idArmy = :idArmy",Army.class); 
-		query.setParameter("idPlayer", userId);
+	public boolean belongs(User u, int idArmy) {
+		final TypedQuery<Army> query = em.createQuery("from Army as a where userArmy = :u and idArmy = :idArmy",Army.class); 
+		query.setParameter("u", u);
 		query.setParameter("idArmy", idArmy);
 		final List<Army> list = query.getResultList();
 		return list.isEmpty() ? false : true;
 	}
 
 	@Override
-	public boolean exists(Point p, int idPlayer) {
-		return getArmy(p,idPlayer) == null ? false : true;
+	public boolean exists(Point p, User u) {
+		return getArmy(p,u) == null ? false : true;
 	}
 
 	@Override
-	public Army getArmy(Point p, int idPlayer) {
-		final TypedQuery<Army> query = em.createQuery("from Army as a where position.x = :x and position.y = :y and userArmy.id = :idPlayer",Army.class); 
+	public Army getArmy(Point p, User u) {
+		final TypedQuery<Army> query = em.createQuery("from Army as a where position.x = :x and position.y = :y and userArmy = :u",Army.class); 
 		query.setParameter("x", p.getX());
 		query.setParameter("y", p.getY());
-		query.setParameter("idPlayer", idPlayer);
+		query.setParameter("u", u);
 		final List<Army> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0);
 	}

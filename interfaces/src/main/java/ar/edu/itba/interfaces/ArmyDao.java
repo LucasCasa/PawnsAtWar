@@ -4,24 +4,25 @@ import java.util.List;
 
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
+import ar.edu.itba.model.User;
 
 public interface ArmyDao {
 	
-	public Army addArmy(Point position, int idPlayer, boolean available);
+	public Army addArmy(Point position, User u, boolean available);
 	
-	public Army addArmy(Point position, int idPlayer);
+	public Army addArmy(Point position, User u);
 	
-	public List<Army> getArmiesByUserId (int userId);
+	public List<Army> getArmiesByUserId (User u);
 	
 	public Army getArmyById(int idArmy);
 	
 	public boolean isAvailable(Point p);
 
-	public boolean belongs(int userId, int idArmy);
+	public boolean belongs(User u, int idArmy);
 
-	public boolean exists(Point p, int idPlayer);
+	public boolean exists(Point p, User u);
 
-	public Army getArmy(Point p, int idPlayer);
+	public Army getArmy(Point p, User u);
 
 	void setAvailable(int idArmy, boolean available);
 

@@ -52,6 +52,9 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = false, mappedBy = "from")
 	private List<Message> sentMessages;
 	
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = false, mappedBy = "userAlert")
+	private List<Alert> alerts;
+	
 	public User(String name,String password,String email){
 		this.name=name;
 		this.password=password;
@@ -117,6 +120,10 @@ public class User {
 		return sentMessages;
 	}
 
+	public List<Alert> getAlerts() {
+		return alerts;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -144,5 +151,6 @@ public class User {
 		// TODO Auto-generated method stub
 		return "( username = " + this.name + " , id = " + this.id + " , email = " + this.email + " )";
 	}
+
 
 }

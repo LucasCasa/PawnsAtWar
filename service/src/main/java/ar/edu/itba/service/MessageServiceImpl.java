@@ -2,6 +2,7 @@ package ar.edu.itba.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.MessageDao;
 import ar.edu.itba.interfaces.MessageService;
@@ -9,6 +10,7 @@ import ar.edu.itba.model.Message;
 import ar.edu.itba.model.User;
 
 @Service
+@Transactional
 public class MessageServiceImpl implements MessageService {
 	
 	@Autowired

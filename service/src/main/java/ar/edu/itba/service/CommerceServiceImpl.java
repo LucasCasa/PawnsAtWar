@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.CommerceDao;
 import ar.edu.itba.interfaces.CommerceService;
@@ -12,6 +13,7 @@ import ar.edu.itba.model.TradeOffer;
 import ar.edu.itba.model.User;
 
 @Service
+@Transactional
 public class CommerceServiceImpl implements CommerceService{
 	
 	@Autowired

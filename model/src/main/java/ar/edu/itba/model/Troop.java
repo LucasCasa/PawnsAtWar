@@ -47,9 +47,11 @@ public class Troop {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+	
 	public Army getArmy() {
 		return army;
 	}
+	
 	public int getType() {
 		return type;
 	}

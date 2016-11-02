@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.CommerceDao;
 import ar.edu.itba.interfaces.ResourceDao;
-import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Resource;
 import ar.edu.itba.model.TradeOffer;
 import ar.edu.itba.model.User;

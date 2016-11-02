@@ -9,7 +9,6 @@ import ar.edu.itba.paw.webapp.dataClasses.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -92,7 +91,7 @@ public class BuildingController {
 
     }
 
-    @Transactional
+    
     @RequestMapping(value="/build", method = RequestMethod.POST)
     public ModelAndView build(@RequestParam String x,
                               @RequestParam String y,
@@ -123,7 +122,7 @@ public class BuildingController {
       
     }
 
-    @Transactional
+    
     @RequestMapping(value="/demolish", method = RequestMethod.POST)
     public ModelAndView demolish(@RequestParam String x,
                                  @RequestParam String y,
@@ -140,7 +139,7 @@ public class BuildingController {
         ss.deleteBuilding(p);
         return new ModelAndView("redirect:/map");
     }
-    @Transactional
+    
     @RequestMapping(value="/levelup", method = RequestMethod.POST)
     public ModelAndView levelup(@RequestParam String x,
                                 @RequestParam String y,
