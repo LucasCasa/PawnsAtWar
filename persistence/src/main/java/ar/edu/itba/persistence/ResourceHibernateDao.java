@@ -60,4 +60,5 @@ public class ResourceHibernateDao implements ResourceDao {
 		return list.isEmpty() ? null : list.get(0);
 	}
 
+
 }

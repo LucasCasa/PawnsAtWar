@@ -58,11 +58,12 @@ public class EmpireServiceImpl implements EmpireService{
 	 * seconds since the last update
 	 * @param u The id of the user
 	 */
-	private void updateResources(User u){
+	public void updateResources(User u){
 		List<Resource> list = u.getResources();
 		int seconds = (int)timeLapsed(u);
 		for(Resource r: list){
-			r.setQuantity(r.getQuantity() + seconds*getRate(u, r.getType()) );
+			int cant = r.getQuantity() + seconds*getRate(u, r.getType());
+			ed.setResource(u, r.getType(), cant);
 		}
 	}
 	
@@ -71,10 +72,11 @@ public class EmpireServiceImpl implements EmpireService{
 	 * @param userid The id of the user whose resources are queried
 	 * @return The time lapsed in seconds
 	 */
-	private long timeLapsed(User u){
+	public long timeLapsed(User u){
 		Timestamp oldTime = u.getEmpire().getLastUpdate();
 		Timestamp currentTime = new Timestamp(new Date().getTime());
-		u.getEmpire().setLastUpdate(currentTime);
+		ed.setLastUpdate(u,currentTime);
+		
 		return (currentTime.getTime()-oldTime.getTime())/1000;
 	}
 
@@ -95,7 +97,7 @@ public class EmpireServiceImpl implements EmpireService{
 		return true;
 	}
 	
-	private boolean hasResourcesAvailable(User u, int amount, int resType){
+	public boolean hasResourcesAvailable(User u, int amount, int resType){
 		int rate = 1; /*Temporary*/
 		Resource l = ed.getResource(u,resType);
 		int time = (int)timeLapsed(u);
@@ -151,7 +153,7 @@ public class EmpireServiceImpl implements EmpireService{
 	public void addResourceAmount(User u, int type, int quantity) {
 		updateResources(u);
 		Resource r = ed.getResource(u, type);
-		r.setQuantity(r.getQuantity() + quantity);
+		ed.setResource(u, type, r.getQuantity() + quantity);
 	}
 
 	@Override
@@ -160,7 +162,7 @@ public class EmpireServiceImpl implements EmpireService{
 		Resource r = ed.getResource(u, type);
 		int cant = r.getQuantity() <= quantity ? -1 : r.getQuantity() - quantity;
 		if(cant != -1){
-			r.setQuantity(cant);
+			ed.setResource(u,type,cant);
 		}
 	}
 	

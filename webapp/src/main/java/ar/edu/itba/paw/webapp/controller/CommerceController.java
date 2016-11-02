@@ -83,7 +83,6 @@ public class CommerceController {
 	public ModelAndView createOffer(@RequestParam(value="insuficientAmount", required = false)boolean insuficientAmount,
 			@ModelAttribute("user") final User user){
 		ModelAndView mav = new ModelAndView("createOffer");
-		
 		mav.addObject("insuficientAmount",insuficientAmount);
 		mav.addObject("ratesList",es.getRates(user));
 		mav.addObject("resList",es.getResources(user));

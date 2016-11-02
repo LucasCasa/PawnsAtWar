@@ -91,7 +91,7 @@ public class SectorServiceImpl implements SectorService {
 		}
 	}
 	
-	private void updateTerrain(Point p, User u,int range){
+	public void updateTerrain(Point p, User u,int range){
 		List<Sector> listSector = bd.getBuildings(p, range);
 		for(Sector s: listSector){
 			s.setUser(u);
@@ -209,7 +209,7 @@ public class SectorServiceImpl implements SectorService {
 	}
 
 	
-	private int getLevel(Point p) {
+	public int getLevel(Point p) {
 		return bd.getBuilding(p).getLevel();
 	}
 }

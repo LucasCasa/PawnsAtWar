@@ -63,6 +63,9 @@ public class CommerceServiceImpl implements CommerceService{
 
 	@Override
 	public void removeOffer(TradeOffer to) {
+		if(!cd.getAllOffers().contains(to)){
+			return;
+		}
 		es.addResourceAmount(to.getOwner(), to.getOffer().getType(), to.getOffer().getQuantity());
 		deleteOffer(to.getId());
 	}

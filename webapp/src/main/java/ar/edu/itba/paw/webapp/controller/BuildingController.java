@@ -176,7 +176,6 @@ public class BuildingController {
         if(session.getAttribute("userId") == null) {
             return null;
         }
-
         return  us.findById((Integer)session.getAttribute("userId"));
 
     }
