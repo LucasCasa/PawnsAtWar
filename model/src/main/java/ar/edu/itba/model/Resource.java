@@ -9,7 +9,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -31,12 +30,6 @@ public class Resource {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="idPlayer")
 	private User userResource;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-	private TradeOffer offers;
-	
-	@OneToOne(fetch = FetchType.LAZY)
-	private TradeOffer receives;
 	
 	
 	/* package */ Resource(){

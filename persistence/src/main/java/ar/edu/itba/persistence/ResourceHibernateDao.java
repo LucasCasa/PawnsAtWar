@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -58,6 +59,15 @@ public class ResourceHibernateDao implements ResourceDao {
 		query.setParameter("type", type);
 		final List<Resource> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0);
+	}
+
+	@Override
+	public void deleteResource(User u, int type) {
+		final Query query = em.createQuery("delete Resource where userResource = :u and type = :t");
+		query.setParameter("u", u);
+		query.setParameter("t", type);
+		query.executeUpdate();
+		
 	}
 
 

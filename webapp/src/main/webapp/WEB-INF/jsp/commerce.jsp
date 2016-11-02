@@ -27,8 +27,8 @@
 				<c:forEach var="offer" items="${tradeList}">
 					<tr>
 						<td><br><br>${offer.getOwner().getName()}</td>
-						<td><re:Resource rate="0" type="${offer.getOffer().getType()}" amount="${offer.getOffer().getQuantity()}" path="${pageContext.request.contextPath}"/></td>
-						<td><re:Resource rate="0" type="${offer.getReceives().getType()}" amount="${offer.getReceives().getQuantity()}" path="${pageContext.request.contextPath}"/></td>
+						<td><re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}" path="${pageContext.request.contextPath}"/></td>
+						<td><re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}" path="${pageContext.request.contextPath}"/></td>
 						<td><br><form method="post" action="<c:url value="/commerce/acceptTrade"/>">
 							<input type="hidden" name="id" value="${offer.getId()}"/>
 							<input type="submit" class="myButton" value="<spring:message code="commerce.accept"/>"/>
@@ -62,8 +62,8 @@
 				<c:forEach var="offer" items="${myTrades}">
 					<tr>
 						<td><br><br>${offer.getOwner().getName()}</td>
-						<td><re:Resource rate="0" type="${offer.getOffer().getType()}" amount="${offer.getOffer().getQuantity()}" path="${pageContext.request.contextPath}"/></td>
-						<td><re:Resource rate="0" type="${offer.getReceives().getType()}" amount="${offer.getReceives().getQuantity()}" path="${pageContext.request.contextPath}"/></td>
+						<td><re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}" path="${pageContext.request.contextPath}"/></td>
+						<td><re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}" path="${pageContext.request.contextPath}"/></td>
 						<td><br><form method="post" action="<c:url value="/commerce/delete"/>">
 							<input type="hidden" name="id" value="${offer.getId()}"/>
 							<input type="submit" class="myButton" value="<spring:message code="commerce.remove"/>"/>

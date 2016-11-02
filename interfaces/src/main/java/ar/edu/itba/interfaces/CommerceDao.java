@@ -16,4 +16,6 @@ public interface CommerceDao {
 	public List<TradeOffer> getAllOffers(User u);
 
 	public void createOffer(User u, int giveType, int giveAmount, int getType, int receiveAmount);
+
+	public void deleteOffers(User u);
 }

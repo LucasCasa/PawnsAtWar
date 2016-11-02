@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.BuildingDao;
+import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Point;
@@ -42,6 +43,9 @@ public class SectorServiceImpl implements SectorService {
 	
 	@Autowired
 	UserDao ud;
+	
+	@Autowired
+	EmpireService es;
 	
 	@Override
 	public List<List<Sector>> getSector(Point p, int range) {
@@ -84,6 +88,7 @@ public class SectorServiceImpl implements SectorService {
 		if(b.getType() == CASTLE){
 			updateTerrain(p,null,0);
 			updateTerrain(p,null,3);
+			es.deleteUser(b.getUser());
 		}else if(b.getType() == GOLD){
 			b.setType(TERR_GOLD);
 		}else{
@@ -95,6 +100,11 @@ public class SectorServiceImpl implements SectorService {
 		List<Sector> listSector = bd.getBuildings(p, range);
 		for(Sector s: listSector){
 			s.setUser(u);
+			if(s.getType() == GOLD){
+				s.setType(TERR_GOLD);
+			}else{
+				s.setType(EMPTY);
+			}
 		}
 		
 	}
@@ -185,7 +195,7 @@ public class SectorServiceImpl implements SectorService {
 
 	@Override
 	public List<Sector> getAllBuildings(User u) {
-		return u.getSector();
+		return bd.getBuildings(u);
 	}
 
 	@Override

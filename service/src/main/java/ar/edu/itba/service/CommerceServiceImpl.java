@@ -41,11 +41,11 @@ public class CommerceServiceImpl implements CommerceService{
 		deleteOffer(to.getId());
 		
 		//Adds resources to the user which offered
-		es.addResourceAmount(to.getOwner(),to.getReceives().getType(),to.getReceives().getQuantity());
+		es.addResourceAmount(to.getOwner(),to.getReceiveType(),to.getReceiveAmount());
 		//Removes resources from the user which accepted
-		es.subtractResourceAmount(u,to.getReceives().getType(),to.getReceives().getQuantity());
+		es.subtractResourceAmount(u,to.getReceiveType(),to.getReceiveAmount());
 		//Adds resources to the user which accepted
-		es.addResourceAmount(u,to.getOffer().getType(),to.getOffer().getQuantity());
+		es.addResourceAmount(u,to.getOfferType(),to.getOfferAmount());
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class CommerceServiceImpl implements CommerceService{
 		if(!cd.getAllOffers().contains(to)){
 			return;
 		}
-		es.addResourceAmount(to.getOwner(), to.getOffer().getType(), to.getOffer().getQuantity());
+		es.addResourceAmount(to.getOwner(), to.getOfferType(), to.getOfferAmount());
 		deleteOffer(to.getId());
 	}
 

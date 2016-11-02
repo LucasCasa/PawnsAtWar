@@ -5,15 +5,14 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BuildingDao;
+import ar.edu.itba.interfaces.CommerceDao;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.ResourceDao;
-import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Empire;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
@@ -31,6 +30,9 @@ public class EmpireHibernateDao implements EmpireDao {
 	
 	@Autowired
 	private BuildingDao bd;
+	
+	@Autowired
+	private CommerceDao cd;
 
 
 	@Override
@@ -78,6 +80,18 @@ public class EmpireHibernateDao implements EmpireDao {
 	@Override
 	public Empire getByUser(User u) {
 		return u.getEmpire();
+	}
+
+	@Override
+	public void deleteResource(User u, int type) {
+		rd.deleteResource(u,type);
+		
+	}
+
+	@Override
+	public void deleteOffers(User u) {
+		cd.deleteOffers(u);
+		
 	}
 
 

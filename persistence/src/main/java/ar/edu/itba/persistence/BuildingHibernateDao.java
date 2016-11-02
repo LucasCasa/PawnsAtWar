@@ -109,8 +109,14 @@ public class BuildingHibernateDao implements BuildingDao {
 
 	@Override
 	public boolean isCastleAlone(Point p, int range) {
+		int cant= 0;
 		List<Sector> list = getBuildings(p, range);
-		if(list.isEmpty() || list.size() > 1){
+		for(Sector s: list){
+			if(s.getType() != 5 && s.getType() != 0){
+				cant ++;
+			}
+		}
+		if(cant > 1){
 			return false;
 		}
 		return true;
@@ -138,7 +144,7 @@ public class BuildingHibernateDao implements BuildingDao {
 
 	@Override
 	public List<Sector> getBuildings(User u) {
-		final TypedQuery<Sector> query = em.createQuery("from Sector as t where t = :u",Sector.class);
+		final TypedQuery<Sector> query = em.createQuery("from Sector as t where t.userBuilding = :u",Sector.class);
 		query.setParameter("u", u);
 		List<Sector> list = query.getResultList();
 		return list;

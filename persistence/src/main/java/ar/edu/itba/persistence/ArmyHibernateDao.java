@@ -35,7 +35,10 @@ public class ArmyHibernateDao implements ArmyDao {
 
 	@Override
 	public List<Army> getArmiesByUserId(User u) {
-		return u.getArmy();
+		final TypedQuery<Army> query = em.createQuery("from Army as a where a.userArmy = :u",Army.class); 
+		query.setParameter("u",u);
+		final List<Army> list = query.getResultList();
+		return list;
 	}
 
 	@Override
@@ -45,7 +48,7 @@ public class ArmyHibernateDao implements ArmyDao {
 
 	@Override
 	public boolean isAvailable(Point p) {
-		final TypedQuery<Army> query = em.createQuery("from Army as a where position = :p",Army.class); 
+		final TypedQuery<Army> query = em.createQuery("from Army as a where a.position = :p",Army.class); 
 		query.setParameter("p",p);
 		final List<Army> list = query.getResultList();
 		return list.isEmpty() ? false : list.get(0).getAvailable();

@@ -13,4 +13,5 @@ public interface ResourceDao {
 	public Resource addResource (User u,int type);
 	public List<Resource> getResources(User u);
 	public Resource getResource(User u,int type);
+	public void deleteResource(User u, int type);
 }

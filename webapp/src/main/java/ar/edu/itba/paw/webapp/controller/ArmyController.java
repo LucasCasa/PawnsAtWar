@@ -42,8 +42,7 @@ public class ArmyController {
             return new ModelAndView("redirect:/");
         }
         final ModelAndView mav = new ModelAndView("armies");
-        List<Army> armies;
-        armies = as.getArmies(user);
+        List<Army> armies =  as.getArmies(user);
 
         if(Validator.validBoardPosition(x) && Validator.validBoardPosition(y)){
             mav.addObject("x",x);
@@ -131,9 +130,9 @@ public class ArmyController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notBuildingInPosition",null,locale));
 
         }
-        if(s.getUser() == null){
-        	return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.noUserInPosition",null,locale));
-        }
+//        if(s.getUser() == null){
+//        	return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.noUserInPosition",null,locale));
+//        }
         if(s.getUser()  == user ){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.attackSelfBuilding",null,locale));
         }else if(s.getType() == 0 || s.getType() == 5){

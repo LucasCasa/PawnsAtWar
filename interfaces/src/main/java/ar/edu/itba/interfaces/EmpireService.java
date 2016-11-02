@@ -78,5 +78,7 @@ public interface EmpireService {
 	 * @return the point in which the castle is in
 	 */
 	public void createUser(User user);
+
+	public void deleteUser(User user);
 	
 }

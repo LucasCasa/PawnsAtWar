@@ -36,4 +36,8 @@ public interface EmpireDao {
 	public List<Sector> getBuilding(User u, int type);
 
 	public void setLastUpdate(User u, Timestamp currentTime);
+
+	public void deleteResource(User u, int type);
+
+	public void deleteOffers(User u);
 }

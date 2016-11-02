@@ -60,7 +60,7 @@ public class CommerceController {
 		if(to == null || to.getOwner().getId() == user.getId())
 			return new ModelAndView("redirect:/error");
 		
-		if(es.getResource(user,to.getReceives().getType()).getQuantity() < to.getReceives().getQuantity()){
+		if(es.getResource(user,to.getReceiveType()).getQuantity() < to.getReceiveAmount()){
 			ModelAndView mav = new ModelAndView("redirect:/commerce");
 			mav.addObject("insuficientAmount",true);
 			return mav;

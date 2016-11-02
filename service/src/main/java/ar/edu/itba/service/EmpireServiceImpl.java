@@ -177,5 +177,13 @@ public class EmpireServiceImpl implements EmpireService{
 		
 	}
 
+	@Override
+	public void deleteUser(User user) {
+		ed.deleteResource(user,0);
+		ed.deleteResource(user,1);
+		ed.deleteOffers(user);
+		
+	}
+
 
 }

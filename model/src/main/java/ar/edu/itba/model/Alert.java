@@ -31,6 +31,10 @@ public class Alert {
 	
 	@Column(length = 200,nullable = false, name = "message")
 	private String message;
+	
+	/* package */ Alert(){
+		
+	}
 
 	
 	public Alert(User user, String message) {
