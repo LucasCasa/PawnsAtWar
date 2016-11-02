@@ -6,11 +6,11 @@ public interface UserService {
 
 	public User findByUsername(String username);
 	
-	public User findById(int id);
+	public User findById(long id);
 	
 	public User create(String username, String password, String email);
 	
-	public String getUsername(int id);
+	public String getUsername(long id);
 
 	public boolean exists(String username);
 

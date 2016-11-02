@@ -2,27 +2,25 @@ package ar.edu.itba.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
+import ar.edu.itba.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.BuildingDao;
+<<<<<<< HEAD
 import ar.edu.itba.interfaces.EmpireService;
+=======
+import ar.edu.itba.interfaces.BuildingService;
+>>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 import ar.edu.itba.interfaces.SectorService;
-import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.interfaces.TerrainDao;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
-import ar.edu.itba.model.User;
 
 @Service
-@Transactional
 public class SectorServiceImpl implements SectorService {
-	
-	List<Point> availableSpots;
-	private static final int RANGE = 6;
-	private static final int MAXVALUE = 99;
 	
 	public static final int CASTLE = 1;
 	public static final int EMPTY = 0;
@@ -42,7 +40,10 @@ public class SectorServiceImpl implements SectorService {
 	BuildingDao bd;
 	
 	@Autowired
-	UserDao ud;
+	TerrainDao td;
+	
+	@Autowired
+	BuildingService bs;
 	
 	@Autowired
 	EmpireService es;
@@ -53,7 +54,14 @@ public class SectorServiceImpl implements SectorService {
 		Sector[][] aux = new Sector[size][size];
 		List<List<Sector>> sectorList = new ArrayList<>(size);
 		List<Sector> buildingList = bd.getBuildings(p, range);
+		List<Sector> terrainList = td.getTerrain(p, range);
 
+		for(Sector s:terrainList){
+			if(s.getUser() == null){
+				s.setUser(new User(-1,null,null,null));
+			}
+			aux[s.getPosition().getY() - (p.getY() - range)][s.getPosition().getX() - (p.getX() - range)] = s;
+		}
 		for(Sector s:buildingList){
 				aux[s.getPosition().getY() - (p.getY() - range)][s.getPosition().getX() - (p.getX() - range)] = s;
 		}
@@ -71,7 +79,17 @@ public class SectorServiceImpl implements SectorService {
 		if(p.getX()> maxX || p.getY()> maxY){
 			return null;
 		}
+<<<<<<< HEAD
 		return bd.getBuilding(p);
+=======
+		Sector building = bd.getBuilding(p);
+		Sector terrain = td.getTerrain(p);
+		if(building == null && terrain == null){
+			return new Sector(p,0,new User(0,null,null,null));
+		}else if(building == null){
+			return terrain;
+		}
+>>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 
 	}
 	
@@ -96,10 +114,24 @@ public class SectorServiceImpl implements SectorService {
 		}
 	}
 	
+<<<<<<< HEAD
 	public void updateTerrain(Point p, User u,int range){
 		List<Sector> listSector = bd.getBuildings(p, range);
 		for(Sector s: listSector){
 			s.setUser(u);
+=======
+	public void addBuilding(Point p, int idPlayer, int type){
+		if(td.getId(p) == idPlayer){
+			//td.deleteTerrain(p);
+			bs.addBuilding(p, idPlayer, type);
+		}
+	}
+	
+	private void updateTerrain(Point p, Integer newOwner,int range){
+		List<Sector> listSector = td.getTerrain(p, range);
+		for(Sector s: listSector){
+			td.setIdPlayer(s.getPosition(),newOwner);
+>>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 		}
 		
 	}
@@ -110,17 +142,33 @@ public class SectorServiceImpl implements SectorService {
 			return false;
 		return bd.isCastleAlone(p, range);
 	}
+<<<<<<< HEAD
 
 
 	@Override
 	public boolean createCastle(User u) {
 		Point p = addCastle(u);
+=======
+	
+	public void buildSector(Point p, int idPlayer, int type){
+		if(type == EMPTY || type == TERR_GOLD){
+			td.addTerrain(p, 0, idPlayer, type);
+		}else{
+			bs.addBuilding(p, idPlayer, type);
+		}
+	}
+
+	@Override
+	public boolean createCastle(int userid) {
+		Point p = bs.addCastle(userid);
+>>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 		if(p == null){
 			return false;
 		}
 		updateTerrain(p,u,initRange);
 		return true;
 	}
+<<<<<<< HEAD
 	
 	public void LoadSpots(){
 		availableSpots = new ArrayList<Point>();
@@ -209,4 +257,6 @@ public class SectorServiceImpl implements SectorService {
 	public int getLevel(Point p) {
 		return bd.getBuilding(p).getLevel();
 	}
+=======
+>>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 }

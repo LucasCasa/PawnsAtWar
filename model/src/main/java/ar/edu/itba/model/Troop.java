@@ -1,38 +1,12 @@
 package ar.edu.itba.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
-
-@Entity
-@Table(name = "troop",uniqueConstraints=@UniqueConstraint(columnNames={"idArmy", "type"}))
 public class Troop {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "troop_id_seq")
-	@SequenceGenerator(sequenceName = "troop_id_seq", name = "troop_id_seq", allocationSize = 1)
-	@Column(name = "id")
-	private long id;
-	
-	@ManyToOne(fetch =FetchType.EAGER, optional = false)
-	@JoinColumn(name="idArmy")
-	private Army army;
-	
-	@Column(nullable = false, name = "type")
+	private int idArmy;
 	private int type;
-	
-	@Column(nullable = false, name = "amount")
 	private int quantity;
 	
-	public Troop(Army a, int type, int quantity) {
-		this.army = a;
+	public Troop(int idArmy, int type, int quantity) {
+		this.idArmy = idArmy;
 		this.type = type;
 		this.quantity = quantity;
 	}
@@ -47,9 +21,14 @@ public class Troop {
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
 	}
+<<<<<<< HEAD
 	
 	public Army getArmy() {
 		return army;
+=======
+	public int getidArmy() {
+		return idArmy;
+>>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 	}
 	
 	public int getType() {

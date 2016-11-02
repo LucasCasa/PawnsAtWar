@@ -2,30 +2,9 @@ package ar.edu.itba.model;
 
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
-
-@Entity
-@Table(name = "Army")
 public class Army {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "army_idarmy_seq")
-	@SequenceGenerator(sequenceName = "army_idarmy_seq", name = "army_idarmy_seq", allocationSize = 1)
-	@Column(name = "idArmy")
-	private int idArmy;
-	
-	@Embedded
 	private Point position;
+<<<<<<< HEAD
 	
 	@Column(nullable = false, name = "available")
 	private boolean available;
@@ -35,14 +14,26 @@ public class Army {
 	private User userArmy;
 	
 	@OneToMany(fetch = FetchType.EAGER,orphanRemoval = false, mappedBy="army")
+=======
+	private int idArmy;
+	private User user;
+>>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 	private List<Troop> troops;
+	private boolean available;
 	
-	
-	
-	public Army(Point position,User u,boolean available) {
+	/* SOLO PARA JDBC */
+	public Army(Point position, User user, int idArmy,boolean available,List<Troop> troops) {
 		this.position = position;
-		this.userArmy = u;
+		this.user = user;
+		this.idArmy = idArmy;
 		this.available = available;
+		this.troops = troops;
+	}
+	public Army(Point position, User user,boolean available,List<Troop> troops) {
+		this.position = position;
+		this.user = user;
+		this.available = available;
+		this.troops = troops;
 	}
 	
 	/* package */ Army(){
@@ -53,12 +44,12 @@ public class Army {
 		return available;
 	}
 	
+	public User getUser(){
+		return user;
+	}
+
 	public void setAvailable(boolean available) {
 		this.available = available;
-	}
-	
-	public User getUser(){
-		return userArmy;
 	}
 
 	public Point getPosition() {
@@ -81,7 +72,7 @@ public class Army {
 	}
 
 	public void setUser(User user) {
-		this.userArmy = user;
+		this.user = user;
 	}
 	
 	

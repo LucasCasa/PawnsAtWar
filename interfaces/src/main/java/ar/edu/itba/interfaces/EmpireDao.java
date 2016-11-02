@@ -3,11 +3,13 @@ package ar.edu.itba.interfaces;
 import java.sql.Timestamp;
 import java.util.List;
 
+<<<<<<< HEAD
 import ar.edu.itba.model.Empire;
 import ar.edu.itba.model.Point;
+=======
+import ar.edu.itba.model.Building;
+>>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 import ar.edu.itba.model.Resource;
-import ar.edu.itba.model.Sector;
-import ar.edu.itba.model.User;
 
 public interface EmpireDao {
 	
@@ -27,6 +29,7 @@ public interface EmpireDao {
 	
 	public Empire getByUser(User u);
 	
+<<<<<<< HEAD
 	public List<Sector> getBuilding (Point p, int type);
 	
 	public Empire createEmpire(User u, Timestamp timestamp);
@@ -40,4 +43,11 @@ public interface EmpireDao {
 	public void deleteResource(User u, int type);
 
 	public void deleteOffers(User u);
+=======
+	public List<Building> getBuilding (int userid, int type);
+	
+	public void createEmpire(int userid, Timestamp timestamp);
+	
+	public void createResource (int userid,int type, int amount);
+>>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 }

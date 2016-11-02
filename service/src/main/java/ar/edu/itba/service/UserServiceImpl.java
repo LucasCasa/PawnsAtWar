@@ -26,24 +26,24 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public User findById(int id) {
+	public User findById(long id) {
 		return ud.findById(id);
 	}
 
 	@Override
 	public User create(String username, String password, String email) {
 		User user = ud.create(username, password, email);
-		es.createUser(user);
+		es.createUser(user.getId());
 		return user;
 		
 	}
 
 	@Override
-	public String getUsername(int id) {
+	public String getUsername(long id) {
 		return ud.getUsername(id);
 	}
 	
-	public String getEmail (int id){
+	public String getEmail (long id){
 		return ud.getEmail(id);
 	}
 	
