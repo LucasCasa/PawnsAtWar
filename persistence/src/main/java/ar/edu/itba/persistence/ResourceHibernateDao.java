@@ -4,14 +4,11 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.ResourceDao;
-import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Resource;
 import ar.edu.itba.model.User;
 
@@ -20,9 +17,7 @@ public class ResourceHibernateDao implements ResourceDao {
 	
 	@PersistenceContext
     private EntityManager em;
-	
-	@Autowired
-	private UserDao ud;
+
 
 	@Override
 	public void addAmount(User u, int type, int value) {
@@ -63,16 +58,6 @@ public class ResourceHibernateDao implements ResourceDao {
 		query.setParameter("type", type);
 		final List<Resource> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0);
-	}
-
-	@Override
-	public void setAmount(User u, int type, int value) {
-		final Query query = em.createQuery("update Resource set amount = :amount where userResource = :u and type = :type");
-		query.setParameter("amount", value);
-		query.setParameter("u", u);
-		query.setParameter("type", type);
-		query.executeUpdate();
-
 	}
 
 }

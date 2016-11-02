@@ -23,9 +23,6 @@ public class BuildingHibernateDao implements BuildingDao {
 	@PersistenceContext
     private EntityManager em;
 	
-	@Autowired
-	private UserDao ud;
-	
 	@Override
 	public Integer getLevel(Point p) {
 		final TypedQuery<Sector> query = em.createQuery("from Sector as t where t.p = :p",Sector.class);
@@ -78,15 +75,15 @@ public class BuildingHibernateDao implements BuildingDao {
 	}
 
 	@Override
-	public Sector addBuilding(Point p, int level, int idPlayer, int type) {
-		Sector b = new Sector(ud.findById(idPlayer),p,type,level);
+	public Sector addBuilding(Point p, int level, User u, int type) {
+		Sector b = new Sector(u,p,type,level);
 		em.persist(b);
 		return b;
 	}
 
 	@Override
-	public Sector addBuilding(Point p, int idPlayer, int type) {
-		return addBuilding(p,1,idPlayer,type);
+	public Sector addBuilding(Point p, User u, int type) {
+		return addBuilding(p,1,u,type);
 	}
 
 	@Override
@@ -126,8 +123,7 @@ public class BuildingHibernateDao implements BuildingDao {
 		final TypedQuery<Sector> query = em.createQuery("from Sector as t where t.userBuilding = :u and t.type = :type",Sector.class);
 		query.setParameter("u", u);
 		query.setParameter("type", type);
-		List<Sector> list = query.getResultList();
-		return list;
+		return query.getResultList();
 	}
 
 	@Override
@@ -143,9 +139,9 @@ public class BuildingHibernateDao implements BuildingDao {
 	}
 
 	@Override
-	public List<Sector> getBuildings(int idPlayer) {
-		final TypedQuery<Sector> query = em.createQuery("from Sector as t where t.idPlayer = :idPlayer",Sector.class);
-		query.setParameter("idPlayer", idPlayer);
+	public List<Sector> getBuildings(User u) {
+		final TypedQuery<Sector> query = em.createQuery("from Sector as t where t = :u",Sector.class);
+		query.setParameter("u", u);
 		List<Sector> list = query.getResultList();
 		return list;
 	}

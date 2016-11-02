@@ -49,7 +49,7 @@ public class EmpireServiceImpl implements EmpireService{
 				return r1.getType()-r2.getType();
 			}
 		});
-		set.addAll(ed.getResources(u));
+		set.addAll(u.getResources());
 		return set;
 	}
 	
@@ -59,10 +59,10 @@ public class EmpireServiceImpl implements EmpireService{
 	 * @param u The id of the user
 	 */
 	private void updateResources(User u){
-		List<Resource> list = ed.getResources(u);
+		List<Resource> list = u.getResources();
 		int seconds = (int)timeLapsed(u);
 		for(Resource r: list){
-			ed.addAmount(u, r.getType(), seconds*getRate(u, r.getType()));
+			r.setQuantity(r.getQuantity() + seconds*getRate(u, r.getType()) );
 		}
 	}
 	
@@ -90,7 +90,7 @@ public class EmpireServiceImpl implements EmpireService{
 			return false;
 		}
 		updateResources(u);
-		ed.substractAmount(u, resType, value);
+		subtractResourceAmount(u, resType, value);
 		ss.addBuilding(p, u, type);
 		return true;
 	}
@@ -100,6 +100,26 @@ public class EmpireServiceImpl implements EmpireService{
 		Resource l = ed.getResource(u,resType);
 		int time = (int)timeLapsed(u);
 		return l.getQuantity()+time*rate>=amount;
+	}
+
+
+	@Override
+	public Map<Resource, Integer> getResourceMap(User u) {
+		Map<Resource,Integer> map = new HashMap<>();
+		List<Resource> l = u.getResources();
+		for(Resource r: l){
+			map.put(r, getRate(u,r.getType()));
+		}
+		return map;
+	}
+	
+	@Override
+	public List<Integer> getRates(User u){
+		List<Integer> l = new ArrayList<>();
+		for(Resource r: u.getResources()){
+			l.add(getRate(u,r.getType()));
+		}
+		return l;
 	}
 	
 	@Override
@@ -122,25 +142,6 @@ public class EmpireServiceImpl implements EmpireService{
 	}
 
 	@Override
-	public Map<Resource, Integer> getResourceMap(User u) {
-		Map<Resource,Integer> map = new HashMap<>();
-		List<Resource> l = ed.getResources(u);
-		for(Resource r: l){
-			map.put(r, getRate(u,r.getType()));
-		}
-		return map;
-	}
-	
-	@Override
-	public List<Integer> getRates(User u){
-		List<Integer> l = new ArrayList<>();
-		for(Resource r: u.getResources()){
-			l.add(getRate(u,r.getType()));
-		}
-		return l;
-	}
-
-	@Override
 	public Resource getResource(User u, int type) {
 		updateResources(u);
 		return ed.getResource(u, type);
@@ -149,13 +150,18 @@ public class EmpireServiceImpl implements EmpireService{
 	@Override
 	public void addResourceAmount(User u, int type, int quantity) {
 		updateResources(u);
-		ed.addAmount(u, type, quantity);
+		Resource r = ed.getResource(u, type);
+		r.setQuantity(r.getQuantity() + quantity);
 	}
 
 	@Override
 	public void subtractResourceAmount(User u, int type, int quantity) {
 		updateResources(u);
-		ed.substractAmount(u, type, quantity);
+		Resource r = ed.getResource(u, type);
+		int cant = r.getQuantity() <= quantity ? -1 : r.getQuantity() - quantity;
+		if(cant != -1){
+			r.setQuantity(cant);
+		}
 	}
 	
 	@Override

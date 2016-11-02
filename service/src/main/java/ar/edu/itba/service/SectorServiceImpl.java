@@ -80,6 +80,7 @@ public class SectorServiceImpl implements SectorService {
 		if(b == null){
 			return;
 		}
+		b.setLevel(0);
 		if(b.getType() == CASTLE){
 			updateTerrain(p,null,0);
 			updateTerrain(p,null,3);
@@ -178,6 +179,7 @@ public class SectorServiceImpl implements SectorService {
 		Sector s = bd.getBuilding(p);
 		s.setUser(u);
 		s.setType(1);
+		s.setLevel(1);
 		return p;
 	}
 
@@ -189,6 +191,9 @@ public class SectorServiceImpl implements SectorService {
 	@Override
 	public void addBuilding(Point p,User u, int type) {
 		Sector s = bd.getBuilding(p);
+		if(s.getType() != 5 || s.getType() != 0){
+			s.setLevel(1);
+		}
 		s.setUser(u);
 		s.setType(type);
 	}

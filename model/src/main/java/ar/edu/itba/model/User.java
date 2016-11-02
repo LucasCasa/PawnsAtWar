@@ -46,6 +46,12 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = false, mappedBy = "userBuilding")
 	private List<Sector> sector;
 	
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = false, mappedBy = "to")
+	private List<Message> receivedMessages;
+	
+	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = false, mappedBy = "from")
+	private List<Message> sentMessages;
+	
 	public User(String name,String password,String email){
 		this.name=name;
 		this.password=password;
@@ -101,6 +107,14 @@ public class User {
 
 	public List<Sector> getSector() {
 		return sector;
+	}
+	
+	public List<Message> getReceivedMessages(){
+		return receivedMessages;
+	}
+	
+	public List<Message> getSentMessages(){
+		return sentMessages;
 	}
 
 	@Override

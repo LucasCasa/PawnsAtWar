@@ -79,7 +79,7 @@ public class BuildingController {
             mav.addObject("goldTerraunBuilding",goldTerrainBuilding);
             mav.addObject("price", ss.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user));
             mav.addObject("level",sector.getLevel());
-            mav.addObject("resList",user.getResources());
+    		mav.addObject("resList",es.getResources(user));
             mav.addObject("ratesList",es.getRates(user));
             mav.addObject("error",error);
             mav.addObject("success",success);

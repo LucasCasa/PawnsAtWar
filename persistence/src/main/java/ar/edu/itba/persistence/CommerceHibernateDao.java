@@ -24,9 +24,6 @@ public class CommerceHibernateDao implements CommerceDao {
     private EntityManager em;
 	
 	@Autowired
-	private UserDao ud;
-	
-	@Autowired
 	private ResourceDao rd;
 	
 	@Override

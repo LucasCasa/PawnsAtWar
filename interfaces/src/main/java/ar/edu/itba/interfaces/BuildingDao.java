@@ -20,9 +20,9 @@ public interface BuildingDao {
 	
 	public void setIdPlayer(Point p,User u);
 	
-	public Sector addBuilding(Point p, int level, int idPlayer, int type);
+	public Sector addBuilding(Point p, int level, User u, int type);
 	
-	public Sector addBuilding(Point p, int idPlayer, int type);
+	public Sector addBuilding(Point p, User u, int type);
 	
 	public boolean belongsTo(Point p, User u);
 	
@@ -42,7 +42,7 @@ public interface BuildingDao {
 
 	public List<Point> getAllCastles();
 
-	public List<Sector> getBuildings(int idPlayer);
+	public List<Sector> getBuildings(User u);
 	
 	public int getType(Point p);
 

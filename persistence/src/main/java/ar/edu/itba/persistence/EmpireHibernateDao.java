@@ -5,8 +5,6 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -31,22 +29,7 @@ public class EmpireHibernateDao implements EmpireDao {
 	
 	@Autowired
 	private BuildingDao bd;
-	
-	@Override
-	public Timestamp getLastTimeUpdate(User u) {
-		final TypedQuery<Empire> query = em.createQuery("from Empire where userEmpire = :user",Empire.class);
-		query.setParameter("user", u);
-		final List<Empire> list = query.getResultList();
-		return list.isEmpty() ? null : list.get(0).getLastUpdate();
-	}
 
-	@Override
-	public void setLastTimeUpdate(User u, Timestamp t) {
-		final Query query = em.createQuery("update Empire set lastUpdate = :lastUpdate where userEmpire = :user");
-		query.setParameter("lastUpdate", t);
-		query.setParameter("user", u);
-		query.executeUpdate();
-	}
 
 	@Override
 	public Resource getResource(User u, int id) {
@@ -55,18 +38,10 @@ public class EmpireHibernateDao implements EmpireDao {
 
 	@Override
 	public void setResource(User u, int id, int amount) {
-		rd.setAmount(u, id, amount);
-	}
-	
-	@Override
-	public List<Resource> getResources(User u){
-		return u.getResources();
+		Resource r = getResource(u,id);
+		r.setQuantity(amount);
 	}
 
-	@Override
-	public void substractAmount(User u, int id, int amount) {
-		rd.subtractAmount(u, id, amount);
-	}
 
 	@Override
 	public List<Sector> getBuilding(Point p, int type) {
@@ -84,12 +59,6 @@ public class EmpireHibernateDao implements EmpireDao {
 	public void createResource(User user, int type, int amount) {
 		rd.addResource(user, type, amount);
 
-	}
-
-	@Override
-	public void addAmount(User u, int id, int amount) {
-		rd.addAmount(u, id, amount);
-		
 	}
 
 	@Override

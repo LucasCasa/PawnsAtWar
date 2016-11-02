@@ -46,7 +46,7 @@ public interface EmpireService {
 	 * @param user the users id
 	 * @return A list containing all rates
 	 */
-	public List<Integer> getRates(User user);
+	public List<Integer> getRates(User u);
 
 	/**
 	 * Returns the resource of type specified matching the user's id

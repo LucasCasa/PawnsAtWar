@@ -79,8 +79,7 @@ public class HomePageController {
 
 		List<List<Sector>> elements;
 		elements = ss.getSector(new Point(xPrime,yPrime), Info.VIEW_RANGE);
-		System.err.println("-------" + user.getResources().size() + "--------");
-		mav.addObject("resList",user.getResources());
+		mav.addObject("resList",es.getResources(user));
 		mav.addObject("ratesList",es.getRates(user));
 		mav.addObject("map",elements);
 		mav.addObject("x",xPrime);

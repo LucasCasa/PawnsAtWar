@@ -51,7 +51,7 @@ public class CommerceController {
 		mav.addObject("tradeListSize",tradeList.size());
         mav.addObject("insuficientAmount",insuficientAmount);
         mav.addObject("ratesList",es.getRates(user));
-        mav.addObject("resList",user.getResources());
+		mav.addObject("resList",es.getResources(user));
         
         return mav;
 	}
