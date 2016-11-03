@@ -2,9 +2,30 @@ package ar.edu.itba.model;
 
 import java.util.List;
 
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "Army")
 public class Army {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "army_idarmy_seq")
+	@SequenceGenerator(sequenceName = "army_idarmy_seq", name = "army_idarmy_seq", allocationSize = 1)
+	@Column(name = "idArmy")
+	private int idArmy;
+	
+	@Embedded
 	private Point position;
-<<<<<<< HEAD
 	
 	@Column(nullable = false, name = "available")
 	private boolean available;
@@ -14,26 +35,12 @@ public class Army {
 	private User userArmy;
 	
 	@OneToMany(fetch = FetchType.EAGER,orphanRemoval = false, mappedBy="army")
-=======
-	private int idArmy;
-	private User user;
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 	private List<Troop> troops;
-	private boolean available;
-	
-	/* SOLO PARA JDBC */
-	public Army(Point position, User user, int idArmy,boolean available,List<Troop> troops) {
+
+	public Army(Point position, User user,boolean available) {
 		this.position = position;
-		this.user = user;
-		this.idArmy = idArmy;
+		this.userArmy = user;
 		this.available = available;
-		this.troops = troops;
-	}
-	public Army(Point position, User user,boolean available,List<Troop> troops) {
-		this.position = position;
-		this.user = user;
-		this.available = available;
-		this.troops = troops;
 	}
 	
 	/* package */ Army(){
@@ -45,7 +52,7 @@ public class Army {
 	}
 	
 	public User getUser(){
-		return user;
+		return userArmy;
 	}
 
 	public void setAvailable(boolean available) {
@@ -62,17 +69,14 @@ public class Army {
 	public void addTroop(Troop t){
 		troops.add(t);
 	}
-	
-	public void setTroops(List<Troop> troops){
-		this.troops=troops;
-	}
+
 	
 	public List<Troop> getTroops(){
 		return troops;
 	}
 
 	public void setUser(User user) {
-		this.user = user;
+		this.userArmy = user;
 	}
 	
 	

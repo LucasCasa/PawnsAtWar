@@ -7,18 +7,19 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.CommerceDao;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.ResourceDao;
-import ar.edu.itba.interfaces.UserDao;
-import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Empire;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
+import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
 
+@Repository
 public class EmpireHibernateDao implements EmpireDao {
 
 	@PersistenceContext
@@ -31,7 +32,6 @@ public class EmpireHibernateDao implements EmpireDao {
 	private BuildingDao bd;
 	
 	@Autowired
-<<<<<<< HEAD
 	private CommerceDao cd;
 
 
@@ -45,25 +45,6 @@ public class EmpireHibernateDao implements EmpireDao {
 		Resource r = getResource(u,id);
 		r.setQuantity(amount);
 		em.merge(r);
-=======
-	private UserDao ud;
-	
-	@Override
-	public Timestamp getLastTimeUpdate(int userid) {
-		final TypedQuery<Empire> query = em.createQuery("from Empire as e where e.idPlayer = :idPlayer",Empire.class);
-		query.setParameter("idPlayer", userid);
-		final List<Empire> list = query.getResultList();
-		return list.isEmpty() ? null : list.get(0).getLastUpdate();
-	}
-
-	@Override
-	public void setLastTimeUpdate(int userid, Timestamp t) {
-		final Query query = em.createQuery("update Empire as e set e.lastUpdate = :lastUpdate where e.idPlayer = :idPlayer");
-		query.setParameter("lastUpdate", t);
-		query.setParameter("idPlayer", userid);
-		query.executeUpdate();
-
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 	}
 
 
@@ -91,7 +72,6 @@ public class EmpireHibernateDao implements EmpireDao {
 	}
 
 	@Override
-<<<<<<< HEAD
 	public void setLastUpdate(User u, Timestamp currentTime) {
 		u.getEmpire().setLastUpdate(currentTime);
 		em.merge(u.getEmpire());
@@ -105,25 +85,7 @@ public class EmpireHibernateDao implements EmpireDao {
 	@Override
 	public void deleteResource(User u, int type) {
 		rd.deleteResource(u,type);
-		
-=======
-	public List<Building> getBuilding(int userid, int type) {
-		return bd.getBuildings(userid,type);
-	}
 
-	@Override
-	public void createEmpire(int userid, Timestamp timestamp) {
-		User u = ud.findById(userid);
-		Empire e = new Empire(u, timestamp);
-		em.persist(e);
-
-	}
-
-	@Override
-	public void createResource(int userid, int type, int amount) {
-		rd.addResource(userid, type, amount);
-
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 	}
 
 	@Override

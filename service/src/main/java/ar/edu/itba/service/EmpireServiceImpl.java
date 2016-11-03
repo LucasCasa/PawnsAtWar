@@ -13,21 +13,20 @@ import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.ArmyService;
-import ar.edu.itba.interfaces.BuildingService;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.SectorService;
-<<<<<<< HEAD
 import ar.edu.itba.interfaces.UserDao;
-=======
-import ar.edu.itba.model.Building;
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
+import ar.edu.itba.model.Sector;
+import ar.edu.itba.model.User;
 
 @Service
+@Transactional
 public class EmpireServiceImpl implements EmpireService{
 	
 	private static final int INITIAL_VALUE = 2000;
@@ -37,11 +36,6 @@ public class EmpireServiceImpl implements EmpireService{
 	@Autowired
 	SectorService ss;
 	@Autowired
-<<<<<<< HEAD
-=======
-	BuildingService bs;
-	@Autowired
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 	ArmyService as;
 	@Autowired
 	UserDao ud;
@@ -78,19 +72,11 @@ public class EmpireServiceImpl implements EmpireService{
 	 * @param userid The id of the user whose resources are queried
 	 * @return The time lapsed in seconds
 	 */
-<<<<<<< HEAD
 	public long timeLapsed(User u){
 		Timestamp oldTime = u.getEmpire().getLastUpdate();
 		Timestamp currentTime = new Timestamp(new Date().getTime());
 		ed.setLastUpdate(u,currentTime);
-		
-=======
-	private long timeLapsed(int userid){
-		Timestamp oldTime = ed.getLastTimeUpdate(userid);
-		Date date= new Date();
-		Timestamp currentTime = new Timestamp(date.getTime());
-		ed.setLastTimeUpdate(userid, currentTime);
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
+
 		return (currentTime.getTime()-oldTime.getTime())/1000;
 	}
 
@@ -139,13 +125,9 @@ public class EmpireServiceImpl implements EmpireService{
 	}
 	
 	@Override
-<<<<<<< HEAD
 	public int getRate(User u, int type){
 		List<Sector> list;
-=======
-	public int getRate(int userid, int type){
-		List<Building> list;
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
+
 		int rate = 1;
 		switch(type){
 			case 0:
@@ -156,7 +138,7 @@ public class EmpireServiceImpl implements EmpireService{
 				break;
 			default: return 1;
 		}
-		for(Building b : list){
+		for(Sector b : list){
 			rate += b.getLevel();
 		}
 		return rate;
@@ -186,17 +168,12 @@ public class EmpireServiceImpl implements EmpireService{
 	}
 	
 	@Override
-<<<<<<< HEAD
 	public void createUser(User user) {
 		boolean resp = ss.createCastle(user);
-=======
-	public void createUser(int userid) {
-		boolean resp = ss.createCastle(userid);
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 		if(resp){
-			ed.createEmpire(userid, new Timestamp(Calendar.getInstance().getTime().getTime()));
-		ed.createResource(userid, 0, INITIAL_VALUE);
-		ed.createResource(userid, 1, INITIAL_VALUE);
+			ed.createEmpire(user, new Timestamp(Calendar.getInstance().getTime().getTime()));
+		ed.createResource(user, 0, INITIAL_VALUE);
+		ed.createResource(user, 1, INITIAL_VALUE);
 		}
 		
 	}

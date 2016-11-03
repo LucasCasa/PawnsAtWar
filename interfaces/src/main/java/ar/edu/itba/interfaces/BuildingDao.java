@@ -2,9 +2,9 @@ package ar.edu.itba.interfaces;
 
 import java.util.List;
 
-import ar.edu.itba.model.Building;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
+import ar.edu.itba.model.User;
 
 public interface BuildingDao {
 	
@@ -20,15 +20,9 @@ public interface BuildingDao {
 	
 	public void setIdPlayer(Point p,User u);
 	
-<<<<<<< HEAD
 	public Sector addBuilding(Point p, int level, User u, int type);
 	
 	public Sector addBuilding(Point p, User u, int type);
-=======
-	public Building addBuilding(Point p, int level, int idPlayer, int type);
-	
-	public Building addBuilding(Point p, int idPlayer, int type);
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 	
 	public boolean belongsTo(Point p, User u);
 	
@@ -44,21 +38,11 @@ public interface BuildingDao {
 	 */
 	public boolean isCastleAlone (Point p, int range);
 
-<<<<<<< HEAD
 	public List<Sector> getBuildings(User u, int type);
 
 	public List<Point> getAllCastles();
 
 	public List<Sector> getBuildings(User u);
 
-=======
-	public List<Building> getBuildings(int userId, int type);
-
-	public List<Point> getAllCastles();
-
-	public List<Building> getBuildings(int idPlayer);
-	
-	public int getType(Point p);
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
 	
 }

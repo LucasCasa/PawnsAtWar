@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import ar.edu.itba.interfaces.BuildingService;
-import ar.edu.itba.model.Building;
 import ar.edu.itba.paw.webapp.dataClasses.Info;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.paw.webapp.dataClasses.Validator;
@@ -36,8 +34,6 @@ public class BuildingController {
 
     @Autowired
     private SectorService ss;
-    @Autowired
-    private BuildingService bs;
     @Autowired
 	private EmpireService es;
     @Autowired
@@ -81,21 +77,10 @@ public class BuildingController {
             mav.addObject("p",new Point(Integer.parseInt(x),Integer.parseInt(y)));
             mav.addObject("plainTerrainBuildings",plainTerrainBuildings);
             mav.addObject("goldTerraunBuilding",goldTerrainBuilding);
-<<<<<<< HEAD
             mav.addObject("price", ss.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user));
             mav.addObject("level",sector.getLevel());
     		mav.addObject("resList",es.getResources(user));
             mav.addObject("ratesList",es.getRates(user));
-=======
-            mav.addObject("price", bs.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user.getId()));
-            if(sector instanceof Building){
-                mav.addObject("level",((Building) sector).getLevel());
-            }else{
-                mav.addObject("level",1);
-            }
-            mav.addObject("resList",es.getResources(user.getId()));
-            mav.addObject("ratesList",es.getRates(user.getId()));
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
             mav.addObject("error",error);
             mav.addObject("success",success);
             mav.addObject("locale",locale);
@@ -169,7 +154,6 @@ public class BuildingController {
         if(!s.getUser().equals(user)){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYourPosition",null,locale));
         }
-<<<<<<< HEAD
 //        if(!(s.getLevel() == 1)){
 //            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantLevelUpTerrain",null,locale));
 //        }
@@ -178,16 +162,6 @@ public class BuildingController {
             if(es.getResource(user,Info.RES_GOLD).getQuantity() >= price ) {
                 ss.levelUp(p);
                 es.subtractResourceAmount(user, Info.RES_GOLD, price);
-=======
-        if(!(s instanceof Building)){
-            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantLevelUpTerrain",null,locale));
-        }
-        if(((Building) s).getLevel() < 20){
-            int price = bs.getPrice(p,user.getId()) + (int) Math.pow(((Building) s).getLevel(),4);
-            if(es.getResource(user.getId(),Info.RES_GOLD).getQuantity() >= price ) {
-                bs.levelUp(p);
-                es.subtractResourceAmount(user.getId(), Info.RES_GOLD, price);
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
             }else{
                return new ModelAndView("redirect:/building?x="+x+"&y=" +y+"&m="+ messageSource.getMessage("error.noGold",null,locale));
             }

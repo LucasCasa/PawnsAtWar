@@ -1,7 +1,5 @@
 package ar.edu.itba.model;
 
-<<<<<<< HEAD
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,20 +13,23 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "resource")
-=======
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
+
 public class Resource {
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "resource_id_seq")
+	@SequenceGenerator(sequenceName = "resource_id_seq", name = "resource_id_seq", allocationSize = 1)
+	@Column(name = "id")
+	private long id;
+		
+	@Column(nullable = false, name = "type")
 	private int type;
+	@Column(nullable = false, name = "amount")
 	private int quantity;
-<<<<<<< HEAD
 	
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name="idPlayer")
 	private User userResource;
-	
-=======
-	private User user;
->>>>>>> d9433c89c73caca8960c804bdb6b8b63df0fe4cf
+
 	
 	/* package */ Resource(){
 		
@@ -86,7 +87,7 @@ public class Resource {
 
 	@Override
 	public String toString() {
-		return "Type: " + type + " - Qty: " + quantity + "  | userid: " + userResource.getId();
+		return "Type: " + type + "  Qty: " + quantity + "  | userid: " + userResource.getId();
 	}
 	
 	
