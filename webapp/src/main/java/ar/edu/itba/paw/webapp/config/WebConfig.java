@@ -18,6 +18,7 @@ import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.DatabasePopulator;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -92,16 +93,25 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		messageSource.setCacheSeconds(5);
 		return messageSource;
 	}
-	
-//	 @Bean
-//	 public PlatformTransactionManager transactionManager(final DataSource ds) {
-//		 return new DataSourceTransactionManager(ds);
-//	 }
-	 
+	@Bean
+	public JavaMailSenderImpl mailSender() {
+		JavaMailSenderImpl jmsi = new JavaMailSenderImpl();
+		Properties p = new Properties();
+		p.setProperty("mail.transport.protocol", "smtp");
+		p.setProperty("mail.smtp.auth", "true");
+		p.setProperty("mail.smtp.starttls.enable", "true");
+		p.setProperty("mail.debug", "true");
+		jmsi.setHost("smtp.gmail.com");
+		jmsi.setPort(587);
+		jmsi.setUsername("pawnsatwar@gmail.com");
+		jmsi.setPassword("hoyquiero");
+		jmsi.setJavaMailProperties(p);
+		return jmsi;
+	}
 	 @Bean
-	    public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
-	         return new JpaTransactionManager(emf);
-	    }
+	 public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
+	     return new JpaTransactionManager(emf);
+	 }
 
 	@Bean
 	public org.springframework.web.filter.CharacterEncodingFilter characterEncodingFilter() {
@@ -122,8 +132,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		properties.setProperty("hibernate.hbm2ddl.auto", "update");
 		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
 		// Si ponen esto en prod, hay tabla!!
-		properties.setProperty("hibernate.show_sql", "true");
-		properties.setProperty("format_sql", "true");
+		//properties.setProperty("hibernate.show_sql", "true");
+		//properties.setProperty("format_sql", "true");
 		factoryBean.setJpaProperties(properties);
 		return factoryBean;
 	}

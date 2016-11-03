@@ -5,6 +5,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
+import ar.edu.itba.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -36,12 +37,12 @@ public class HomePageController {
 	private MessageSource messageSource;
 
 
-
 	@RequestMapping("/")
 	public ModelAndView home(@ModelAttribute("userId") final User user){
 		if(user == null) {
 			return new ModelAndView("redirect:/login");
 		}
+
 		return new ModelAndView("redirect:/map");
 	}
 

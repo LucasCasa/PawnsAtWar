@@ -33,6 +33,8 @@ public class ArmyController {
     private EmpireService es;
     @Autowired
     private MessageSource messageSource;
+    @Autowired
+    private PAWMailService mailService;
 
     @RequestMapping(value="/armies")
     public ModelAndView showArmies(@ModelAttribute("user") final User user,
