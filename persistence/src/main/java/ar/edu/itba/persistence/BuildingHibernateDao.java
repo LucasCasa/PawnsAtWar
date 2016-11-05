@@ -31,7 +31,7 @@ public class BuildingHibernateDao implements BuildingDao {
 
 	@Override
 	public void setLevel(Point p, int level) {
-		final Query query = em.createQuery("update Building set level = :level where x = :x AND y = :y");
+		final Query query = em.createQuery("update Sector set level = :level where x = :x AND y = :y");
 		query.setParameter("level",level);
 		query.setParameter("x", p.getX());
 		query.setParameter("y", p.getY());

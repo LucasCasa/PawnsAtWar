@@ -147,7 +147,8 @@ public class ArmyController {
             }
             Army d = as.getStrongest(s.getUser() );
             Army a = as.getArmyById(id);
-            Map<String,Object> values = new HashMap<>();
+            Map<String,Integer> values = new HashMap<>();
+            int res = 0;
             values.put("a0b",0);
             values.put("a1b",0);
             values.put("a2b",0);
@@ -175,6 +176,7 @@ public class ArmyController {
                     loserP = attackerP;
                     prefixD ="a";
                     prefixW ="d";
+                    res = 1;
                 }else if(attackerP > defenderP){
                     mav.addObject("result",messageSource.getMessage("attackerWin",null,locale));
                     awin = a;
@@ -183,6 +185,7 @@ public class ArmyController {
                     prefixD ="d";
                     prefixW ="a";
                     ss.deleteBuilding(new Point(xprime,yprime));
+                    res = 2;
                 }else{
                     mav.addObject("result",messageSource.getMessage("draw",null,locale));
                     for(Troop t : a.getTroops()){
@@ -196,6 +199,7 @@ public class ArmyController {
                     as.deleteArmy(id);
                     as.deleteArmy(d.getIdArmy());
                     mav.addAllObjects(values);
+                    sendMail(values,user,s.getUser(),0);
                     return mav;
                 }
                 List<Troop> defeated = adef.getTroops();
@@ -220,6 +224,7 @@ public class ArmyController {
                     values.put(prefixD+t.getType()+"l",t.getQuantity());
                 }
                 mav.addAllObjects(values);
+                sendMail(values,user,s.getUser(),res);
                 return mav;
             }
             mav.addObject("result",messageSource.getMessage("noDefenderArmy",null,locale));
@@ -229,10 +234,35 @@ public class ArmyController {
             }
             ss.deleteBuilding(new Point(xprime,yprime));
             mav.addAllObjects(values);
+            sendMail(values,user,s.getUser(),2);
         }
         return mav;
     }
+    private void sendMail(Map<String,Integer> res,User a, User d,int result){
+        String header;
+        String body;
+        if(result == 0)
+            header = "Fuiste atacado por " +a.getName() +": Fue un empate\n";
+        else if(result == 1)
+            header = "Fuiste atacado por "+ a.getName() +": Ganaste\n";
+        else
+            header = "Fuiste atacado por "+ a.getName() +": Perdiste\n";
 
+        body =  header + "Tus tropas:\n\tGerreros:\n\t\tOriginales: "+ res.get("d0b") + "\n\t\tMuertos: " +
+                res.get("d0l") + "\n\t\tSobrevivientes: " + (res.get("d0b") - res.get("d0l")) + "\n\n" +
+                "\tArqueros:\n\t\tOriginales: "+ res.get("d1b") + "\n\t\tMuertos: " +
+                res.get("d1l") + "\n\t\tSobrevivientes: " + (res.get("d1b") - res.get("d1l")) + "\n\n" +
+                "\tCaballeros:\n\t\tOriginales: "+ res.get("d2b") + "\n\t\tMuertos: " +
+                res.get("d2l") + "\n\t\tSobrevivientes: " + (res.get("d2b") - res.get("d2l")) + "\n\n" +
+                "Atacante:\n\tGerreros:\n\t\tOriginales: "+ res.get("a0b") + "\n\t\tMuertos: " +
+                res.get("a0l") + "\n\t\tSobrevivientes: " + (res.get("a0b") - res.get("a0l")) + "\n\n" +
+                "\tArqueros:\n\t\tOriginales: "+ res.get("a1b") + "\n\t\tMuertos: " +
+                res.get("a1l") + "\n\t\tSobrevivientes: " + (res.get("a1b") - res.get("a1l")) + "\n\n" +
+                "\tCaballeros:\nOriginales: "+ res.get("a2b") + "\n\t\tMuertos: " +
+                res.get("a2l") + "\n\t\tSobrevivientes: " + (res.get("a2b") - res.get("a2l")) + "\n\n";
+
+        mailService.sendEmail(d.getEmail(),"Fuiste atacado",body);
+    }
     @RequestMapping(value="/train", method = RequestMethod.POST)
     public ModelAndView train(@RequestParam String type,
                               @RequestParam String amount,
