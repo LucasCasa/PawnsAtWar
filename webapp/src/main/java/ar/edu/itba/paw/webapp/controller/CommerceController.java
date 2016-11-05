@@ -13,7 +13,7 @@ import ar.edu.itba.interfaces.CommerceService;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.model.TradeOffer;
 import ar.edu.itba.model.User;
-import ar.edu.itba.paw.webapp.dataClasses.Validator;
+import ar.edu.itba.paw.webapp.data.Validator;
 
 import javax.servlet.http.HttpSession;
 

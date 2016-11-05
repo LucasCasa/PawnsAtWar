@@ -5,7 +5,6 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
-import ar.edu.itba.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -21,8 +20,8 @@ import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
-import ar.edu.itba.paw.webapp.dataClasses.Info;
-import ar.edu.itba.paw.webapp.dataClasses.Validator;
+import ar.edu.itba.paw.webapp.data.Info;
+import ar.edu.itba.paw.webapp.data.Validator;
 
 @Controller
 public class HomePageController {

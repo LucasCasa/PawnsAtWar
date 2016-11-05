@@ -2,8 +2,8 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.interfaces.*;
 import ar.edu.itba.model.*;
-import ar.edu.itba.paw.webapp.dataClasses.Info;
-import ar.edu.itba.paw.webapp.dataClasses.Validator;
+import ar.edu.itba.paw.webapp.data.Info;
+import ar.edu.itba.paw.webapp.data.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;

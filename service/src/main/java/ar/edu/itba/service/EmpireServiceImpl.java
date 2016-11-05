@@ -1,6 +1,9 @@
 package ar.edu.itba.service;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Comparator;
@@ -171,7 +174,7 @@ public class EmpireServiceImpl implements EmpireService{
 	public void createUser(User user) {
 		boolean resp = ss.createCastle(user);
 		if(resp){
-			ed.createEmpire(user, new Timestamp(Calendar.getInstance().getTime().getTime()));
+			ed.createEmpire(user,Timestamp.valueOf(LocalDateTime.now()));
 		ed.createResource(user, 0, INITIAL_VALUE);
 		ed.createResource(user, 1, INITIAL_VALUE);
 		}

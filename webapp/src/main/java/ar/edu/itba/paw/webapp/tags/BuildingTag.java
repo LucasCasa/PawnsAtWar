@@ -1,8 +1,8 @@
 package ar.edu.itba.paw.webapp.tags;
 
 import ar.edu.itba.model.Point;
-import ar.edu.itba.paw.webapp.dataClasses.Info;
-import ar.edu.itba.paw.webapp.dataClasses.InformationBuilding;
+import ar.edu.itba.paw.webapp.data.Info;
+import ar.edu.itba.paw.webapp.data.InformationBuilding;
 import org.springframework.context.MessageSource;
 
 import javax.servlet.jsp.JspException;

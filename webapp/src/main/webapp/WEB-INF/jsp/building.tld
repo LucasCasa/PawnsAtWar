@@ -11,7 +11,7 @@
             <name>info</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>ar.edu.itba.paw.webapp.dataClasses.InformationBuilding</type>
+            <type>ar.edu.itba.paw.webapp.data.InformationBuilding</type>
         </attribute>
         <attribute>
             <name>clas</name>

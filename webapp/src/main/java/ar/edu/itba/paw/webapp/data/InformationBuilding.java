@@ -1,7 +1,4 @@
-package ar.edu.itba.paw.webapp.dataClasses;
-
-import java.util.ArrayList;
-import java.util.List;
+package ar.edu.itba.paw.webapp.data;
 
 /**
  * Created by root on 9/18/16.

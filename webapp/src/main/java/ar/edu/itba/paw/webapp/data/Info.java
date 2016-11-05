@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.dataClasses;
+package ar.edu.itba.paw.webapp.data;
 
 import java.util.ArrayList;
 import java.util.List;
