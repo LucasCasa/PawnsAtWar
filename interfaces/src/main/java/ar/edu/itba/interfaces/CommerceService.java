@@ -3,6 +3,7 @@ package ar.edu.itba.interfaces;
 import java.util.List;
 
 import ar.edu.itba.model.TradeOffer;
+import ar.edu.itba.model.User;
 
 public interface CommerceService {
 	
@@ -24,7 +25,7 @@ public interface CommerceService {
 	 * @param to The accepted trade offer
 	 * @param userIdPartner The user which accepts the offer
 	 */
-	public void acceptOffer(TradeOffer to, int userIdPartner);
+	public void acceptOffer(TradeOffer to, User u);
 
 	/**
 	 * Removes a trade offer, replenishing the offered resources
@@ -43,14 +44,14 @@ public interface CommerceService {
 	 * @param id The user's id
 	 * @return A list with all the trade offers
 	 */
-	public List<TradeOffer> getAllOffers(int id);
+	public List<TradeOffer> getAllOffers(User u);
 	
 	/**
 	 * Displays all available offers for a certain user
 	 * @param id The user's id
 	 * @return A list with all tradeoffers avaiable for the user
 	 */
-	public List<TradeOffer> showOffers(int id);
+	public List<TradeOffer> showOffers(User u);
 	
 	/**
 	 * Creates a trade offer
@@ -61,5 +62,5 @@ public interface CommerceService {
 	 * @param receiveAmount The resource amount received
 	 * @return Whether the creation was successful
 	 */
-	public boolean createOffer(int id, int giveType, int giveAmount, int getType, int receiveAmount);
+	public boolean createOffer(User u, int giveType, int giveAmount, int getType, int receiveAmount);
 }

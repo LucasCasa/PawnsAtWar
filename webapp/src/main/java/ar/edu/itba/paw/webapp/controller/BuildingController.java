@@ -1,18 +1,14 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import ar.edu.itba.interfaces.BuildingService;
-import ar.edu.itba.model.Building;
-import ar.edu.itba.paw.webapp.dataClasses.Info;
+import ar.edu.itba.paw.webapp.data.Info;
 import ar.edu.itba.interfaces.UserService;
-import ar.edu.itba.paw.webapp.dataClasses.Validator;
+import ar.edu.itba.paw.webapp.data.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,7 +20,7 @@ import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
-import ar.edu.itba.paw.webapp.dataClasses.InformationBuilding;
+import ar.edu.itba.paw.webapp.data.InformationBuilding;
 
 import javax.servlet.http.HttpSession;
 
@@ -37,8 +33,6 @@ public class BuildingController {
 
     @Autowired
     private SectorService ss;
-    @Autowired
-    private BuildingService bs;
     @Autowired
 	private EmpireService es;
     @Autowired
@@ -82,14 +76,10 @@ public class BuildingController {
             mav.addObject("p",new Point(Integer.parseInt(x),Integer.parseInt(y)));
             mav.addObject("plainTerrainBuildings",plainTerrainBuildings);
             mav.addObject("goldTerraunBuilding",goldTerrainBuilding);
-            mav.addObject("price", bs.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user.getId()));
-            if(sector instanceof Building){
-                mav.addObject("level",((Building) sector).getLevel());
-            }else{
-                mav.addObject("level",1);
-            }
-            mav.addObject("resList",es.getResources(user.getId()));
-            mav.addObject("ratesList",es.getRates(user.getId()));
+            mav.addObject("price", ss.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user));
+            mav.addObject("level",sector.getLevel());
+    		mav.addObject("resList",es.getResources(user));
+            mav.addObject("ratesList",es.getRates(user));
             mav.addObject("error",error);
             mav.addObject("success",success);
             mav.addObject("locale",locale);
@@ -101,7 +91,7 @@ public class BuildingController {
 
     }
 
-    @Transactional
+    
     @RequestMapping(value="/build", method = RequestMethod.POST)
     public ModelAndView build(@RequestParam String x,
                               @RequestParam String y,
@@ -124,7 +114,7 @@ public class BuildingController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantConstruct",null,locale));
         }
         
-        if(es.build(user.getId(),xprime,yprime,typep)){
+        if(es.build(user,xprime,yprime,typep)){
         	return new ModelAndView("redirect:/map");
         }else{
         	return new ModelAndView("redirect:/building?x=" + xprime + "&y=" + yprime+ "&e=" + messageSource.getMessage("error.noGold",null,locale));
@@ -132,7 +122,7 @@ public class BuildingController {
       
     }
 
-    @Transactional
+    
     @RequestMapping(value="/demolish", method = RequestMethod.POST)
     public ModelAndView demolish(@RequestParam String x,
                                  @RequestParam String y,
@@ -149,7 +139,7 @@ public class BuildingController {
         ss.deleteBuilding(p);
         return new ModelAndView("redirect:/map");
     }
-    @Transactional
+    
     @RequestMapping(value="/levelup", method = RequestMethod.POST)
     public ModelAndView levelup(@RequestParam String x,
                                 @RequestParam String y,
@@ -163,14 +153,14 @@ public class BuildingController {
         if(!s.getUser().equals(user)){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYourPosition",null,locale));
         }
-        if(!(s instanceof Building)){
-            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantLevelUpTerrain",null,locale));
-        }
-        if(((Building) s).getLevel() < 20){
-            int price = bs.getPrice(p,user.getId()) + (int) Math.pow(((Building) s).getLevel(),4);
-            if(es.getResource(user.getId(),Info.RES_GOLD).getQuantity() >= price ) {
-                bs.levelUp(p);
-                es.subtractResourceAmount(user.getId(), Info.RES_GOLD, price);
+//        if(!(s.getLevel() == 1)){
+//            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantLevelUpTerrain",null,locale));
+//        }
+        if(s.getLevel() < 20){
+            int price = ss.getPrice(p,user) + (int) Math.pow(s.getLevel(),4);
+            if(es.getResource(user,Info.RES_GOLD).getQuantity() >= price ) {
+                ss.levelUp(p);
+                es.subtractResourceAmount(user, Info.RES_GOLD, price);
             }else{
                return new ModelAndView("redirect:/building?x="+x+"&y=" +y+"&m="+ messageSource.getMessage("error.noGold",null,locale));
             }
@@ -186,7 +176,6 @@ public class BuildingController {
         if(session.getAttribute("userId") == null) {
             return null;
         }
-
         return  us.findById((Integer)session.getAttribute("userId"));
 
     }

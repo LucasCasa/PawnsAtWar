@@ -1,59 +1,44 @@
 package ar.edu.itba.model;
 
-import java.sql.Time;
-import java.util.List;
+import java.io.Serializable;
+import java.sql.Timestamp;
+import javax.persistence.*;
 
-public class Empire {
-	private User user;
-	private List<Building> buildings;
-	private List<Army> army;
-	private List<Resource> resources;
-	private Time lastUpdate;
+@Entity
+@Table(name = "empire")
+public class Empire implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@OneToOne(optional=false)
+    @JoinColumn(name="idPlayer", nullable=false, updatable=false)
+	private User userEmpire;
+
+	@Column(nullable = false)
+	private Timestamp lastUpdate;
+ 	
+		public Empire(User u, Timestamp timestamp) {
+			this.userEmpire = u;
+			this.lastUpdate = timestamp;
+		}
 	
-	public Empire(User user, List<Building> buildings, List<Army> army, List<Resource> resources, Time lastUpdate) {
-		this.user = user;
-		this.buildings = buildings;
-		this.army = army;
-		this.resources = resources;
-		this.lastUpdate = lastUpdate;
+	/* package */ Empire(){
+		
 	}
 
-	public Time getLastUpdate() {
+	public Timestamp getLastUpdate() {
 		return lastUpdate;
 	}
 
-	public void setLastUpdate(Time lastUpdate) {
+	public void setLastUpdate(Timestamp lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
 
 	public User getUser() {
-		return user;
-	}
-
-	public List<Building> getBuildings() {
-		return buildings;
-	}
-
-	public List<Army> getArmy() {
-		return army;
-	}
-
-	public List<Resource> getResources() {
-		return resources;
-	}
-	
-	public void addResources(Resource r){
-		resources.add(r);
-	}
-	
-
-	public void addBuilding(Building b){
-		buildings.add(b);
-	}
-	
-
-	public void addArmy(Army a){
-		army.add(a);
+		return userEmpire;
 	}
 }
 

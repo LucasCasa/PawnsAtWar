@@ -1,6 +1,6 @@
 package ar.edu.itba.paw.webapp.tags;
 
-import ar.edu.itba.paw.webapp.dataClasses.Info;
+import ar.edu.itba.paw.webapp.data.Info;
 
 import java.io.IOException;
 

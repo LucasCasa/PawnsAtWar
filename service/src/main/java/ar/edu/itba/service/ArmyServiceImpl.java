@@ -4,14 +4,17 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.ArmyDao;
 import ar.edu.itba.interfaces.ArmyService;
 import ar.edu.itba.interfaces.TroopService;
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
+import ar.edu.itba.model.User;
 
 @Service
+@Transactional
 public class ArmyServiceImpl implements ArmyService {
 	
 	@Autowired
@@ -21,16 +24,16 @@ public class ArmyServiceImpl implements ArmyService {
 	private TroopService ts;
 
 	@Override
-	public List<Army> getArmies(int idPlayer) {
-		return ad.getArmiesByUserId(idPlayer);
+	public List<Army> getArmies(User u) {
+		return ad.getArmiesByUserId(u);
 	}
 
 	@Override
-	public Army getOrCreateArmy(Point p, int idPlayer) {
-		if(ad.exists(p,idPlayer)){
-			return ad.getArmy(p,idPlayer); 
+	public Army getOrCreateArmy(Point p, User u) {
+		if(ad.exists(p,u)){
+			return ad.getArmy(p,u); 
 		}
-		return ad.addArmy(p, idPlayer);
+		return ad.addArmy(p, u);
 	}
 
 	@Override
@@ -39,8 +42,8 @@ public class ArmyServiceImpl implements ArmyService {
 	}
 
 	@Override
-	public boolean belongs(int userId, int idArmy) {
-		return ad.belongs(userId, idArmy);
+	public boolean belongs(User u, int idArmy) {
+		return ad.belongs(u, idArmy);
 	}
 	
 	@Override
@@ -55,10 +58,10 @@ public class ArmyServiceImpl implements ArmyService {
 	}
 
 	@Override
-	public Army getStrongest(int userId) {
+	public Army getStrongest(User u) {
 		Army strongest = null;
 		double value = 0;
-		List<Army> armies = ad.getArmiesByUserId(userId);
+		List<Army> armies = ad.getArmiesByUserId(u);
 		for(Army a: armies){
 			if(a.getAvailable()){
 				double aux = ts.getValue(a.getIdArmy());

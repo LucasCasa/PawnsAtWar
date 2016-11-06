@@ -18,15 +18,17 @@
 				<tr>
 					<td>
 					<c:forEach var="res" items="${resList}">
-						  <input type="radio" name="giveType" onclick="checkSumbitAvailability();"value="${res.getType()}"><re:Resource rate="0" type="${res.getType()}" amount="" path="${pageContext.request.contextPath}"/></input>
+						<label>
+						  <input type="radio" name="giveType" onclick="selectRadioGive(${res.getType()});"value="${res.getType()}"><re:Resource rate="0" type="${res.getType()}" amount="" path="${pageContext.request.contextPath}"/></input></label>
 					</c:forEach>
 						<spring:message code="commerce.Quantity"/>
 					<input type="number" name="giveQty" min="1" onkeyup="checkSumbitAvailability();">
-					<label>
 					</td>
 					<td>
 					<c:forEach var="res" items="${resList}">
-						  <input type="radio" name="getType" onclick="checkSumbitAvailability();" value="${res.getType()}"><re:Resource rate="0" type="${res.getType()}" amount="" path="${pageContext.request.contextPath}"/></input>
+						<label>
+						  <input type="radio" name="getType" onclick="selectRadioGet(${res.getType()});" value="${res.getType()}"><re:Resource rate="0" type="${res.getType()}" amount="" path="${pageContext.request.contextPath}"/></input>
+						  </label>
 					</c:forEach>
 						<spring:message code="commerce.Quantity"/>
 					<input type="number" name="getQty" min="1" onkeyup="checkSumbitAvailability();">

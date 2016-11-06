@@ -1,18 +1,49 @@
 package ar.edu.itba.model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
+
+@Entity
+@Table(name = "commerce")
 public class TradeOffer {
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "commerce_tradeid_seq")
+	@SequenceGenerator(sequenceName = "commerce_tradeid_seq", name = "commerce_tradeid_seq", allocationSize = 1)
+	@Column(name = "tradeId")
 	private int id;
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
+	@JoinColumn(name="idPlayer")
 	private User owner;
-	private Resource offers;
-	private Resource receives;
+	@Column(name = "offertype",nullable = false)
+	private int offertype;
+	@Column(name = "offeramount",nullable = false)
+	private int offeramount;
+	@Column(name = "receivetype",nullable = false)
+	private int receivetype;
+	@Column(name = "receiveamount", nullable = false)
+	private int receiveamount;
+
 	
-	public TradeOffer(final int id,final User owner,final Resource offers,final Resource receives){
-		this.id = id;
+	
+	public TradeOffer(final User owner,final int offertype,final int offeramount,  final int receivetype, final int receiveamount){
 		this.owner = owner;
-		this.offers = offers;
-		this.receives = receives;
+		this.offeramount= offeramount;
+		this.offertype = offertype;
+		this.receiveamount = receiveamount;
+		this.receivetype = receivetype;
+	}
+
+	/* package */ TradeOffer(){
+		
 	}
 	
 	public int getId() {
@@ -29,19 +60,23 @@ public class TradeOffer {
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-	public Resource getOffer() {
-		return offers;
-	}
-	public void setOffers(Resource offers) {
-		this.offers = offers;
-	}
-	public Resource getReceives() {
-		return receives;
-	}
-	public void setReceives(Resource receives) {
-		this.receives = receives;
-	}
 	
+	public int getOfferAmount() {
+		return offeramount;
+	}
+
+	public int getOfferType() {
+		return offertype;
+	}
+
+	public int getReceiveType() {
+		return receivetype;
+	}
+
+	public int getReceiveAmount() {
+		return receiveamount;
+	}
+
 	public int hashCode(){
 		return this.id;
 	}

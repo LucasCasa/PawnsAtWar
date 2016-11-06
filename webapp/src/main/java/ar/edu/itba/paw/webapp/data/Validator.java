@@ -1,4 +1,4 @@
-package ar.edu.itba.paw.webapp.dataClasses;
+package ar.edu.itba.paw.webapp.data;
 
 /**
  * Created by lucas on 05/10/16.

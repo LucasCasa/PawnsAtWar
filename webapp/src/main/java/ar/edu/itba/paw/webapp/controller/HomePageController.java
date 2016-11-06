@@ -14,15 +14,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.itba.interfaces.BuildingService;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
-import ar.edu.itba.paw.webapp.dataClasses.Info;
-import ar.edu.itba.paw.webapp.dataClasses.Validator;
+import ar.edu.itba.paw.webapp.data.Info;
+import ar.edu.itba.paw.webapp.data.Validator;
 
 @Controller
 public class HomePageController {
@@ -32,12 +31,9 @@ public class HomePageController {
 	@Autowired
 	private EmpireService es;
 	@Autowired
-	private BuildingService bs;
-	@Autowired
 	private UserService us;
 	@Autowired
 	private MessageSource messageSource;
-
 
 
 	@RequestMapping("/")
@@ -45,6 +41,7 @@ public class HomePageController {
 		if(user == null) {
 			return new ModelAndView("redirect:/login");
 		}
+
 		return new ModelAndView("redirect:/map");
 	}
 
@@ -58,7 +55,7 @@ public class HomePageController {
 		if(user == null){
 			return new ModelAndView("redirect:/");
 		}
-		if(bs.getCastle(user.getId()) == null){
+		if(ss.getCastle(user) == null){
 			session.removeAttribute("userId");
 			return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.gameOver",null,locale));
 		}
@@ -66,7 +63,7 @@ public class HomePageController {
 		int yPrime;
 
 		if(x == null && y == null){
-			Point p = bs.getCastle(user.getId());
+			Point p = ss.getCastle(user);
 			xPrime = p.getX();
 			yPrime = p.getY();
 		}else{
@@ -82,8 +79,8 @@ public class HomePageController {
 
 		List<List<Sector>> elements;
 		elements = ss.getSector(new Point(xPrime,yPrime), Info.VIEW_RANGE);
-		mav.addObject("resList",es.getResources(user.getId()));
-		mav.addObject("ratesList",es.getRates(user.getId()));
+		mav.addObject("resList",es.getResources(user));
+		mav.addObject("ratesList",es.getRates(user));
 		mav.addObject("map",elements);
 		mav.addObject("x",xPrime);
 		mav.addObject("y",yPrime);

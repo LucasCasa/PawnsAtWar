@@ -1,9 +1,8 @@
 package ar.edu.itba.paw.webapp.tags;
 
 import ar.edu.itba.model.Point;
-import ar.edu.itba.paw.webapp.dataClasses.Info;
-import ar.edu.itba.paw.webapp.dataClasses.InformationBuilding;
-import org.springframework.beans.factory.annotation.Autowired;
+import ar.edu.itba.paw.webapp.data.Info;
+import ar.edu.itba.paw.webapp.data.InformationBuilding;
 import org.springframework.context.MessageSource;
 
 import javax.servlet.jsp.JspException;
@@ -29,7 +28,6 @@ public class BuildingTag extends SimpleTagSupport {
 
     public void doTag() throws JspException, IOException {
         JspWriter out = getJspContext().getOut();
-        System.out.println(path);
         switch (info.getId()) {
             case Info.EMPTY:
             case Info.TERR_GOLD:

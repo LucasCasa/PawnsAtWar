@@ -1,7 +1,9 @@
 package ar.edu.itba.paw.webapp.config;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Properties;
 
+import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Value;
@@ -11,11 +13,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
-import org.springframework.jdbc.datasource.init.DataSourceInitializer;
-import org.springframework.jdbc.datasource.init.DatabasePopulator;
-import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.JpaVendorAdapter;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
@@ -56,23 +59,22 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		dataSource.setPassword("idif6ieZ");
 		return dataSource;
 	}
-
-	@Bean
-	public DataSourceInitializer dataSourceInitializer (final DataSource ds){
-		DataSourceInitializer dsi= new DataSourceInitializer();
-		dsi.setDataSource(ds);
-		dsi.setDatabasePopulator(databasePopulator());
-		return dsi;
-
-	}
+//
+//	@Bean
+//	public DataSourceInitializer dataSourceInitializer (final DataSource ds){
+//		DataSourceInitializer dsi= new DataSourceInitializer();
+//		dsi.setDataSource(ds);
+//		dsi.setDatabasePopulator(databasePopulator());
+//		return dsi;
+//
+//	}
 	
-
-	private DatabasePopulator databasePopulator(){
-		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
-		dbp.addScript(schemaSql);
-		dbp.addScript(mapSql);
-		return dbp;
-	}
+//	private DatabasePopulator databasePopulator(){
+//		final ResourceDatabasePopulator dbp = new ResourceDatabasePopulator();
+//		dbp.addScript(schemaSql);
+//		//dbp.addScript(mapSql);
+//		return dbp;
+//	}
 
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -87,10 +89,24 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		messageSource.setCacheSeconds(5);
 		return messageSource;
 	}
-	
+	@Bean
+	public JavaMailSenderImpl mailSender() {
+		JavaMailSenderImpl jmsi = new JavaMailSenderImpl();
+		Properties p = new Properties();
+		p.setProperty("mail.transport.protocol", "smtp");
+		p.setProperty("mail.smtp.auth", "true");
+		p.setProperty("mail.smtp.starttls.enable", "true");
+		p.setProperty("mail.debug", "true");
+		jmsi.setHost("smtp.gmail.com");
+		jmsi.setPort(587);
+		jmsi.setUsername("pawnsatwar@gmail.com");
+		jmsi.setPassword("hoyquiero");
+		jmsi.setJavaMailProperties(p);
+		return jmsi;
+	}
 	 @Bean
-	 public PlatformTransactionManager transactionManager(final DataSource ds) {
-		 return new DataSourceTransactionManager(ds);
+	 public PlatformTransactionManager transactionManager(final EntityManagerFactory emf) {
+	     return new JpaTransactionManager(emf);
 	 }
 
 	@Bean
@@ -99,6 +115,23 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		characterEncodingFilter.setEncoding("UTF-8");
 		characterEncodingFilter.setForceEncoding(true);
 		return characterEncodingFilter;
+	}
+	
+	@Bean
+	public LocalContainerEntityManagerFactoryBean entityManagerFactory(){
+		final LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
+		factoryBean.setPackagesToScan("ar.edu.itba.model");
+		factoryBean.setDataSource(dataSource());
+		final JpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
+		factoryBean.setJpaVendorAdapter(vendorAdapter);
+		final Properties properties = new Properties();
+		properties.setProperty("hibernate.hbm2ddl.auto", "update");
+		properties.setProperty("hibernate.dialect", "org.hibernate.dialect.PostgreSQL92Dialect");
+		// Si ponen esto en prod, hay tabla!!
+		//properties.setProperty("hibernate.show_sql", "true");
+		//properties.setProperty("format_sql", "true");
+		factoryBean.setJpaProperties(properties);
+		return factoryBean;
 	}
 	
 }

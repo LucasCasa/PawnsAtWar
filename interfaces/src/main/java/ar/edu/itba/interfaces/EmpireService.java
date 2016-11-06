@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Set;
 
 import ar.edu.itba.model.Resource;
+import ar.edu.itba.model.User;
 
 public interface EmpireService {
 	
@@ -13,7 +14,7 @@ public interface EmpireService {
 	 * @param userid The id of the user who owns the empire
 	 * @return The list with all the resources
 	 */
-	public Set<Resource> getResources(int userid);
+	public Set<Resource> getResources(User u);
 
 	/**
 	 * Attempts to build a building on the specified tile
@@ -23,7 +24,7 @@ public interface EmpireService {
 	 * @param typep The type of building
 	 * @return If it was possible to build
 	 */
-	public boolean build(int id, int xprime, int yprime, int type);
+	public boolean build(User u, int xprime, int yprime, int type);
 	
 	/**
 	 * Returns the rate at which the empire produces certain resource type
@@ -31,21 +32,21 @@ public interface EmpireService {
 	 * @param type the type of resource
 	 * @return the rate of resource produced per second
 	 */
-	public int getRate(int userid, int type);
+	public int getRate(User u, int type);
 	
 	/**
 	 * Returns a map where the with Resource as key and the rate as value
 	 * @param userid the users id
 	 * @return A map <Resource,Rate>
 	 */
-	public Map<Resource,Integer> getResourceMap(int userid);
+	public Map<Resource,Integer> getResourceMap(User u);
 	
 	/**
 	 * Gets a list of the rates at which each respective resource is produced
-	 * @param userid the users id
+	 * @param user the users id
 	 * @return A list containing all rates
 	 */
-	public List<Integer> getRates(int userid);
+	public List<Integer> getRates(User u);
 
 	/**
 	 * Returns the resource of type specified matching the user's id
@@ -53,7 +54,7 @@ public interface EmpireService {
 	 * @param type The resource type
 	 * @return The requested resource
 	 */
-	public Resource getResource(int id, int type);
+	public Resource getResource(User u, int type);
 
 	/**
 	 * Increases the quantity of resource type of the user with id specified
@@ -61,7 +62,7 @@ public interface EmpireService {
 	 * @param type The resource's type
 	 * @param quantity The amount to be increased
 	 */
-	public void addResourceAmount(int userid, int type, int quantity);
+	public void addResourceAmount(User u, int type, int quantity);
 
 	/**
 	 * Subtracts the quantity of resource type of the user with specified id
@@ -69,14 +70,16 @@ public interface EmpireService {
 	 * @param type The resource type
 	 * @param quantity The amount to be decreased
 	 */
-	public void subtractResourceAmount(int userid, int type, int quantity);
+	public void subtractResourceAmount(User u, int type, int quantity);
 
 	/**
 	 * Creates the empire, resources and castle of the user
 	 * @param userid
 	 * @return the point in which the castle is in
 	 */
-	public void createUser(int userid);
-	
+	public void createUser(User user);
+
+	public void deleteUser(User user);
+
 	
 }

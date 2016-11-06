@@ -54,8 +54,8 @@ create table if not exists troop (
 );
 
 create table if not exists empire (
-	idPlayer integer,
-	lastUpdate timestamp,
+	idPlayer integer not null,
+	lastUpdate timestamp not null,
 	PRIMARY KEY (idPlayer),
 	FOREIGN KEY (idPlayer) REFERENCES userPaw ON DELETE CASCADE
 );
