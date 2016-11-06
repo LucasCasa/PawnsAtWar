@@ -21,7 +21,7 @@ public class TradeOffer {
 	@Column(name = "tradeId")
 	private int id;
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
-	@JoinColumn(name="idPlayer")
+	@JoinColumn(name="ownerId")
 	private User owner;
 	@Column(name = "offertype",nullable = false)
 	private int offertype;
