@@ -44,6 +44,7 @@ public class EmpireHibernateDao implements EmpireDao {
 	public void setResource(User u, int id, int amount) {
 		Resource r = getResource(u,id);
 		r.setQuantity(amount);
+		u.getResources().get(id).setQuantity(amount);
 		em.merge(r);
 	}
 

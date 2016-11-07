@@ -32,21 +32,21 @@ public interface EmpireService {
 	 * @param type the type of resource
 	 * @return the rate of resource produced per second
 	 */
-	public int getRate(User u, int type);
+	public double getRate(User u, int type);
 	
 	/**
 	 * Returns a map where the with Resource as key and the rate as value
 	 * @param userid the users id
 	 * @return A map <Resource,Rate>
 	 */
-	public Map<Resource,Integer> getResourceMap(User u);
+	public Map<Resource,Double> getResourceMap(User u);
 	
 	/**
 	 * Gets a list of the rates at which each respective resource is produced
 	 * @param user the users id
 	 * @return A list containing all rates
 	 */
-	public List<Integer> getRates(User u);
+	public List<Double> getRates(User u);
 
 	/**
 	 * Returns the resource of type specified matching the user's id

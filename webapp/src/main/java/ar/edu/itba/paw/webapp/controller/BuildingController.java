@@ -162,7 +162,7 @@ public class BuildingController {
                 ss.levelUp(p);
                 es.subtractResourceAmount(user, Info.RES_GOLD, price);
             }else{
-               return new ModelAndView("redirect:/building?x="+x+"&y=" +y+"&m="+ messageSource.getMessage("error.noGold",null,locale));
+               return new ModelAndView("redirect:/building?x="+x+"&y=" +y+"&e="+ messageSource.getMessage("error.noGold",null,locale));
             }
         }else{
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.maxLevel",null,locale));

@@ -65,7 +65,7 @@ public class EmpireServiceImpl implements EmpireService{
 		List<Resource> list = u.getResources();
 		int seconds = (int)timeLapsed(u);
 		for(Resource r: list){
-			int cant = r.getQuantity() + seconds*getRate(u, r.getType());
+			int cant = (int) (r.getQuantity() + seconds*getRate(u, r.getType()));
 			ed.setResource(u, r.getType(), cant);
 		}
 	}
@@ -94,7 +94,6 @@ public class EmpireServiceImpl implements EmpireService{
 		if(ss.getSector(p).getType() == 5 && type != 4){
 			return false;
 		}
-		updateResources(u);
 		subtractResourceAmount(u, resType, value);
 		ss.addBuilding(p, u, type);
 		return true;
@@ -109,8 +108,8 @@ public class EmpireServiceImpl implements EmpireService{
 
 
 	@Override
-	public Map<Resource, Integer> getResourceMap(User u) {
-		Map<Resource,Integer> map = new HashMap<>();
+	public Map<Resource, Double> getResourceMap(User u) {
+		Map<Resource,Double> map = new HashMap<>();
 		List<Resource> l = u.getResources();
 		for(Resource r: l){
 			map.put(r, getRate(u,r.getType()));
@@ -119,8 +118,8 @@ public class EmpireServiceImpl implements EmpireService{
 	}
 	
 	@Override
-	public List<Integer> getRates(User u){
-		List<Integer> l = new ArrayList<>();
+	public List<Double> getRates(User u){
+		List<Double> l = new ArrayList<>();
 		for(Resource r: u.getResources()){
 			l.add(getRate(u,r.getType()));
 		}
@@ -128,10 +127,10 @@ public class EmpireServiceImpl implements EmpireService{
 	}
 	
 	@Override
-	public int getRate(User u, int type){
+	public double getRate(User u, int type){
 		List<Sector> list;
 
-		int rate = 1;
+		double rate = 1;
 		switch(type){
 			case 0:
 				list = ed.getBuilding(u, SectorServiceImpl.MILL);//food
@@ -142,7 +141,7 @@ public class EmpireServiceImpl implements EmpireService{
 			default: return 1;
 		}
 		for(Sector b : list){
-			rate += b.getLevel();
+			rate += 0.1*b.getLevel();
 		}
 		return rate;
 	}

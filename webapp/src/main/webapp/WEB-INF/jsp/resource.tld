@@ -23,7 +23,7 @@
             <name>rate</name>
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
-            <type>java.lang.Integer</type>
+            <type>java.lang.Double</type>
         </attribute>
         <attribute>
             <name>path</name>
