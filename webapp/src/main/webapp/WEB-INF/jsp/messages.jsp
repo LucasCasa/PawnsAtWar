@@ -28,7 +28,6 @@
                             <td><br><br>${message.getFrom().getName()}</td>
                             <td>${message.getMessage()}</td>
                             <td>
-                                <input type="hidden" name="id" value="${offer.getId()}"/>
                                 <input type="submit" class="myButton" value="<spring:message code="commerce.accept"/>"/>
                             </form>
                             </td>
@@ -41,20 +40,24 @@
 
     <h1><spring:message code="messages.createMessage"/></h1>
 
-    <form>
+
+    <form method="post" action="<c:url value="/messages/sendMessage"/>">
+
         <div class="form-group">
-            <label for="exampleInputEmail1"><spring:message code="messages.mail"/></label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder=<spring:message code="messages.mailPlaceholder"/>>
-            <small id="emailHelp" class="form-text text-muted"><spring:message code="messages.advise"/></small>
+                <label><spring:message code="messages.mail"/></label>
+                <input type="username" class="form-control" name="username" aria-describedby="usernameHelp" placeholder=<spring:message code="messages.mailPlaceholder"/>>
+                <small id="usernameHelp" class="form-text text-muted"><spring:message code="messages.advise"/></small>
         </div>
 
         <div class="form-group">
 
-            <textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+            <textarea class="form-control" name="message" id="exampleTextarea" rows="3"></textarea>
         </div>
 
-        <button type="submit" class="myButton"><spring:message code="messages.submit"/></button>
+            <button type="submit" class="myButton"><spring:message code="messages.submit"/></button>
+
     </form>
+
 </div>
 
 

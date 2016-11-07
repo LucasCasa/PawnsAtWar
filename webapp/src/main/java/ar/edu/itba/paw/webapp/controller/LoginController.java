@@ -29,7 +29,7 @@ public class LoginController {
 	@Autowired
 	private MessageSource messageSource;
 
-	private final static String LOGGED_USER_ID = "userId";
+		private final static String LOGGED_USER_ID = "userId";
 
 	@RequestMapping("/register")
 	public ModelAndView login(@ModelAttribute("registerForm") final RegisterForm form1){

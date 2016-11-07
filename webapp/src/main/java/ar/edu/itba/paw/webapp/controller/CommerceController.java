@@ -19,6 +19,8 @@ import javax.servlet.http.HttpSession;
 
 import java.util.List;
 
+import static java.lang.System.out;
+
 
 @Controller
 public class CommerceController {
@@ -92,6 +94,10 @@ public class CommerceController {
 	
 	@RequestMapping(value="/commerce/create/submit", method = RequestMethod.POST)
     public ModelAndView sumbitCreate(@RequestParam(required = false) String giveType, @RequestParam(required = false) String getType,@RequestParam(required = false) String giveQty,@RequestParam(required = false) String getQty,@ModelAttribute("user") final User user ){
+		out.println("LA VARIABLE giveQTY VALE :" + giveQty);
+
+		out.println("LA VARIABLE getQTY VALE :" + getQty);
+
 		if(getQty==null || giveQty==null || giveType==null || getType==null)
 			return new ModelAndView("redirect:/commerce/create");
 		if(!(Validator.isInteger(giveQty)&&Validator.isInteger(getQty)&&Long.parseLong(giveQty)>0&&Long.parseLong(getQty)>0)){
