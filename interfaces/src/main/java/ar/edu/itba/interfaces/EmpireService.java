@@ -80,6 +80,13 @@ public interface EmpireService {
 	public void createUser(User user);
 
 	public void deleteUser(User user);
+	
+	/**
+	 * Calculates the empire's total score based upon existing buildings level
+	 * @param user
+	 * @return The score
+	 */
+	public long calculateScore(User user);
 
 	
 }

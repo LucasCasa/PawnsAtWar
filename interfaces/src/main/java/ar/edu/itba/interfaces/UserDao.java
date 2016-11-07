@@ -1,5 +1,7 @@
 package ar.edu.itba.interfaces;
 
+import java.util.List;
+
 import ar.edu.itba.model.User;
 
 public interface UserDao {
@@ -20,4 +22,5 @@ public interface UserDao {
 
 	public boolean exists(String username);
 	
+	public List<User> getAllUsers();
 }
