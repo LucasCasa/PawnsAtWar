@@ -4,10 +4,13 @@ $(document).ready(function() {
     $tbody.find('tr').sort(function (a, b) {
         var tda = $(a).find('td:eq(' + 2 + ')').text(); // Use your wished column index
         var tdb = $(b).find('td:eq(' + 2 + ')').text(); // Use your wished column index
+        var a = parseInt(tda);
+        var b = parseInt(tdb);
+
         // if a < b return 1
-        return tda > tdb ? -1
+        return a > b ? -1
                // else if a > b return -1
-               : tda < tdb ? 1
+               : a < b ? 1
                // else they are equal - return 0    
                : 0;
     }).appendTo($tbody);
