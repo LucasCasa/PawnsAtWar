@@ -10,7 +10,7 @@ public class ResourceTag extends SimpleTagSupport{
 	
 	private int type;
 	private int amount;
-	private int rate;
+	private double rate;
 	private String path;
 	
 	@Override
@@ -40,11 +40,11 @@ public class ResourceTag extends SimpleTagSupport{
 		return amount;
 	}
 	
-	public int getRate() {
+	public double getRate() {
 		return rate;
 	}
 	
-	public void setRate(int rate) {
+	public void setRate(double rate) {
 		this.rate = rate;
 	}
 	
