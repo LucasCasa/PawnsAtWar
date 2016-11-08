@@ -14,19 +14,19 @@ public class Empire implements Serializable{
 
 	@Id
 	@OneToOne(optional=false)
-    @JoinColumn(name="idPlayer", nullable=false, updatable=false)
+	@JoinColumn(name="idPlayer", nullable=false, updatable=false)
 	private User userEmpire;
 
 	@Column(nullable = false)
 	private Timestamp lastUpdate;
- 	
-		public Empire(User u, Timestamp timestamp) {
-			this.userEmpire = u;
-			this.lastUpdate = timestamp;
-		}
-	
+
+	public Empire(User u, Timestamp timestamp) {
+		this.userEmpire = u;
+		this.lastUpdate = timestamp;
+	}
+
 	/* package */ Empire(){
-		
+
 	}
 
 	public Timestamp getLastUpdate() {
@@ -40,5 +40,19 @@ public class Empire implements Serializable{
 	public User getUser() {
 		return userEmpire;
 	}
+	
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public User getUserEmpire() {
+		return userEmpire;
+	}
+
+	public void setUserEmpire(User userEmpire) {
+		this.userEmpire = userEmpire;
+	}
+
 }
 

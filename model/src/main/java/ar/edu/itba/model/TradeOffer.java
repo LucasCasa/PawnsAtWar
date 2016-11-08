@@ -32,8 +32,8 @@ public class TradeOffer {
 	@Column(name = "receiveamount", nullable = false)
 	private int receiveamount;
 
-	
-	
+
+
 	public TradeOffer(final User owner,final int offertype,final int offeramount,  final int receivetype, final int receiveamount){
 		this.owner = owner;
 		this.offeramount= offeramount;
@@ -43,24 +43,24 @@ public class TradeOffer {
 	}
 
 	/* package */ TradeOffer(){
-		
+
 	}
-	
+
 	public int getId() {
 		return id;
 	}
-	
+
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public User getOwner() {
 		return owner;
 	}
 	public void setOwner(User owner) {
 		this.owner = owner;
 	}
-	
+
 	public int getOfferAmount() {
 		return offeramount;
 	}
@@ -73,6 +73,23 @@ public class TradeOffer {
 		return receivetype;
 	}
 
+	
+	public int getOffertype() {
+		return offertype;
+	}
+
+	public int getOfferamount() {
+		return offeramount;
+	}
+
+	public int getReceivetype() {
+		return receivetype;
+	}
+
+	public int getReceiveamount() {
+		return receiveamount;
+	}
+
 	public int getReceiveAmount() {
 		return receiveamount;
 	}
@@ -80,7 +97,7 @@ public class TradeOffer {
 	public int hashCode(){
 		return this.id;
 	}
-	
+
 	public boolean equals(Object other){
 		if(other==null)
 			return false;

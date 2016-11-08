@@ -49,11 +49,24 @@ public class Troop {
 
 	public Army getArmy() {
 		return army;
-		}
-
-		public int getType() {
-			return type;
-		}
-
-
 	}
+
+	public int getType() {
+		return type;
+	}
+
+	public void setId(long id) {
+		this.id = id;
+	}
+
+	public void setArmy(Army army) {
+		this.army = army;
+	}
+
+	public void setType(int type) {
+		this.type = type;
+	}
+	
+	
+
+}

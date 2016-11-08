@@ -20,9 +20,9 @@ public class Point {
 	public int getY() {
 		return y;
 	}
-	
+
 	/* package */ Point(){
-		
+
 	}
 	public void setX(int x) {
 		this.x = x;
@@ -34,6 +34,8 @@ public class Point {
 	public String toString(){
 		return "(" + this.x + "," + this.y + ")";
 	}
+
+
 
 	public boolean equals(Object o){
 		if(o == null)

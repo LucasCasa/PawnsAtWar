@@ -16,27 +16,27 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "alert")
 public class Alert {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "alert_idalert_seq")
 	@SequenceGenerator(sequenceName = "alert_idalert_seq", name = "alert_idalert_seq", allocationSize = 1)
 	@Column(name = "idalert")
 	private int id;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY ,optional = false)
 	private User userAlert;
 
 	@Column(nullable = false, name = "date")
 	private Timestamp date;
-	
+
 	@Column(length = 200,nullable = false, name = "message")
 	private String message;
-	
+
 	/* package */ Alert(){
-		
+
 	}
 
-	
+
 	public Alert(User user, String message) {
 		this.userAlert = user;
 		this.message = message;
@@ -67,7 +67,7 @@ public class Alert {
 	public void setMessage(String message) {
 		this.message = message;
 	}
-	
+
 	public User getUser() {
 		return userAlert;
 	}
@@ -75,6 +75,14 @@ public class Alert {
 	public void setUser(User user) {
 		this.userAlert = user;
 	}
+	
+	
+
+
+	public User getUserAlert() {
+		return userAlert;
+	}
+
 
 	@Override
 	public int hashCode() {
@@ -97,7 +105,7 @@ public class Alert {
 			return false;
 		return true;
 	}
-	
-	
+
+
 
 }

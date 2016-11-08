@@ -63,6 +63,22 @@ public class Resource {
 		this.quantity = quantity;
 	}
 	
+	
+	public void setId(long id) {
+		this.id = id;
+	}
+
+
+	public void setType(int type) {
+		this.type = type;
+	}
+
+
+	public void setUserResource(User userResource) {
+		this.userResource = userResource;
+	}
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
