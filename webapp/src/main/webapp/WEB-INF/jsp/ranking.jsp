@@ -14,7 +14,7 @@
         <c:forEach var="player" items="${players}" varStatus="i">
             <tr>
                 <td class="pos"></td>
-                <td>${player.getName()}</td>
+                <td><a href="<c:url value="/map?x=${castles.get(i.index).x}&y=${castles.get(i.index).y}"/>">${player.getName()}</a></td>
                 <td>${scores.get(i.index)}</td>
             </tr>
         </c:forEach>
