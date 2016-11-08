@@ -78,6 +78,22 @@ public class Army {
 	public void setUser(User user) {
 		this.userArmy = user;
 	}
+
+	public void setIdArmy(int idArmy) {
+		this.idArmy = idArmy;
+	}
+
+	public void setPosition(Point position) {
+		this.position = position;
+	}
+
+	public void setUserArmy(User userArmy) {
+		this.userArmy = userArmy;
+	}
+
+	public void setTroops(List<Troop> troops) {
+		this.troops = troops;
+	}
 	
 	
 }
