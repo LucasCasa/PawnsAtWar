@@ -19,15 +19,15 @@ public class MessageServiceImpl implements MessageService {
 	MessageDao md;
 
 	@Override
-	public Message createMessage(User from, User to, String message) {
+	public Message createMessage(User from, User to, String subject, String message) {
 		if(from == null || to == null || message == null){
 			return null;
 		}
-		return md.createMessage(from, to, message);
+		return md.createMessage(from, to, subject, message);
 	}
 
 	@Override
-	public Message getById(int id) {
+	public Message getById(Long id) {
 		if(id < 0){
 			return null;
 		}
@@ -37,6 +37,18 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public List<Message> getAllMessages(User u) {
 		return md.getAllMessages(u);
+	}
+
+	@Override
+	public void deleteMessage(Long id) {
+		md.removeMessage(id);
+	}
+
+	@Override
+	public void deleteMessage(Message mssg) {
+
+
+		deleteMessage(mssg.getId());
 	}
 
 

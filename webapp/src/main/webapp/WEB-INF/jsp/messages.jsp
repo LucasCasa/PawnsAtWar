@@ -20,16 +20,22 @@
             <table class="table">
                 <thead>
                     <td><spring:message code="messages.user"/></td>
-                    <td><spring:message code="messages.description"/></td>
+                    <td><spring:message code="messages.subject"/></td>
+                    <td><spring:message code="messages.action"/></td>
                 </thead>
                 <tbody>
                     <c:forEach var="message" items="${messagesReceived}">
-                        <tr>
-                            <td><br><br>${message.getFrom().getName()}</td>
-                            <td>${message.getMessage()}</td>
-                            <td>
-                                <input type="submit" class="myButton" value="<spring:message code="commerce.accept"/>"/>
-                            </form>
+                        <tr class="table-row"data-href="<c:url value="/map"/>">
+                            <td>${message.getFrom().getName()}</td>
+                            <td>${message.getSubject()}</td>
+                            <td><form method="post" action="<c:url value="/messages/delete"/>">
+
+                                <input type="hidden" name="id" value="${message.getId()}"/>
+
+                                <input type="submit" class="myButton" value="<spring:message code="messages.delete"/>"/>
+
+
+                                </form>
                             </td>
                         </tr>
                     </c:forEach>
@@ -44,13 +50,18 @@
     <form method="post" action="<c:url value="/messages/sendMessage"/>">
 
         <div class="form-group">
-                <label><spring:message code="messages.mail"/></label>
+                <label><spring:message code="messages.username"/></label>
                 <input type="username" class="form-control" name="username" aria-describedby="usernameHelp" placeholder=<spring:message code="messages.mailPlaceholder"/>>
                 <small id="usernameHelp" class="form-text text-muted"><spring:message code="messages.advise"/></small>
         </div>
 
         <div class="form-group">
+            <label><spring:message code="messages.subject"/></label>
+            <input type="subject" class="form-control" name="subject" aria-describedby="subjectHelp" placeholder=<spring:message code="messages.subject"/>>
+        </div>
 
+        <div class="form-group">
+            <label><spring:message code="messages.message"/></label>
             <textarea class="form-control" name="message" id="exampleTextarea" rows="3"></textarea>
         </div>
 
@@ -63,3 +74,5 @@
 
 
 <%@ include file="footer.jsp" %>
+<script src="<c:url value= "/resources/js/messages.js" />"></script>
+

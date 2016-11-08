@@ -21,6 +21,8 @@ public class Message {
 	private User from;
 	@ManyToOne(fetch =FetchType.EAGER, optional = false)
 	private User to;
+	@Column (length=50, nullable=false, name= "subject")
+	private String subject;
 	@Column(length = 150,nullable = false, name = "message")
 	private String message;
 	@Column(nullable = false, name = "read")
@@ -30,9 +32,10 @@ public class Message {
 		
 	}
 	
-	public Message(User from, User to, String message){
+	public Message(User from, User to, String subject, String message){
 		this.from=from;
 		this.to = to;
+		this.subject = subject;
 		this.message=message;
 		this.read=false;
 	}
@@ -61,6 +64,7 @@ public class Message {
 		return message;
 	}
 
+	public String getSubject(){return subject; }
 	@Override
 	public int hashCode() {
 		final int prime = 31;

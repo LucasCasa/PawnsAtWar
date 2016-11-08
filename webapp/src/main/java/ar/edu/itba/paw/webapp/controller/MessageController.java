@@ -56,15 +56,9 @@ public class MessageController {
 
     @Transactional
     @RequestMapping(value="/messages/sendMessage", method = RequestMethod.POST)
-    public ModelAndView sendMessage(@RequestParam(required = false) String username,@RequestParam(required = false) String message, @ModelAttribute("user") final User user, Locale locale){
+    public ModelAndView sendMessage(@RequestParam(required = false) String username,@RequestParam(required = false) String message, @RequestParam(required = false) String subject, @ModelAttribute("user") final User user, Locale locale){
 
-        out.println("PUDE ENTRAR EN EL CONTROLLER DE MESSAGES/SENDMESSAGE");
-
-
-        out.println("EL USUARIO QUE ALMACENE CON EL INPUT USERNAME ES: " + username);
-        out.println("EL MENSAJE QUE ALMACENE CON EL INPUT MESSAGE ES: " + message);
-
-        ms.createMessage( us.findByUsername(username), user , message);
+        ms.createMessage( user, us.findByUsername(username), subject, message);
 
         if(!us.exists(username)){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
@@ -72,6 +66,20 @@ public class MessageController {
 
         return new ModelAndView("redirect:/map");
 
+    }
+
+
+    @RequestMapping(value="/messages/delete")
+    public ModelAndView deleteMessage(@RequestParam final Long id, @ModelAttribute("user") final User user){
+
+        Message mssg = ms.getById(id);
+
+        if(mssg == null)
+            return new ModelAndView("redirect:/error");
+
+        ms.deleteMessage(mssg);
+
+        return new ModelAndView("redirect:/messages");
     }
 
     @ModelAttribute("user")
