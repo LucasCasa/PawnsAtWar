@@ -4,13 +4,10 @@ import ar.edu.itba.interfaces.MessageService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.Message;
 import ar.edu.itba.model.User;
-import ar.edu.itba.paw.webapp.form.MessageForm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -60,11 +57,13 @@ public class MessageController {
 
         ms.createMessage( user, us.findByUsername(username), subject, message);
 
+        out.println("EL MENSAJE SE ENVIA A: " + username);
+
         if(!us.exists(username)){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
         }
 
-        return new ModelAndView("redirect:/map");
+        return new ModelAndView("redirect:/messages");
 
     }
 
@@ -87,5 +86,23 @@ public class MessageController {
         if(session.getAttribute("userId") != null)
             return  us.findById((Integer)session.getAttribute("userId"));
         return null;
+    }
+
+    @RequestMapping(value="/messages/seeMessage")
+    public ModelAndView answerMessage(@RequestParam final Long id, @ModelAttribute("user") final User user){
+
+
+        Message mssg = ms.getById(id);
+
+
+
+        final ModelAndView mav = new ModelAndView("seeMessage");
+
+        mav.addObject("from", mssg.getFrom().getName());
+        mav.addObject("subject", mssg.getSubject());
+        mav.addObject("message", mssg.getMessage());
+
+        return mav;
+
     }
 }

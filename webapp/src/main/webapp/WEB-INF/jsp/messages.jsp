@@ -25,7 +25,7 @@
                 </thead>
                 <tbody>
                     <c:forEach var="message" items="${messagesReceived}">
-                        <tr class="table-row"data-href="<c:url value="/map"/>">
+                        <tr class="table-row"  data-href="<c:url value="/messages/seeMessage?id=${message.getId()}"/>">
                             <td>${message.getFrom().getName()}</td>
                             <td>${message.getSubject()}</td>
                             <td><form method="post" action="<c:url value="/messages/delete"/>">
