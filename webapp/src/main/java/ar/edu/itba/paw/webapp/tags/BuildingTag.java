@@ -61,7 +61,7 @@ public class BuildingTag extends SimpleTagSupport {
         JspWriter out = getJspContext().getOut();
         out.println("<div class=\"row\">");
         out.println("<div class=\"col-md-2\">");
-        out.println("<form action=\"demolish\" method=\"post\">");
+        out.println("<form action=\"demolish\" method=\"post\"  onsubmit=\"return confirm('" + messageSource.getMessage("warningDemolish", null,locale) +"');\">");
         out.println("<input type=\"hidden\" name=\"x\" value=\""+point.getX()+"\"/>");
         out.println("<input type=\"hidden\" name=\"y\" value=\""+point.getY()+"\"/>");
         out.println("<input type=\"submit\" value=\""+messageSource.getMessage("demolish",null,locale)+"\"class=\"myButton\"/>");
@@ -71,7 +71,7 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("<form action=\"levelup\" method=\"post\">");
         out.println("<input type=\"hidden\" name=\"x\" value=\""+point.getX()+"\"/>");
         out.println("<input type=\"hidden\" name=\"y\" value=\""+point.getY()+"\"/>");
-        out.println("<input type=\"submit\" class=\"myButton\"value=\""+ messageSource.getMessage("levelup",null,locale)+"\"/>");
+        out.println("<input type=\"submit\" class=\"myButton\" value=\""+ messageSource.getMessage("levelup",null,locale)+"\"/>");
         out.println("</form>");
         out.println("</div>");
         out.println("</div>");

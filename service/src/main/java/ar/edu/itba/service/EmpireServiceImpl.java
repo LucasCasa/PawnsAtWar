@@ -1,11 +1,8 @@
 package ar.edu.itba.service;
 
 import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -186,6 +183,15 @@ public class EmpireServiceImpl implements EmpireService{
 		ed.deleteResource(user,1);
 		ed.deleteOffers(user);
 		
+	}
+
+	@Override
+	public long calculateScore(User user) {
+		long score = 0;
+		for(Sector s: ed.getAllBuildings(user)){
+			score += 10*(s.getLevel()+1);
+		}
+		return score;
 	}
 
 

@@ -34,7 +34,8 @@
 		        <li><a href="<c:url value="/commerce"/>"><spring:message code="header.commerce"/></a></li>
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
-				  <li><a href="<c:url value="/messages"/>"><spring:message code="header.messages"/></a></li>
+		        <li><a href="<c:url value="/ranking"/>"><spring:message code="header.ranking"/></a></li>
+				<li><a href="<c:url value="/messages"/>"><spring:message code="header.messages"/></a></li>
 		        <li><a href="<c:url value="/logout"/>"><spring:message code="header.logout"/></a></li>
 		      </ul>
 		    </div><!-- /.navbar-collapse -->

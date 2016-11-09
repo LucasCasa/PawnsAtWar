@@ -29,6 +29,8 @@ public interface EmpireDao {
 	
 	public List<Sector> getBuilding (Point p, int type);
 	
+	public List<Sector> getAllBuildings(User u);
+	
 	public Empire createEmpire(User u, Timestamp timestamp);
 	
 	public void createResource (User u,int type, int amount);

@@ -70,5 +70,12 @@ public class UserHibernateDao implements UserDao {
 		User u = findByUsername(username);
 		return u == null ? false : true;
 	}
+	
+	@Override
+	public List<User> getAllUsers(){
+		TypedQuery<User> query = em.createQuery("from User",User.class);
+		final List<User> list = query.getResultList();
+		return list;
+	}
 
 }

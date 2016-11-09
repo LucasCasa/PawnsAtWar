@@ -8,6 +8,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.BuildingDao;
@@ -54,8 +56,9 @@ public class BuildingHibernateDao implements BuildingDao {
 	public Sector getBuilding(Point p) {
 		final TypedQuery<Sector> query = em.createQuery("from Sector as t where t.p = :p",Sector.class);
 		query.setParameter("p",p);
-
+		System.out.println("Gettoing building at point " + p);
 		final List<Sector> list = query.getResultList();
+		System.out.println("List size: " + list.size());
 		return list.isEmpty() ? null : list.get(0);
 	}
 

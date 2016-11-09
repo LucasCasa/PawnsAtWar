@@ -95,6 +95,11 @@ public class EmpireHibernateDao implements EmpireDao {
 		
 	}
 
+	@Override
+	public List<Sector> getAllBuildings(User u) {
+		return bd.getBuildings(u);
+	}
+
 
 
 }
