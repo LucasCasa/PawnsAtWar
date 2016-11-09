@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.interfaces.MessageService;
+import ar.edu.itba.interfaces.PAWMailService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.Message;
 import ar.edu.itba.model.User;
@@ -18,8 +19,6 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Locale;
 
-import static java.lang.System.out;
-
 /**
  * Created by root on 26/10/16.
  */
@@ -35,9 +34,11 @@ public class MessageController {
     @Autowired
     private MessageService ms;
 
+    @Autowired
+    private PAWMailService mailService;
+
     @RequestMapping(value="/messages")
     public ModelAndView messages(@ModelAttribute("user") final User user){
-
 
         if(user == null)
             return new ModelAndView("redirect:/login");
@@ -57,12 +58,13 @@ public class MessageController {
 
         ms.createMessage( user, us.findByUsername(username), subject, message);
 
-        out.println("EL MENSAJE SE ENVIA A: " + username);
-
         if(!us.exists(username)){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
         }
 
+        if(message.length() > 150){
+            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
+        }
         return new ModelAndView("redirect:/messages");
 
     }
@@ -88,13 +90,11 @@ public class MessageController {
         return null;
     }
 
+
     @RequestMapping(value="/messages/seeMessage")
     public ModelAndView answerMessage(@RequestParam final Long id, @ModelAttribute("user") final User user){
 
-
         Message mssg = ms.getById(id);
-
-
 
         final ModelAndView mav = new ModelAndView("seeMessage");
 
@@ -102,7 +102,14 @@ public class MessageController {
         mav.addObject("subject", mssg.getSubject());
         mav.addObject("message", mssg.getMessage());
 
-        return mav;
+        //sendEmail(user.getEmail(), mssg.getSubject(), mssg.getMessage());
 
+        return mav;
     }
+
+    private void sendEmail(String emailTo, String subject, String message){
+        mailService.sendEmail(emailTo, subject, message);
+    }
+
+
 }
