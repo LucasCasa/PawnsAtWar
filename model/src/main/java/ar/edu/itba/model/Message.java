@@ -23,7 +23,7 @@ public class Message {
 	private User to;
 	@Column (length=50, nullable=false, name= "subject")
 	private String subject;
-	@Column(length = 150,nullable = false, name = "message")
+	@Column(length = 1024,nullable = false, name = "message")
 	private String message;
 	@Column(nullable = false, name = "read")
 	private boolean read;

@@ -49,6 +49,8 @@
 
     <form method="post" action="<c:url value="/messages/sendMessage"/>">
 
+        <h2 class="success" style="text-align: center">${success}</h2>
+        
         <div class="form-group">
                 <label><spring:message code="messages.username"/></label>
                 <input type="username" class="form-control" name="username" aria-describedby="usernameHelp" placeholder=<spring:message code="messages.mailPlaceholder"/>>
@@ -62,7 +64,7 @@
 
         <div class="form-group">
             <label><spring:message code="messages.message"/></label>
-            <textarea class="form-control" name="message" id="exampleTextarea" rows="3"></textarea>
+            <textarea class="form-control" name="message" id="exampleTextarea" rows="3" maxlength="1024"></textarea>
         </div>
 
             <button type="submit" class="myButton"><spring:message code="messages.submit"/></button>
