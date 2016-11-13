@@ -6,7 +6,6 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,7 +39,6 @@ public class LoginController {
 	public ModelAndView authenticate(@ModelAttribute("loginForm") final LoginForm form1,@ModelAttribute("registerForm") final RegisterForm form2){
 		return new ModelAndView("login");
 	}
-	@Transactional
 	@RequestMapping(value = "/create", method = { RequestMethod.POST })
 	public ModelAndView create(@Valid @ModelAttribute("registerForm") final RegisterForm form,
 							   final BindingResult errors,
@@ -67,7 +65,6 @@ public class LoginController {
 		return (Integer) session.getAttribute(LOGGED_USER_ID);
 	}
 
-	@Transactional
 	@RequestMapping(value = "/authenticate", method = { RequestMethod.POST })
 	public ModelAndView create(@Valid @ModelAttribute("loginForm") final LoginForm form,
 							   final BindingResult errors,

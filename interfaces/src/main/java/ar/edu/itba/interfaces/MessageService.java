@@ -11,5 +11,6 @@ public interface MessageService {
 	public List<Message> getAllMessages(User u);
 	public void deleteMessage(Long id);
 	public void deleteMessage(Message mssg);
+	public void deleteMessages(User user);
 }
 

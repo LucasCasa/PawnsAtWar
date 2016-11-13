@@ -46,4 +46,12 @@ public class MessageHibernateDao implements MessageDao {
 		query.executeUpdate();
 	}
 
+	@Override
+	public void removeMessages(List<Message> message) {
+		for(Message m: message){
+			removeMessage(m.getId());
+		}
+		
+	}
+
 }

@@ -10,5 +10,6 @@ public interface MessageDao {
 	public Message getById(Long id);
 	public List<Message> getAllMessages(User u);
 	public void removeMessage(Long id);
+	public void removeMessages(List<Message> sent);
 	
 }

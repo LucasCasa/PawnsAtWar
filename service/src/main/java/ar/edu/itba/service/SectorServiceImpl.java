@@ -86,7 +86,9 @@ public class SectorServiceImpl implements SectorService {
 		}
 		b.setLevel(0);
 		if(b.getType() == CASTLE){
+			b.setType(EMPTY);
 			es.deleteUser(b.getUser());
+			updateTerrain(p, null, initRange);
 		}else if(b.getType() == GOLD){
 			b.setType(TERR_GOLD);
 		}else{

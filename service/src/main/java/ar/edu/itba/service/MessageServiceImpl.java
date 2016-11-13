@@ -46,9 +46,16 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public void deleteMessage(Message mssg) {
-
-
 		deleteMessage(mssg.getId());
+	}
+
+	@Override
+	public void deleteMessages(User user) {
+		List<Message> received = user.getReceivedMessages();
+		List<Message> sent = user.getSentMessages();
+		md.removeMessages(sent);
+		md.removeMessages(received);
+		
 	}
 
 
