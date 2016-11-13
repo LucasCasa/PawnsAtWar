@@ -1,0 +1,22 @@
+<taglib>
+    <tlib-version>1.0</tlib-version>
+    <jsp-version>2.0</jsp-version>
+    <short-name>Example TLD</short-name>
+    <tag>
+        <name>User</name>
+        <tag-class>ar.edu.itba.paw.webapp.tags.UserTag</tag-class>
+        <body-content>empty</body-content>
+        <description>Displays the username with a link to the user's castle</description>
+        <attribute>
+            <name>user</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>ar.edu.itba.model.User</type>
+        </attribute>
+        <attribute>
+            <name>path</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+</taglib>

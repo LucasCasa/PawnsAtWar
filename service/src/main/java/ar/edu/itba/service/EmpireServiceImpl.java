@@ -187,9 +187,9 @@ public class EmpireServiceImpl implements EmpireService{
 
 	@Override
 	public long calculateScore(User user) {
-		long score = 0;
+		long score = 10;
 		for(Sector s: ed.getAllBuildings(user)){
-			score += 10*(s.getLevel()+1);
+			score += 10*(s.getLevel());
 		}
 		return score;
 	}

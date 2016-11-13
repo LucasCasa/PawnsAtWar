@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="re" uri="resource.tld"%>
+<%@ taglib prefix="us" uri="user.tld"%>
 <%@ include file="header.jsp" %>
 <link rel="stylesheet" href="<c:url value= "/resources/css/commerce.css" /> ">
 
@@ -26,7 +27,7 @@
 				<tbody>
 				<c:forEach var="offer" items="${tradeList}">
 					<tr>
-						<td><br><br>${offer.getOwner().getName()}</td>
+						<td><br><br><us:User user="${offer.getOwner()}" path="${pageContext.request.contextPath}"/></td>
 						<td><re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}" path="${pageContext.request.contextPath}"/></td>
 						<td><re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}" path="${pageContext.request.contextPath}"/></td>
 						<td><br><form method="post" action="<c:url value="/commerce/acceptTrade"/>">
@@ -61,7 +62,7 @@
 				<tbody>
 				<c:forEach var="offer" items="${myTrades}">
 					<tr>
-						<td><br><br>${offer.getOwner().getName()}</td>
+						<td><br><br><us:User user="${offer.getOwner()}" path="${pageContext.request.contextPath}"/></td>
 						<td><re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}" path="${pageContext.request.contextPath}"/></td>
 						<td><re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}" path="${pageContext.request.contextPath}"/></td>
 						<td><br><form method="post" action="<c:url value="/commerce/delete"/>">

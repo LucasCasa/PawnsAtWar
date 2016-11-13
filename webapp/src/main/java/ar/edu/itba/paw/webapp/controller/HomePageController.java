@@ -90,6 +90,17 @@ public class HomePageController {
 
 		return mav;
 	}
+	
+	@RequestMapping(value={"/locate"})
+	public ModelAndView locate(@RequestParam(value= "user",required = true) String id){
+		int userid = Integer.parseInt(id);
+		User u = us.findById(userid);
+		if(u == null)
+			return new ModelAndView("redirect:/error");
+		Point p = ss.getCastle(u);
+		return new ModelAndView("redirect:/map?x="+p.getX()+"&y="+p.getY());
+	}
+
 	@ModelAttribute("userId")
 	public User loggedUser (final HttpSession session){
 		if(session.getAttribute("userId") != null)
