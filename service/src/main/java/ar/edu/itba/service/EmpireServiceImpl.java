@@ -171,10 +171,11 @@ public class EmpireServiceImpl implements EmpireService{
 	}
 	
 	@Override
-	public void createUser(User user) {
+	public void createUser(User user, boolean newUser) {
 		boolean resp = ss.createCastle(user);
 		if(resp){
-			ed.setLastUpdate(user, Timestamp.valueOf(LocalDateTime.now()));
+			if(!newUser)
+				ed.setLastUpdate(user, Timestamp.valueOf(LocalDateTime.now()));
 			if(user.getResources() == null){
 				ed.createResource(user, 0, INITIAL_VALUE);
 				ed.createResource(user, 1, INITIAL_VALUE);
@@ -190,7 +191,7 @@ public class EmpireServiceImpl implements EmpireService{
 	@Override
 	public void createEmpire(User user){
 		ed.createEmpire(user,Timestamp.valueOf(LocalDateTime.now()));
-		createUser(user);
+		createUser(user,true);
 	}
 
 	@Override

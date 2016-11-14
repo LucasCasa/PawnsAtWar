@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void restoreUser(User user){
 		if(user != null){
-			es.createUser(user);
+			es.createUser(user,false);
 		}
 		
 	}
