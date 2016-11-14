@@ -27,7 +27,7 @@
 <c:choose>
     <c:when test="${army.available}">
     <h1 style="text-align: center;"><b><spring:message code="button.attack"/></b></h1><br>
-<form style="text-align: center" method="post" action="<c:url value="/attack"/>">
+    <form style="text-align: center" method="post" action="<c:url value="/attack"/>">
     <div class="form-inline">
         <div class="form-group">
             <label for="Xval">X:</label>
@@ -37,10 +37,10 @@
             <label for="Yval">Y:</label>
             <input type="text" class="form-control" name="y" id="Yval" size="3" value="${y}">
         </div>
-        <input type="hidden" name="army" value="${army.idArmy}">
+        <input type="hidden" name="armyId" value="${army.idArmy}">
         <input type="submit" class="myButton" value="<spring:message code="button.attack"/>"/>
     </div>
-</form>
+    </form>
         <c:if test="${armySize > 1}">
     <h1 style="text-align: center;"><b><spring:message code="merge" /></b></h1><br>
     <table class="table table-striped">

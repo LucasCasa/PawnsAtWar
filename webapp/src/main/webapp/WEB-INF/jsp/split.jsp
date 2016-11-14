@@ -61,7 +61,7 @@
         </div>
         </div>
         <div class="row" style="text-align: center">
-        <input type="hidden" name="army" value="${army.idArmy}">
+        <input type="hidden" name="armyId" value="${army.idArmy}">
         <input  type="submit" class="myButton" value="<spring:message code="button.split"/>" />
         </div>
     </form>

@@ -168,8 +168,9 @@ public class SectorServiceImpl implements SectorService {
 
 	@Override
 	public void levelUp(Point p) {
-		bd.setLevel(p, bd.getLevel(p) + 1);
-		
+		if(bd.getLevel(p) < 20){
+			bd.setLevel(p, bd.getLevel(p) + 1);
+		}
 	}
 
 	@Override

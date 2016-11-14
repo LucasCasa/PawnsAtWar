@@ -57,7 +57,7 @@ public class ArmyHibernateDao implements ArmyDao {
 
 	@Override
 	public boolean belongs(User u, int idArmy) {
-		final TypedQuery<Army> query = em.createQuery("from Army as a where userArmy = :u and idArmy = :idArmy",Army.class); 
+		final TypedQuery<Army> query = em.createQuery("from Army where userArmy = :u and idArmy = :idArmy",Army.class); 
 		query.setParameter("u", u);
 		query.setParameter("idArmy", idArmy);
 		final List<Army> list = query.getResultList();
@@ -71,9 +71,8 @@ public class ArmyHibernateDao implements ArmyDao {
 
 	@Override
 	public Army getArmy(Point p, User u) {
-		final TypedQuery<Army> query = em.createQuery("from Army as a where position.x = :x and position.y = :y and userArmy = :u",Army.class); 
-		query.setParameter("x", p.getX());
-		query.setParameter("y", p.getY());
+		final TypedQuery<Army> query = em.createQuery("from Army where position = :p and userArmy = :u",Army.class); 
+		query.setParameter("p",p);
 		query.setParameter("u", u);
 		final List<Army> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0);
