@@ -9,7 +9,10 @@
 
 <div class="container">
 
+    <h2 class="success" style="text-align: center">${success}</h2>
+
     <h1><spring:message code="messages.messagesReceived"/></h1>
+
     <c:choose>
         <c:when test="${mReceivdedListSize == 0}">
             <div class="row">
@@ -17,6 +20,7 @@
             </div>
         </c:when>
         <c:otherwise>
+
             <table class="table">
                 <thead>
                     <td><spring:message code="messages.user"/></td>
@@ -49,8 +53,6 @@
 
     <form method="post" action="<c:url value="/messages/sendMessage"/>">
 
-        <h2 class="success" style="text-align: center">${success}</h2>
-        
         <div class="form-group">
                 <label><spring:message code="messages.username"/></label>
                 <input type="username" class="form-control" name="username" aria-describedby="usernameHelp" placeholder=<spring:message code="messages.mailPlaceholder"/>>
@@ -67,7 +69,7 @@
             <textarea class="form-control" name="message" id="exampleTextarea" rows="3" maxlength="1024"></textarea>
         </div>
 
-            <button type="submit" class="myButton"><spring:message code="messages.submit"/></button>
+            <button type="submit" class="myButton" onclick="showMs()"><spring:message code="messages.submit"/></button>
 
     </form>
 

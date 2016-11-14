@@ -37,16 +37,20 @@ public class MessageController {
     private PAWMailService mailService;
 
     @RequestMapping(value="/messages")
-    public ModelAndView messages(@ModelAttribute("user") final User user){
+    public ModelAndView messages(@ModelAttribute("user") final User user, @RequestParam(value="s", required = false,defaultValue = "") final String success){
 
         if(user == null)
             return new ModelAndView("redirect:/login");
 
         final ModelAndView mav = new ModelAndView("messages");
 
+        System.out.println("QUE TIENE LA VARIABLE SUCCESS? " + success);
+
         List<Message> messagesReceived = ms.getAllMessages(user);
         mav.addObject("messagesReceived",messagesReceived);
         mav.addObject("mReceivdedListSize", messagesReceived.size());
+        mav.addObject("success",success);
+        mav.addObject("messageSource",messageSource);
 
         return mav;
     }
@@ -63,7 +67,7 @@ public class MessageController {
         if(message.length() > 150){
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
         }
-        return new ModelAndView("redirect:/messages");
+        return new ModelAndView("redirect:/messages?s=" + messageSource.getMessage("messageSent",null,locale));
 
     }
 
