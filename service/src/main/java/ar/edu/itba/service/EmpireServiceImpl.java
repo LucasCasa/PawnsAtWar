@@ -175,10 +175,17 @@ public class EmpireServiceImpl implements EmpireService{
 		boolean resp = ss.createCastle(user);
 		if(resp){
 			ed.setLastUpdate(user, Timestamp.valueOf(LocalDateTime.now()));
-			ed.createResource(user, 0, INITIAL_VALUE);
-			ed.createResource(user, 1, INITIAL_VALUE);
+			if(user.getResources() == null){
+				ed.createResource(user, 0, INITIAL_VALUE);
+				ed.createResource(user, 1, INITIAL_VALUE);
+			}else{
+				ed.setResource(user, 0, INITIAL_VALUE);
+				ed.setResource(user, 1, INITIAL_VALUE);
+			}
+			
 		}
 	}
+
 	
 	@Override
 	public void createEmpire(User user){

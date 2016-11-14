@@ -92,12 +92,15 @@ public class HomePageController {
 	}
 	
 	@RequestMapping(value={"/locate"})
-	public ModelAndView locate(@RequestParam(value= "user",required = true) String id){
+	public ModelAndView locate(@RequestParam(value= "user",required = true) String id, Locale locale){
 		int userid = Integer.parseInt(id);
 		User u = us.findById(userid);
 		if(u == null)
 			return new ModelAndView("redirect:/error");
 		Point p = ss.getCastle(u);
+		if(p == null){
+			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.noCastle",null,locale));
+		}
 		return new ModelAndView("redirect:/map?x="+p.getX()+"&y="+p.getY());
 	}
 
