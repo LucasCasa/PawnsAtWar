@@ -43,3 +43,9 @@
 	height: 20px;
 	width: auto;
 }
+
+form{
+	display: inline;
+	margin: 0; 
+	padding: 0;
+}

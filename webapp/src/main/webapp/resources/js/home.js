@@ -26,6 +26,21 @@ function move(x, y){
     }
 };
 
+
+
+$(document).ready(function(){
+    $('#Xval').keypress(function(e){
+      if(e.keyCode==13)
+      $('#gotoDir').click();
+    });
+    $('#Yval').keypress(function(e){
+      if(e.keyCode==13)
+      $('#gotoDir').click();
+    });
+});
+
+
+
 function isNumber(s)
 {
     return s.match("^[0-9]+");

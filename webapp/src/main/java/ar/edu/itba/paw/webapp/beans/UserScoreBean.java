@@ -1,6 +1,5 @@
 package ar.edu.itba.paw.webapp.beans;
 
-import ar.edu.itba.model.Point;
 import ar.edu.itba.model.User;
 
 public class UserScoreBean {

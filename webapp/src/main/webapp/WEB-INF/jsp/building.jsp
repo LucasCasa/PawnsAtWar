@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="build" uri="building.tld"%>
 <%@ taglib prefix="bi" uri="buildingIcon.tld"%>
+<%@ taglib prefix="us" uri="user.tld"%>
 <%@ taglib prefix="re" uri="resource.tld"%>
 <%@ include file="header.jsp" %>
 <link rel="stylesheet" href="<c:url value= "/resources/css/style.css" /> ">
@@ -12,8 +13,8 @@
         <br>
         <div class="row">
         <c:if test="${owner.name != null}">
-        <h3 style="text-align: center;"><spring:message code="buildingBelongs" /><c:out value=" ${owner.name}"/></h3>
-        </c:if>
+        <h3 style="text-align: center;"><spring:message code="buildingBelongs" /> <us:User user="${owner}" path="${pageContext.request.contextPath}"/></h3>
+       </c:if>
         </div>
         <br>
         <div class="row">
