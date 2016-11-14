@@ -24,8 +24,31 @@
                 <div class="col-md-offset-4 col-md-4" style="text-align: center"><a href="<c:url value="/" />"/><button class="myButton" id="gotoDir"><spring:message code="error.goBack" /></button></a></div>
             </c:when>
             <c:otherwise>
-                <div style="background-color: #997744;text-align: center" class="col-md-offset-4 col-md-4"> <p><c:out value="${message}"/></p></div>
-                <div class="col-md-offset-4 col-md-4" style="text-align: center"><button class="myButton" id="gotoDir" onclick="history.go(-1)"><spring:message code="error.goBack" /></button></div>
+                  <div class="row">
+                    <div style="background-color: #997744;text-align: center" class="col-md-offset-4 col-md-4"> <p><c:out value="${message}"/></p>
+
+                  </div>  
+                  </div>
+                  
+
+                  <div class="row">
+
+                      <div class="col-md-offset-5">
+                        <div class="col-md-2" >
+                        <button class="myButton" id="gotoDir" onclick="history.go(-1)"><spring:message code="error.goBack" /></button>
+                      </div>
+
+                      <div class="col-md-3">
+                        <c:choose>
+                          <c:when test="${gameOver}">
+                            <a href="<c:url value="/restore"/>"><button class="myButton" id="startAgain" onclick=""><spring:message code="game.startAgain" /></button></a>
+                          </c:when>
+                        </c:choose>  
+                      </div>  
+                      </div>
+
+                      
+                  </div>              
             </c:otherwise>
         </c:choose>
     </div>

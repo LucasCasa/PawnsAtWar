@@ -18,8 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.edu.itba.interfaces.ArmyService;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.EmpireService;
+import ar.edu.itba.interfaces.MessageService;
 import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
 import ar.edu.itba.model.Sector;
@@ -39,6 +41,8 @@ public class EmpireServiceImpl implements EmpireService{
 	ArmyService as;
 	@Autowired
 	UserDao ud;
+	@Autowired
+	MessageService ms;
 	
 
 	@Override
@@ -170,11 +174,16 @@ public class EmpireServiceImpl implements EmpireService{
 	public void createUser(User user) {
 		boolean resp = ss.createCastle(user);
 		if(resp){
-			ed.createEmpire(user,Timestamp.valueOf(LocalDateTime.now()));
-		ed.createResource(user, 0, INITIAL_VALUE);
-		ed.createResource(user, 1, INITIAL_VALUE);
+			ed.setLastUpdate(user, Timestamp.valueOf(LocalDateTime.now()));
+			ed.createResource(user, 0, INITIAL_VALUE);
+			ed.createResource(user, 1, INITIAL_VALUE);
 		}
-		
+	}
+	
+	@Override
+	public void createEmpire(User user){
+		ed.createEmpire(user,Timestamp.valueOf(LocalDateTime.now()));
+		createUser(user);
 	}
 
 	@Override
@@ -182,6 +191,10 @@ public class EmpireServiceImpl implements EmpireService{
 		ed.deleteResource(user,0);
 		ed.deleteResource(user,1);
 		ed.deleteOffers(user);
+		for(Army a: user.getArmy()){
+			as.deleteArmy(a.getIdArmy());
+		}
+		ms.deleteMessages(user);
 		
 	}
 

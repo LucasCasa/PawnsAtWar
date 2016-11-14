@@ -19,4 +19,6 @@ public interface UserService {
 	public boolean exists(String username, String password);	
 	
 	public List<User> getAllUsers();
+
+	public void restoreUser(User user);
 }

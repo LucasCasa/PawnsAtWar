@@ -56,7 +56,7 @@ public class HomePageController {
 			return new ModelAndView("redirect:/");
 		}
 		if(ss.getCastle(user) == null){
-			session.removeAttribute("userId");
+			//session.removeAttribute("userId");
 			return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.gameOver",null,locale));
 		}
 		int xPrime;
@@ -106,5 +106,16 @@ public class HomePageController {
 		if(session.getAttribute("userId") != null)
 			return  us.findById((Integer)session.getAttribute("userId"));
 		return null;
+	}
+	
+	@RequestMapping("/restore")
+	public ModelAndView restore(@ModelAttribute("userId") final User user,
+								final HttpSession session){
+		if(user == null){
+			return new ModelAndView("redirect:/");
+		}
+		us.restoreUser(user);
+		return new ModelAndView("redirect:/map");
+		
 	}
 }

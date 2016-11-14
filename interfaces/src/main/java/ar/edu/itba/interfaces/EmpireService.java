@@ -88,5 +88,7 @@ public interface EmpireService {
 	 */
 	public long calculateScore(User user);
 
+	public void createEmpire(User user);
+
 	
 }
