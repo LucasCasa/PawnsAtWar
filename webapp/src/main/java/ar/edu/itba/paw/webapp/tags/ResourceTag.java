@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.tags;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
@@ -9,7 +10,7 @@ import javax.servlet.jsp.tagext.SimpleTagSupport;
 public class ResourceTag extends SimpleTagSupport{
 	
 	private int type;
-	private int amount;
+	private double amount;
 	private double rate;
 	private String path;
 	
@@ -25,10 +26,15 @@ public class ResourceTag extends SimpleTagSupport{
 			default:	imgName = "";
 						break;
 		}
-		out.print("<img class=\"resource\" src=\""+path+"/resources/images/" + imgName + "\"/><span class=\"quantity\" id=\""+ rate +"\">   " + amount + "</span>");
+		if(Math.floor(amount) == amount){
+			out.print("<img class=\"resource\" src=\""+path+"/resources/images/" + imgName + "\"/><span class=\"quantity\" id=\""+ rate +"\">   " + ((int)amount) + "</span>");
+		}else{
+			DecimalFormat df = new DecimalFormat("#.#");
+			out.print("<img class=\"resource\" src=\""+path+"/resources/images/" + imgName + "\"/><span class=\"quantity\" id=\""+ rate +"\">   " + df.format(amount) + "</span>");
+		}
+
 	}
-	
-	public void setAmount(int amount) {
+	public void setAmount(double amount) {
 		this.amount = amount;
 	}
 	
@@ -36,7 +42,7 @@ public class ResourceTag extends SimpleTagSupport{
 		this.type = type;
 	}
 	
-	public int getAmount() {
+	public double getAmount() {
 		return amount;
 	}
 	

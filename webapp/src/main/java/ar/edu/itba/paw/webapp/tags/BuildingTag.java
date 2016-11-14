@@ -278,7 +278,7 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("</div>");
 
     }
-    private int getBonus(int type, int level){
+    private double getBonus(int type, int level){
         switch (type){
             case Info.ARCHERY:
             case Info.BARRACKS:
@@ -286,7 +286,7 @@ public class BuildingTag extends SimpleTagSupport {
                 return (Info.getInstance().getCost(type)-(level-1));
             case Info.GOLD:
             case Info.MILL:
-                return (level);
+                return (level*0.1);
             case Info.CASTLE:
                 return (level*10);
         }
