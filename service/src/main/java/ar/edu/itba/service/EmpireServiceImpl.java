@@ -16,15 +16,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.ArmyService;
+import ar.edu.itba.interfaces.CommerceService;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.MessageService;
+import ar.edu.itba.interfaces.ResourceDao;
 import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
 import ar.edu.itba.model.Sector;
+import ar.edu.itba.model.TradeOffer;
 import ar.edu.itba.model.User;
 
 @Service
@@ -43,6 +46,10 @@ public class EmpireServiceImpl implements EmpireService{
 	UserDao ud;
 	@Autowired
 	MessageService ms;
+	@Autowired
+	CommerceService cs;
+	@Autowired
+	ResourceDao rd;
 	
 
 	@Override
@@ -100,6 +107,7 @@ public class EmpireServiceImpl implements EmpireService{
 		return true;
 	}
 	
+	@Override
 	public boolean hasResourcesAvailable(User u, int amount, int resType){
 		int rate = 1; /*Temporary*/
 		Resource l = ed.getResource(u,resType);
@@ -164,19 +172,19 @@ public class EmpireServiceImpl implements EmpireService{
 	public void subtractResourceAmount(User u, int type, int quantity) {
 		updateResources(u);
 		Resource r = ed.getResource(u, type);
-		int cant = r.getQuantity() <= quantity ? -1 : r.getQuantity() - quantity;
-		if(cant != -1){
-			ed.setResource(u,type,cant);
+		int quant = r.getQuantity();
+		if(quant >= quantity){
+			ed.setResource(u, type, quant - quantity);
 		}
 	}
 	
 	@Override
-	public void createUser(User user, boolean newUser) {
+	public boolean createUser(User user, boolean newUser) {
 		boolean resp = ss.createCastle(user);
 		if(resp){
 			if(!newUser)
 				ed.setLastUpdate(user, Timestamp.valueOf(LocalDateTime.now()));
-			if(user.getResources() == null){
+			if(user.getResources() == null || user.getResources().isEmpty()){
 				ed.createResource(user, 0, INITIAL_VALUE);
 				ed.createResource(user, 1, INITIAL_VALUE);
 			}else{
@@ -184,23 +192,32 @@ public class EmpireServiceImpl implements EmpireService{
 				ed.setResource(user, 1, INITIAL_VALUE);
 			}
 			
+		}else{
+			return false;
 		}
+		return true;
 	}
 
 	
 	@Override
-	public void createEmpire(User user){
+	public boolean createEmpire(User user){
 		ed.createEmpire(user,Timestamp.valueOf(LocalDateTime.now()));
-		createUser(user,true);
+		return createUser(user,true);
 	}
 
 	@Override
 	public void deleteUser(User user) {
+		if(user == null){
+			return;
+		}
 		ed.deleteResource(user,0);
 		ed.deleteResource(user,1);
 		ed.deleteOffers(user);
 		for(Army a: user.getArmy()){
 			as.deleteArmy(a.getIdArmy());
+		}
+		for(TradeOffer td: user.getCommerce()){
+			cs.deleteOffer(td.getId());
 		}
 		ms.deleteMessages(user);
 		

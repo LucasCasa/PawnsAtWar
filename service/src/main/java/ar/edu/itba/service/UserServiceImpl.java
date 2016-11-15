@@ -35,16 +35,17 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User create(String username, String password, String email) {
 		User user = ud.create(username, password, email);
-		es.createEmpire(user);
-		return user;
+		boolean resp = es.createEmpire(user);
+		return resp ? user : null;
 		
 	}
 	
 	@Override
-	public void restoreUser(User user){
+	public boolean restoreUser(User user){
 		if(user != null){
-			es.createUser(user,false);
+			return es.createUser(user,false);
 		}
+		return false;
 		
 	}
 

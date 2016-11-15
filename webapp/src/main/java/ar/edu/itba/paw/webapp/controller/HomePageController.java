@@ -113,11 +113,14 @@ public class HomePageController {
 	
 	@RequestMapping("/restore")
 	public ModelAndView restore(@ModelAttribute("userId") final User user,
-								final HttpSession session){
+								final HttpSession session,Locale locale){
 		if(user == null){
 			return new ModelAndView("redirect:/");
 		}
-		us.restoreUser(user);
+		boolean aux = us.restoreUser(user);
+		if(!aux){
+			return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.noPlace", null,locale));
+		}
 		return new ModelAndView("redirect:/map");
 		
 	}

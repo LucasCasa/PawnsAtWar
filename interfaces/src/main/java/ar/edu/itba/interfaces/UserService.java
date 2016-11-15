@@ -20,5 +20,5 @@ public interface UserService {
 	
 	public List<User> getAllUsers();
 
-	public void restoreUser(User user);
+	public boolean restoreUser(User user);
 }

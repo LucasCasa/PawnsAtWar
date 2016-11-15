@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.ArmyDao;
 import ar.edu.itba.interfaces.ArmyService;
+import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.TroopService;
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
@@ -19,6 +20,8 @@ public class ArmyServiceImpl implements ArmyService {
 	
 	@Autowired
 	private ArmyDao ad;
+	@Autowired
+	private EmpireService es;
 	
 	@Autowired
 	private TroopService ts;
@@ -73,6 +76,18 @@ public class ArmyServiceImpl implements ArmyService {
 		}
 		return strongest;
 	}
+
+	@Override
+	public boolean trainTroops(User user, int type, int cost, Point point, int amountTroops, int troopType) {
+		if(!es.hasResourcesAvailable(user, cost, type)){
+			return false;
+		}
+		es.subtractResourceAmount(user,type,cost);
+		Army ar = getOrCreateArmy(point,user );
+		ts.addTroop(ar.getIdArmy(),troopType,amountTroops);
+		return true;
+	}
+	
 	
 	
 

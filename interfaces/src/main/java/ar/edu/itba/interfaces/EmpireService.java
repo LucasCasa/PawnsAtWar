@@ -77,7 +77,7 @@ public interface EmpireService {
 	 * @param userid
 	 * @return the point in which the castle is in
 	 */
-	public void createUser(User user,boolean newUser);
+	public boolean createUser(User user,boolean newUser);
 
 	public void deleteUser(User user);
 	
@@ -88,7 +88,9 @@ public interface EmpireService {
 	 */
 	public long calculateScore(User user);
 
-	public void createEmpire(User user);
+	public boolean createEmpire(User user);
+	
+	public boolean hasResourcesAvailable(User u, int amount, int resType);
 
 	
 }

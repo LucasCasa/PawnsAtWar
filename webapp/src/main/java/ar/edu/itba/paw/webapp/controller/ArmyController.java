@@ -275,8 +275,9 @@ public class ArmyController {
 		int x = Integer.valueOf(px);
 		int y = Integer.valueOf(py);
 		Sector s =ss.getSector(new Point(x,y));
-		int cost;
-		switch (Integer.valueOf(type)){
+		int troopType = Integer.valueOf(type);
+		int cost=0;
+		switch (troopType){
 		case Info.WARRIOR:
 			cost = (Info.COST_WARRIOR - (s.getLevel() - 1))*a;
 			break;
@@ -289,13 +290,13 @@ public class ArmyController {
 		default:
 			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidTroop",null,locale));
 		}
-		if(es.getResource(user, Info.RES_FOOD).getQuantity() < cost){
+		boolean resp = as.trainTroops(user,Info.RES_FOOD,cost,new Point(x,y),a,Integer.valueOf(type));
+		if(resp){
+			return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&s="+ messageSource.getMessage("troopSuccess",null,locale));
+
+		}else{
 			return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&e="+ messageSource.getMessage("error.noFood",null,locale));
 		}
-		es.subtractResourceAmount(user,Info.RES_FOOD,cost);
-		Army ar = as.getOrCreateArmy(new Point(x,y),user );
-		ts.addTroop(ar.getIdArmy(),Integer.valueOf(type),a);
-		return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&s="+ messageSource.getMessage("troopSuccess",null,locale));
 
 	}
 

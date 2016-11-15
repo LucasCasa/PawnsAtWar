@@ -54,7 +54,10 @@ public class LoginController {
 		if(us.exists(form.getUsername())){
 			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
 		}
-		us.create(form.getUsername(), form.getPassword(), form.getEmail());
+		User resp = us.create(form.getUsername(), form.getPassword(), form.getEmail());
+		if(resp == null){
+			return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.noPlace", null,locale));
+		}
 		User u = us.findByUsername(form.getUsername());
 		session.setAttribute(LOGGED_USER_ID, u.getId());
 		return new ModelAndView("redirect:/map");

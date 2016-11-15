@@ -21,6 +21,8 @@ public interface ArmyService{
 	public void deleteArmy(int idArmy);
 	
 	public Army getStrongest(User u);
+
+	public boolean trainTroops(User user, int type, int cost, Point point, int amountTroops, int troopType);
 	
 	
 }
