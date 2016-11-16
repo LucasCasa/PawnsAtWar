@@ -8,9 +8,9 @@
 
 <div class="container">
 
-    <h1>De: ${from}</h1>
-    <h1>Asunto: ${subject}</h1>
-    <h1>Mensaje: ${message}</h1>
+    <h1><spring:message code="messages.mailFrom"/> ${from}</h1>
+    <h1><spring:message code="messages.mailSubject"/> ${subject}</h1>
+    <h1><spring:message code="messages.mailContent"/> ${message}</h1>
 
 
     <br>
@@ -23,7 +23,6 @@
         <div class="form-group">
             <label><spring:message code="messages.username"/></label>
             <input type="username" class="form-control" name="username"  value="${from}" aria-describedby="usernameHelp" placeholder=<spring:message code="messages.mailPlaceholder"/>>
-            <small id="usernameHelp" class="form-text text-muted"><spring:message code="messages.advise"/></small>
         </div>
 
         <div class="form-group">
@@ -40,6 +39,7 @@
 
     </form>
 </div>
-
+<br/>
+<br/>
 
 <%@ include file="footer.jsp" %>

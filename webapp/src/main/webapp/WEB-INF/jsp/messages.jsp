@@ -29,7 +29,7 @@
                 </thead>
                 <tbody>
                     <c:forEach var="message" items="${messagesReceived}">
-                        <tr class="table-row"  data-href="<c:url value="/messages/seeMessage?id=${message.getId()}"/>">
+                        <tr class="table-row"  data-href="<c:url value="/messages/seeMessage?msgId=${message.getId()}"/>">
                             <td>${message.getFrom().getName()}</td>
                             <td>${message.getSubject()}</td>
                             <td><form method="post" action="<c:url value="/messages/delete"/>">
@@ -56,7 +56,6 @@
         <div class="form-group">
                 <label><spring:message code="messages.username"/></label>
                 <input type="username" class="form-control" name="username" aria-describedby="usernameHelp" placeholder=<spring:message code="messages.mailPlaceholder"/>>
-                <small id="usernameHelp" class="form-text text-muted"><spring:message code="messages.advise"/></small>
         </div>
 
         <div class="form-group">
@@ -74,6 +73,8 @@
     </form>
 
 </div>
+<br/>
+<br/>
 
 
 

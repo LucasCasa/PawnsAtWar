@@ -89,10 +89,8 @@ public class LoginController {
 
 	@RequestMapping("/logout")
 	public ModelAndView logout(final HttpSession session,Locale locale){
-		if(session.getAttribute(LOGGED_USER_ID) == null){
-			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.alreadyLogout",null,locale));
-		}
-		session.removeAttribute(LOGGED_USER_ID);
+		if(session.getAttribute(LOGGED_USER_ID) != null)
+			session.removeAttribute(LOGGED_USER_ID);
 		return new ModelAndView("redirect:/");
 	}
 

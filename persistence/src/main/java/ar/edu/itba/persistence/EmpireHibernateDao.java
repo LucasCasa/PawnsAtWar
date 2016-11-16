@@ -41,10 +41,10 @@ public class EmpireHibernateDao implements EmpireDao {
 	}
 
 	@Override
-	public void setResource(User u, int id, int amount) {
-		Resource r = getResource(u,id);
+	public void setResource(User u, int typeId, int amount) {
+		Resource r = getResource(u,typeId);
 		r.setQuantity(amount);
-		u.getResources().get(id).setQuantity(amount);
+		u.getResources().get(typeId).setQuantity(amount);
 		em.merge(r);
 	}
 

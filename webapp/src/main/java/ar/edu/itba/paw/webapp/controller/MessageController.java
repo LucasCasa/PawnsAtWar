@@ -37,14 +37,12 @@ public class MessageController {
     private PAWMailService mailService;
 
     @RequestMapping(value="/messages")
-    public ModelAndView messages(@ModelAttribute("user") final User user, @RequestParam(value="s", required = false,defaultValue = "") final String success){
+    public ModelAndView messages(@ModelAttribute("userId") final User user, @RequestParam(value="s", required = false,defaultValue = "") final String success){
 
         if(user == null)
             return new ModelAndView("redirect:/login");
-
+        
         final ModelAndView mav = new ModelAndView("messages");
-
-        System.out.println("QUE TIENE LA VARIABLE SUCCESS? " + success);
 
         List<Message> messagesReceived = ms.getAllMessages(user);
         mav.addObject("messagesReceived",messagesReceived);
@@ -56,7 +54,7 @@ public class MessageController {
     }
 
     @RequestMapping(value="/messages/sendMessage", method = RequestMethod.POST)
-    public ModelAndView sendMessage(@RequestParam(required = false) String username,@RequestParam(required = false) String message, @RequestParam(required = false) String subject, @ModelAttribute("user") final User user, Locale locale){
+    public ModelAndView sendMessage(@RequestParam(required = false) String username,@RequestParam(required = false) String message, @RequestParam(required = false) String subject, @ModelAttribute("userId") final User user, Locale locale){
 
         ms.createMessage( user, us.findByUsername(username), subject, message);
 
@@ -73,7 +71,7 @@ public class MessageController {
 
 
     @RequestMapping(value="/messages/delete")
-    public ModelAndView deleteMessage(@RequestParam final Long id, @ModelAttribute("user") final User user){
+    public ModelAndView deleteMessage(@RequestParam final Long id, @ModelAttribute("userId") final User user){
 
         Message mssg = ms.getById(id);
 
@@ -84,19 +82,17 @@ public class MessageController {
 
         return new ModelAndView("redirect:/messages");
     }
-
-    @ModelAttribute("user")
-    public User loggedUser (final HttpSession session){
-        if(session.getAttribute("userId") != null)
-            return  us.findById((Integer)session.getAttribute("userId"));
-        return null;
-    }
-
-
+    
     @RequestMapping(value="/messages/seeMessage")
-    public ModelAndView answerMessage(@RequestParam final Long id, @ModelAttribute("user") final User user){
+    public ModelAndView answerMessage(@RequestParam final Long msgId, @ModelAttribute("userId") final User user){
 
-        Message mssg = ms.getById(id);
+        Message mssg = ms.getById(msgId);
+        
+        
+        
+        if(mssg==null || (!mssg.getFrom().equals(user) && !mssg.getTo().equals(user))){
+        	return new ModelAndView("redirect:/error");
+        }
 
         final ModelAndView mav = new ModelAndView("seeMessage");
 
@@ -108,6 +104,18 @@ public class MessageController {
 
         return mav;
     }
+
+    @ModelAttribute("userId")
+    public User loggedUser (final HttpSession session){
+        if(session.getAttribute("userId") != null){
+        	User u = us.findById((Integer)session.getAttribute("userId"));
+            return  u;
+        }
+        return null;
+    }
+
+
+
 
     private void sendEmail(String emailTo, String subject, String message){
         mailService.sendEmail(emailTo, subject, message);

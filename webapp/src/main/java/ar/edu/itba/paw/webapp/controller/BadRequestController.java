@@ -23,7 +23,7 @@ public class BadRequestController {
 	public ModelAndView errors(@RequestParam(value= "m",required = false) String message, Locale locale){
 		final ModelAndView mav = new ModelAndView("error");
 		mav.addObject("message",message);
-		if(message.equals(messageSource.getMessage("error.gameOver",null,locale))){
+		if(message!=null && message.equals(messageSource.getMessage("error.gameOver",null,locale))){
 			mav.addObject("gameOver", true);
 		}else{
 			mav.addObject("gameOver", false);

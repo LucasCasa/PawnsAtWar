@@ -29,8 +29,6 @@ public class ArmyController {
 	@Autowired
 	private UserService us;
 	@Autowired
-	private EmpireService es;
-	@Autowired
 	private MessageSource messageSource;
 	@Autowired
 	private PAWMailService mailService;
@@ -257,6 +255,7 @@ public class ArmyController {
 
 		mailService.sendEmail(d.getEmail(),"Fuiste atacado",body);
 	}
+	
 	@RequestMapping(value="/train", method = RequestMethod.POST)
 	public ModelAndView train(@RequestParam String type,
 			@RequestParam String amount,
