@@ -20,6 +20,7 @@ import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
 import ar.edu.itba.paw.webapp.data.Info;
 import ar.edu.itba.paw.webapp.data.Validator;
 
@@ -79,8 +80,7 @@ public class HomePageController {
 
 		List<List<Sector>> elements;
 		elements = ss.getSector(new Point(xPrime,yPrime), Info.VIEW_RANGE);
-		mav.addObject("resList",es.getResources(user));
-		mav.addObject("ratesList",es.getRates(user));
+		mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
 		mav.addObject("map",elements);
 		mav.addObject("x",xPrime);
 		mav.addObject("y",yPrime);

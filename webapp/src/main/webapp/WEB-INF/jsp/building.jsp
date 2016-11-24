@@ -3,6 +3,7 @@
 <%@ taglib prefix="bi" uri="buildingIcon.tld"%>
 <%@ taglib prefix="us" uri="user.tld"%>
 <%@ taglib prefix="re" uri="resource.tld"%>
+<%@ taglib prefix="rb" uri="resBar.tld"%>
 <%@ include file="header.jsp" %>
 <link rel="stylesheet" href="<c:url value= "/resources/css/style.css" /> ">
 <link rel="stylesheet" href="<c:url value= "/resources/css/building.css" /> ">

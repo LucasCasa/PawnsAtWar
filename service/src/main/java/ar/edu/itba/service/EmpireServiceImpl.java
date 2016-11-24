@@ -34,7 +34,9 @@ import ar.edu.itba.model.User;
 @Transactional
 public class EmpireServiceImpl implements EmpireService{
 	
-	private static final int INITIAL_VALUE = 2000;
+	public static final int INITIAL_VALUE = 2000;
+	public static final int MIN_STORAGE = 3000;
+	public static final int STORAGE_PER_LEVEL = 1000;
 	
 	@Autowired
 	EmpireDao ed;
@@ -72,12 +74,28 @@ public class EmpireServiceImpl implements EmpireService{
 	public void updateResources(User u){
 		List<Resource> list = u.getResources();
 		int seconds = (int)timeLapsed(u);
+		int max = getMaxStorage(u);
 		for(Resource r: list){
 			int cant = (int) (r.getQuantity() + seconds*getRate(u, r.getType()));
-			ed.setResource(u, r.getType(), cant);
+			ed.setResource(u, r.getType(), (max<cant?max:cant));
 		}
 	}
 	
+	/**
+	 * Returns the max amount of resources that can be stored
+	 * @param u The user
+	 * @return The max amount
+	 */
+	public int getMaxStorage(User u) {
+		int max = MIN_STORAGE;
+		List<Sector> castles = ed.getBuilding(u, SectorServiceImpl.CASTLE);
+		for(Sector c: castles){
+			for(int i=1; i<= c.getLevel(); i++)
+				max += (1000-10*(i-1)+Math.pow(i, 4));
+		}
+		return max;
+	}
+
 	/**
 	 * Retrieves the time lapsed since last update and sets the new time
 	 * @param userid The id of the user whose resources are queried
@@ -165,7 +183,11 @@ public class EmpireServiceImpl implements EmpireService{
 	public void addResourceAmount(User u, int type, int quantity) {
 		updateResources(u);
 		Resource r = ed.getResource(u, type);
-		ed.setResource(u, type, r.getQuantity() + quantity);
+		int amount = r.getQuantity() + quantity;
+		int max =  getMaxStorage(u);
+		if(amount > max)
+			amount = max;
+		ed.setResource(u, type, amount);
 	}
 
 	@Override

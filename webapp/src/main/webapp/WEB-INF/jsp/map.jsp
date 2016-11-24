@@ -1,9 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="te" uri="/WEB-INF/jsp/custom.tld"%>
-<%@ taglib prefix="re" uri="/WEB-INF/jsp/resource.tld"%>
+<%@ taglib prefix="rb" uri="resBar.tld"%>
 <%@ include file="header.jsp" %>
-
-
 
 
 <div class="container">
@@ -82,4 +80,6 @@
 		</div>
 	</div>
 </div>
+<br/>
+<br/>
 <%@ include file="footer.jsp" %>

@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import java.util.List;
 import java.util.Locale;
 
+import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
 import ar.edu.itba.paw.webapp.data.Info;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.paw.webapp.data.Validator;
@@ -78,8 +79,7 @@ public class BuildingController {
             mav.addObject("goldTerraunBuilding",goldTerrainBuilding);
             mav.addObject("price", ss.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user));
             mav.addObject("level",sector.getLevel());
-    		mav.addObject("resList",es.getResources(user));
-            mav.addObject("ratesList",es.getRates(user));
+            mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
             mav.addObject("error",error);
             mav.addObject("success",success);
             mav.addObject("locale",locale);

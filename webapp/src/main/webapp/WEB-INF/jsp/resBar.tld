@@ -1,0 +1,22 @@
+<taglib>
+    <tlib-version>1.0</tlib-version>
+    <jsp-version>2.0</jsp-version>
+    <short-name>Example TLD</short-name>
+    <tag>
+        <name>resBar</name>
+        <tag-class>ar.edu.itba.paw.webapp.tags.ResourceBarTag</tag-class>
+        <body-content>empty</body-content>
+        <description>Displays a bar with the resources and the maximum storage capacity</description>
+        <attribute>
+            <name>rbean</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>ar.edu.itba.paw.webapp.beans.ResourceBarBean</type>
+        </attribute>
+        <attribute>
+            <name>path</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+</taglib>

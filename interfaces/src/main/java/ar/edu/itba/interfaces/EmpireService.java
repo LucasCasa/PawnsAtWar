@@ -91,6 +91,11 @@ public interface EmpireService {
 	public boolean createEmpire(User user);
 	
 	public boolean hasResourcesAvailable(User u, int amount, int resType);
-
 	
+	/**
+	 * Returns the max amount of resources that can be stored
+	 * @param u The user
+	 * @return The max amount
+	 */
+	public int getMaxStorage(User u);
 }

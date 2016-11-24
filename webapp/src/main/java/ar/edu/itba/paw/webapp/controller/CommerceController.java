@@ -13,6 +13,7 @@ import ar.edu.itba.interfaces.CommerceService;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.model.TradeOffer;
 import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
 import ar.edu.itba.paw.webapp.data.Validator;
 
 import javax.servlet.http.HttpSession;
@@ -50,8 +51,7 @@ public class CommerceController {
         mav.addObject("tradeList",tradeList);
 		mav.addObject("tradeListSize",tradeList.size());
         mav.addObject("insuficientAmount",insuficientAmount);
-        mav.addObject("ratesList",es.getRates(user));
-		mav.addObject("resList",es.getResources(user));
+        mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
         
         return mav;
 	}
@@ -86,8 +86,7 @@ public class CommerceController {
 			@ModelAttribute("user") final User user){
 		ModelAndView mav = new ModelAndView("createOffer");
 		mav.addObject("insuficientAmount",insuficientAmount);
-		mav.addObject("ratesList",es.getRates(user));
-		mav.addObject("resList",es.getResources(user));
+		mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
 		
 		return mav;
 	}

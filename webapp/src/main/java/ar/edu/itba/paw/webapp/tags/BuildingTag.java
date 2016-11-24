@@ -179,12 +179,10 @@ public class BuildingTag extends SimpleTagSupport {
         printButtons();
         printTable(messageSource.getMessage("foodGen",null,locale), Info.MILL,level);
     }
-    private void printBlacksmith() throws JspException,IOException{
-        printButtons();
-    }
+
     private void printCastle() throws JspException,IOException{
         printButtons();
-        printTable(messageSource.getMessage("buildCost",null,locale), Info.CASTLE,level);
+        printTable(messageSource.getMessage("storeAmount",null,locale), Info.CASTLE,level);
     }
     private void printGoldMine() throws JspException,IOException{
         printButtons();
@@ -218,19 +216,15 @@ public class BuildingTag extends SimpleTagSupport {
     public void printTable(String text,int type,int level) throws JspException, IOException{
         JspWriter out = getJspContext().getOut();
         
+        int costAm = price + level*level*level*level;
+        
         ResourceTag cost = new ResourceTag();
         cost.setJspContext(getJspContext());
-        cost.setAmount(price + level*level*level*level);
+        cost.setAmount(costAm);
         cost.setRate(0);
         cost.setType(1);
         cost.setPath(path);
         
-        ResourceTag bonus = new ResourceTag();
-        bonus.setJspContext(getJspContext());
-        bonus.setAmount(getBonus(type, level));
-        bonus.setRate(0);
-        bonus.setType(getBonusType(type));
-        bonus.setPath(path);
         out.println("<div class=\"row\" style=\"margin-left: 0px;\">");
         out.println("<br><br><br>");
         out.println("<table class=\"table table-striped\" id=\"Level\">");
@@ -243,29 +237,43 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("<tbody>");
         out.println("<tr>");
         out.println("<td><b>"+level +"</b></td><td><b>");
-        bonus.doTag();
+        if(type != Info.CASTLE){
+	        ResourceTag bonus = new ResourceTag();
+	        bonus.setJspContext(getJspContext());
+	        bonus.setAmount(getBonus(type, level));
+	        bonus.setRate(0);
+	        bonus.setType(getBonusType(type));
+	        bonus.setPath(path);
+	        bonus.doTag();
+        }else{
+        	out.println("<img class=\"resource\" src=\""+path+"/resources/images/silo.png\"/><span>"+costAm+"</span>");
+        }
         out.println("</b></td><td><b>");
         cost.doTag();
         out.println("</b></td>");//<td><b>00:"+level+":00</b></td>");
         out.println("</tr>");
         for(int i = level+1 ; i<=20;i++){
+        	int amount = price + i*i*i*i;
         	ResourceTag c = new ResourceTag();
             c.setJspContext(getJspContext());
-            c.setAmount(price + i*i*i*i);
+            c.setAmount(amount);
             c.setRate(0);
             c.setType(1);
             c.setPath(path);
             
-            ResourceTag re = new ResourceTag();
-            re.setJspContext(getJspContext());
-            re.setAmount(getBonus(type, i));
-            re.setRate(0);
-            re.setType(getBonusType(type));
-            re.setPath(path);
-     
             out.println("<tr>");
             out.println("<td>"+i +"</td><td>");
-            re.doTag();
+            if(type != Info.CASTLE){
+	            ResourceTag re = new ResourceTag();
+	            re.setJspContext(getJspContext());
+	            re.setAmount(getBonus(type, i));
+	            re.setRate(0);
+	            re.setType(getBonusType(type));
+	            re.setPath(path);
+	            re.doTag();
+            }else{
+            	out.println("<img class=\"resource\" src=\""+path+"/resources/images/silo.png\"/><span>"+amount+"</span>");
+            }
             out.println("</td><td>");
             c.doTag();
             out.println("</td>");//<td>00:"+i+":00</td>");
@@ -301,8 +309,9 @@ public class BuildingTag extends SimpleTagSupport {
 	        case Info.MILL:
 	            return Info.RES_FOOD;
 	        case Info.GOLD:
-	        case Info.CASTLE:
 	            return Info.RES_GOLD;
+//	        case Info.CASTLE:
+//	        	return Info.
     	}
     	return 0;
     }
