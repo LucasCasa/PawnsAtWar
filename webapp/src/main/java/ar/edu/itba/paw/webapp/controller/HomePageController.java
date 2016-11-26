@@ -1,10 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpSession;
 
+import ar.edu.itba.interfaces.AlertService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -33,6 +35,8 @@ public class HomePageController {
 	private EmpireService es;
 	@Autowired
 	private UserService us;
+	@Autowired
+	private AlertService as;
 	@Autowired
 	private MessageSource messageSource;
 
@@ -85,9 +89,9 @@ public class HomePageController {
 		mav.addObject("x",xPrime);
 		mav.addObject("y",yPrime);
 		mav.addObject("range",Info.VIEW_RANGE);
-
+		mav.addObject("alerts",as.getByUser(user));
 		mav.addObject("user",user);
-
+		mav.addObject("now", Calendar.getInstance().getTime().getTime());
 		return mav;
 	}
 	

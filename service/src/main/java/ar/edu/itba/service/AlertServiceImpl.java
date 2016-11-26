@@ -9,6 +9,9 @@ import ar.edu.itba.interfaces.AlertService;
 import ar.edu.itba.model.Alert;
 import ar.edu.itba.model.User;
 
+import java.util.Date;
+import java.util.List;
+
 
 @Service
 @Transactional
@@ -26,11 +29,20 @@ public class AlertServiceImpl implements AlertService {
 	}
 
 	@Override
-	public Alert createAlert(User user, String message) {
+	public Alert createAlert(User user, String message,Date d) {
 		if(user == null || message == null){
 			return null;
 		}
-		return ad.createAlert(user, message);
+		return ad.createAlert(user, message,d);
+	}
+
+	public void removeAlert(Alert a){
+		ad.removeAlert(a);
+	}
+
+	@Override
+	public List<Alert> getByUser(User u) {
+		return ad.getByUser(u);
 	}
 
 }

@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="te" uri="/WEB-INF/jsp/custom.tld"%>
 <%@ taglib prefix="rb" uri="resBar.tld"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="header.jsp" %>
 
 
@@ -76,10 +77,19 @@
 					<button class="myButton" id="gotoDir" onclick="redir()"><spring:message code="button.go" text="IR"/> </button>
 					<div id="error" style="display:none; color:#FF0000"><spring:message code="labelError.map"/> </div>
 				</div>
+				<br>
+				<c:forEach var="alert" items="${alerts}">
+					<div class="well well-sm">
+						<p>${alert.message}</p>
+						<spring:message code="alert.finalize"/> <span class="timeR"><fmt:formatNumber value="${(alert.date.getTime() - now) / 1000}" maxFractionDigits="0" /></span> <spring:message code="alert.seconds"/>
+					</div>
+				</c:forEach>
 			</div>
 		</div>
 	</div>
 </div>
 <br/>
 <br/>
+
+<script src="<c:url value= "/resources/js/alert.js" />"></script>
 <%@ include file="footer.jsp" %>

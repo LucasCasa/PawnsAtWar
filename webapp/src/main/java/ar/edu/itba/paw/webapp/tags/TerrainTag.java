@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.tags;
 
+import ar.edu.itba.model.SectorType;
 import ar.edu.itba.paw.webapp.data.Info;
 
 import java.io.IOException;
@@ -28,36 +29,8 @@ public class TerrainTag extends SimpleTagSupport{
         }else if(ownerid>0){
         	status = "hostile";
         }
-       
-        switch (id){
-            case Info.EMPTY:
-                out.print("<img class=\" " + clas + " " + status + " \" src=\""+path+"/resources/images/terrain.jpg\">");
-                break;
-            case Info.CASTLE:
-                out.print("<img class=\" " + clas + " " + status + " \" src=\""+path+"/resources/images/castle.jpg\">");
-                break;
-            case Info.ARCHERY:
-                out.print("<img class=\" " + clas + " " + status+ " \" src=\""+path+"/resources/images/archery.jpg\">");
-                break;
-            case Info.BARRACKS:
-                out.print("<img class=\" " + clas + " " + status+ " \" src=\""+path+"/resources/images/barracks.jpg\">");
-                break;
-            case Info.GOLD:
-                out.print("<img class=\" " + clas + " " + status + " \" src=\""+path+"/resources/images/gold.jpg\">");
-                break;
-            case Info.TERR_GOLD:
-                out.print("<img class=\" " + clas + " " + status + " \" src=\""+path+"/resources/images/terrgold.jpg\">");
-                break;
-            case Info.MILL:
-                out.print("<img class=\" " + clas + " " + status + " \"  src=\""+path+"/resources/images/mill.jpg\">");
-                break;
-            case Info.BLACKSMITH:
-                out.print("<img class=\" " + clas + " " + status + " \"  src=\""+path+"/resources/images/blacksmith.jpg\">");
-                break;
-            case Info.STABLE:
-                out.print("<img class=\" " + clas + " " + status + " \"  src=\""+path+"/resources/images/stable.jpg\">");
-                break;
-        }
+        out.print("<img class=\" " + clas + " " + status + " \" src=\""+path+"/resources/images/"+ SectorType.get(id).toString()+".jpg\">");
+
     }
     
     public int getUserid() {

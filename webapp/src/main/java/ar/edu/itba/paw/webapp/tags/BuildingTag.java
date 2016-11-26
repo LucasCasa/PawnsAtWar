@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.tags;
 
 import ar.edu.itba.model.Point;
+import ar.edu.itba.model.SectorType;
 import ar.edu.itba.paw.webapp.data.Info;
 import ar.edu.itba.paw.webapp.data.InformationBuilding;
 import org.springframework.context.MessageSource;
@@ -115,13 +116,13 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("</thead>");
         out.println("<tbody>");
         if(!gold) {
-            for (InformationBuilding i : Info.getInstance().getConstructable(info.getId())) {
+            for (Integer i : Info.getConstructable(info.getId())) {
                 out.println("<tr>");
                 out.println("<td>");
-                printImage(out,i.getId());
+                printImage(out,i);
                 out.println("</td>");
                 out.println("<td style=\"text-align: center;\">");
-                out.println(Info.getInstance().getBuildingInformation(i.getId(),locale.getLanguage()).getDescription());
+                out.println(messageSource.getMessage("description." + SectorType.get(i).toString(),null,locale));
                 out.println("</td>");
                 out.println("<td style=\"text-align: center;\">");
                 ResourceTag re = new ResourceTag();
@@ -136,7 +137,7 @@ public class BuildingTag extends SimpleTagSupport {
                 out.println("<form method=\"post\" action=\""+ path +"/build\">");
                 out.println("<input type=\"hidden\" name=\"x\" value=\"" + point.getX() + "\"/>");
                 out.println("<input type=\"hidden\" name=\"y\" value=\"" + point.getY() + "\"/>");
-                out.println("<input type=\"hidden\" name=\"type\" value=\"" + i.getId() + "\"/>");
+                out.println("<input type=\"hidden\" name=\"type\" value=\"" + i + "\"/>");
                 out.println("<input type=\"submit\" class=\"myButton\" value=\""+messageSource.getMessage("build",null,locale)+"\"/>");
                 out.println("</form>");
                 out.println("</td>");
@@ -150,7 +151,7 @@ public class BuildingTag extends SimpleTagSupport {
             printImage(out, Info.GOLD);
             out.println("</td>");
             out.println("<td>");
-            out.println(Info.getInstance().getBuildingInformation(Info.TERR_GOLD,locale.getLanguage()).getDescription());
+            out.println(messageSource.getMessage("description.GOLD",null,locale));
             out.println("</td>");
             out.println("<td style=\" text-align: center;\">");
             ResourceTag re = new ResourceTag();
@@ -189,29 +190,7 @@ public class BuildingTag extends SimpleTagSupport {
         printTable(messageSource.getMessage("goldGen",null,locale), Info.GOLD,level);
     }
     private void printImage(JspWriter out,int id) throws JspException, IOException{
-            switch (id){
-                case Info.CASTLE:
-                    out.print("<img src=\""+ path +"/resources/images/castle.png\">");
-                    break;
-                case Info.ARCHERY:
-                    out.print("<img src=\""+ path +"/resources/images/archery.png\">");
-                    break;
-                case Info.BARRACKS:
-                    out.print("<img src=\""+ path +"/resources/images/barracks.png\">");
-                    break;
-                case Info.GOLD:
-                    out.print("<img src=\""+ path +"/resources/images/gold.png\">");
-                    break;
-                case Info.MILL:
-                    out.print("<img src=\""+ path +"/resources/images/mill.png\">");
-                    break;
-                /*case Info.BLACKSMITH:
-                    out.print("<img src=\""+ path +"/resources/images/blacksmith.png\">");
-                    break;*/
-                case Info.STABLE:
-                    out.print("<img src=\""+ path +"/resources/images/stable.png\">");
-                    break;
-            }
+        out.print("<img src=\""+ path +"/resources/images/"+SectorType.get(id).toString()+".png\">");
     }
     public void printTable(String text,int type,int level) throws JspException, IOException{
         JspWriter out = getJspContext().getOut();
@@ -291,7 +270,7 @@ public class BuildingTag extends SimpleTagSupport {
             case Info.ARCHERY:
             case Info.BARRACKS:
             case Info.STABLE:
-                return (Info.getInstance().getCost(type)-(level-1));
+                return (Info.getCost(type)-(level-1));
             case Info.GOLD:
             case Info.MILL:
                 return (level*0.1);

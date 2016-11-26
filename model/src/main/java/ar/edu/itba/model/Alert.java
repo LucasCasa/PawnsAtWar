@@ -2,6 +2,7 @@ package ar.edu.itba.model;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -37,10 +38,10 @@ public class Alert {
 	}
 
 
-	public Alert(User user, String message) {
+	public Alert(User user, String message,Date d) {
 		this.userAlert = user;
 		this.message = message;
-		this.date = new Timestamp(Calendar.getInstance().getTime().getTime());
+		this.date = new Timestamp(d.getTime());
 	}
 
 	public int getId() {

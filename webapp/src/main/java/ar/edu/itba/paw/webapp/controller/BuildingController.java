@@ -3,6 +3,8 @@ package ar.edu.itba.paw.webapp.controller;
 import java.util.List;
 import java.util.Locale;
 
+import ar.edu.itba.interfaces.ScheduleService;
+import ar.edu.itba.model.SectorType;
 import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
 import ar.edu.itba.paw.webapp.data.Info;
 import ar.edu.itba.interfaces.UserService;
@@ -39,6 +41,8 @@ public class BuildingController {
     @Autowired
     private UserService us;
     @Autowired
+    private ScheduleService sh;
+    @Autowired
     private MessageSource messageSource;
 
 
@@ -61,22 +65,16 @@ public class BuildingController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidPosition",null,locale));
         }else{
         	
-        	List<Integer> plainTerrainBuildings = Info.getInstance().getPlainTerrainBuildings();
-        	
-        	Integer goldTerrainBuilding = Info.GOLD;
-
-        	
             final ModelAndView mav = new ModelAndView("building");
 
             Sector sector = ss.getSector(new Point(Integer.parseInt(x),Integer.parseInt(y)));
-            InformationBuilding ib  = Info.getInstance().getBuildingInformation(sector.getType(),locale.getLanguage());
-
+            int id = sector.getType();
+            String name = SectorType.get(id).toString();
+            InformationBuilding ib  = new InformationBuilding(id,name,messageSource.getMessage("description."+ name,null,locale));
             mav.addObject("building",ib);
             mav.addObject("owner",sector.getUser());
             mav.addObject("user",user);
             mav.addObject("p",new Point(Integer.parseInt(x),Integer.parseInt(y)));
-            mav.addObject("plainTerrainBuildings",plainTerrainBuildings);
-            mav.addObject("goldTerraunBuilding",goldTerrainBuilding);
             mav.addObject("price", ss.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user));
             mav.addObject("level",sector.getLevel());
             mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
@@ -159,7 +157,7 @@ public class BuildingController {
         if(s.getLevel() < 20){
             int price = ss.getPrice(p,user) + (int) Math.pow(s.getLevel(),4);
             if(es.getResource(user,Info.RES_GOLD).getQuantity() >= price ) {
-                ss.levelUp(p);
+                sh.levelUpTask(s);
                 es.subtractResourceAmount(user, Info.RES_GOLD, price);
             }else{
                return new ModelAndView("redirect:/building?x="+x+"&y=" +y+"&e="+ messageSource.getMessage("error.noGold",null,locale));
@@ -168,7 +166,7 @@ public class BuildingController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.maxLevel",null,locale));
         }
 
-        return new ModelAndView("redirect:/building?x="+x+"&y=" + y);
+        return new ModelAndView("redirect:/map?x="+x+"&y=" + y);
     }
 
     @ModelAttribute("userId")

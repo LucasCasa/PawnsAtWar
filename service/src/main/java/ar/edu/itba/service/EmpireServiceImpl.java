@@ -11,18 +11,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ar.edu.itba.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.edu.itba.interfaces.ArmyService;
-import ar.edu.itba.interfaces.CommerceService;
-import ar.edu.itba.interfaces.EmpireDao;
-import ar.edu.itba.interfaces.EmpireService;
-import ar.edu.itba.interfaces.MessageService;
-import ar.edu.itba.interfaces.ResourceDao;
-import ar.edu.itba.interfaces.SectorService;
-import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
@@ -39,20 +32,21 @@ public class EmpireServiceImpl implements EmpireService{
 	public static final int STORAGE_PER_LEVEL = 1000;
 	
 	@Autowired
-	EmpireDao ed;
+	private EmpireDao ed;
 	@Autowired
-	SectorService ss;
+	private SectorService ss;
 	@Autowired
-	ArmyService as;
+	private ArmyService as;
 	@Autowired
-	UserDao ud;
+	private UserDao ud;
 	@Autowired
-	MessageService ms;
+	private MessageService ms;
 	@Autowired
-	CommerceService cs;
+	private CommerceService cs;
 	@Autowired
-	ResourceDao rd;
-	
+	private ResourceDao rd;
+	@Autowired
+	private ScheduleService sh;
 
 	@Override
 	public Set<Resource> getResources(User u) {
@@ -121,7 +115,7 @@ public class EmpireServiceImpl implements EmpireService{
 			return false;
 		}
 		subtractResourceAmount(u, resType, value);
-		ss.addBuilding(p, u, type);
+		sh.buildTask(u,new Point(xprime,yprime),type);
 		return true;
 	}
 	
