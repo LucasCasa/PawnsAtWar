@@ -10,12 +10,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.concurrent.ConcurrentTaskScheduler;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
@@ -25,7 +27,8 @@ import java.util.concurrent.ScheduledExecutorService;
 @Service
 @Transactional
 public class ScheduleServiceImpl implements ScheduleService {
-    private TaskScheduler scheduler;
+
+    private TaskScheduler scheduler = new ConcurrentTaskScheduler(Executors.newSingleThreadScheduledExecutor());
     @Autowired
     private SectorService ss;
     @Autowired
@@ -37,25 +40,12 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void buildTask(final User u, final Point p, final int t) {
-        ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
-        scheduler = new ConcurrentTaskScheduler(localExecutor);
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.MINUTE,2);
+        c.add(Calendar.MINUTE,1);
         Date d = c.getTime();
-        Alert alert = as.createAlert(u,getBuildAlertMessage(u,p,t,d),d);
+        Alert alert = as.createAlert(u,getBuildAlertMessage(u,p,t,d),d,AlertType.BUILD.toString(),p,t,null);
 
-        Runnable buildRunnable = new Runnable() {
-            User user = u;
-            Point pos = p;
-            int type = t;
-            Alert a = alert;
-            @Override
-            public void run() {
-                ss.addBuilding(pos,user,type);
-                as.removeAlert(a);
-            }
-        };
-        scheduler.schedule(buildRunnable,d);
+        setBuildTask(u,p,t,alert,d);
     }
 
     private String getBuildAlertMessage(User u, Point p, int t, Date d) {
@@ -69,24 +59,11 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void levelUpTask(Sector s) {
-        ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
-        scheduler = new ConcurrentTaskScheduler(localExecutor);
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MINUTE,s.getLevel());
         Date d = c.getTime();
-        Alert alert = as.createAlert(s.getUser(),getLevelUpAlertMessage(s,d),d);
-        Runnable upgradeRunnable = new Runnable() {
-            Sector building = s;
-            Alert a = alert;
-            @Override
-            public void run() {
-                ss.levelUp(building.getPosition());
-                as.removeAlert(a);
-                System.out.println("Subi de nivel");
-            }
-        };
-
-        scheduler.schedule(upgradeRunnable,d);
+        Alert alert = as.createAlert(s.getUser(),getLevelUpAlertMessage(s,d),d,AlertType.UPGRADE.toString(),s.getPosition(),null,null);
+        setLevelUpTask(s,alert,d);
     }
 
     private String getLevelUpAlertMessage(Sector s,Date c) {
@@ -100,8 +77,6 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public void attackTask() {
-        ScheduledExecutorService localExecutor = Executors.newSingleThreadScheduledExecutor();
-        scheduler = new ConcurrentTaskScheduler(localExecutor);
 /*
         scheduler.schedule(exampleRunnable,
                new Date(1432152000000L));*/
@@ -110,5 +85,48 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void TrainTask() {
 
+    }
+    @Override
+    public void resumeTask(Alert a){
+        String s = a.getType();
+        if(s.equals(AlertType.BUILD.toString())){
+            setBuildTask(a.getUser(),a.getP(),a.getParam1(),a,a.getDate());
+        }else if(s.equals(AlertType.UPGRADE.toString())){
+            setLevelUpTask(ss.getSector(a.getP()),a,a.getDate());
+        }else if(s.equals(AlertType.ATTACK.toString())){
+
+        }else if(s.equals(AlertType.RECRUIT.toString())){
+
+        }
+    }
+
+    private void setBuildTask(final User u, final Point p,final int t,final Alert alert,final Date d){
+        Runnable buildRunnable = new Runnable() {
+            User user = u;
+            Point pos = p;
+            int type = t;
+            Alert a = alert;
+            @Override
+            public void run() {
+                ss.addBuilding(pos,user,type);
+                as.removeAlert(a);
+            }
+        };
+        scheduler.schedule(buildRunnable,d);
+        System.out.println("HOLA");
+    }
+
+    private void setLevelUpTask(Sector s,Alert alert,Date d){
+        Runnable upgradeRunnable = new Runnable() {
+            Sector building = s;
+            Alert a = alert;
+            @Override
+            public void run() {
+                ss.levelUp(building.getPosition());
+                as.removeAlert(a);
+            }
+        };
+
+        scheduler.schedule(upgradeRunnable,d);
     }
 }

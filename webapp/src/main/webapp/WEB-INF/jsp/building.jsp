@@ -26,7 +26,15 @@
                 <h3><strong>${building.description}</strong></h3>
                     <c:choose>
                         <c:when test = "${user.id == owner.id}">
-                            <build:Building info="${building}" level="${level}" point="${p}" locale="${locale}" price="${price}" messageSource="${messageSource}" path="${pageContext.request.contextPath}"/>
+                            <c:choose>
+                                <c:when test="${alert != null}">
+                                   <h1><spring:message code ="${alert.type}"/></h1>
+                                </c:when>
+                                <c:otherwise>
+                                    <build:Building info="${building}" level="${level}" point="${p}" locale="${locale}" price="${price}" messageSource="${messageSource}" path="${pageContext.request.contextPath}"/>
+                                </c:otherwise>
+                            </c:choose>
+
                         </c:when>
                         <c:when test="${user.id != owner.id && building.id != 0 && building.id != 5}">
                             <div class="col-md-2" onclick="att()"><a href="<c:url value="/armies?x=${p.getX()}&y=${p.getY()}"/>"><button class="myButton"><spring:message code="button.attack"/></button></a>

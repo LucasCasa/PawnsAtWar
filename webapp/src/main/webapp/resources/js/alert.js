@@ -6,7 +6,7 @@ var intervalID = setInterval(function(){
         value = parseInt($(this).text());
             $(this).text(value -1);
         if($(this).text() == -1){
-            location.reload(true);
+            location.reload(false);
         }
     });
 }, 1000);

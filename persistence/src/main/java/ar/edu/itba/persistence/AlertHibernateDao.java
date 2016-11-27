@@ -5,12 +5,10 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import ar.edu.itba.model.Army;
+import ar.edu.itba.model.*;
 import org.springframework.stereotype.Repository;
 
 import ar.edu.itba.interfaces.AlertDao;
-import ar.edu.itba.model.Alert;
-import ar.edu.itba.model.User;
 
 import java.util.Date;
 import java.util.List;
@@ -27,8 +25,8 @@ public class AlertHibernateDao implements AlertDao{
 	}
 
 	@Override
-	public Alert createAlert(User user, String message,Date d) {
-		Alert a = new Alert(user,message,d);
+	public Alert createAlert(User user, String message, Date d, String type, Point p, Integer param1, Integer param2) {
+		Alert a = new Alert(user,message,d,type,p,param1,param2);
 		em.persist(a);
 		return a;
 	}
@@ -47,5 +45,21 @@ public class AlertHibernateDao implements AlertDao{
 		query.setParameter("u",u);
 		final List<Alert> list = query.getResultList();
 		return list;
+	}
+	@Override
+	public List<Alert> getAllAlerts() {
+		final TypedQuery<Alert> query = em.createQuery("from Alert as a",Alert.class);
+		final List<Alert> list = query.getResultList();
+		return list;
+	}
+
+	@Override
+	public Alert getAlertByPoint(Point p) {
+		final TypedQuery<Alert> query = em.createQuery("from Alert as a where a.p = :p and (a.type = :b or a.type = :u)",Alert.class);
+		query.setParameter("p",p);
+		query.setParameter("b", AlertType.BUILD.toString());
+		query.setParameter("u", AlertType.UPGRADE.toString());
+		final List<Alert> list = query.getResultList();
+		return list.isEmpty()?null:list.get(0);
 	}
 }

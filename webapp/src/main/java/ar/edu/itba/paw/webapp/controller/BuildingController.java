@@ -3,11 +3,10 @@ package ar.edu.itba.paw.webapp.controller;
 import java.util.List;
 import java.util.Locale;
 
-import ar.edu.itba.interfaces.ScheduleService;
-import ar.edu.itba.model.SectorType;
+import ar.edu.itba.interfaces.*;
+import ar.edu.itba.model.*;
 import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
 import ar.edu.itba.paw.webapp.data.Info;
-import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.paw.webapp.data.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -18,11 +17,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.itba.interfaces.EmpireService;
-import ar.edu.itba.interfaces.SectorService;
-import ar.edu.itba.model.Point;
-import ar.edu.itba.model.Sector;
-import ar.edu.itba.model.User;
 import ar.edu.itba.paw.webapp.data.InformationBuilding;
 
 import javax.servlet.http.HttpSession;
@@ -42,6 +36,8 @@ public class BuildingController {
     private UserService us;
     @Autowired
     private ScheduleService sh;
+    @Autowired
+    private AlertService as;
     @Autowired
     private MessageSource messageSource;
 
@@ -66,16 +62,18 @@ public class BuildingController {
         }else{
         	
             final ModelAndView mav = new ModelAndView("building");
-
-            Sector sector = ss.getSector(new Point(Integer.parseInt(x),Integer.parseInt(y)));
+            Point p = new Point(Integer.parseInt(x),Integer.parseInt(y));
+            Sector sector = ss.getSector(p);
             int id = sector.getType();
+            Alert a = as.getAlertByPoint(p);
             String name = SectorType.get(id).toString();
             InformationBuilding ib  = new InformationBuilding(id,name,messageSource.getMessage("description."+ name,null,locale));
             mav.addObject("building",ib);
             mav.addObject("owner",sector.getUser());
             mav.addObject("user",user);
-            mav.addObject("p",new Point(Integer.parseInt(x),Integer.parseInt(y)));
-            mav.addObject("price", ss.getPrice(new Point(Integer.parseInt(x),Integer.parseInt(y)),user));
+            mav.addObject("p",p);
+            mav.addObject("alert",a);
+            mav.addObject("price", ss.getPrice(p,user));
             mav.addObject("level",sector.getLevel());
             mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
             mav.addObject("error",error);

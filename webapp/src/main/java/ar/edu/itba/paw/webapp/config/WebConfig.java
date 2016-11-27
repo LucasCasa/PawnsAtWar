@@ -1,11 +1,15 @@
 package ar.edu.itba.paw.webapp.config;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Calendar;
+import java.util.List;
 import java.util.Properties;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
+import ar.edu.itba.model.Alert;
+import ar.edu.itba.model.AlertType;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
@@ -19,6 +23,9 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.JpaVendorAdapter;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.web.servlet.ViewResolver;
@@ -28,10 +35,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 
-@EnableWebMvc
-@ComponentScan({"ar.edu.itba.paw.webapp.controller","ar.edu.itba.service","ar.edu.itba.persistence"})
 @Configuration
+@EnableWebMvc
 @EnableTransactionManagement
+@EnableAsync
+@EnableScheduling
+@ComponentScan({"ar.edu.itba.paw.webapp.controller","ar.edu.itba.service","ar.edu.itba.persistence","ar.edu.itba.paw.webapp.config"})
 public class WebConfig extends WebMvcConfigurerAdapter {
 
 	@Value("classpath:schema.sql")
@@ -133,5 +142,5 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 		factoryBean.setJpaProperties(properties);
 		return factoryBean;
 	}
-	
+
 }

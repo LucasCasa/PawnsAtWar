@@ -1,5 +1,6 @@
 package ar.edu.itba.interfaces;
 
+import ar.edu.itba.model.Alert;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
@@ -16,4 +17,6 @@ public interface ScheduleService {
     public void attackTask();
 
     public void TrainTask();
+
+    void resumeTask(Alert a);
 }
