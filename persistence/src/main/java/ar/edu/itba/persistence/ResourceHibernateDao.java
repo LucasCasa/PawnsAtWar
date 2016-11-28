@@ -1,5 +1,6 @@
 package ar.edu.itba.persistence;
 
+import java.util.Comparator;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -49,7 +50,16 @@ public class ResourceHibernateDao implements ResourceDao {
 
 	@Override
 	public List<Resource> getResources(User u) {
-		return u.getResources();
+		final TypedQuery<Resource> query = em.createQuery("from Resource as r where r.userResource = :u",Resource.class);
+		query.setParameter("u", u);
+		final List<Resource> list = query.getResultList();
+		list.sort(new Comparator<Resource>() {
+			@Override
+			public int compare(Resource o1, Resource o2) {
+				return o2.getType()-o1.getType();
+			}
+		});
+		return list;
 	}
 
 	@Override

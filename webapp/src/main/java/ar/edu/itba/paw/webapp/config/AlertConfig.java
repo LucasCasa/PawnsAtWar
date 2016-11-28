@@ -4,11 +4,6 @@ import ar.edu.itba.interfaces.*;
 import ar.edu.itba.model.Alert;
 import ar.edu.itba.model.AlertType;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationListener;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.event.ContextRefreshedEvent;
-import org.springframework.context.event.EventListener;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -40,10 +35,9 @@ public class AlertConfig {
     @Scheduled(fixedDelay = Long.MAX_VALUE)
     public void setAlerts() {
         List<Alert> alerts = as.getAllAlerts();
-        for(Alert a: alerts){
-            checkAlert(a);
-        }
+        alerts.forEach(this::checkAlert);
     }
+
     private void checkAlert(Alert a) {
         if(a.getDate().getTime() <= Calendar.getInstance().getTimeInMillis()){
             performAlert(a);
@@ -62,7 +56,7 @@ public class AlertConfig {
         }else if(s.equals(AlertType.ATTACK.toString())){
 
         }else if(s.equals(AlertType.RECRUIT.toString())){
-
+            ars.trainTroops(a.getUser(),a.getP(),a.getParam1(),a.getParam2());
         }
         as.removeAlert(a);
     }

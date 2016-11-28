@@ -22,7 +22,7 @@ public interface ArmyService{
 	
 	public Army getStrongest(User u);
 
-	public boolean trainTroops(User user, int type, int cost, Point point, int amountTroops, int troopType);
+	public boolean trainTroops(User user, Point point, int amountTroops, int troopType);
 	
 	
 }

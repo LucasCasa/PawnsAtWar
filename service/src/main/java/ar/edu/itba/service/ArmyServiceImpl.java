@@ -78,11 +78,7 @@ public class ArmyServiceImpl implements ArmyService {
 	}
 
 	@Override
-	public boolean trainTroops(User user, int type, int cost, Point point, int amountTroops, int troopType) {
-		if(!es.hasResourcesAvailable(user, cost, type)){
-			return false;
-		}
-		es.subtractResourceAmount(user,type,cost);
+	public boolean trainTroops(User user, Point point, int amountTroops, int troopType) {
 		Army ar = getOrCreateArmy(point,user );
 		ts.addTroop(ar.getIdArmy(),troopType,amountTroops);
 		return true;

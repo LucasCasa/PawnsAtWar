@@ -43,4 +43,5 @@ public interface EmpireDao {
 
 	public void deleteOffers(User u);
 
+    List<Resource> getResources(User u);
 }

@@ -81,7 +81,7 @@
 				<c:forEach var="alert" items="${alerts}">
 					<div class="well well-sm">
 						<p>${alert.message}</p>
-						<spring:message code="alert.finalize"/> <span class="timeR"><fmt:formatNumber value="${(alert.date.getTime() - now) / 1000}" maxFractionDigits="0" /></span> <spring:message code="alert.seconds"/>
+						<spring:message code="alert.finalize"/> <span class="timeR"><fmt:parseNumber value="${(alert.date.getTime() - now) / 1000}" integerOnly="true" /></span> <spring:message code="alert.seconds"/>
 					</div>
 				</c:forEach>
 			</div>

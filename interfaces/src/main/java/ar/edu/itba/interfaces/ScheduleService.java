@@ -16,7 +16,7 @@ public interface ScheduleService {
 
     public void attackTask();
 
-    public void TrainTask();
+    void TrainTask(User u, Point p,Integer amount, Integer type);
 
     void resumeTask(Alert a);
 }

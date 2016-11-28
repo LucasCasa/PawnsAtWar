@@ -27,7 +27,11 @@ public class ArmyController {
 	@Autowired
 	private TroopService ts;
 	@Autowired
+	private EmpireService es;
+	@Autowired
 	private UserService us;
+	@Autowired
+	private ScheduleService sh;
 	@Autowired
 	private MessageSource messageSource;
 	@Autowired
@@ -289,9 +293,14 @@ public class ArmyController {
 		default:
 			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidTroop",null,locale));
 		}
-		boolean resp = as.trainTroops(user,Info.RES_FOOD,cost,new Point(x,y),a,Integer.valueOf(type));
+		boolean resp = false;
+		if(es.subtractResourceAmount(user,Info.RES_FOOD,cost)){
+			resp = true;
+			sh.TrainTask(user,new Point(x,y),a,troopType);
+		}
+
 		if(resp){
-			return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&s="+ messageSource.getMessage("troopSuccess",null,locale));
+			return new ModelAndView("redirect:/");
 
 		}else{
 			return new ModelAndView("redirect:/building?x=" +x + "&y=" +y + "&e="+ messageSource.getMessage("error.noFood",null,locale));

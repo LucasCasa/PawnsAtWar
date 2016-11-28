@@ -44,8 +44,8 @@ public class EmpireHibernateDao implements EmpireDao {
 	public void setResource(User u, int typeId, int amount) {
 		Resource r = getResource(u,typeId);
 		r.setQuantity(amount);
-		u.getResources().get(typeId).setQuantity(amount);
 		em.merge(r);
+		u.getResources().get(typeId).setQuantity(amount);
 	}
 
 
@@ -93,6 +93,11 @@ public class EmpireHibernateDao implements EmpireDao {
 	public void deleteOffers(User u) {
 		cd.deleteOffers(u);
 		
+	}
+
+	@Override
+	public List<Resource> getResources(User u) {
+		return rd.getResources(u);
 	}
 
 	@Override

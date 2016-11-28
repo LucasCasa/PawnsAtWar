@@ -2,14 +2,7 @@ package ar.edu.itba.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 import ar.edu.itba.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +59,7 @@ public class EmpireServiceImpl implements EmpireService{
 	 * @param u The id of the user
 	 */
 	public void updateResources(User u){
-		List<Resource> list = u.getResources();
+		List<Resource> list = rd.getResources(u);
 		int seconds = (int)timeLapsed(u);
 		int max = getMaxStorage(u);
 		for(Resource r: list){
@@ -185,13 +178,15 @@ public class EmpireServiceImpl implements EmpireService{
 	}
 
 	@Override
-	public void subtractResourceAmount(User u, int type, int quantity) {
+	public boolean subtractResourceAmount(User u, int type, int quantity) {
 		updateResources(u);
 		Resource r = ed.getResource(u, type);
 		int quant = r.getQuantity();
 		if(quant >= quantity){
 			ed.setResource(u, type, quant - quantity);
+			return true;
 		}
+		return false;
 	}
 	
 	@Override

@@ -65,12 +65,13 @@ public interface EmpireService {
 	public void addResourceAmount(User u, int type, int quantity);
 
 	/**
-	 * Subtracts the quantity of resource type of the user with specified id
-	 * @param userid The user's id
-	 * @param type The resource type
-	 * @param quantity The amount to be decreased
-	 */
-	public void subtractResourceAmount(User u, int type, int quantity);
+	 * Subtracts the quantity of resource type of the user with specified id if the quantity < available resources
+     * @param userid The user's id
+     * @param type The resource type
+     * @param quantity The amount to be decreased
+	 * @return true if the quantity > resources available
+     */
+	public boolean subtractResourceAmount(User u, int type, int quantity);
 
 	/**
 	 * Creates the empire, resources and castle of the user
