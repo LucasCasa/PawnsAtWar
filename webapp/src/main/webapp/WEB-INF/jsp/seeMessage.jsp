@@ -9,12 +9,17 @@
 <div class="container">
 
         <h1><spring:message code="messages.description"/></h1>
-        <textarea class="form-control" name="message"  id="exampleTextarea" rows="6" maxlength="1024">
-            <spring:message code="messages.mailFrom"/> ${from}
-            <spring:message code="messages.mailSubject"/> ${subject}
-            <spring:message code="messages.mailContent"/> ${message}
-        </textarea>
 
+    <div style="width: 1090px; height: 300px;">
+            <strong style="font-size: 20px;"><spring:message code="messages.mailFrom"/></strong> <span style="width:20px; font-size: 20px;   word-wrap:break-word;"> ${from} </span>
+            <br>
+            <strong style="font-size: 20px;"><spring:message code="messages.mailSubject"/></strong>  <span style="width:20px; font-size: 20px;   word-wrap:break-word;"> ${subject} </span>
+            <br>
+        <div >
+            <strong style="font-size: 20px;"><spring:message code="messages.mailContent"/></strong> <span style="width:20px; font-size: 20px;   word-wrap:break-word;"> ${message} </span>
+        </div>
+    </div>
+    <br>
     <br>
     <br>
     <h1><spring:message code="messages.answerMessage"/></h1>
@@ -36,7 +41,7 @@
             <label><spring:message code="messages.message"/></label>
 
             <textarea class="form-control" name="message" onkeyup="textCounter(this,'counter',1024);"  id="exampleTextarea" rows="3" maxlength="1024"></textarea>
-            <label><spring:message code="messages.wordCount"/></label><input disabled  maxlength="3" size="3" value="1024"   id="counter">
+            <label><spring:message code="messages.wordCount"/></label><input disabled style="background: white" maxlength="3" size="3" value="1024"   id="counter">
         </div>
 
         <button type="submit" class="myButton"><spring:message code="messages.respond"/></button>

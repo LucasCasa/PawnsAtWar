@@ -2,10 +2,14 @@
  * Created by root on 11/7/16.
  */
 $(document).ready(function($) {
-    $(".table-row").click(function() {
+    $(".clickable-row").click(function() {
         window.document.location = $(this).data("href");
+
     });
+
+
 });
+
 
 function textCounter(field,field2,maxlimit)
 {
@@ -17,3 +21,4 @@ function textCounter(field,field2,maxlimit)
         countfield.value = maxlimit - field.value.length;
     }
 }
+
