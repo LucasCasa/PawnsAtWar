@@ -8,10 +8,12 @@
 
 <div class="container">
 
-    <h1><spring:message code="messages.mailFrom"/> ${from}</h1>
-    <h1><spring:message code="messages.mailSubject"/> ${subject}</h1>
-    <h1><spring:message code="messages.mailContent"/> ${message}</h1>
-
+        <h1><spring:message code="messages.description"/></h1>
+        <textarea class="form-control" name="message"  id="exampleTextarea" rows="6" maxlength="1024">
+            <spring:message code="messages.mailFrom"/> ${from}
+            <spring:message code="messages.mailSubject"/> ${subject}
+            <spring:message code="messages.mailContent"/> ${message}
+        </textarea>
 
     <br>
     <br>
@@ -32,7 +34,9 @@
 
         <div class="form-group">
             <label><spring:message code="messages.message"/></label>
-            <textarea class="form-control" name="message" id="exampleTextarea" rows="3"></textarea>
+
+            <textarea class="form-control" name="message" onkeyup="textCounter(this,'counter',1024);"  id="exampleTextarea" rows="3" maxlength="1024"></textarea>
+            <label><spring:message code="messages.wordCount"/></label><input disabled  maxlength="3" size="3" value="1024"   id="counter">
         </div>
 
         <button type="submit" class="myButton"><spring:message code="messages.respond"/></button>
@@ -43,3 +47,4 @@
 <br/>
 
 <%@ include file="footer.jsp" %>
+<script src="<c:url value= "/resources/js/messages.js" />"></script>

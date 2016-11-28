@@ -63,9 +63,12 @@
             <input type="subject" class="form-control" name="subject" aria-describedby="subjectHelp" placeholder=<spring:message code="messages.subject"/>>
         </div>
 
-        <div class="form-group">
+        <div class="form-group" >
+
             <label><spring:message code="messages.message"/></label>
-            <textarea class="form-control" name="message" id="exampleTextarea" rows="3" maxlength="1024"></textarea>
+
+            <textarea class="form-control" name="message" onkeyup="textCounter(this,'counter',1024);"  id="exampleTextarea" rows="3" maxlength="1024"></textarea>
+            <label><spring:message code="messages.wordCount"/></label><input disabled  maxlength="3" size="3" value="1024"   id="counter">
         </div>
 
             <button type="submit" class="myButton" onclick="showMs()"><spring:message code="messages.submit"/></button>

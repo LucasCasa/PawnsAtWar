@@ -62,9 +62,11 @@ public class MessageController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
         }
 
-        if(message.length() > 150){
-            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
+        if(message.length() > 1024){
+            return new ModelAndView("redirect:/messages?m=" + messageSource.getMessage("error.longMessage",null ,locale));
         }
+        
+
         return new ModelAndView("redirect:/messages?s=" + messageSource.getMessage("messageSent",null,locale));
 
     }
