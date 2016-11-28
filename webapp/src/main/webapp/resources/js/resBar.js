@@ -8,11 +8,13 @@ $('.quantity').each(function(i, obj) {
 
 var intervalID = setInterval(function(){
 	$('.quantity').each(function(i, obj) {
-		if($(this).parents('.resBar').length && $(this).text() < $('#limit').text()) {
-			acum[i] += parseFloat($(this).attr('id'));
-			$(this).text(parseInt(original[i] +acum[i]));
-		}else{
-			$(this).text($('#limit').text());
+		if($(this).parents('.resBar').length) {
+			if($(this).text() < $('#limit').text()){
+				acum[i] += parseFloat($(this).attr('id'));
+				$(this).text(parseInt(original[i] +acum[i]));
+			}else{
+				$(this).text($('#limit').text());
+			}
 		}
 	});
 }, 1000);
