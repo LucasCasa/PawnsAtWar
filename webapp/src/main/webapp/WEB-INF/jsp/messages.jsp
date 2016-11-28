@@ -5,7 +5,7 @@
 <%@ include file="header.jsp" %>
 <link rel="stylesheet" href="<c:url value= "/resources/css/style.css" /> ">
 <link rel="stylesheet" href="<c:url value= "/resources/css/building.css" /> ">
-
+<link rel="stylesheet" href="<c:url value= "/resources/css/messages.css" /> ">
 
 <div class="container">
 
@@ -21,7 +21,7 @@
         </c:when>
         <c:otherwise>
 
-            <table class="table">
+            <table class="table table-hover">
                 <thead>
                     <td><spring:message code="messages.user"/></td>
                     <td><spring:message code="messages.subject"/></td>
@@ -29,7 +29,7 @@
                 </thead>
                 <tbody>
                     <c:forEach var="message" items="${messagesReceived}">
-                        <tr class="table-row"  data-href="<c:url value="/messages/seeMessage?msgId=${message.getId()}"/>">
+                        <tr class="clickable-row"  data-href="<c:url value="/messages/seeMessage?msgId=${message.getId()}"/>">
                             <td>${message.getFrom().getName()}</td>
                             <td>${message.getSubject()}</td>
                             <td><form method="post" action="<c:url value="/messages/delete"/>">
@@ -68,7 +68,7 @@
             <label><spring:message code="messages.message"/></label>
 
             <textarea class="form-control" name="message" onkeyup="textCounter(this,'counter',1024);"  id="exampleTextarea" rows="3" maxlength="1024"></textarea>
-            <label><spring:message code="messages.wordCount"/></label><input disabled  maxlength="3" size="3" value="1024"   id="counter">
+            <label><spring:message code="messages.wordCount"/></label><input disabled style="background: white" maxlength="3" size="3" value="1024"   id="counter">
         </div>
 
             <button type="submit" class="myButton" onclick="showMs()"><spring:message code="messages.submit"/></button>
