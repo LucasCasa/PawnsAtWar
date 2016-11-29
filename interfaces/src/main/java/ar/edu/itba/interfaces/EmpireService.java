@@ -6,6 +6,7 @@ import java.util.Set;
 
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
+import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
 
 public interface EmpireService {
@@ -98,6 +99,8 @@ public interface EmpireService {
 	public long calculateScore(User user);
 
 	public boolean createEmpire(User user);
+	
+	public List<Sector> getBuilding(User u, int type);
 	
 	public boolean hasResourcesAvailable(User u, int amount, int resType);
 	

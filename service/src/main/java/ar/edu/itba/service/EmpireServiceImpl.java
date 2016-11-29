@@ -261,6 +261,10 @@ public class EmpireServiceImpl implements EmpireService{
 		}
 		return score;
 	}
-
+	
+	@Override
+	public List<Sector> getBuilding(User u, int type){
+		return ed.getBuilding(u, type);
+	}
 
 }
