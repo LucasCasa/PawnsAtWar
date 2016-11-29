@@ -40,6 +40,31 @@
                             <div class="col-md-2" onclick="att()"><a href="<c:url value="/armies?x=${p.getX()}&y=${p.getY()}"/>"><button class="myButton"><spring:message code="button.attack"/></button></a>
                             </div>
                         </c:when>
+                        <c:when test="${canBuildCastle}">
+                        	<table id="buildListTable" style="table-layout:fixed;">
+                        		<thead>
+                        			 <td><spring:message code="building"/></td>
+        							 <td><spring:message code="description"/></td>
+							         <td><spring:message code="cost"/></td>
+							         <td><spring:message code="build"/></td>
+                        		</thead>
+                        		<tbody>
+                        			<tr>
+                        			<td><img class="img-responsive" src="<c:url value="/resources/images/CASTLE.png"/>"/></td>
+                        			<td style="text-align: center;"><spring:message code="description.CASTLE"/></td>
+                        			<td style="text-align: center;"><re:Resource rate="0" type="1" amount="${castleCost}" path="${pageContext.request.contextPath}"/></td>
+                        			<td>
+					                <form method="post" action="<c:url value="/build"/>">
+						                <input type="hidden" name="x" value="${p.getX()}"/>
+						                <input type="hidden" name="y" value="${p.getY()}"/>
+						                <input type="hidden" name="type" value="1"/>
+						                <input type="submit" class="myButton" value="<spring:message code="build"/>"/>
+						                </form>
+					                </td>
+                        			</tr>
+                        		</tbody>
+                        	</table>
+                        </c:when>
                     </c:choose>
             </div>
         </div>

@@ -31,8 +31,6 @@ public class EmpireServiceImpl implements EmpireService{
 	@Autowired
 	private ArmyService as;
 	@Autowired
-	private UserDao ud;
-	@Autowired
 	private MessageService ms;
 	@Autowired
 	private CommerceService cs;
@@ -100,8 +98,18 @@ public class EmpireServiceImpl implements EmpireService{
 	public boolean build(User u, int xprime, int yprime, int type) {
 		final int resType = 1; /*Temporary*/
 		final Point p = new Point(xprime,yprime);
-		final int value = ss.getPrice(p, u);
-		if(!hasResourcesAvailable(u, value, resType)){
+		int value;
+		User owner = ss.getSector(p).getUser();
+		if(type == SectorServiceImpl.CASTLE){
+			if(!validCastlePosition(p))
+				return false;
+			value = ss.getCastlePrice(u);
+		}else{
+			if(!u.equals(owner))
+				return false;
+			value = ss.getPrice(u);
+		}
+		if(!hasResourcesAvailable(u, value, resType) || (owner!=null && !owner.equals(u))){
 			return false;
 		}
 		if(ss.getSector(p).getType() == 5 && type != 4){
@@ -112,6 +120,17 @@ public class EmpireServiceImpl implements EmpireService{
 		return true;
 	}
 	
+	public boolean validCastlePosition(Point p) {
+		List<List<Sector>> l = ss.getSector(p,3);
+		for(List<Sector> row: l){
+			for(Sector s: row){
+				if(s.getUser()!=null)
+					return false;
+			}
+		}
+		return true;
+	}
+
 	@Override
 	public boolean hasResourcesAvailable(User u, int amount, int resType){
 		int rate = 1; /*Temporary*/

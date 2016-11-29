@@ -25,6 +25,8 @@ public interface SectorService {
 	public boolean belongsTo(Point p,User u);
 	
 	public boolean isCastleAlone(Point p, int range);
+	
+	public void updateTerrain(Point p, User u,int range);
 
 	public boolean createCastle(User u);
 
@@ -32,9 +34,11 @@ public interface SectorService {
 	
 	public Point addCastle(User u);
 
-	public int getPrice(Point point,User u);
+	public int getPrice(User u);
+	
+	public int getCastlePrice(User u);
 
 	public void addBuilding(Point p, User u, int type);
 
-
+	public List<Point> getAvailableSpots();
 }

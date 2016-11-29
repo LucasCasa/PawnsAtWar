@@ -37,6 +37,9 @@ public class SectorServiceImpl implements SectorService {
 	public static final int maxY = 99;
 	
 	public static final int initRange = 2;
+	 
+	public static final int buildingPrice = 1000;
+	public static final int castlePriceScaleFactor = 25000;
 	
 	@Autowired
 	BuildingDao bd;
@@ -202,12 +205,24 @@ public class SectorServiceImpl implements SectorService {
 	}
 
 	@Override
-	public int getPrice(Point point,User u) {
-		return 1000-10*(getLevel(getCastle(u))-1);
+	public int getPrice(User u) {
+		return buildingPrice;
 	}
 
 	
 	public int getLevel(Point p) {
 		return bd.getBuilding(p).getLevel();
+	}
+
+	@Override
+	public int getCastlePrice(User u) {
+		int num = bd.getBuildings(u, CASTLE).size();
+		return num*castlePriceScaleFactor;
+	}
+
+	@Override
+	public List<Point> getAvailableSpots() {
+		LoadSpots();
+		return availableSpots;
 	}
 }

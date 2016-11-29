@@ -68,12 +68,14 @@ public class BuildingController {
             Alert a = as.getAlertByPoint(p);
             String name = SectorType.get(id).toString();
             InformationBuilding ib  = new InformationBuilding(id,name,messageSource.getMessage("description."+ name,null,locale));
+            mav.addObject("castleCost",ss.getCastlePrice(user));
+            mav.addObject("canBuildCastle",es.validCastlePosition(p));
             mav.addObject("building",ib);
             mav.addObject("owner",sector.getUser());
             mav.addObject("user",user);
             mav.addObject("p",p);
             mav.addObject("alert",a);
-            mav.addObject("price", ss.getPrice(p,user));
+            mav.addObject("price", ss.getPrice(user));
             mav.addObject("level",sector.getLevel());
             mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
             mav.addObject("error",error);
@@ -106,13 +108,15 @@ public class BuildingController {
 
         Sector s = ss.getSector(new Point(xprime,yprime));
         
-        if(s == null || !s.getUser().equals(user)|| (s.getType() != Info.TERR_GOLD && s.getType() != Info.EMPTY) ){
+        if(s == null || (s.getType() != Info.TERR_GOLD && s.getType() != Info.EMPTY) ){
+        	System.err.println("cant build");
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantConstruct",null,locale));
         }
         
         if(es.build(user,xprime,yprime,typep)){
         	return new ModelAndView("redirect:/map");
         }else{
+        	System.err.println("build ret false");
         	return new ModelAndView("redirect:/building?x=" + xprime + "&y=" + yprime+ "&e=" + messageSource.getMessage("error.noGold",null,locale));
         }
       
@@ -153,7 +157,7 @@ public class BuildingController {
 //            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantLevelUpTerrain",null,locale));
 //        }
         if(s.getLevel() < 20){
-            int price = ss.getPrice(p,user) + (int) Math.pow(s.getLevel(),4);
+            int price = ss.getPrice(user) + (int) Math.pow(s.getLevel(),4);
             if(es.getResource(user,Info.RES_GOLD).getQuantity() >= price ) {
                 sh.levelUpTask(s);
                 es.subtractResourceAmount(user, Info.RES_GOLD, price);

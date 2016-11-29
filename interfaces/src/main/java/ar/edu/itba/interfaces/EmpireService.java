@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
 import ar.edu.itba.model.User;
 
@@ -81,6 +82,13 @@ public interface EmpireService {
 	public boolean createUser(User user,boolean newUser);
 
 	public void deleteUser(User user);
+	
+	/**
+	 * Returns whether a castle can be built there or not
+	 * @param p The point
+	 * @return True if can be built
+	 */
+	public boolean validCastlePosition(Point p);
 	
 	/**
 	 * Calculates the empire's total score based upon existing buildings level

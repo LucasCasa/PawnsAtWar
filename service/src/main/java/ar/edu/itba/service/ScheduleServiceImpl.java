@@ -110,6 +110,8 @@ public class ScheduleServiceImpl implements ScheduleService {
             Alert a = alert;
             @Override
             public void run() {
+            	if(type==SectorServiceImpl.CASTLE)
+            		ss.updateTerrain(p, u, SectorServiceImpl.initRange);
                 ss.addBuilding(pos,user,type);
                 as.removeAlert(a);
             }
