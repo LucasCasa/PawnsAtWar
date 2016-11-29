@@ -66,7 +66,7 @@ public class EmpireHibernateDaoTest {
 		assertNotNull(list);
 		assertEquals(2,list.size());
 		assertEquals("maggie",list.get(0).getName());
-		assertEquals("maggie2",list.get(1).getName());
+		assertEquals("maggie3",list.get(1).getName());
 	}
 	
 	@Test
@@ -75,15 +75,14 @@ public class EmpireHibernateDaoTest {
 		User u = ud.findByUsername("maggie");
 		List<Resource> list = rd.getResources(u);
 		assertEquals(list.size(),2);
-		u = ud.findByUsername("maggie2");
-		assertEquals(rd.getResources(u),0);
 		rd.addResource(u, 1, 1000);
 		list = rd.getResources(u);
-		assertEquals(list.size(),1);
 		assertEquals(list.get(0).getQuantity(),1000);
 		rd.addResource(u, 0);
 		assertNotEquals(list.size(),1);
-		assertEquals(list.get(1).getType(),0);
+		
+		u = ud.findByUsername("maggie2");
+		assertEquals(rd.getResources(u).size(),0);
 	}
 	
 	@Test
@@ -93,17 +92,17 @@ public class EmpireHibernateDaoTest {
 		Resource r = rd.getResource(u, 0);
 		assertEquals(r.getQuantity(),1000);
 		rd.subtractAmount(u,0,10);
-		assertEquals(rd.getResource(u, 0),990);
+		assertEquals(rd.getResource(u, 0).getQuantity(),990);
 		rd.subtractAmount(u, 0, 1000);
-		assertNotEquals(rd.getResource(u, 0),-10);
-		assertNotEquals(rd.getResource(u, 0),990);
-		assertEquals(rd.getResource(u, 0),0);
+		assertNotEquals(rd.getResource(u, 0).getQuantity(),-10);
+		assertNotEquals(rd.getResource(u, 0).getQuantity(),990);
+		assertEquals(rd.getResource(u, 0).getQuantity(),0);
 		
 		r = rd.getResource(u, 1);
 		assertNotNull(r);
 		assertEquals(r.getQuantity(),1000);
 		rd.addAmount(u, 1, 100);
-		assertEquals(rd.getResource(u, 1),1100);
+		assertEquals(rd.getResource(u, 1).getQuantity(),1100);
 	}
 	
 	@Test
@@ -113,7 +112,7 @@ public class EmpireHibernateDaoTest {
 		List<Resource> list = rd.getResources(u);
 		assertEquals(list.size(),2);
 		rd.deleteResource(u, 1);
-		assertEquals(rd.getResources(u),1);
+		assertEquals(rd.getResources(u).size(),1);
 		assertNull(rd.getResource(u, 1));
 	}
 	

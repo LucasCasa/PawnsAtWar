@@ -11,6 +11,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.ArmyDao;
+import ar.edu.itba.interfaces.BuildingDao;
+import ar.edu.itba.interfaces.CommerceDao;
+import ar.edu.itba.interfaces.ResourceDao;
 import ar.edu.itba.interfaces.TroopDao;
 import ar.edu.itba.interfaces.UserDao;
 
@@ -33,7 +36,7 @@ public class ArmyHibernateDaoTest {
 	@Before
 	@Transactional
 	public void setUp(){
-		populator = new TestDataBasePopulator(this.ad,this.td, this.ud);
+		populator = new TestDataBasePopulator(this.ud,this.ad,this.td);
 		populator.populate2();
 	}
 	

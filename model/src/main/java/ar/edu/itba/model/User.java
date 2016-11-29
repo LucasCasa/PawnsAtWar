@@ -37,7 +37,7 @@ public class User {
 	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = false, mappedBy = "userArmy")
 	private List<Army> army;
 
-	@OneToOne(optional=false, mappedBy="userEmpire")
+	@OneToOne(mappedBy="userEmpire")
 	private Empire empire;
 
 	@OneToMany(fetch = FetchType.LAZY, orphanRemoval = false, mappedBy = "userBuilding")
