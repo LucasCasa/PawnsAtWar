@@ -36,5 +36,5 @@ public interface SectorService {
 
 	public void addBuilding(Point p, User u, int type);
 
-
+    User getPlayer(Point pos);
 }

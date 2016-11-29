@@ -9,7 +9,7 @@ $('.quantity').each(function(i, obj) {
 var intervalID = setInterval(function(){
 	$('.quantity').each(function(i, obj) {
 		if($(this).parents('.resBar').length) {
-			if($(this).text() < $('#limit').text()){
+			if(parseInt($(this).text()) < parseInt($('#limit').text())){
 				acum[i] += parseFloat($(this).attr('id'));
 				$(this).text(parseInt(original[i] +acum[i]));
 			}else{

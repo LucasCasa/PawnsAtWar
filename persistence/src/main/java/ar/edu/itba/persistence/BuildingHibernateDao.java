@@ -61,6 +61,11 @@ public class BuildingHibernateDao implements BuildingDao {
 	}
 
 	@Override
+	public User getPlayer(Point p) {
+		Sector s = getBuilding(p);
+		return s.getUser();
+	}
+	@Override
 	public Integer getIdPlayer(Point p) {
 		Sector s = getBuilding(p);
 		return s.getUser().getId();

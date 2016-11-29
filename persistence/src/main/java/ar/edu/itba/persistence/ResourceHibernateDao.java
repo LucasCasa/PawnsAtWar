@@ -56,7 +56,7 @@ public class ResourceHibernateDao implements ResourceDao {
 		list.sort(new Comparator<Resource>() {
 			@Override
 			public int compare(Resource o1, Resource o2) {
-				return o2.getType()-o1.getType();
+				return o1.getType()-o2.getType();
 			}
 		});
 		return list;

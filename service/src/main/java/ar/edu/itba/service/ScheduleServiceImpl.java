@@ -11,9 +11,7 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Locale;
+import java.util.*;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -35,6 +33,10 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private AlertService as;
     @Autowired
+    private TroopService ts;
+    @Autowired
+    private MessageService ms;
+    @Autowired
     private MessageSource messageSource;
 
     @Override
@@ -54,13 +56,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         Date d = c.getTime();
         Alert alert = as.createAlert(s.getUser(),getLevelUpAlertMessage(s,d),d,AlertType.UPGRADE.toString(),s.getPosition(),null,null);
         setLevelUpTask(s,alert,d);
-    }
-
-    @Override
-    public void attackTask() {
-/*
-        scheduler.schedule(exampleRunnable,
-               new Date(1432152000000L));*/
     }
 
     @Override
@@ -89,6 +84,15 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
+    public void attackTask(User user, Point point, int armyId) {
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MINUTE,1);
+        Date d = c.getTime();
+        Alert alert = as.createAlert(user,getAttackAlertMessage(point),d,AlertType.ATTACK.toString(),point,armyId,null);
+        setAttackTask(user,point,armyId,alert,d);
+    }
+
+    @Override
     public void resumeTask(Alert a){
         String s = a.getType();
         if(s.equals(AlertType.BUILD.toString())){
@@ -96,12 +100,118 @@ public class ScheduleServiceImpl implements ScheduleService {
         }else if(s.equals(AlertType.UPGRADE.toString())){
             setLevelUpTask(ss.getSector(a.getP()),a,a.getDate());
         }else if(s.equals(AlertType.ATTACK.toString())){
-
+            setAttackTask(a.getUser(),a.getP(),a.getParam1(),a,a.getDate());
         }else if(s.equals(AlertType.RECRUIT.toString())){
             setTrainTask(a.getUser(),a.getP(),a.getParam1(),a.getParam2(),a,a.getDate());
         }
     }
 
+
+
+    private void setAttackTask(User u, Point p, int id,Alert alert, Date d){
+        Runnable buildRunnable = new Runnable() {
+            User user = u;
+            Point pos = p;
+            int armyId = id;
+            Alert a = alert;
+            @Override
+            public void run() {
+                Army d = ars.getArmyAtPosition(u,p);
+                Army a = ars.getArmyById(id);
+                Map<String,Integer> values = new HashMap<>();
+                int res = 0;
+                values.put("a0b",0);
+                values.put("a1b",0);
+                values.put("a2b",0);
+                values.put("d0b",0);
+                values.put("d1b",0); // QUE WASADA POR DIOS
+                values.put("d2b",0);
+                values.put("a0l",0);
+                values.put("a1l",0);
+                values.put("a2l",0);
+                values.put("d0l",0);
+                values.put("d1l",0);
+                values.put("d2l",0);
+                if(d != null && d.getAvailable()){
+                    int defenderP = (int) ts.getValue(d.getIdArmy());
+                    int attackerP = (int) ts.getValue(id);
+                    int loserP;
+                    Army adef;
+                    Army awin;
+                    String prefixW;
+                    String prefixD;
+                    if(defenderP > attackerP){
+                        //mav.addObject("result",messageSource.getMessage("defenderWin",null,locale));
+                        adef = a;
+                        awin = d;
+                        loserP = attackerP;
+                        prefixD ="a";
+                        prefixW ="d";
+                        res = 1;
+                    }else if(attackerP > defenderP){
+                        //mav.addObject("result",messageSource.getMessage("attackerWin",null,locale));
+                        awin = a;
+                        adef = d;
+                        loserP = defenderP;
+                        prefixD ="d";
+                        prefixW ="a";
+                        ss.deleteBuilding(p);
+                        ars.setAvailable(id,true);
+                        res = 2;
+                    }else{
+                        //mav.addObject("result",messageSource.getMessage("draw",null,locale));
+                        for(Troop t : a.getTroops()){
+                            values.put("a"+t.getType()+"b",t.getQuantity());
+                            values.put("a"+t.getType()+"l",t.getQuantity());
+                        }
+                        for(Troop t : d.getTroops()){
+                            values.put("d"+t.getType()+"b",t.getQuantity());
+                            values.put("d"+t.getType()+"l",t.getQuantity());
+                        }
+                        ars.deleteArmy(id);
+                        ars.deleteArmy(d.getIdArmy());
+                        as.removeAlert(this.a);
+                        sendMail(values,user,ss.getPlayer(pos),0);
+                        return;
+                    }
+                    List<Troop> defeated = adef.getTroops();
+                    ars.deleteArmy(adef.getIdArmy());
+                    List<Troop> winner = awin.getTroops();
+                    for(Troop t : winner){
+                        if(t.getQuantity()*(t.getType()+1) > loserP){
+                            values.put(prefixW+t.getType()+"b",t.getQuantity());
+                            ts.subtractTroop(awin.getIdArmy(),t.getType(),loserP/(t.getType()+1));
+                            values.put(prefixW+t.getType()+"l",loserP/(t.getType()+1));
+                            break;
+                        }else{
+                            values.put(prefixW+t.getType()+"b",t.getQuantity());
+                            values.put(prefixW+t.getType()+"l",t.getQuantity());
+                            ts.deleteTroop(awin.getIdArmy(),t.getType());
+                            loserP-= (t.getType()+1)*t.getQuantity();
+
+                        }
+                    }
+                    for(Troop t: defeated){
+                        values.put(prefixD+t.getType()+"b",t.getQuantity());
+                        values.put(prefixD+t.getType()+"l",t.getQuantity());
+                    }
+                    sendMail(values,user,ss.getPlayer(pos),res);
+                    as.removeAlert(this.a);
+                    return;
+                }
+                //mav.addObject("result",messageSource.getMessage("noDefenderArmy",null,locale));
+                for(Troop t : ts.getTroopById(id)){
+                    values.put("a"+t.getType()+"b",t.getQuantity());
+                    values.put("a"+t.getType()+"l",0);
+                }
+                ss.deleteBuilding(pos);
+                as.removeAlert(this.a);
+                ars.setAvailable(id,true);
+                sendMail(values,user,ss.getPlayer(pos),1);
+            }
+        };
+        scheduler.schedule(buildRunnable,d);
+    }
     private void setBuildTask(final User u, final Point p,final int t,final Alert alert,final Date d){
         Runnable buildRunnable = new Runnable() {
             User user = u;
@@ -159,5 +269,48 @@ public class ScheduleServiceImpl implements ScheduleService {
         params[3] = p.getY();
         return messageSource.getMessage("alert.training",params,locale);
     }
+    private String getAttackAlertMessage(Point point) {
+        Locale locale = LocaleContextHolder.getLocale();
+        Object[] params = new Object[2];
+        params[0] = point.getX();
+        params[1] = point.getY();
+        return messageSource.getMessage("alert.attacking",params,locale);
+    }
 
+    private void sendMail(Map<String,Integer> res,User a, User d,int result){
+        String headerD;
+        String headerA;
+        String body;
+        if(result == 0)
+            headerD = "Fuiste atacado por " +a.getName() +": Fue un empate\n";
+        else if(result == 1)
+            headerD = "Fuiste atacado por "+ a.getName() +": Ganaste\n";
+        else
+            headerD = "Fuiste atacado por "+ a.getName() +": Perdiste\n";
+        Integer[] params = new Integer[18];
+        String[] params2 = new String[1];
+        params2[0] = a.getName();
+        params[0] = res.get("d0b");
+        params[1] = res.get("d0l");
+        params[2] = res.get("d0b") - res.get("d0l");
+        params[3] = res.get("d1b");
+        params[4] = res.get("d1l");
+        params[5] = res.get("d1b") - res.get("d1l");
+        params[6] = res.get("d2b");
+        params[7] = res.get("d2l");
+        params[8] = res.get("d2b") - res.get("d2l");
+        params[9] = res.get("a0b");
+        params[10] = res.get("a0l");
+        params[11] = res.get("a0b") - res.get("a0l");
+        params[12] = res.get("a1b");
+        params[13] = res.get("a1l");
+        params[14] = res.get("a1b") - res.get("a1l");
+        params[15] = res.get("a2b");
+        params[16] = res.get("a2l");
+        params[17] = res.get("a2b") - res.get("a2l");
+        Locale l =LocaleContextHolder.getLocale();
+        ms.createMessage(a,d,messageSource.getMessage("attack.message.defender.subject",params2,l),messageSource.getMessage("attack.message.defender",params,l));
+        ms.createMessage(a,a,messageSource.getMessage("attack.message.attacker.subject",null,l),messageSource.getMessage("attack.message.attacker",params,l));
+        System.out.println("HOLA");
+    }
 }

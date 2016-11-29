@@ -202,6 +202,11 @@ public class SectorServiceImpl implements SectorService {
 	}
 
 	@Override
+	public User getPlayer(Point pos) {
+		return bd.getPlayer(pos);
+	}
+
+	@Override
 	public int getPrice(Point point,User u) {
 		return 1000-10*(getLevel(getCastle(u))-1);
 	}

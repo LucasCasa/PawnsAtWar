@@ -23,6 +23,6 @@ public interface ArmyService{
 	public Army getStrongest(User u);
 
 	public boolean trainTroops(User user, Point point, int amountTroops, int troopType);
-	
-	
+
+    Army getArmyAtPosition(User u, Point p);
 }
