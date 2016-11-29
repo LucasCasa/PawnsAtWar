@@ -9,20 +9,65 @@ $(document).ready(function() {
 
 function selectRadioGet(type) {
     $('input[name=giveType]').each(function(i) {
+
         if($(this).attr('value') == type){
+            if($(this).is(':checked')){ 
+                var index = 0;
+                if($(this).attr('value') == 0)
+                    index = 1;
+                $('input[name=giveType]').each(function(i) {
+                    if($(this).attr('value') != type){
+                        $(this).prop("checked", true);
+                        return;
+                    }
+                });
+            }
             $(this).removeAttr('checked');
         }
+        
     });
     checkSumbitAvailability();
 };
 
 function selectRadioGive(type) {
     $('input[name=getType]').each(function(i) {
-       if($(this).attr('value') == type){
+        if($(this).attr('value') == type){
+            if($(this).is(':checked')){
+                var index = 0;
+                if($(this).attr('value') == 0)
+                    index = 1;
+                $('input[name=getType]').each(function(i) {
+                    if($(this).attr('value') != type){
+                        $(this).prop("checked", true);
+                        return;
+                    }
+                });
+            }
             $(this).removeAttr('checked');
         }
+
     });
     checkSumbitAvailability();
+};
+
+function checkAnyGet(ignore){
+    $('input[name=getType]').each(function(i) {
+        if($(this).attr('value') != ignore){
+            alert("checking");
+            $(this).attr('checked',true);
+            return;
+        }
+    });
+};
+
+function checkAnyGive(ignore){
+    $('input[name=giveType]').each(function(i) {
+        if($(this).attr('value') != ignore){
+            alert("checking");
+            $(this).attr('checked',true);
+            return;
+        }
+    });
 };
 
 function checkSumbitAvailability() {

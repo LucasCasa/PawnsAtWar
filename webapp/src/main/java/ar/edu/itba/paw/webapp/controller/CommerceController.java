@@ -85,6 +85,7 @@ public class CommerceController {
 	public ModelAndView createOffer(@RequestParam(value="insuficientAmount", required = false)boolean insuficientAmount,
 			@ModelAttribute("user") final User user){
 		ModelAndView mav = new ModelAndView("createOffer");
+		mav.addObject("resList",es.getResources(user));
 		mav.addObject("insuficientAmount",insuficientAmount);
 		mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
 		
