@@ -10,13 +10,13 @@ import ar.edu.itba.model.User;
  */
 public interface ScheduleService {
 
-    public void buildTask(User u, Point p, int type);
+    void buildTask(User u, Point p, int type);
 
-    public void levelUpTask(Sector s);
-
-    public void attackTask();
+    void levelUpTask(Sector s);
 
     void TrainTask(User u, Point p,Integer amount, Integer type);
 
     void resumeTask(Alert a);
+
+    void attackTask(User user, Point point, int armyId);
 }

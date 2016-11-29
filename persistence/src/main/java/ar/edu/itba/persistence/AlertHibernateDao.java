@@ -55,10 +55,11 @@ public class AlertHibernateDao implements AlertDao{
 
 	@Override
 	public Alert getAlertByPoint(Point p) {
-		final TypedQuery<Alert> query = em.createQuery("from Alert as a where a.p = :p and (a.type = :b or a.type = :u)",Alert.class);
+		final TypedQuery<Alert> query = em.createQuery("from Alert as a where a.p = :p and (a.type = :b or a.type = :u or a.type = :t)",Alert.class);
 		query.setParameter("p",p);
 		query.setParameter("b", AlertType.BUILD.toString());
 		query.setParameter("u", AlertType.UPGRADE.toString());
+		query.setParameter("t", AlertType.RECRUIT.toString());
 		final List<Alert> list = query.getResultList();
 		return list.isEmpty()?null:list.get(0);
 	}

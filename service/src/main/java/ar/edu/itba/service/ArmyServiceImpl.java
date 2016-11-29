@@ -83,9 +83,11 @@ public class ArmyServiceImpl implements ArmyService {
 		ts.addTroop(ar.getIdArmy(),troopType,amountTroops);
 		return true;
 	}
-	
-	
-	
+
+	@Override
+	public Army getArmyAtPosition(User u, Point p) {
+		return ad.getArmy(p,u);
+	}
 
 
 }

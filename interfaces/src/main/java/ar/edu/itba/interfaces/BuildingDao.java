@@ -15,10 +15,12 @@ public interface BuildingDao {
 	public List<Sector> getBuildings(Point p, int range);
 	
 	public Sector getBuilding(Point p);
-	
+
 	public Integer getIdPlayer(Point p);
-	
-	public void setIdPlayer(Point p,User u);
+
+	User getPlayer(Point p);
+
+	public void setIdPlayer(Point p, User u);
 	
 	public Sector addBuilding(Point p, int level, User u, int type);
 	

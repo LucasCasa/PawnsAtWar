@@ -208,7 +208,10 @@ public class SectorServiceImpl implements SectorService {
 	public int getPrice(User u) {
 		return buildingPrice;
 	}
-
+	
+	public User getPlayer(Point pos) {
+		return bd.getPlayer(pos);
+	}
 	
 	public int getLevel(Point p) {
 		return bd.getBuilding(p).getLevel();

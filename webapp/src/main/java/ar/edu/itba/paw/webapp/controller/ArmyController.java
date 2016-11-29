@@ -33,6 +33,8 @@ public class ArmyController {
 	@Autowired
 	private ScheduleService sh;
 	@Autowired
+	private AlertService als;
+	@Autowired
 	private MessageSource messageSource;
 	@Autowired
 	private PAWMailService mailService;
@@ -131,108 +133,23 @@ public class ArmyController {
 			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notBuildingInPosition",null,locale));
 
 		}
+		if(!as.getArmyById(id).getAvailable()){
+			return new ModelAndView("redirect:/error");
+		}
 		if(s.getUser()  == user ){
 			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.attackSelfBuilding",null,locale));
 		}else if(s.getType() == 0 || s.getType() == 5){
 			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.attackTerrain",null,locale));
 		}else {
-			if(s.getType() == Info.CASTLE){
-				if(!ss.isCastleAlone(new Point(xprime,yprime),3)){
-					return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.attackCastle",null,locale));
+			if (s.getType() == Info.CASTLE) {
+				if (!ss.isCastleAlone(new Point(xprime, yprime), 3)) {
+					return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.attackCastle", null, locale));
 				}
 			}
-			Army d = as.getStrongest(s.getUser());
-			Army a = as.getArmyById(id);
-			Map<String,Integer> values = new HashMap<>();
-			int res = 0;
-			values.put("a0b",0);
-			values.put("a1b",0);
-			values.put("a2b",0);
-			values.put("d0b",0);
-			values.put("d1b",0); // QUE WASADA POR DIOS
-			values.put("d2b",0);
-			values.put("a0l",0);
-			values.put("a1l",0);
-			values.put("a2l",0);
-			values.put("d0l",0);
-			values.put("d1l",0);
-			values.put("d2l",0);
-			if(d != null){
-				int defenderP = (int) ts.getValue(d.getIdArmy());
-				int attackerP = (int) ts.getValue(id);
-				int loserP;
-				Army adef;
-				Army awin;
-				String prefixW;
-				String prefixD;
-				if(defenderP > attackerP){
-					mav.addObject("result",messageSource.getMessage("defenderWin",null,locale));
-					adef = a;
-					awin = d;
-					loserP = attackerP;
-					prefixD ="a";
-					prefixW ="d";
-					res = 1;
-				}else if(attackerP > defenderP){
-					mav.addObject("result",messageSource.getMessage("attackerWin",null,locale));
-					awin = a;
-					adef = d;
-					loserP = defenderP;
-					prefixD ="d";
-					prefixW ="a";
-					ss.deleteBuilding(new Point(xprime,yprime));
-					res = 2;
-				}else{
-					mav.addObject("result",messageSource.getMessage("draw",null,locale));
-					for(Troop t : a.getTroops()){
-						values.put("a"+t.getType()+"b",t.getQuantity());
-						values.put("a"+t.getType()+"l",t.getQuantity());
-					}
-					for(Troop t : d.getTroops()){
-						values.put("d"+t.getType()+"b",t.getQuantity());
-						values.put("d"+t.getType()+"l",t.getQuantity());
-					}
-					as.deleteArmy(id);
-					as.deleteArmy(d.getIdArmy());
-					mav.addAllObjects(values);
-					sendMail(values,user,s.getUser(),0);
-					return mav;
-				}
-				List<Troop> defeated = adef.getTroops();
-				as.deleteArmy(adef.getIdArmy());
-				List<Troop> winner = awin.getTroops();
-				for(Troop t : winner){
-					if(t.getQuantity()*(t.getType()+1) > loserP){
-						values.put(prefixW+t.getType()+"b",t.getQuantity());
-						ts.subtractTroop(awin.getIdArmy(),t.getType(),loserP/(t.getType()+1));
-						values.put(prefixW+t.getType()+"l",loserP/(t.getType()+1));
-						break;
-					}else{
-						values.put(prefixW+t.getType()+"b",t.getQuantity());
-						values.put(prefixW+t.getType()+"l",t.getQuantity());
-						ts.deleteTroop(awin.getIdArmy(),t.getType());
-						loserP-= (t.getType()+1)*t.getQuantity();
-
-					}
-				}
-				for(Troop t: defeated){
-					values.put(prefixD+t.getType()+"b",t.getQuantity());
-					values.put(prefixD+t.getType()+"l",t.getQuantity());
-				}
-				mav.addAllObjects(values);
-				sendMail(values,user,s.getUser(),res);
-				return mav;
-			}
-			mav.addObject("result",messageSource.getMessage("noDefenderArmy",null,locale));
-			for(Troop t : ts.getTroopById(id)){
-				values.put("a"+t.getType()+"b",t.getQuantity());
-				values.put("a"+t.getType()+"l",0);
-			}
-			ss.deleteBuilding(new Point(xprime,yprime));
-			mav.addAllObjects(values);
-			sendMail(values,user,s.getUser(),2);
+			sh.attackTask(user,new Point(xprime,yprime),id);
+			as.setAvailable(id,false);
 		}
-		return mav;
+		return new ModelAndView("redirect:/");
 	}
 	private void sendMail(Map<String,Integer> res,User a, User d,int result){
 		String header;
@@ -277,7 +194,8 @@ public class ArmyController {
 		int a = Integer.valueOf(amount);
 		int x = Integer.valueOf(px);
 		int y = Integer.valueOf(py);
-		Sector s =ss.getSector(new Point(x,y));
+		Point p = new Point(x,y);
+		Sector s =ss.getSector(p);
 		int troopType = Integer.valueOf(type);
 		int cost=0;
 		switch (troopType){
@@ -294,9 +212,12 @@ public class ArmyController {
 			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidTroop",null,locale));
 		}
 		boolean resp = false;
+		if(als.getAlertByPoint(p) != null){
+			return new ModelAndView("redirect:/error");
+		}
 		if(es.subtractResourceAmount(user,Info.RES_FOOD,cost)){
 			resp = true;
-			sh.TrainTask(user,new Point(x,y),a,troopType);
+			sh.TrainTask(user,p,a,troopType);
 		}
 
 		if(resp){

@@ -41,4 +41,7 @@ public interface SectorService {
 	public void addBuilding(Point p, User u, int type);
 
 	public List<Point> getAvailableSpots();
+	
+    User getPlayer(Point pos);
+    
 }

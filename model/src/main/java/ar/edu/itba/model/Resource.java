@@ -42,10 +42,6 @@ public class Resource {
 
 	public void setQuantity(int quantity) {
 		this.quantity = quantity;
-		if(quantity == 4001){
-			System.out.println("FILL");
-		}
-		System.out.println(" QUANTITY " + quantity + " TYPE " + ((type==0)?"FOOD":"GOLD"));
 	}
 
 	public int getType() {
