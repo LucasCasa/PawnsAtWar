@@ -1,9 +1,8 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,18 +27,17 @@ public class RankingsController {
 		ModelAndView mav = new ModelAndView("ranking");
 		
 		List<User> users = us.getAllUsers();
-		
-		Set<UserScoreBean> ranks = new TreeSet<>(new Comparator<UserScoreBean>(){
+		List<UserScoreBean> ranks = new ArrayList<>(users.size());
+		Comparator<UserScoreBean> c = new Comparator<UserScoreBean>(){
 			@Override
 			public int compare(UserScoreBean o1, UserScoreBean o2) {
 				return (int)(o2.getScore()-o1.getScore());
 			}
-		});
-		
+		};
 		for(User u: users){
 			ranks.add(new UserScoreBean(u,es.calculateScore(u)));
 		}
-		
+		ranks.sort(c);
 		mav.addObject("ranks", ranks);
 		return mav;
 	}

@@ -60,6 +60,7 @@ public class LoginController {
 		}
 		User u = us.findByUsername(form.getUsername());
 		session.setAttribute(LOGGED_USER_ID, u.getId());
+		us.setLocale(u,locale.getLanguage());
 		return new ModelAndView("redirect:/map");
 	}
 
@@ -81,6 +82,7 @@ public class LoginController {
 		if(us.exists(form.getUsername(),form.getPassword())){
 			User u = us.findByUsername(form.getUsername());
 			session.setAttribute(LOGGED_USER_ID, u.getId());
+			us.setLocale(u,locale.getLanguage());
 			return new ModelAndView("redirect:/map");
 		}else{
 			 return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.wrongUser",null,locale));

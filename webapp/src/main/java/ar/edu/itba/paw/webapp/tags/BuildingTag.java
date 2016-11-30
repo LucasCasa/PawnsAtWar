@@ -1,23 +1,27 @@
 package ar.edu.itba.paw.webapp.tags;
 
-import ar.edu.itba.model.Point;
-import ar.edu.itba.model.SectorType;
-import ar.edu.itba.paw.webapp.data.Info;
-import ar.edu.itba.paw.webapp.data.InformationBuilding;
-import org.springframework.context.MessageSource;
+import java.io.IOException;
+import java.util.Locale;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.tagext.SimpleTagSupport;
-import java.io.IOException;
-import java.util.Locale;
+
+import org.springframework.context.MessageSource;
+
+import ar.edu.itba.model.Alert;
+import ar.edu.itba.model.Point;
+import ar.edu.itba.model.SectorType;
+import ar.edu.itba.paw.webapp.data.Info;
+import ar.edu.itba.paw.webapp.data.InformationBuilding;
 
 /**
  * Created by Muffin on 9/18/16.
  */
 public class BuildingTag extends SimpleTagSupport {
 
-    private MessageSource messageSource;
+	private Alert alert;
+	private MessageSource messageSource;
     private Locale locale;
     private InformationBuilding info;
     private String clas= "";
@@ -49,9 +53,6 @@ public class BuildingTag extends SimpleTagSupport {
             case Info.MILL:
                 printMill();
                 break;
-            /*case Info.BLACKSMITH:
-                printBlacksmith();
-                break;*/
             case Info.STABLE:
                 printStable();
                 break;
@@ -79,19 +80,34 @@ public class BuildingTag extends SimpleTagSupport {
 
     }
     private void printArchery() throws JspException,IOException{
-        printButtons();
-        printCreateTroop(Info.ARCHER);
-        printTable(messageSource.getMessage("troopCost",null,locale), Info.ARCHERY,level);
+    	JspWriter out = getJspContext().getOut();
+    	if(alert==null){
+	        printButtons();
+	        printCreateTroop(Info.ARCHER);
+    	}else{
+    		out.println(messageSource.getMessage(alert.getType().toString(), null,locale));
+    	}
+    	out.println("<h1>"+messageSource.getMessage(alert.getType().toString(), null,locale)+"</h1>");
     }
     private void printBarrack() throws JspException,IOException{
-        printButtons();
-        printCreateTroop(Info.WARRIOR);
+    	JspWriter out = getJspContext().getOut();
+    	if(alert==null){
+	        printButtons();
+	        printCreateTroop(Info.WARRIOR);
+    	}else{
+    		out.println("<h1>"+messageSource.getMessage(alert.getType().toString(), null,locale)+"</h1>");
+    	}
         printTable(messageSource.getMessage("troopCost",null,locale), Info.BARRACKS,level);
 
     }
     private void printStable() throws JspException,IOException{
-        printButtons();
-        printCreateTroop(Info.HORSEMAN);
+    	JspWriter out = getJspContext().getOut();
+    	if(alert==null){
+	        printButtons();
+	        printCreateTroop(Info.HORSEMAN);
+    	}else{
+    		out.println("<h1>"+messageSource.getMessage(alert.getType().toString(), null,locale)+"</h1>");
+    	}
         printTable(messageSource.getMessage("troopCost",null,locale),Info.STABLE,level);
     }
     private void printCreateTroop(int type) throws JspException,IOException{
@@ -177,16 +193,31 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("</table>");
     }
     private void printMill() throws JspException,IOException{
-        printButtons();
+    	JspWriter out = getJspContext().getOut();
+    	if(alert==null){
+	        printButtons();
+    	}else{
+    		out.println("<h1>"+messageSource.getMessage(alert.getType().toString(), null,locale)+"</h1>");
+    	}
         printTable(messageSource.getMessage("foodGen",null,locale), Info.MILL,level);
     }
 
     private void printCastle() throws JspException,IOException{
-        printButtons();
+    	JspWriter out = getJspContext().getOut();
+    	if(alert==null){
+	        printButtons();
+    	}else{
+    		out.println("<h1>"+messageSource.getMessage(alert.getType().toString(), null,locale)+"</h1>");
+    	}
         printTable(messageSource.getMessage("storeAmount",null,locale), Info.CASTLE,level);
     }
     private void printGoldMine() throws JspException,IOException{
-        printButtons();
+    	JspWriter out = getJspContext().getOut();
+    	if(alert==null){
+	        printButtons();
+    	}else{
+    		out.println("<h1>"+messageSource.getMessage(alert.getType().toString(), null,locale)+"</h1>");
+    	}
         printTable(messageSource.getMessage("goldGen",null,locale), Info.GOLD,level);
     }
     private void printImage(JspWriter out,int id) throws JspException, IOException{
@@ -343,4 +374,11 @@ public class BuildingTag extends SimpleTagSupport {
     public void setPrice(Integer price){
     	this.price=price;
     }
+    public Alert getAlert() {
+		return alert;
+	}
+
+	public void setAlert(Alert alert) {
+		this.alert = alert;
+	}
 }

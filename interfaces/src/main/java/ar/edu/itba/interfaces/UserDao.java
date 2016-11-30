@@ -25,4 +25,6 @@ public interface UserDao {
 	public List<User> getAllUsers();
 
 	public List<String> getUsernames();
+
+	public void setLocale(User u, String language);
 }

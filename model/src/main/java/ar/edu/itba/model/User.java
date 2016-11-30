@@ -27,6 +27,10 @@ public class User {
 	private String password;
 	@Column(length = 100,nullable = false, name = "email")
 	private String email;
+	@Column(name="locale",length=50)
+	private String locale;
+
+
 
 	@OneToMany(fetch = FetchType.EAGER, orphanRemoval = false, mappedBy = "userResource")
 	private List<Resource> resources;
@@ -186,5 +190,11 @@ public class User {
 		return "( username = " + this.name + " , id = " + this.id + " , email = " + this.email + " )";
 	}
 
+	public String getLocale() {
+		return locale;
+	}
 
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
 }
