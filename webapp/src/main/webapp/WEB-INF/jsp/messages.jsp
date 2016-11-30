@@ -99,7 +99,7 @@
 
         <div class="form-group">
             <label><spring:message code="messages.subject"/></label>
-            <input type="subject" class="form-control" name="subject" aria-describedby="subjectHelp" placeholder=<spring:message code="messages.subject"/>>
+            <input type="subject" class="form-control" maxlength="50" name="subject" aria-describedby="subjectHelp" placeholder=<spring:message code="messages.subject"/>>
         </div>
 
         <div class="form-group" >
