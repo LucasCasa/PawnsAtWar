@@ -25,6 +25,9 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public int getAmount(int idArmy, int type) {
+		if(type < 0){
+			return 0;
+		}
 		Troop t = getTroop(idArmy, type);
 		return t == null ? 0 : t.getQuantity();
 	}
@@ -39,7 +42,10 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public void changeAmount(int idArmy, int type, int amount) {
-		final Query query = em.createQuery("update Troop set amount = :amount where army.idArmy = :idArmy and type = :type");
+		if(amount < 0){
+			amount = 0;
+		}
+		final Query query = em.createQuery("update Troop set amount = :amount where idArmy = :idArmy and type = :type");
 		query.setParameter("amount", amount);
 		query.setParameter("idArmy", idArmy);
 		query.setParameter("type", type);
@@ -48,6 +54,12 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public void deleteTroop(int idArmy, int type) {
+		if(!exists(idArmy,type)){
+			return;
+		}
+		if(type < 0){
+			return;
+		}
 		final Query query = em.createQuery("delete Troop where army.idArmy = :idArmy and type = :type");
 		query.setParameter("idArmy", idArmy);
 		query.setParameter("type", type);
@@ -56,6 +68,12 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public Troop addTroop(int idArmy, int type, int amount) {
+		if(exists(idArmy,type)){
+			return getTroop(idArmy, type);
+		}
+		if(amount < 0){
+			amount = 0;
+		}
 		final Troop troop = new Troop(ad.getArmyById(idArmy),type,amount);
 		em.persist(troop);
 		return troop;
@@ -63,6 +81,9 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public boolean exists(int idArmy, int type) {
+		if(type < 0){
+			return false;
+		}
 		if(getTroop(idArmy,type) == null){
 			return false;
 		}
@@ -71,6 +92,9 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public Troop getTroop(int idArmy, int type) {
+		if(type < 0){
+			return null;
+		}
 		final TypedQuery<Troop> query = em.createQuery("from Troop as t where t.army.idArmy = :idArmy and t.type = :type",Troop.class);
 		query.setParameter("idArmy", idArmy);
 		query.setParameter("type", type);

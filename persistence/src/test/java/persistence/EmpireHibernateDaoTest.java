@@ -1,7 +1,10 @@
 package persistence;
 
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.util.List;
 
@@ -123,5 +126,5 @@ public class EmpireHibernateDaoTest {
 		cd.createOffer(u, 0, 122, 1, 122);
 		assertEquals(cd.getAllOffers(u).size(),4);
 	}
-	
+
 }

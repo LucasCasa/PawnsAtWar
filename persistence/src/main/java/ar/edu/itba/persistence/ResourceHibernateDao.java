@@ -23,6 +23,10 @@ public class ResourceHibernateDao implements ResourceDao {
 
 	@Override
 	public void addAmount(User u, int type, int value) {
+		if(value < 0){
+			subtractAmount(u,type,-value);
+			return;
+		}
 		Resource amount = getResource(u,type);
 		amount.setQuantity(value + amount.getQuantity());
 
@@ -30,6 +34,8 @@ public class ResourceHibernateDao implements ResourceDao {
 
 	@Override
 	public void subtractAmount(User u, int type, int value) {
+		if(value < 0)
+			return;
 		Resource amount = getResource(u,type);
 		int cant = amount.getQuantity() <= value ? 0 : amount.getQuantity() - value;
 		amount.setQuantity(cant);

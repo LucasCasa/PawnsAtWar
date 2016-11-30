@@ -2,7 +2,6 @@ package persistence;
 
 
 import ar.edu.itba.interfaces.ArmyDao;
-import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.CommerceDao;
 import ar.edu.itba.interfaces.ResourceDao;
 import ar.edu.itba.interfaces.TroopDao;
@@ -14,7 +13,6 @@ import ar.edu.itba.model.User;
 public class TestDataBasePopulator{
 	
 	private ResourceDao rd;
-	private BuildingDao bd;
 	private CommerceDao cd;
 	private UserDao ud;
 	private ArmyDao ad;
@@ -24,11 +22,6 @@ public class TestDataBasePopulator{
 		this.ud = ud;
 		this.rd = rd;
 		this.cd = cd;
-	}
-	
-	public TestDataBasePopulator(UserDao ud, BuildingDao bd){
-		this.ud = ud;
-		this.bd = bd;
 	}
 
 	public TestDataBasePopulator(ArmyDao ad, TroopDao td, UserDao ud) {
@@ -64,20 +57,6 @@ public class TestDataBasePopulator{
 		
 		
 		
-	}
-	
-	public void populate3(){
-		User u;
-		u = ud.create("maggie", "maggie", "mvega@itba.edu.ar");
-		bd.addBuilding(new Point(0,0), u, 0);
-		bd.addBuilding(new Point(0,1), u, 1);
-		bd.addBuilding(new Point(0,2), null, 1);
-		bd.addBuilding(new Point(1,0), u, 0);
-		bd.addBuilding(new Point(1,1), u, 0);
-		bd.addBuilding(new Point(1,2), u, 1);
-		bd.addBuilding(new Point(2,0), u, 1);
-		bd.addBuilding(new Point(2,1), null, 0);
-		bd.addBuilding(new Point(2,2), u, 0);
 	}
 
 }
