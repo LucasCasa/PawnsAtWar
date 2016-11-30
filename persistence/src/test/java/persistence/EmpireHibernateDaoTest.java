@@ -15,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.CommerceDao;
 import ar.edu.itba.interfaces.ResourceDao;
 import ar.edu.itba.interfaces.UserDao;
@@ -28,7 +27,6 @@ import ar.edu.itba.model.User;
 @Transactional
 public class EmpireHibernateDaoTest {
 	@Autowired private ResourceDao rd;
-	@Autowired private BuildingDao bd;
 	@Autowired private CommerceDao cd;
 	@Autowired private UserDao ud;
 	
@@ -42,7 +40,7 @@ public class EmpireHibernateDaoTest {
 	@Before
 	@Transactional
 	public void setUp(){
-		populator = new TestDataBasePopulator(this.ud,this.rd, this.bd,this.cd);
+		populator = new TestDataBasePopulator(ud, rd, cd);
 		populator.populate();
 	}
 	
@@ -119,11 +117,11 @@ public class EmpireHibernateDaoTest {
 	@Test
 	@Transactional
 	public void testAddCommerce(){
-		
+		User u = ud.findByUsername("maggie3");
+		assertEquals(cd.getAllOffers(u).size(),2);
+		cd.createOffer(u, 1, 1000, 0, 1000);
+		cd.createOffer(u, 0, 122, 1, 122);
+		assertEquals(cd.getAllOffers(u).size(),4);
 	}
 	
-	@Test
-	@Transactional
-	public void testGetCommerce(){
-	}
 }

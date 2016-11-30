@@ -1,5 +1,6 @@
 package ar.edu.itba.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,11 +51,17 @@ public class CommerceServiceImpl implements CommerceService{
 
 	@Override
 	public List<TradeOffer> getAllOffers(User u) {
+		if(u == null){
+			return null;
+		}
 		return cd.getAllOffers(u);
 	}
 
 	@Override
 	public List<TradeOffer> showOffers(User u) {
+		if(u == null){
+			return new ArrayList<TradeOffer>();
+		}
 		List<TradeOffer> list = cd.getAllOffers();
 		List<TradeOffer> own = cd.getAllOffers(u);
 		list.removeAll(own);
@@ -72,6 +79,9 @@ public class CommerceServiceImpl implements CommerceService{
 
 	@Override
 	public boolean createOffer(User u, int giveType, int giveAmount, int getType, int receiveAmount) {
+		if(giveType == getType || giveAmount <= 0 || receiveAmount <= 0){
+			return false;
+		}
 		if(es.getResource(u, giveType).getQuantity()<giveAmount)
 			return false;
 		es.subtractResourceAmount(u, giveType, giveAmount);

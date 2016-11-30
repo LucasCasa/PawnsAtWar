@@ -10,18 +10,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.edu.itba.interfaces.ArmyDao;
-import ar.edu.itba.interfaces.TroopDao;
+import ar.edu.itba.interfaces.BuildingDao;
 import ar.edu.itba.interfaces.UserDao;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
-public class ArmyHibernateDaoTest {
-	@Autowired ArmyDao ad;
-	@Autowired TroopDao td;
-	@Autowired UserDao ud;
+public class SectorHibernateDaoTest {
+	@Autowired private BuildingDao bd;
+	@Autowired private UserDao ud;
 	
 	private TestDataBasePopulator populator;
 	
@@ -33,37 +31,19 @@ public class ArmyHibernateDaoTest {
 	@Before
 	@Transactional
 	public void setUp(){
-		populator = new TestDataBasePopulator(ad, td, ud);
-		populator.populate2();
+		populator = new TestDataBasePopulator(ud, bd);
+		populator.populate3();
 	}
 	
 	@Test
 	@Transactional
-	public void addArmy(){
+	public void deleteBuilding(){
 		
 	}
 	
 	@Test
 	@Transactional
-	public void addTroop(){
-		
-	}
-	
-	@Test
-	@Transactional
-	public void removeArmy(){
-		
-	}
-	
-	@Test
-	@Transactional
-	public void subtractTroop(){
-		
-	}
-	
-	@Test
-	@Transactional
-	public void removeTroop(){
+	public void addBuilding(){
 		
 	}
 }

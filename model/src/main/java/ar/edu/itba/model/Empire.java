@@ -54,5 +54,32 @@ public class Empire implements Serializable{
 		this.userEmpire = userEmpire;
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((userEmpire == null) ? 0 : userEmpire.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Empire other = (Empire) obj;
+		if (userEmpire == null) {
+			if (other.userEmpire != null)
+				return false;
+		} else if (!userEmpire.equals(other.userEmpire))
+			return false;
+		return true;
+	}
+	
+	
+
 }
 
