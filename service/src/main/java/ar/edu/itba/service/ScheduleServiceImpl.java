@@ -81,9 +81,10 @@ public class ScheduleServiceImpl implements ScheduleService {
         c.add(Calendar.SECOND,time);
         Date d = c.getTime();
         Alert alert = as.createAlert(user,getAttackAlertMessage(point),d,AlertType.ATTACK.toString(),point,armyId,null);
-        Alert alert2 = as.createAlert(ss.getPlayer(point),getNotifyAttackAlertMessage(user,point),d,AlertType.ATTACK.toString(),point,armyId,null);
+        User def = ss.getPlayer(point);
+        Alert alert2 = as.createAlert(def,getNotifyAttackAlertMessage(user,point,def.getLocale()),d,AlertType.ATTACK.toString(),point,armyId,null);
         setAttackTask(user,point,armyId,alert,d);
-        setNotifyAttackTask(alert2);
+        setNotifyAttackTask(alert2,d);
     }
 
     @Override
@@ -131,7 +132,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         }else if(s.equals(AlertType.RECRUIT.toString())){
             setTrainTask(a.getUser(),a.getP(),a.getParam1(),a.getParam2(),a,a.getDate());
         }else if(s.equals(AlertType.ATTACK_NOTIFICATION.toString())){
-            setNotifyAttackTask(a);
+            setNotifyAttackTask(a,a.getDate());
         }else if(s.equals(AlertType.MOVE.toString()) || s.equals(AlertType.SPLIT)){
             setMoveTask(a.getUser(),a.getParam1(),a.getP(),a,a.getDate());
         }else if(s.equals(AlertType.MERGE.toString())){
@@ -198,7 +199,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
 
-    private void setNotifyAttackTask(Alert a) {
+    private void setNotifyAttackTask(Alert a,Date d) {
         Runnable buildRunnable = new Runnable() {
             Alert alert = a;
             @Override
@@ -206,6 +207,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 as.removeAlert(alert);
             }
         };
+        scheduler.schedule(buildRunnable,d);
     }
 
     private void setAttackTask(User u, Point p, int id,Alert alert, Date d){
@@ -380,13 +382,17 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
 
-    private String getNotifyAttackAlertMessage(User u,Point point) {
-        //GET USER LOCALE
+    private String getNotifyAttackAlertMessage(User u,Point point,String lang) {
+
         Object[] params = new Object[3];
         params[0] = u.getName();
         params[1] = point.getX();
         params[2] = point.getY();
-        return messageSource.getMessage("alert.notifyAttack",params,LocaleContextHolder.getLocale());
+        if(lang == null) {
+            return messageSource.getMessage("alert.notifyAttack", params, LocaleContextHolder.getLocale());
+        }else{
+            return messageSource.getMessage("alert.notifyAttack", params, new Locale(lang));
+        }
     }
 
     private String getMergeAlertMessage(Point p) {
@@ -445,7 +451,11 @@ public class ScheduleServiceImpl implements ScheduleService {
         params[16] = res.get("a2l");
         params[17] = res.get("a2b") - res.get("a2l");
         Locale l =LocaleContextHolder.getLocale();
-        ms.createMessage(a,d,messageSource.getMessage("attack.message.defender.subject",params2,l),messageSource.getMessage("attack.message.defender",params,l));
+        Locale df = l;
+        if(d.getLocale() != null){
+             df = new Locale(d.getLocale());
+        }
+        ms.createMessage(a,d,messageSource.getMessage("attack.message.defender.subject",params2,df),messageSource.getMessage("attack.message.defender",params,df));
         ms.createMessage(a,a,messageSource.getMessage("attack.message.attacker.subject",null,l),messageSource.getMessage("attack.message.attacker",params,l));
         System.out.println("HOLA");
     }
