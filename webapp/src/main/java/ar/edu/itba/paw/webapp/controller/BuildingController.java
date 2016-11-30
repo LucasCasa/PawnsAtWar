@@ -39,6 +39,8 @@ public class BuildingController {
     @Autowired
     private AlertService as;
     @Autowired
+    private MessageService ms;
+    @Autowired
     private MessageSource messageSource;
 
 
@@ -67,6 +69,7 @@ public class BuildingController {
             int id = sector.getType();
             Alert a = as.getAlertByPoint(p);
             String name = SectorType.get(id).toString();
+    		int unreadMessages = ms.countUnreadMessages(user);
             InformationBuilding ib  = new InformationBuilding(id,name,messageSource.getMessage("description."+ name,null,locale));
             mav.addObject("castleCost",ss.getCastlePrice(user));
             mav.addObject("canBuildCastle",es.validCastlePosition(p));
@@ -74,6 +77,7 @@ public class BuildingController {
             mav.addObject("owner",sector.getUser());
             mav.addObject("user",user);
             mav.addObject("p",p);
+    		mav.addObject("unreadMessages", unreadMessages);
             mav.addObject("alert",a);
             mav.addObject("price", ss.getPrice(user));
             mav.addObject("level",sector.getLevel());
