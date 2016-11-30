@@ -1,5 +1,6 @@
 package ar.edu.itba.persistence;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -76,6 +77,16 @@ public class UserHibernateDao implements UserDao {
 		TypedQuery<User> query = em.createQuery("from User",User.class);
 		final List<User> list = query.getResultList();
 		return list;
+	}
+
+	@Override
+	public List<String> getUsernames(){
+		List<String> rta = new ArrayList<>();
+		List<User> list = getAllUsers();
+		for(User u: list){
+			rta.add(u.getName());
+		}
+		return rta;
 	}
 
 }
