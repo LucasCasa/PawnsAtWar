@@ -32,7 +32,7 @@
 						<td><re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}" path="${pageContext.request.contextPath}"/></td>
 						<td><re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}" path="${pageContext.request.contextPath}"/></td>
 						<td><br><form method="post" action="<c:url value="/commerce/acceptTrade"/>">
-							<input type="hidden" name="id" value="${offer.getId()}"/>
+							<input type="hidden" name="tradeId" value="${offer.getId()}"/>
 							<input type="submit" class="myButton" value="<spring:message code="commerce.accept"/>"/>
 						</form></td>
 					</tr>
@@ -67,7 +67,7 @@
 						<td><re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}" path="${pageContext.request.contextPath}"/></td>
 						<td><re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}" path="${pageContext.request.contextPath}"/></td>
 						<td><br><form method="post" action="<c:url value="/commerce/delete"/>">
-							<input type="hidden" name="id" value="${offer.getId()}"/>
+							<input type="hidden" name="tradeId" value="${offer.getId()}"/>
 							<input type="submit" class="myButton" value="<spring:message code="commerce.remove"/>"/>
 						</form></td>
 					</tr>

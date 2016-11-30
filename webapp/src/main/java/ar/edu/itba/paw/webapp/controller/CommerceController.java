@@ -57,8 +57,8 @@ public class CommerceController {
 	}
 	
 	@RequestMapping(value="/commerce/acceptTrade")
-	public ModelAndView acceptTrade(@RequestParam final int id, @ModelAttribute("user") final User user){
-		TradeOffer to = cs.getOffer(id);
+	public ModelAndView acceptTrade(@RequestParam final int tradeId, @ModelAttribute("user") final User user){
+		TradeOffer to = cs.getOffer(tradeId);
 		if(to == null || to.getOwner().getId() == user.getId())
 			return new ModelAndView("redirect:/error");
 		
@@ -72,8 +72,8 @@ public class CommerceController {
 	}
 	
 	@RequestMapping(value="/commerce/delete")
-	public ModelAndView deleteTrade(@RequestParam final int id, @ModelAttribute("user") final User user){
-		TradeOffer to = cs.getOffer(id);
+	public ModelAndView deleteTrade(@RequestParam final int tradeId, @ModelAttribute("user") final User user){
+		TradeOffer to = cs.getOffer(tradeId);
 		if(to == null || to.getOwner().getId() != user.getId())
 			return new ModelAndView("redirect:/error");
 
@@ -94,9 +94,6 @@ public class CommerceController {
 	
 	@RequestMapping(value="/commerce/create/submit", method = RequestMethod.POST)
     public ModelAndView sumbitCreate(@RequestParam(required = false) String giveType, @RequestParam(required = false) String getType,@RequestParam(required = false) String giveQty,@RequestParam(required = false) String getQty,@ModelAttribute("user") final User user ){
-		out.println("LA VARIABLE giveQTY VALE :" + giveQty);
-
-		out.println("LA VARIABLE getQTY VALE :" + getQty);
 
 		if(getQty==null || giveQty==null || giveType==null || getType==null)
 			return new ModelAndView("redirect:/commerce/create");
