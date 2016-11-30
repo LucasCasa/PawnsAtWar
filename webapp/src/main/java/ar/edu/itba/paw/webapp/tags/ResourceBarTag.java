@@ -23,6 +23,8 @@ public class ResourceBarTag extends SimpleTagSupport{
 		out.write("<tbody>");
 		out.write("<tr>");
 		int index = 0;
+		System.err.println("**********************************");
+		System.err.println(rbean.getResources());
 		for(Resource r: rbean.getResources()){
 			 ResourceTag re = new ResourceTag();
 			 re.setJspContext(getJspContext());

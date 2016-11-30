@@ -1,7 +1,6 @@
 package ar.edu.itba.model;
 
 import java.sql.Timestamp;
-import java.util.Calendar;
 import java.util.Date;
 
 import javax.persistence.*;

@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="te" uri="/WEB-INF/jsp/custom.tld"%>
 <%@ taglib prefix="rb" uri="resBar.tld"%>
+<%@ taglib prefix="nu" uri="number.tld"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ include file="header.jsp" %>
 
@@ -81,7 +82,8 @@
 				<c:forEach var="alert" items="${alerts}">
 					<div class="well well-sm">
 						<p>${alert.message}</p>
-						<spring:message code="alert.finalize"/> <span class="timeR"><fmt:parseNumber value="${(alert.date.getTime() - now) / 1000}" integerOnly="true" /></span> <spring:message code="alert.seconds"/>
+						<spring:message code="alert.finalize"/> <span class="timeR">
+						<nu:Number number="${(alert.date.getTime() - now) / 1000}"/></span> <spring:message code="alert.seconds"/>
 					</div>
 				</c:forEach>
 			</div>
