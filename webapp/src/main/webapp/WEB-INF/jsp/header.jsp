@@ -35,8 +35,8 @@
 		      </ul>
 		      <ul class="nav navbar-nav navbar-right">
 		        <li><a href="<c:url value="/ranking"/>"><spring:message code="header.ranking"/></a></li>
-				<li><a href="<c:url value="/messages"/>"><spring:message code="header.messages"/></a></li>
-		        <li><a href="<c:url value="/logout"/>"><spring:message code="header.logout"/></a></li>
+				<li><a href="<c:url value="/messages"/>"><spring:message code="header.messages"/><i data-count="${unreadMessages}" class="glyphicon glyphicon-bell notification-icon"></i>(${unreadMessages})</a></li>
+				  <li><a href="<c:url value="/logout"/>"><spring:message code="header.logout"/></a></li>
 		      </ul>
 		    </div><!-- /.navbar-collapse -->
 		  </div><!-- /.container-fluid -->

@@ -11,5 +11,9 @@ public interface MessageDao {
 	public List<Message> getAllMessages(User u);
 	public void removeMessage(Long id);
 	public void removeMessages(List<Message> sent);
-	
+	public int countUnreadMessages(User u);
+	public void markAsRead(Long id);
+
+	public List<Message>getReadMesssages(User u);
+	public List<Message> getUnReadMessages(User u);
 }

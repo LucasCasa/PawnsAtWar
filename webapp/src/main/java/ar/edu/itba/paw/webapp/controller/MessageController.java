@@ -43,13 +43,19 @@ public class MessageController {
             return new ModelAndView("redirect:/login");
         
         final ModelAndView mav = new ModelAndView("messages");
-        List<String> usernames = us.getUsernames();
-        List<Message> messagesReceived = ms.getAllMessages(user);
-        mav.addObject("messagesReceived",messagesReceived);
-        mav.addObject("mReceivdedListSize", messagesReceived.size());
+        List<String> usernames = us.getUsernames();;
+        List<Message> messagesUnr = ms.getUnreadMessages(user);
+        List<Message> messagesRead = ms.getReadMessages(user);
+        int messagesUnread = ms.countUnreadMessages(user);
+        mav.addObject("messagesRead",messagesRead);
+        mav.addObject("messagesUnread",messagesUnr);
+
+        mav.addObject("mReadListSize", messagesRead.size());
+        mav.addObject("mUnreadListSize", messagesUnr.size());
         mav.addObject("success",success);
         mav.addObject("messageSource",messageSource);
         mav.addObject("namelist",usernames);
+        mav.addObject("unreadMessages",messagesUnread);
 
 
         return mav;
@@ -91,20 +97,24 @@ public class MessageController {
     public ModelAndView answerMessage(@RequestParam final Long msgId, @ModelAttribute("userId") final User user){
 
         Message mssg = ms.getById(msgId);
-        
-        
-        
+
+
         if(mssg==null || (!mssg.getFrom().equals(user) && !mssg.getTo().equals(user))){
         	return new ModelAndView("redirect:/error");
         }
 
         final ModelAndView mav = new ModelAndView("seeMessage");
+        ms.markAsRead(msgId);
+        int messagesUnread = ms.countUnreadMessages(user);
+
+
+
 
         mav.addObject("from", mssg.getFrom().getName());
         mav.addObject("subject", mssg.getSubject());
         mav.addObject("message", mssg.getMessage());
-
-        //sendEmail(user.getEmail(), mssg.getSubject(), mssg.getMessage());
+        mav.addObject("unreadMessages", messagesUnread);
+        ;
 
         return mav;
     }

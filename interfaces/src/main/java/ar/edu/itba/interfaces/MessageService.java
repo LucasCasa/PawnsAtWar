@@ -12,5 +12,10 @@ public interface MessageService {
 	public void deleteMessage(Long id);
 	public void deleteMessage(Message mssg);
 	public void deleteMessages(User user);
+	public int countUnreadMessages(User u);
+	public void markAsRead(Long id);
+
+	public List<Message> getReadMessages(User u);
+	public List<Message> getUnreadMessages (User u);
 }
 
