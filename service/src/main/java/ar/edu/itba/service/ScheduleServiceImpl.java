@@ -218,7 +218,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             Alert a = alert;
             @Override
             public void run() {
-                Army d = ars.getArmyAtPosition(user,pos);
+                Army d = ars.getArmyAtPosition(ss.getPlayer(pos),pos);
                 Army a = ars.getArmyById(armyId);
                 Map<String,Integer> values = new HashMap<>();
                 int res = 0;

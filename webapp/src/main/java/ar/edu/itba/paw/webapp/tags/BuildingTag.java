@@ -36,7 +36,11 @@ public class BuildingTag extends SimpleTagSupport {
         switch (info.getId()) {
             case Info.EMPTY:
             case Info.TERR_GOLD:
-                printNew(out, info.getId() == Info.TERR_GOLD);
+                if(alert == null) {
+                    printNew(out, info.getId() == Info.TERR_GOLD);
+                }else{
+                    out.println("<h1>"+messageSource.getMessage(alert.getType().toString(), null,locale)+"</h1>");
+                }
                 break;
             case Info.CASTLE:
                 printCastle();
@@ -85,9 +89,9 @@ public class BuildingTag extends SimpleTagSupport {
 	        printButtons();
 	        printCreateTroop(Info.ARCHER);
     	}else{
-    		out.println(messageSource.getMessage(alert.getType().toString(), null,locale));
+            out.println("<h1>"+messageSource.getMessage(alert.getType().toString(), null,locale)+"</h1>");
     	}
-    	out.println("<h1>"+messageSource.getMessage(alert.getType().toString(), null,locale)+"</h1>");
+        printTable(messageSource.getMessage("troopCost",null,locale), Info.ARCHERY,level);
     }
     private void printBarrack() throws JspException,IOException{
     	JspWriter out = getJspContext().getOut();
