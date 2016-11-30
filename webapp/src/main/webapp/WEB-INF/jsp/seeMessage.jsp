@@ -34,7 +34,7 @@
 
         <div class="form-group">
             <label><spring:message code="messages.subject"/></label>
-            <input type="subject" class="form-control" name="subject" value="RE ${subject}" aria-describedby="subjectHelp" placeholder=<spring:message code="messages.subject"/>>
+            <input type="subject" maxlength="50" class="form-control" name="subject" value="RE ${subject}" aria-describedby="subjectHelp" placeholder=<spring:message code="messages.subject"/>>
         </div>
 
         <div class="form-group">
