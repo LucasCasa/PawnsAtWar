@@ -21,7 +21,7 @@
             </div>
         </c:when>
         <c:otherwise>
-            <h1><spring:message code="messages.messagesRead"/></h1>
+            <h1><spring:message code="messages.messagesUnread"/></h1>
 
             <table class="table table-hover">
                 <thead>
@@ -30,7 +30,7 @@
                     <td><spring:message code="messages.action"/></td>
                 </thead>
                 <tbody>
-                    <c:forEach var="message" items="${messagesRead}">
+                    <c:forEach var="message" items="${messagesUnread}">
                         <tr class="clickable-row"  data-href="<c:url value="/messages/seeMessage?msgId=${message.getId()}"/>">
                             <td>${message.getFrom().getName()}</td>
                             <td>${message.getSubject()}</td>
@@ -48,7 +48,7 @@
                 </tbody>
             </table>
 
-            <h1><spring:message code="messages.messagesUnread"/></h1>
+            <h1><spring:message code="messages.messagesRead"/></h1>
             <table class="table table-hover">
                 <thead>
                 <td><spring:message code="messages.user"/></td>
@@ -56,7 +56,7 @@
                 <td><spring:message code="messages.action"/></td>
                 </thead>
                 <tbody>
-                <c:forEach var="message" items="${messagesUnread}">
+                <c:forEach var="message" items="${messagesRead}">
                     <tr class="clickable-row"  data-href="<c:url value="/messages/seeMessage?msgId=${message.getId()}"/>">
                         <td>${message.getFrom().getName()}</td>
                         <td>${message.getSubject()}</td>
