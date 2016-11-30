@@ -10,13 +10,13 @@
 
         <h1><spring:message code="messages.description"/></h1>
 
-    <div style="width: 1090px; height: 300px;">
+    <div style="width: 100%">
             <strong style="font-size: 20px;"><spring:message code="messages.mailFrom"/></strong> <span style="width:20px; font-size: 20px;   word-wrap:break-word;"> ${from} </span>
             <br>
             <strong style="font-size: 20px;"><spring:message code="messages.mailSubject"/></strong>  <span style="width:20px; font-size: 20px;   word-wrap:break-word;"> ${subject} </span>
             <br>
         <div >
-            <strong style="font-size: 20px;"><spring:message code="messages.mailContent"/></strong> <span style="width:20px; font-size: 20px;   word-wrap:break-word;"> ${message} </span>
+            <strong style="font-size: 20px;"><spring:message code="messages.mailContent"/></strong> <span style="width:20px; font-size: 20px;word-wrap:break-word;"><pre> ${message} </pre>  </span>
         </div>
     </div>
     <br>

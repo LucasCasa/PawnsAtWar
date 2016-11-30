@@ -42,7 +42,12 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void buildTask(final User u, final Point p, final int t) {
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.MINUTE,1);
+        int time = 1;
+        if(t == 1){
+            Point ca = ss.getCastle(u);
+            time+= (int)Math.sqrt(Math.pow(ca.getX() - p.getX(),2) + Math.pow(ca.getY() - p.getY(),2));
+        }
+        c.add(Calendar.MINUTE,time);
         Date d = c.getTime();
         Alert alert = as.createAlert(u,getBuildAlertMessage(u,p,t,d),d,AlertType.BUILD.toString(),p,t,null);
 
@@ -86,7 +91,9 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public void attackTask(User user, Point point, int armyId) {
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.MINUTE,1);
+        Point o = ars.getArmyById(armyId).getPosition();
+        int time = (int)(Math.log10(Math.pow(o.getX() - point.getX(),2) + Math.pow(o.getY() - point.getY(),2))*60);
+        c.add(Calendar.SECOND,time);
         Date d = c.getTime();
         Alert alert = as.createAlert(user,getAttackAlertMessage(point),d,AlertType.ATTACK.toString(),point,armyId,null);
         setAttackTask(user,point,armyId,alert,d);

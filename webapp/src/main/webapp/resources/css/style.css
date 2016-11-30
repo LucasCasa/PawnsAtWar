@@ -184,3 +184,8 @@ p{
     transition: 0.3s;
     padding: 2px 16px;
 }
+pre {
+    background-color: transparent;
+    border-width: 0;
+
+}
