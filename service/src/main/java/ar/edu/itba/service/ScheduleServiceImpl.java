@@ -2,6 +2,7 @@ package ar.edu.itba.service;
 
 import ar.edu.itba.interfaces.*;
 import ar.edu.itba.model.*;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -72,6 +73,93 @@ public class ScheduleServiceImpl implements ScheduleService {
         setTrainTask(u,p,amount,type,alert,d);
     }
 
+    @Override
+    public void attackTask(User user, Point point, int armyId) {
+        Calendar c = Calendar.getInstance();
+        Point o = ars.getArmyById(armyId).getPosition();
+        int time = (int)(Math.log10(Math.pow(o.getX() - point.getX(),2) + Math.pow(o.getY() - point.getY(),2))*60);
+        c.add(Calendar.SECOND,time);
+        Date d = c.getTime();
+        Alert alert = as.createAlert(user,getAttackAlertMessage(point),d,AlertType.ATTACK.toString(),point,armyId,null);
+        Alert alert2 = as.createAlert(ss.getPlayer(point),getNotifyAttackAlertMessage(user,point),d,AlertType.ATTACK.toString(),point,armyId,null);
+        setAttackTask(user,point,armyId,alert,d);
+        setNotifyAttackTask(alert2);
+    }
+
+    @Override
+    public void moveTask(User u, int armyId, Point p) {
+        Calendar c = Calendar.getInstance();
+        Army a = ars.getArmyById(armyId);
+        int time = (int)(Math.log10(Math.pow(a.getPosition().getX() - p.getX(),2) + Math.pow(a.getPosition().getY() - p.getY(),2)+1)*60);
+        c.add(Calendar.SECOND,time);
+        Date d = c.getTime();
+        Alert alert = as.createAlert(u,getMoveAlertMessage(p),d,AlertType.MOVE.toString(),p,armyId,null);
+        setMoveTask(u,armyId,p,alert,d);
+    }
+
+    @Override
+    public void mergeTask(User u, int armyId, int armyId2, Point p) {
+        Calendar c = Calendar.getInstance();
+        Army a = ars.getArmyById(armyId);
+        int time = (int)(Math.log10(Math.pow(a.getPosition().getX() - p.getX(),2) + Math.pow(a.getPosition().getY() - p.getY(),2)+1)*60);
+        c.add(Calendar.SECOND,time);
+        Date d = c.getTime();
+        Alert alert = as.createAlert(u,getMergeAlertMessage(p),d,AlertType.MERGE.toString(),p,armyId,armyId2);
+        setMergeTask(u,armyId,armyId2,p,alert,d);
+    }
+
+    @Override
+    public void splitTask(User u, int armyId, Point p) {
+        Calendar c = Calendar.getInstance();
+        Army a = ars.getArmyById(armyId);
+        int time = (int)(Math.log10(Math.pow(a.getPosition().getX() - p.getX(),2) + Math.pow(a.getPosition().getY() - p.getY(),2) + 1)*60);
+        c.add(Calendar.SECOND,time);
+        Date d = c.getTime();
+        Alert alert = as.createAlert(u,getSplitAlertMessage(p),d,AlertType.SPLIT.toString(),p,armyId,null);
+        setMoveTask(u,armyId,p,alert,d);
+    }
+
+    @Override
+    public void resumeTask(Alert a){
+        String s = a.getType();
+        if(s.equals(AlertType.BUILD.toString())){
+            setBuildTask(a.getUser(),a.getP(),a.getParam1(),a,a.getDate());
+        }else if(s.equals(AlertType.UPGRADE.toString())){
+            setLevelUpTask(ss.getSector(a.getP()),a,a.getDate());
+        }else if(s.equals(AlertType.ATTACK.toString())){
+            setAttackTask(a.getUser(),a.getP(),a.getParam1(),a,a.getDate());
+        }else if(s.equals(AlertType.RECRUIT.toString())){
+            setTrainTask(a.getUser(),a.getP(),a.getParam1(),a.getParam2(),a,a.getDate());
+        }else if(s.equals(AlertType.ATTACK_NOTIFICATION.toString())){
+            setNotifyAttackTask(a);
+        }else if(s.equals(AlertType.MOVE.toString()) || s.equals(AlertType.SPLIT)){
+            setMoveTask(a.getUser(),a.getParam1(),a.getP(),a,a.getDate());
+        }else if(s.equals(AlertType.MERGE.toString())){
+            setMergeTask(a.getUser(),a.getParam1(),a.getParam2(),a.getP(),a,a.getDate());
+        }
+    }
+    private void setMergeTask(User u, int armyId, int armyId2,Point p,Alert alert,Date d) {
+        Runnable buildRunnable = new Runnable() {
+            User user = u;
+            Point pos = p;
+            int from = armyId;
+            int to = armyId2;
+            Alert a = alert;
+            @Override
+            public void run() {
+                Army ar =ars.getArmyById(to);
+                if(ar != null && ar.getPosition().equals(pos) && ar.getAvailable()) {
+                    ars.mergeArmies(from, to);
+                }else{
+                    ars.moveArmy(from,pos);
+                    ars.setAvailable(from,true);
+                }
+                as.removeAlert(a);
+            }
+        };
+        scheduler.schedule(buildRunnable,d);
+    }
+
     private void setTrainTask(User u, Point p, Integer am, Integer t,final Alert alert, final Date d) {
         Runnable buildRunnable = new Runnable() {
             User user = u;
@@ -88,32 +176,37 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduler.schedule(buildRunnable,d);
     }
 
-    @Override
-    public void attackTask(User user, Point point, int armyId) {
-        Calendar c = Calendar.getInstance();
-        Point o = ars.getArmyById(armyId).getPosition();
-        int time = (int)(Math.log10(Math.pow(o.getX() - point.getX(),2) + Math.pow(o.getY() - point.getY(),2))*60);
-        c.add(Calendar.SECOND,time);
-        Date d = c.getTime();
-        Alert alert = as.createAlert(user,getAttackAlertMessage(point),d,AlertType.ATTACK.toString(),point,armyId,null);
-        setAttackTask(user,point,armyId,alert,d);
-    }
-
-    @Override
-    public void resumeTask(Alert a){
-        String s = a.getType();
-        if(s.equals(AlertType.BUILD.toString())){
-            setBuildTask(a.getUser(),a.getP(),a.getParam1(),a,a.getDate());
-        }else if(s.equals(AlertType.UPGRADE.toString())){
-            setLevelUpTask(ss.getSector(a.getP()),a,a.getDate());
-        }else if(s.equals(AlertType.ATTACK.toString())){
-            setAttackTask(a.getUser(),a.getP(),a.getParam1(),a,a.getDate());
-        }else if(s.equals(AlertType.RECRUIT.toString())){
-            setTrainTask(a.getUser(),a.getP(),a.getParam1(),a.getParam2(),a,a.getDate());
-        }
+    private void setMoveTask(User u, int armyId, Point p,Alert alert,Date d) {
+        Runnable buildRunnable = new Runnable() {
+            User user = u;
+            Point pos = p;
+            int id = armyId;
+            Alert a = alert;
+            @Override
+            public void run() {
+                Army ar =ars.getArmyAtPosition(user,pos);
+                if(ar != null && ar.getAvailable()) {
+                    ars.mergeArmies(id, ar.getIdArmy());
+                }else{
+                    ars.moveArmy(id,pos);
+                    ars.setAvailable(id,true);
+                }
+                as.removeAlert(a);
+            }
+        };
+        scheduler.schedule(buildRunnable,d);
     }
 
 
+    private void setNotifyAttackTask(Alert a) {
+        Runnable buildRunnable = new Runnable() {
+            Alert alert = a;
+            @Override
+            public void run() {
+                as.removeAlert(alert);
+            }
+        };
+    }
 
     private void setAttackTask(User u, Point p, int id,Alert alert, Date d){
         Runnable buildRunnable = new Runnable() {
@@ -123,8 +216,8 @@ public class ScheduleServiceImpl implements ScheduleService {
             Alert a = alert;
             @Override
             public void run() {
-                Army d = ars.getArmyAtPosition(u,p);
-                Army a = ars.getArmyById(id);
+                Army d = ars.getArmyAtPosition(user,pos);
+                Army a = ars.getArmyById(armyId);
                 Map<String,Integer> values = new HashMap<>();
                 int res = 0;
                 values.put("a0b",0);
@@ -141,7 +234,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                 values.put("d2l",0);
                 if(d != null && d.getAvailable()){
                     int defenderP = (int) ts.getValue(d.getIdArmy());
-                    int attackerP = (int) ts.getValue(id);
+                    int attackerP = (int) ts.getValue(armyId);
                     int loserP;
                     Army adef;
                     Army awin;
@@ -162,8 +255,8 @@ public class ScheduleServiceImpl implements ScheduleService {
                         loserP = defenderP;
                         prefixD ="d";
                         prefixW ="a";
-                        ss.deleteBuilding(p);
-                        ars.setAvailable(id,true);
+                        ss.deleteBuilding(pos);
+                        ars.setAvailable(armyId,true);
                         res = 2;
                     }else{
                         //mav.addObject("result",messageSource.getMessage("draw",null,locale));
@@ -175,7 +268,7 @@ public class ScheduleServiceImpl implements ScheduleService {
                             values.put("d"+t.getType()+"b",t.getQuantity());
                             values.put("d"+t.getType()+"l",t.getQuantity());
                         }
-                        ars.deleteArmy(id);
+                        ars.deleteArmy(armyId);
                         ars.deleteArmy(d.getIdArmy());
                         as.removeAlert(this.a);
                         sendMail(values,user,ss.getPlayer(pos),0);
@@ -207,13 +300,13 @@ public class ScheduleServiceImpl implements ScheduleService {
                     return;
                 }
                 //mav.addObject("result",messageSource.getMessage("noDefenderArmy",null,locale));
-                for(Troop t : ts.getTroopById(id)){
+                for(Troop t : ts.getTroopById(armyId)){
                     values.put("a"+t.getType()+"b",t.getQuantity());
                     values.put("a"+t.getType()+"l",0);
                 }
                 ss.deleteBuilding(pos);
                 as.removeAlert(this.a);
-                ars.setAvailable(id,true);
+                ars.setAvailable(armyId,true);
                 sendMail(values,user,ss.getPlayer(pos),1);
             }
         };
@@ -228,7 +321,7 @@ public class ScheduleServiceImpl implements ScheduleService {
             @Override
             public void run() {
             	if(type==SectorServiceImpl.CASTLE)
-            		ss.updateTerrain(p, u, SectorServiceImpl.initRange);
+            		ss.updateTerrain(pos, user, SectorServiceImpl.initRange);
                 ss.addBuilding(pos,user,type);
                 as.removeAlert(a);
             }
@@ -286,6 +379,40 @@ public class ScheduleServiceImpl implements ScheduleService {
         return messageSource.getMessage("alert.attacking",params,locale);
     }
 
+
+    private String getNotifyAttackAlertMessage(User u,Point point) {
+        //GET USER LOCALE
+        Object[] params = new Object[3];
+        params[0] = u.getName();
+        params[1] = point.getX();
+        params[2] = point.getY();
+        return messageSource.getMessage("alert.notifyAttack",params,LocaleContextHolder.getLocale());
+    }
+
+    private String getMergeAlertMessage(Point p) {
+        Locale l = LocaleContextHolder.getLocale();
+        Object[] params = new Object[2];
+        params[0] = p.getX();
+        params[1] = p.getY();
+        return messageSource.getMessage("alert.merge",params,l);
+    }
+
+    private String getMoveAlertMessage(Point p) {
+        Locale l = LocaleContextHolder.getLocale();
+        Object[] params = new Object[2];
+        params[0] = p.getX();
+        params[1] = p.getY();
+        return messageSource.getMessage("alert.move",params,l);
+    }
+
+    private String getSplitAlertMessage(Point p) {
+        Locale l = LocaleContextHolder.getLocale();
+        Object[] params = new Object[2];
+        params[0] = p.getX();
+        params[1] = p.getY();
+        return messageSource.getMessage("alert.split",params,l);
+    }
+
     private void sendMail(Map<String,Integer> res,User a, User d,int result){
         String headerD;
         String headerA;
@@ -322,4 +449,5 @@ public class ScheduleServiceImpl implements ScheduleService {
         ms.createMessage(a,a,messageSource.getMessage("attack.message.attacker.subject",null,l),messageSource.getMessage("attack.message.attacker",params,l));
         System.out.println("HOLA");
     }
+
 }

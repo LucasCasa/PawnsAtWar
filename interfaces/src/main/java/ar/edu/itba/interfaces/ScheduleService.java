@@ -19,4 +19,10 @@ public interface ScheduleService {
     void resumeTask(Alert a);
 
     void attackTask(User user, Point point, int armyId);
+
+    void moveTask(User u, int armyId,Point p);
+
+    void mergeTask(User u, int armyId, int armyId2, Point p);
+
+    void splitTask(User u, int armyId, Point p);
 }

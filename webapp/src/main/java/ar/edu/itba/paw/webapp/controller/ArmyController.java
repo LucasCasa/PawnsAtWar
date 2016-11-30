@@ -248,7 +248,7 @@ public class ArmyController {
 	}
 
 	@RequestMapping(value="/merge")
-	public ModelAndView train(@RequestParam String f,
+	public ModelAndView merge(@RequestParam String f,
 			@RequestParam String t,
 			@ModelAttribute("userId") final User user,
 			Locale locale){
@@ -263,17 +263,13 @@ public class ArmyController {
 		if(!as.belongs(user ,from) || !as.belongs(user ,to)){
 			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
 		}
-
-		List<Troop> troops = ts.getTroopById(from);
-		for(Troop troop : troops){
-			ts.addTroop(to,troop.getType(),troop.getQuantity());
-		}
-		as.deleteArmy(from);
+        sh.mergeTask(user,from,to,as.getArmyById(to).getPosition());
+        as.setAvailable(from,false);
 		return new ModelAndView("redirect:/armies");
 	}
 
 	@RequestMapping(value="/armies/{armyId}/split")
-	public ModelAndView train(@PathVariable String armyId,
+	public ModelAndView split(@PathVariable String armyId,
 			@ModelAttribute("userId") final User user,
 			Locale locale){
 		if(user == null){
@@ -302,7 +298,7 @@ public class ArmyController {
 		return mav;
 	}
 	@RequestMapping(value="/split",method = RequestMethod.POST)
-	public ModelAndView train(@RequestParam(value= "0",required = false,defaultValue = "0") String t1,
+	public ModelAndView split2(@RequestParam(value= "0",required = false,defaultValue = "0") String t1,
 			@RequestParam(value= "1",required = false,defaultValue = "0") String t2,
 			@RequestParam(value= "2",required = false,defaultValue = "0") String t3,
 			@RequestParam(value= "pos") String pos,
@@ -327,23 +323,37 @@ public class ArmyController {
 		int warriors = Integer.parseInt(t1);
 		int archers = Integer.parseInt(t2);
 		int horsemen = Integer.parseInt(t3);
-
-		Army newArmy = as.getOrCreateArmy(p,user);
-		if(warriors != 0){
-			ts.addTroop(newArmy.getIdArmy(),Info.WARRIOR,warriors);
-			ts.subtractTroop(id,Info.WARRIOR,warriors);
-		}
-		if(archers != 0){
-			ts.addTroop(newArmy.getIdArmy(),Info.ARCHER,archers);
-			ts.subtractTroop(id,Info.ARCHER,archers);
-		}
-		if(horsemen != 0){
-			ts.addTroop(newArmy.getIdArmy(),Info.HORSEMAN,horsemen);
-			ts.subtractTroop(id,Info.HORSEMAN,horsemen);
-		}
+		Map<TroopType,Integer> tr = new HashMap<>();
+		tr.put(TroopType.warrior,warriors);
+		tr.put(TroopType.archer,archers);
+		tr.put(TroopType.horseman,horsemen);
+		Army a = as.splitArmy(id,tr);
+		sh.splitTask(user,a.getIdArmy(),p);
 		return new ModelAndView("redirect:/armies");
 	}
+	@RequestMapping(value="/move", method = RequestMethod.POST)
+	public ModelAndView move(@ModelAttribute("userId") final User user,
+							   @RequestParam(value= "x",required = true) String x,
+							   @RequestParam(value= "y",required = true) String y,
+							   @RequestParam(value= "armyId",required = true) String armyId,
+							   Locale locale){
 
+		if(!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y)){
+			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidPosition",null,locale));
+		}
+		Point p = new Point(Integer.parseInt(x),Integer.parseInt(y));
+		if(!Validator.isInteger(armyId)){
+			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.invalidArmy",null,locale));
+		}
+		int id = Integer.parseInt(armyId);
+		if(!as.belongs(user ,id)){
+			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notYoursArmy",null,locale));
+		}
+		as.setAvailable(id,false);
+		sh.moveTask(user,id,p);
+		return new ModelAndView("redirect:/map");
+
+	}
 	@ModelAttribute("userId")
 	public User loggedUser (final HttpSession session){
 		if(session.getAttribute("userId") != null)

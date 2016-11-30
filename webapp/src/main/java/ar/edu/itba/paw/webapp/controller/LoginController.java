@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import ar.edu.itba.interfaces.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -27,6 +28,8 @@ public class LoginController {
 	private UserService us;
 	@Autowired
 	private MessageSource messageSource;
+	@Autowired
+	private ScheduleService sh;
 
 		private final static String LOGGED_USER_ID = "userId";
 

@@ -69,7 +69,6 @@ public class ArmyHibernateDao implements ArmyDao {
 		return getArmy(p,u) == null ? false : true;
 	}
 
-	@Override
 	public Army getArmy(Point p, User u) {
 		final TypedQuery<Army> query = em.createQuery("from Army where position = :p and userArmy = :u",Army.class); 
 		query.setParameter("p",p);
@@ -92,6 +91,17 @@ public class ArmyHibernateDao implements ArmyDao {
 		query.setParameter("idArmy", idArmy);
 		query.executeUpdate();
 
+	}
+
+	@Override
+	public void setArmyPosition(int armyId, Point p) {
+		Army a = getArmyById(armyId);
+		a.setPosition(p);
+		em.merge(a);
+		/*final Query query = em.createQuery("update Army set position = :p where idArmy = :idArmy");
+		query.setParameter("p", p);
+		query.setParameter("idArmy", armyId);
+		query.executeUpdate();*/
 	}
 
 }

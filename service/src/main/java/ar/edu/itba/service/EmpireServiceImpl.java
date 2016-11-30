@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import ar.edu.itba.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -66,11 +67,7 @@ public class EmpireServiceImpl implements EmpireService{
 			}
 		});
 		List<Resource> l = rd.getResources(u);
-		System.err.println("****************************************************************");
-		System.err.println("l: " + l);
 		set.addAll(l);
-		System.err.println("****************************************************************");
-		System.err.println("s: " + set);
 		return set;
 	}
 	

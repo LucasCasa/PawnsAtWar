@@ -65,4 +65,8 @@ public abstract class Info {
                 return 0;
         }
     }
+
+    public static int getCostBuilding(int type, int i) {
+        return 1000 + i*i*i*i;
+    }
 }

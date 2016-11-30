@@ -15,7 +15,7 @@
 			<div class="col-md-8 col-sm-9">
 				<div id="Map" range="${range}" class="carousel slide" style="display: inline-block">
 
-					<table style="max-width: 537,6px;">
+					<table >
 						<tr style="background-color:#000;text-align: center;color: #FFF;">
 							<td></td>
 							<c:forEach var="i" items="${map}" varStatus="loop">

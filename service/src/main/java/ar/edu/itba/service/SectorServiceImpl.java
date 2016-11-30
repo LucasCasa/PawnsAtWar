@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import ar.edu.itba.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.edu.itba.interfaces.BuildingDao;
-import ar.edu.itba.interfaces.EmpireService;
-import ar.edu.itba.interfaces.SectorService;
-import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
 import ar.edu.itba.model.User;
@@ -49,6 +46,9 @@ public class SectorServiceImpl implements SectorService {
 	
 	@Autowired
 	EmpireService es;
+
+	@Autowired
+	ScheduleService sh;
 	
 	@Override
 	public List<List<Sector>> getSector(Point p, int range) {
@@ -174,7 +174,7 @@ public class SectorServiceImpl implements SectorService {
 	@Override
 	public void levelUp(Point p) {
 		if(bd.getLevel(p) < 20){
-			bd.setLevel(p, bd.getLevel(p) + 1);
+			sh.levelUpTask(bd.getBuilding(p));
 		}
 	}
 

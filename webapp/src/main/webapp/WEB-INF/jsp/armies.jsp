@@ -29,21 +29,21 @@
                         </td>
                         <td>
                             <c:forEach var="troop" items="${army.troops}">
-                                <c:if test="${troop.type == 0}">
+                                <c:if test="${troop.type == 0 && troop.quantity != 0}">
                                     <c:out value="${troop.quantity}" />
                                 </c:if>
                             </c:forEach>
                         </td>
                         <td>
                             <c:forEach var="troop" items="${army.troops}">
-                                <c:if test="${troop.type == 1}">
+                                <c:if test="${troop.type == 1 && troop.quantity != 0}">
                                     <c:out value="${troop.quantity}" />
                                 </c:if>
                             </c:forEach>
                         </td>
                         <td>
                             <c:forEach var="troop" items="${army.troops}">
-                                <c:if test="${troop.type == 2}">
+                                <c:if test="${troop.type == 2 && troop.quantity != 0}">
                                     <c:out value="${troop.quantity}" />
                                 </c:if>
                             </c:forEach>
@@ -58,11 +58,16 @@
                                 </c:otherwise>
                             </c:choose>
                         </td>
+
                         <td>
+                            <c:if test="${army.available}">
                             <button class="myButton" onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.idArmy}?x=${x}&y=${y}" />' "><spring:message code="button.attack" /></button>
+                            </c:if>
                         </td>
                         <td>
+                            <c:if test="${army.available}">
                             <button class="myButton" onclick="javascript:location.href= window.location.pathname + '/<c:out value="${army.idArmy}/split" />' "><spring:message code="button.split" /></button>
+                            </c:if>
                         </td>
                     </tr>
                 </c:forEach>

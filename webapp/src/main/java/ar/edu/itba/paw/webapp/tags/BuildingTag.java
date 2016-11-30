@@ -226,7 +226,7 @@ public class BuildingTag extends SimpleTagSupport {
     public void printTable(String text,int type,int level) throws JspException, IOException{
         JspWriter out = getJspContext().getOut();
         
-        int costAm = price + level*level*level*level;
+        int costAm = Info.getCostBuilding(type,level);
         
         ResourceTag cost = new ResourceTag();
         cost.setJspContext(getJspContext());
@@ -263,7 +263,7 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("</b></td>");//<td><b>00:"+level+":00</b></td>");
         out.println("</tr>");
         for(int i = level+1 ; i<=20;i++){
-        	int amount = price + i*i*i*i;
+        	int amount = Info.getCostBuilding(type,i);
         	ResourceTag c = new ResourceTag();
             c.setJspContext(getJspContext());
             c.setAmount(amount);

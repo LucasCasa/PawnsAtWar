@@ -1,7 +1,9 @@
 package ar.edu.itba.service;
 
 import java.util.List;
+import java.util.Map;
 
+import ar.edu.itba.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -10,9 +12,6 @@ import ar.edu.itba.interfaces.ArmyDao;
 import ar.edu.itba.interfaces.ArmyService;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.TroopService;
-import ar.edu.itba.model.Army;
-import ar.edu.itba.model.Point;
-import ar.edu.itba.model.User;
 
 @Service
 @Transactional
@@ -87,6 +86,29 @@ public class ArmyServiceImpl implements ArmyService {
 	@Override
 	public Army getArmyAtPosition(User u, Point p) {
 		return ad.getArmy(p,u);
+	}
+
+	@Override
+	public void mergeArmies(int from, int to){
+		List<Troop> troops = ts.getTroopById(from);
+		for(Troop troop : troops){
+			ts.addTroop(to,troop.getType(),troop.getQuantity());
+		}
+		deleteArmy(from);
+	}
+	@Override
+	public void moveArmy(int armyId, Point p){
+		ad.setArmyPosition(armyId,p);
+	}
+	@Override
+	public Army splitArmy(int armyId, Map<TroopType,Integer> troops){
+		Army a = getArmyById(armyId);
+		Army newa = ad.addArmy(a.getPosition(),a.getUser(),false);
+		for(Map.Entry<TroopType,Integer> e : troops.entrySet()){
+			ts.addTroop(newa.getIdArmy(),e.getKey().getType(),e.getValue());
+            ts.subtractTroop(armyId,e.getKey().getType(),e.getValue());
+		}
+		return newa;
 	}
 
 
