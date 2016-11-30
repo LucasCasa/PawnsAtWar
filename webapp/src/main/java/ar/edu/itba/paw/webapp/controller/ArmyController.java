@@ -138,7 +138,7 @@ public class ArmyController {
 		}
 		int xprime = Integer.parseInt(x);
 		int yprime = Integer.parseInt(y);
-
+		
 		Sector s = ss.getSector(new Point(xprime,yprime));
 		if(s == null){
 			return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.notBuildingInPosition",null,locale));
@@ -157,6 +157,13 @@ public class ArmyController {
 					return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.attackCastle", null, locale));
 				}
 			}
+			if(s.getUser().getLocale() != null){
+				Locale l = new Locale(s.getUser().getLocale());
+				mailService.sendEmail(s.getUser().getEmail(),messageSource.getMessage("email.subject",null,l), messageSource.getMessage("email.body",null,l));
+			}else{
+				mailService.sendEmail(s.getUser().getEmail(),messageSource.getMessage("email.subject",null,locale), messageSource.getMessage("email.body",null,locale));
+			}
+			
 			sh.attackTask(user,new Point(xprime,yprime),id);
 			as.setAvailable(id,false);
 		}

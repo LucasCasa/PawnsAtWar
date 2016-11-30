@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.springframework.stereotype.Repository;
@@ -39,7 +40,7 @@ public class UserHibernateDao implements UserDao {
 
 	@Override
 	public User findByUsername(String username) {
-		TypedQuery<User> query = em.createQuery("from User where name = :username",User.class);
+		TypedQuery<User> query = em.createQuery("from User where UPPER(name) = UPPER(:username)",User.class);
 		query.setParameter("username", username);
 		final List<User> list = query.getResultList();
 		return list.isEmpty() ? null : list.get(0);
@@ -87,6 +88,14 @@ public class UserHibernateDao implements UserDao {
 			rta.add(u.getName());
 		}
 		return rta;
+	}
+
+	@Override
+	public void setLocale(User u, String language) {
+		final Query query = em.createQuery("update User set locale = :locale where idPlayer = :id");
+		query.setParameter("locale", language);
+		query.setParameter("id", u.getId());
+		query.executeUpdate();
 	}
 
 }

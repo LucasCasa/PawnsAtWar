@@ -13,6 +13,12 @@
             <rtexprvalue>true</rtexprvalue>
             <type>ar.edu.itba.paw.webapp.data.InformationBuilding</type>
         </attribute>
+         <attribute>
+            <name>alert</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>ar.edu.itba.model.Alert</type>
+        </attribute>
         <attribute>
             <name>clas</name>
             <required>false</required>
