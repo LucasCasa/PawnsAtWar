@@ -1,12 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
-import java.util.Calendar;
-import java.util.List;
-import java.util.Locale;
-
-import javax.servlet.http.HttpSession;
-
-import ar.edu.itba.interfaces.AlertService;
+import ar.edu.itba.interfaces.*;
+import ar.edu.itba.model.Point;
+import ar.edu.itba.model.Sector;
+import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
+import ar.edu.itba.paw.webapp.data.Info;
+import ar.edu.itba.paw.webapp.data.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -16,15 +16,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.itba.interfaces.EmpireService;
-import ar.edu.itba.interfaces.SectorService;
-import ar.edu.itba.interfaces.UserService;
-import ar.edu.itba.model.Point;
-import ar.edu.itba.model.Sector;
-import ar.edu.itba.model.User;
-import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
-import ar.edu.itba.paw.webapp.data.Info;
-import ar.edu.itba.paw.webapp.data.Validator;
+import javax.servlet.http.HttpSession;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 
 @Controller
 public class HomePageController {
@@ -37,6 +32,8 @@ public class HomePageController {
 	private UserService us;
 	@Autowired
 	private AlertService as;
+	@Autowired
+	private MessageService ms;
 	@Autowired
 	private MessageSource messageSource;
 
@@ -84,6 +81,7 @@ public class HomePageController {
 
 		List<List<Sector>> elements;
 		elements = ss.getSector(new Point(xPrime,yPrime), Info.VIEW_RANGE);
+		int unreadMessages = ms.countUnreadMessages(user);
 		mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
 		mav.addObject("map",elements);
 		mav.addObject("x",xPrime);
@@ -92,6 +90,8 @@ public class HomePageController {
 		mav.addObject("alerts",as.getByUser(user));
 		mav.addObject("user",user);
 		mav.addObject("now", Calendar.getInstance().getTime().getTime());
+		mav.addObject("unreadMessages", unreadMessages);
+
 		return mav;
 	}
 	

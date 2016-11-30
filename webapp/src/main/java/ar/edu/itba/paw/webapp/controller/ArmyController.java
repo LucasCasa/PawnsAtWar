@@ -38,6 +38,8 @@ public class ArmyController {
 	private MessageSource messageSource;
 	@Autowired
 	private PAWMailService mailService;
+	@Autowired
+	private MessageService ms;
 
 	@RequestMapping(value="/armies")
 	public ModelAndView showArmies(@ModelAttribute("userId") final User user,
@@ -56,8 +58,13 @@ public class ArmyController {
 		if(armies == null){
 			armies = new ArrayList<>();
 		}
+
+		int unreadMessages = ms.countUnreadMessages(user);
+
 		mav.addObject("armies",armies);
 		mav.addObject("size",armies.size());
+		mav.addObject("unreadMessages", unreadMessages);
+
 		return mav;
 	}
 
@@ -97,7 +104,11 @@ public class ArmyController {
 		if(armies == null){
 			armies = new ArrayList<>();
 		}
+		int unreadMessages = ms.countUnreadMessages(user);
+
+
 		List<Troop> troops = army.getTroops();
+		mav.addObject("unreadMessages", unreadMessages);
 		mav.addObject("armies",armies);
 		mav.addObject("armySize",armies.size());
 		mav.addObject("army",army);
@@ -282,6 +293,9 @@ public class ArmyController {
 				points.add(b.getPosition());
 			}
 		}
+		int unreadMessages = ms.countUnreadMessages(user);
+
+		mav.addObject("unreadMessages", unreadMessages);
 		mav.addObject("user",user);
 		mav.addObject("army",a);
 		mav.addObject("possiblePoints",points);

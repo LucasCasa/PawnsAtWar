@@ -67,6 +67,8 @@
             </tr>
         </tbody>
 
+        <a href="<c:url value="/map"/>"><button class="myButton" id="home" onclick=""><spring:message code="game.goHome" /></button></a>
+
 
 
     </table>

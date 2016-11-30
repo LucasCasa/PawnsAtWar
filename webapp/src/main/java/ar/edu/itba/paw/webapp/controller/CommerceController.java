@@ -1,6 +1,13 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.interfaces.CommerceService;
+import ar.edu.itba.interfaces.EmpireService;
+import ar.edu.itba.interfaces.MessageService;
 import ar.edu.itba.interfaces.UserService;
+import ar.edu.itba.model.TradeOffer;
+import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
+import ar.edu.itba.paw.webapp.data.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,18 +16,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.itba.interfaces.CommerceService;
-import ar.edu.itba.interfaces.EmpireService;
-import ar.edu.itba.model.TradeOffer;
-import ar.edu.itba.model.User;
-import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
-import ar.edu.itba.paw.webapp.data.Validator;
-
 import javax.servlet.http.HttpSession;
-
 import java.util.List;
-
-import static java.lang.System.out;
 
 
 @Controller
@@ -35,6 +32,9 @@ public class CommerceController {
 	@Autowired
 	private UserService us;
 
+	@Autowired
+	private MessageService ms;
+
 	@RequestMapping(value="/commerce")
     public ModelAndView commerce(@RequestParam(value="insuficientAmount", required = false)boolean insuficientAmount
     		,@ModelAttribute("user") final User user){
@@ -46,7 +46,10 @@ public class CommerceController {
 
         List<TradeOffer> myTrades = cs.getAllOffers(user);
 		List<TradeOffer> tradeList = cs.showOffers(user);
-        mav.addObject("myTrades",myTrades);
+		int unreadMessages = ms.countUnreadMessages(user);
+
+		mav.addObject("unreadMessages", unreadMessages);
+		mav.addObject("myTrades",myTrades);
 		mav.addObject("myTradesSize",myTrades.size());
         mav.addObject("tradeList",tradeList);
 		mav.addObject("tradeListSize",tradeList.size());
@@ -85,10 +88,14 @@ public class CommerceController {
 	public ModelAndView createOffer(@RequestParam(value="insuficientAmount", required = false)boolean insuficientAmount,
 			@ModelAttribute("user") final User user){
 		ModelAndView mav = new ModelAndView("createOffer");
+
+		int unreadMessages = ms.countUnreadMessages(user);
+
 		mav.addObject("resList",es.getResources(user));
 		mav.addObject("insuficientAmount",insuficientAmount);
 		mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
-		
+		mav.addObject("unreadMessages", unreadMessages);
+
 		return mav;
 	}
 	

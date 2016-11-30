@@ -59,4 +59,25 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 
+	@Override
+	public int countUnreadMessages(User u){
+		return md.countUnreadMessages(u);
+	}
+
+	@Override
+	public void markAsRead(Long id) {
+		if(!md.getById(id).isRead())
+			md.markAsRead(id);
+	}
+
+	@Override
+	public List<Message> getReadMessages(User u) {
+		return md.getReadMesssages(u);
+	}
+
+	@Override
+	public List<Message> getUnreadMessages(User u) {
+		return md.getUnReadMessages(u);
+	}
+
 }
