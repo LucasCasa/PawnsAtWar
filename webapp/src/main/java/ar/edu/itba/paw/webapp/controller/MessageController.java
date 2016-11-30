@@ -43,12 +43,14 @@ public class MessageController {
             return new ModelAndView("redirect:/login");
         
         final ModelAndView mav = new ModelAndView("messages");
-
+        List<String> usernames = us.getUsernames();
         List<Message> messagesReceived = ms.getAllMessages(user);
         mav.addObject("messagesReceived",messagesReceived);
         mav.addObject("mReceivdedListSize", messagesReceived.size());
         mav.addObject("success",success);
         mav.addObject("messageSource",messageSource);
+        mav.addObject("namelist",usernames);
+
 
         return mav;
     }

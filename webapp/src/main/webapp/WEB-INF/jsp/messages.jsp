@@ -9,6 +9,7 @@
 
 <div class="container">
 
+
     <h2 class="success" style="text-align: center">${success}</h2>
 
     <h1><spring:message code="messages.messagesReceived"/></h1>
@@ -54,9 +55,19 @@
     <form method="post" action="<c:url value="/messages/sendMessage"/>">
 
         <div class="form-group">
-                <label><spring:message code="messages.username"/></label>
-                <input type="username" class="form-control" name="username" aria-describedby="usernameHelp" placeholder=<spring:message code="messages.mailPlaceholder"/>>
+            <label><spring:message code="messages.username"/></label>
+            <br>
+            <input class="form-control" list="list" name="username"  placeholder=<spring:message code="messages.mailPlaceholder"/>>
+
+
+            <datalist id="list">
+                <c:forEach var="user"  items="${namelist}">
+                    <option value="${user}"> ${user} </option>
+                </c:forEach>
+            </datalist>
+
         </div>
+
 
         <div class="form-group">
             <label><spring:message code="messages.subject"/></label>
