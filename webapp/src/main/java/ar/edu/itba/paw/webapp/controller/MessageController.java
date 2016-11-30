@@ -70,7 +70,7 @@ public class MessageController {
             return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
         }
 
-        if(message.length() > 1024){
+        if(message.length() > 1024 || subject.length() > 50){
             return new ModelAndView("redirect:/messages?m=" + messageSource.getMessage("error.longMessage",null ,locale));
         }
         
