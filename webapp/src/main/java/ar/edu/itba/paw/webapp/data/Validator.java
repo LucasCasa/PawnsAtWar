@@ -7,7 +7,7 @@ public class Validator {
 
     public static boolean validBoardPosition(String pos) {
         if(isInteger(pos)){
-            if(Integer.parseInt(pos) < Info.MAP_SIZE){
+            if(Integer.parseInt(pos) <= Info.MAP_SIZE){
                 return true;
             }
         }

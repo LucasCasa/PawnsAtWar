@@ -2,13 +2,29 @@ package ar.edu.itba.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
 
-import ar.edu.itba.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import ar.edu.itba.interfaces.AlertService;
+import ar.edu.itba.interfaces.ArmyService;
+import ar.edu.itba.interfaces.CommerceService;
+import ar.edu.itba.interfaces.EmpireDao;
+import ar.edu.itba.interfaces.EmpireService;
+import ar.edu.itba.interfaces.MessageService;
+import ar.edu.itba.interfaces.ResourceDao;
+import ar.edu.itba.interfaces.ScheduleService;
+import ar.edu.itba.interfaces.SectorService;
+import ar.edu.itba.model.Alert;
 import ar.edu.itba.model.Army;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Resource;
@@ -38,6 +54,8 @@ public class EmpireServiceImpl implements EmpireService{
 	private ResourceDao rd;
 	@Autowired
 	private ScheduleService sh;
+	@Autowired
+	private AlertService als;
 
 	@Override
 	public Set<Resource> getResources(User u) {
@@ -47,7 +65,12 @@ public class EmpireServiceImpl implements EmpireService{
 				return r1.getType()-r2.getType();
 			}
 		});
-		set.addAll(u.getResources());
+		List<Resource> l = rd.getResources(u);
+		System.err.println("****************************************************************");
+		System.err.println("l: " + l);
+		set.addAll(l);
+		System.err.println("****************************************************************");
+		System.err.println("s: " + set);
 		return set;
 	}
 	
@@ -121,10 +144,13 @@ public class EmpireServiceImpl implements EmpireService{
 	}
 	
 	public boolean validCastlePosition(Point p) {
-		List<List<Sector>> l = ss.getSector(p,3);
+		List<Alert> alerts = als.getBuildingConstructed(p);
+		if(!alerts.isEmpty())
+			return false;
+		List<List<Sector>> l = ss.getSector(p,2);
 		for(List<Sector> row: l){
 			for(Sector s: row){
-				if(s.getUser()!=null)
+				if(s==null || s.getUser()!=null)
 					return false;
 			}
 		}

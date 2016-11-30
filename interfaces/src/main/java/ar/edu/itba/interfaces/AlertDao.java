@@ -20,4 +20,6 @@ public interface AlertDao {
 
     Alert getAlertByPoint(Point p);
 
+	List<Alert> getBuildingConstructed(Point p);
+
 }

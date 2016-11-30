@@ -63,4 +63,17 @@ public class AlertHibernateDao implements AlertDao{
 		final List<Alert> list = query.getResultList();
 		return list.isEmpty()?null:list.get(0);
 	}
+
+	@Override
+	public List<Alert> getBuildingConstructed(Point p) {
+		final int range = 4;
+		final TypedQuery<Alert> query = em.createQuery("from Alert as a where a.p.x<= :xmax and a.p.y<= :ymax and a.p.x>= :xmin and a.p.y>= :ymin and a.type= :type and a.param1= 1",Alert.class);
+		query.setParameter("xmax",p.getX()+range);
+		query.setParameter("xmin",p.getX()-range);
+		query.setParameter("ymax",p.getX()+range);
+		query.setParameter("ymin",p.getX()-range);
+		query.setParameter("type",AlertType.BUILD.toString());
+		final List<Alert> list = query.getResultList();
+		return list;
+	}
 }

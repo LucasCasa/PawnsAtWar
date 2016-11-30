@@ -2,10 +2,8 @@ package ar.edu.itba.service;
 
 import ar.edu.itba.interfaces.ScheduleService;
 import ar.edu.itba.interfaces.SectorService;
-import ar.edu.itba.model.AlertType;
 import ar.edu.itba.model.Point;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +12,6 @@ import ar.edu.itba.interfaces.AlertService;
 import ar.edu.itba.model.Alert;
 import ar.edu.itba.model.User;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -65,5 +62,10 @@ public class AlertServiceImpl implements AlertService {
 	@Override
 	public Alert getAlertByPoint(Point p){
 		return ad.getAlertByPoint(p);
+	}
+
+	@Override
+	public List<Alert> getBuildingConstructed(Point p) {
+		return ad.getBuildingConstructed(p);
 	}
 }

@@ -14,6 +14,6 @@ public interface AlertService {
     void removeAlert(Alert a);
 	List<Alert> getByUser(User u);
     List<Alert> getAllAlerts();
-
+    List<Alert> getBuildingConstructed(Point p);
     Alert getAlertByPoint(Point p);
 }
