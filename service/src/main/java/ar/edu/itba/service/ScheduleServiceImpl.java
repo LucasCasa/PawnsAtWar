@@ -28,8 +28,6 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Autowired
     private SectorService ss;
     @Autowired
-    private EmpireService es;
-    @Autowired
     private ArmyService ars;
     @Autowired
     private AlertService as;

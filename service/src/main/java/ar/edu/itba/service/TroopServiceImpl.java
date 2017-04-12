@@ -21,10 +21,10 @@ public class TroopServiceImpl implements TroopService {
 	private static final int MAX_TROOP = 3;
 	
 	@Autowired
-	TroopDao td;
+	private TroopDao td;
 	
 	@Autowired
-	ArmyService as;
+	private ArmyService as;
 
 	@Override
 	public List<Troop> getTroopById(int idArmy) {

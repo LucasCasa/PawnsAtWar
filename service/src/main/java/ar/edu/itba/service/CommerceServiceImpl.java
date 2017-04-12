@@ -18,9 +18,9 @@ import ar.edu.itba.model.User;
 public class CommerceServiceImpl implements CommerceService{
 	
 	@Autowired
-	CommerceDao cd;
+	private CommerceDao cd;
 	@Autowired
-	EmpireService es;
+	private EmpireService es;
 
 	@Override
 	public List<TradeOffer> getAllOffers() {

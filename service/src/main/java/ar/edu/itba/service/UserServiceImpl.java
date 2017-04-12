@@ -16,10 +16,10 @@ import java.util.List;
 public class UserServiceImpl implements UserService{
 
 	@Autowired
-	UserDao ud;
+	private UserDao ud;
 	
 	@Autowired
-	EmpireService es;
+	private EmpireService es;
 
 	@Override
 	public User findByUsername(String username) {
@@ -56,14 +56,6 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public String getUsername(int id) {
 		return ud.getUsername(id);
-	}
-	
-	public String getEmail (int id){
-		return ud.getEmail(id);
-	}
-	
-	public String getEmail (String username){
-		return ud.getEmail(username);
 	}
 
 	@Override

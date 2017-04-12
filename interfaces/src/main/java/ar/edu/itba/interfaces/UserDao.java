@@ -12,11 +12,7 @@ public interface UserDao {
 	
 	public String getUsername(int id);
 
-	public User findByUsername(String username);
-
-	public String getEmail(int id);
-	
-	public String getEmail(String username);
+	public User findByUsername(String username);	
 
 	public boolean exists(String username, String password);
 

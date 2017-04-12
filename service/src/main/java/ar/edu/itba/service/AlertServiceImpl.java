@@ -21,13 +21,13 @@ import java.util.List;
 public class AlertServiceImpl implements AlertService {
 	
 	@Autowired
-	AlertDao ad;
+	private AlertDao ad;
 
 	@Autowired
-	ScheduleService sh;
+	private ScheduleService sh;
 
 	@Autowired
-	SectorService ss;
+	private SectorService ss;
 
 	@Override
 	public Alert findById(int id) {

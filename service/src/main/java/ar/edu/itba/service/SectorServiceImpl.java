@@ -39,16 +39,16 @@ public class SectorServiceImpl implements SectorService {
 	public static final int castlePriceScaleFactor = 25000;
 	
 	@Autowired
-	BuildingDao bd;
+	private BuildingDao bd;
 	
 	@Autowired
-	UserDao ud;
+	private UserDao ud;
 	
 	@Autowired
-	EmpireService es;
+	private EmpireService es;
 
 	@Autowired
-	ScheduleService sh;
+	private ScheduleService sh;
 	
 	@Override
 	public List<List<Sector>> getSector(Point p, int range) {

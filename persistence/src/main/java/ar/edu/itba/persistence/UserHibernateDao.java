@@ -47,18 +47,6 @@ public class UserHibernateDao implements UserDao {
 	}
 
 	@Override
-	public String getEmail(int id) {
-		User u = findById(id);
-		return u == null ? null : u.getEmail();
-	}
-
-	@Override
-	public String getEmail(String username) {
-		User u = findByUsername(username);
-		return u == null ? null : u.getEmail();
-	}
-
-	@Override
 	public boolean exists(String username, String password) {
 		User u = findByUsername(username);
 		if(u != null && u.getPassword().equals(password)){

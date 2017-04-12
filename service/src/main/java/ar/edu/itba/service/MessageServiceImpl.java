@@ -16,7 +16,7 @@ import java.util.List;
 public class MessageServiceImpl implements MessageService {
 	
 	@Autowired
-	MessageDao md;
+	private MessageDao md;
 
 	@Override
 	public Message createMessage(User from, User to, String subject, String message) {
