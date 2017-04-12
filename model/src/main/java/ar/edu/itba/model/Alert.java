@@ -62,12 +62,12 @@ public class Alert {
 	}
 
 
-	public Timestamp getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(Timestamp date) {
-		this.date = date;
+	public void setDate(Date date) {
+		this.date = new Timestamp(date.getTime());
 	}
 
 	public String getMessage() {

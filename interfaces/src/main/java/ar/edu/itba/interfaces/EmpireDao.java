@@ -1,6 +1,6 @@
 package ar.edu.itba.interfaces;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import ar.edu.itba.model.Empire;
@@ -31,13 +31,13 @@ public interface EmpireDao {
 	
 	public List<Sector> getAllBuildings(User u);
 	
-	public Empire createEmpire(User u, Timestamp timestamp);
+	public Empire createEmpire(User u, Date date);
 	
 	public void createResource (User u,int type, int amount);
 
 	public List<Sector> getBuilding(User u, int type);
 
-	public void setLastUpdate(User u, Timestamp currentTime);
+	public void setLastUpdate(User u, Date currentTime);
 
 	public void deleteResource(User u, int type);
 

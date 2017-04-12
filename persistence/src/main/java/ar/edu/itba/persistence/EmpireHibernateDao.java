@@ -1,6 +1,6 @@
 package ar.edu.itba.persistence;
 
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -55,8 +55,8 @@ public class EmpireHibernateDao implements EmpireDao {
 	}
 
 	@Override
-	public Empire createEmpire(User u, Timestamp timestamp) {
-		Empire e = new Empire(u, timestamp);
+	public Empire createEmpire(User u, Date date) {
+		Empire e = new Empire(u, date);
 		em.persist(e);
 		return e;
 	}
@@ -73,7 +73,7 @@ public class EmpireHibernateDao implements EmpireDao {
 	}
 
 	@Override
-	public void setLastUpdate(User u, Timestamp currentTime) {
+	public void setLastUpdate(User u, Date currentTime) {
 		u.getEmpire().setLastUpdate(currentTime);
 		em.merge(u.getEmpire());
 	}

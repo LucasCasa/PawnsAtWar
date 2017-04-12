@@ -2,6 +2,8 @@ package ar.edu.itba.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Date;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,21 +22,21 @@ public class Empire implements Serializable{
 	@Column(nullable = false)
 	private Timestamp lastUpdate;
 
-	public Empire(User u, Timestamp timestamp) {
+	public Empire(User u, Date date) {
 		this.userEmpire = u;
-		this.lastUpdate = timestamp;
+		this.lastUpdate = new Timestamp(date.getTime());
 	}
 
 	/* package */ Empire(){
 
 	}
 
-	public Timestamp getLastUpdate() {
+	public Date getLastUpdate() {
 		return lastUpdate;
 	}
 
-	public void setLastUpdate(Timestamp lastUpdate) {
-		this.lastUpdate = lastUpdate;
+	public void setLastUpdate(Date date ) {
+		this.lastUpdate = new Timestamp(date.getTime()) ;
 	}
 
 	public User getUser() {
