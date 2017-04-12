@@ -25,9 +25,7 @@ public interface BuildingDao {
 	public Sector addBuilding(Point p, int level, User u, int type);
 	
 	public Sector addBuilding(Point p, User u, int type);
-	
-	public boolean belongsTo(Point p, User u);
-	
+		
 	public void deleteBuilding (Point p);
 	
 	public Point getCastle(User u);

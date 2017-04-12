@@ -21,8 +21,6 @@ public interface SectorService {
 	public List<Sector> getAllBuildings(User u);
 	
 	public void deleteBuilding(Point p);
-
-	public boolean belongsTo(Point p,User u);
 	
 	public boolean isCastleAlone(Point p, int range);
 	
