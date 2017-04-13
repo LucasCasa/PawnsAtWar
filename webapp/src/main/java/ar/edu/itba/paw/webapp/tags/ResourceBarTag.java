@@ -1,8 +1,6 @@
 package ar.edu.itba.paw.webapp.tags;
 
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.JspWriter;

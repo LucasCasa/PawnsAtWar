@@ -1,7 +1,6 @@
 package ar.edu.itba.paw.webapp.tags;
 
 import ar.edu.itba.model.SectorType;
-import ar.edu.itba.paw.webapp.data.Info;
 
 import java.io.IOException;
 

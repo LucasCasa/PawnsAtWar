@@ -69,4 +69,34 @@ public abstract class Info {
     public static int getCostBuilding(int type, int i) {
         return 1000 + i*i*i*i;
     }
+
+    public static double getBonus(int type, int level){
+        switch (type){
+            case Info.ARCHERY:
+            case Info.BARRACKS:
+            case Info.STABLE:
+                return (Info.getCost(type)-(level-1));
+            case Info.GOLD:
+            case Info.MILL:
+                return (level*0.1);
+            case Info.CASTLE:
+                return (level*10);
+        }
+        return 0;
+    }
+    
+    public static int getBonusType(int type){
+    	switch (type){
+	        case Info.ARCHERY:
+	        case Info.BARRACKS:
+	        case Info.STABLE:
+	        case Info.MILL:
+	            return Info.RES_FOOD;
+	        case Info.GOLD:
+	            return Info.RES_GOLD;
+//	        case Info.CASTLE:
+//	        	return Info.
+    	}
+    	return 0;
+    }
 }

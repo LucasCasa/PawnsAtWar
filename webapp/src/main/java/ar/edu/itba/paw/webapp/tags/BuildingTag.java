@@ -254,9 +254,9 @@ public class BuildingTag extends SimpleTagSupport {
         if(type != Info.CASTLE){
 	        ResourceTag bonus = new ResourceTag();
 	        bonus.setJspContext(getJspContext());
-	        bonus.setAmount(getBonus(type, level));
+	        bonus.setAmount(Info.getBonus(type, level));
 	        bonus.setRate(0);
-	        bonus.setType(getBonusType(type));
+	        bonus.setType(Info.getBonusType(type));
 	        bonus.setPath(path);
 	        bonus.doTag();
         }else{
@@ -280,9 +280,9 @@ public class BuildingTag extends SimpleTagSupport {
             if(type != Info.CASTLE){
 	            ResourceTag re = new ResourceTag();
 	            re.setJspContext(getJspContext());
-	            re.setAmount(getBonus(type, i));
+	            re.setAmount(Info.getBonus(type, i));
 	            re.setRate(0);
-	            re.setType(getBonusType(type));
+	            re.setType(Info.getBonusType(type));
 	            re.setPath(path);
 	            re.doTag();
             }else{
@@ -300,35 +300,7 @@ public class BuildingTag extends SimpleTagSupport {
         out.println("</div>");
 
     }
-    private double getBonus(int type, int level){
-        switch (type){
-            case Info.ARCHERY:
-            case Info.BARRACKS:
-            case Info.STABLE:
-                return (Info.getCost(type)-(level-1));
-            case Info.GOLD:
-            case Info.MILL:
-                return (level*0.1);
-            case Info.CASTLE:
-                return (level*10);
-        }
-        return 0;
-    }
-    
-    private int getBonusType(int type){
-    	switch (type){
-	        case Info.ARCHERY:
-	        case Info.BARRACKS:
-	        case Info.STABLE:
-	        case Info.MILL:
-	            return Info.RES_FOOD;
-	        case Info.GOLD:
-	            return Info.RES_GOLD;
-//	        case Info.CASTLE:
-//	        	return Info.
-    	}
-    	return 0;
-    }
+
     
     public void setInfo(InformationBuilding info){
         this.info = info;
