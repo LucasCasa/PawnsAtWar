@@ -42,7 +42,7 @@ public class ArmyHibernateDaoTest {
 	@Transactional
 	public void setUp(){
 		populator = new TestDataBasePopulator(ad, td, ud);
-		populator.populate2();
+		populator.populateArmy();
 	}
 	
 	@Test

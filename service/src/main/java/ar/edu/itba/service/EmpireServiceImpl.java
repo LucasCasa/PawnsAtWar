@@ -1,7 +1,5 @@
 package ar.edu.itba.service;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
@@ -106,8 +104,8 @@ public class EmpireServiceImpl implements EmpireService{
 	 * @return The time lapsed in seconds
 	 */
 	public long timeLapsed(User u){
-		Timestamp oldTime = u.getEmpire().getLastUpdate();
-		Timestamp currentTime = new Timestamp(new Date().getTime());
+		Date oldTime = u.getEmpire().getLastUpdate();
+		Date currentTime = new Date();
 		ed.setLastUpdate(u,currentTime);
 
 		return (currentTime.getTime()-oldTime.getTime())/1000;
@@ -235,7 +233,7 @@ public class EmpireServiceImpl implements EmpireService{
 		boolean resp = ss.createCastle(user);
 		if(resp){
 			if(!newUser)
-				ed.setLastUpdate(user, Timestamp.valueOf(LocalDateTime.now()));
+				ed.setLastUpdate(user, new Date());
 			if(user.getResources() == null || user.getResources().isEmpty()){
 				ed.createResource(user, 0, INITIAL_VALUE);
 				ed.createResource(user, 1, INITIAL_VALUE);
@@ -253,7 +251,7 @@ public class EmpireServiceImpl implements EmpireService{
 	
 	@Override
 	public boolean createEmpire(User user){
-		ed.createEmpire(user,Timestamp.valueOf(LocalDateTime.now()));
+		ed.createEmpire(user,new Date());
 		return createUser(user,true);
 	}
 

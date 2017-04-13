@@ -162,11 +162,6 @@ public class SectorServiceImpl implements SectorService {
 	}
 
 	@Override
-	public boolean belongsTo(Point p, User u) {
-		return bd.belongsTo(p, u);
-	}
-
-	@Override
 	public Point getCastle(User u){ 
 		return bd.getCastle(u);
 	}

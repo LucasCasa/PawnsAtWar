@@ -1,12 +1,6 @@
 package persistence;
 
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -21,19 +15,18 @@ import org.springframework.transaction.annotation.Transactional;
 import ar.edu.itba.interfaces.CommerceDao;
 import ar.edu.itba.interfaces.ResourceDao;
 import ar.edu.itba.interfaces.UserDao;
-import ar.edu.itba.model.Resource;
 import ar.edu.itba.model.User;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestConfig.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 @Transactional
-public class EmpireHibernateDaoTest {
+public class CommerceHibernateDaoTest {
+	
+	private TestDataBasePopulator populator;
 	@Autowired private ResourceDao rd;
 	@Autowired private CommerceDao cd;
 	@Autowired private UserDao ud;
-	
-	private TestDataBasePopulator populator;
 	
 	@BeforeClass
 	public static void beforeClass(){
@@ -44,9 +37,19 @@ public class EmpireHibernateDaoTest {
 	@Transactional
 	public void setUp(){
 		populator = new TestDataBasePopulator(ud, rd, cd);
-		populator.populateEmpire();
+		populator.populateCommerce();
 	}
 	
-
+	@Test
+	@Transactional
+	public void testAddCommerce(){
+		User u = ud.findByUsername("maggie3");
+		assertEquals(cd.getAllOffers(u).size(),2);
+		cd.createOffer(u, 1, 1000, 0, 1000);
+		cd.createOffer(u, 0, 122, 1, 122);
+		assertEquals(cd.getAllOffers(u).size(),4);
+	}
+	
+	
 
 }
