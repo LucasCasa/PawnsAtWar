@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private EmpireService es;
 	
-	BCryptPasswordEncoder bc =  new BCryptPasswordEncoder() ;
+	private BCryptPasswordEncoder bc =  new BCryptPasswordEncoder() ;
 	
 
 	@Override

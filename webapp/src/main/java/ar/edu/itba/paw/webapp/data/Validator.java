@@ -3,7 +3,11 @@ package ar.edu.itba.paw.webapp.data;
 /**
  * Created by lucas on 05/10/16.
  */
-public class Validator {
+public final class Validator {
+	
+	private Validator(){
+		
+	}
 
     public static boolean validBoardPosition(String pos) {
         if(isInteger(pos)){
