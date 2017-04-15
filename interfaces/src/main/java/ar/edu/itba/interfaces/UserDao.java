@@ -23,4 +23,6 @@ public interface UserDao {
 	public List<String> getUsernames();
 
 	public void setLocale(User u, String language);
+
+	public String getPassword(String username);
 }

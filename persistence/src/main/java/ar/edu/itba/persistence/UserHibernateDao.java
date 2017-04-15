@@ -86,4 +86,12 @@ public class UserHibernateDao implements UserDao {
 		query.executeUpdate();
 	}
 
+	@Override
+	public String getPassword(String username) {
+		TypedQuery<User> query = em.createQuery("from User where UPPER(name) = UPPER(:username)",User.class);
+		query.setParameter("username", username);
+		final List<User> list = query.getResultList();
+		return list.isEmpty() ? null : list.get(0).getPassword();
+	}
+
 }
