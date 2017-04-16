@@ -1,7 +1,5 @@
 package ar.edu.itba.service;
 
-import ar.edu.itba.interfaces.ScheduleService;
-import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.model.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,12 +20,6 @@ public class AlertServiceImpl implements AlertService {
 	
 	@Autowired
 	private AlertDao ad;
-
-	@Autowired
-	private ScheduleService sh;
-
-	@Autowired
-	private SectorService ss;
 
 	@Override
 	public Alert findById(int id) {

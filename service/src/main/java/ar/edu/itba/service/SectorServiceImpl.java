@@ -17,38 +17,32 @@ import ar.edu.itba.model.User;
 @Transactional
 public class SectorServiceImpl implements SectorService {
 	
-	List<Point> availableSpots;
+	private List<Point> availableSpots;
 	private static final int RANGE = 6;
 	private static final int MAXVALUE = 99;
 	
-	public static final int CASTLE = 1;
-	public static final int EMPTY = 0;
-	public static final int ARCHERY = 2;
-	public static final int BARRAKS = 3;
-	public static final int GOLD =4;
-	public static final int TERR_GOLD = 5;
-	public static final int MILL = 6;
-	public static final int BLACKSMITH = 7;
+	static final int CASTLE = 1;
+	static final int EMPTY = 0;
+	static final int ARCHERY = 2;
+	static final int BARRAKS = 3;
+	static final int GOLD =4;
+	static final int TERR_GOLD = 5;
+	static final int MILL = 6;
+	static final int BLACKSMITH = 7;
 	
-	public static final int maxX = 99;
-	public static final int maxY = 99;
+	private static final int maxX = 99;
+	private static final int maxY = 99;
 	
-	public static final int initRange = 2;
+	static final int initRange = 2;
 	 
-	public static final int buildingPrice = 1000;
-	public static final int castlePriceScaleFactor = 25000;
+	private static final int buildingPrice = 1000;
+	private static final int castlePriceScaleFactor = 25000;
 	
 	@Autowired
 	private BuildingDao bd;
 	
 	@Autowired
-	private UserDao ud;
-	
-	@Autowired
 	private EmpireService es;
-
-	@Autowired
-	private ScheduleService sh;
 	
 	@Override
 	public List<List<Sector>> getSector(Point p, int range) {

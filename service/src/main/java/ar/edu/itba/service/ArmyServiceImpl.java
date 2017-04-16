@@ -10,7 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.ArmyDao;
 import ar.edu.itba.interfaces.ArmyService;
-import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.TroopService;
 
 @Service
@@ -19,8 +18,6 @@ public class ArmyServiceImpl implements ArmyService {
 	
 	@Autowired
 	private ArmyDao ad;
-	@Autowired
-	private EmpireService es;
 	
 	@Autowired
 	private TroopService ts;

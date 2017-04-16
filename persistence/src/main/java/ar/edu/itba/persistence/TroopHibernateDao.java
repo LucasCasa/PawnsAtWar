@@ -21,7 +21,7 @@ public class TroopHibernateDao implements TroopDao {
 	 private EntityManager em;
 	 
 	 @Autowired
-	 ArmyDao ad;
+	 private ArmyDao ad;
 
 	@Override
 	public int getAmount(int idArmy, int type) {

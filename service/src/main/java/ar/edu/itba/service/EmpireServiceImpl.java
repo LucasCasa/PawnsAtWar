@@ -33,9 +33,9 @@ import ar.edu.itba.model.User;
 @Transactional
 public class EmpireServiceImpl implements EmpireService{
 	
-	public static final int INITIAL_VALUE = 2000;
-	public static final int MIN_STORAGE = 3000;
-	public static final int STORAGE_PER_LEVEL = 1000;
+	private static final int INITIAL_VALUE = 2000;
+	private static final int MIN_STORAGE = 3000;
+	//private static final int STORAGE_PER_LEVEL = 1000;
 	
 	@Autowired
 	private EmpireDao ed;
