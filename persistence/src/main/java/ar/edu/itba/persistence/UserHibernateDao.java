@@ -94,4 +94,16 @@ public class UserHibernateDao implements UserDao {
 		return list.isEmpty() ? null : list.get(0).getPassword();
 	}
 
+	@Override
+	public List<String> getUsernames(String exp) {
+		List<String> rta = new ArrayList<>();
+		TypedQuery<User> query = em.createQuery("from User where name like ':exp%'" ,User.class);
+		query.setParameter("exp", exp);
+		final List<User> list = query.getResultList();
+		for(User u:list){
+			rta.add(u.getName());
+		}
+		return rta;
+	}
+
 }

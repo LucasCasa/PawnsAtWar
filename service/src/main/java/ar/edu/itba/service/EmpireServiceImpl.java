@@ -18,7 +18,6 @@ import ar.edu.itba.interfaces.ArmyService;
 import ar.edu.itba.interfaces.CommerceService;
 import ar.edu.itba.interfaces.EmpireDao;
 import ar.edu.itba.interfaces.EmpireService;
-import ar.edu.itba.interfaces.MessageService;
 import ar.edu.itba.interfaces.ResourceDao;
 import ar.edu.itba.interfaces.ScheduleService;
 import ar.edu.itba.interfaces.SectorService;
@@ -44,8 +43,6 @@ public class EmpireServiceImpl implements EmpireService{
 	private SectorService ss;
 	@Autowired
 	private ArmyService as;
-	@Autowired
-	private MessageService ms;
 	@Autowired
 	private CommerceService cs;
 	@Autowired
@@ -240,8 +237,7 @@ public class EmpireServiceImpl implements EmpireService{
 			}else{
 				ed.setResource(user, 0, INITIAL_VALUE);
 				ed.setResource(user, 1, INITIAL_VALUE);
-			}
-			
+			}	
 		}else{
 			return false;
 		}
@@ -269,7 +265,6 @@ public class EmpireServiceImpl implements EmpireService{
 		for(TradeOffer td: user.getCommerce()){
 			cs.deleteOffer(td.getId());
 		}
-		ms.deleteMessages(user);
 		
 	}
 

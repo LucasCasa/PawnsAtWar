@@ -14,7 +14,7 @@ public interface MessageService {
 	public void deleteMessages(User user);
 	public int countUnreadMessages(User u);
 	public void markAsRead(Long id);
-
+	public List<Message> getSentMessages(User u);
 	public List<Message> getReadMessages(User u);
 	public List<Message> getUnreadMessages (User u);
 }

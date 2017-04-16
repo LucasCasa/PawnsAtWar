@@ -80,4 +80,9 @@ public class MessageServiceImpl implements MessageService {
 		return md.getUnReadMessages(u);
 	}
 
+	@Override
+	public List<Message> getSentMessages(User u) {
+		return md.getSentMessages(u);
+	}
+
 }

@@ -77,10 +77,17 @@ public class UserServiceImpl implements UserService{
 	public List<User> getAllUsers(){
 		return ud.getAllUsers();
 	}
+	
+	
 
 	@Override
 	public void setLocale(User u, String language) {
 		ud.setLocale(u,language);
+	}
+
+	@Override
+	public List<String> getUsernames(String exp) {
+		return ud.getUsernames(exp);
 	}
 
 	

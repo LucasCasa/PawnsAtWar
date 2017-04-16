@@ -13,7 +13,7 @@ public interface MessageDao {
 	public void removeMessages(List<Message> sent);
 	public int countUnreadMessages(User u);
 	public void markAsRead(Long id);
-
+	public List<Message> getSentMessages(User u);
 	public List<Message>getReadMesssages(User u);
 	public List<Message> getUnReadMessages(User u);
 }

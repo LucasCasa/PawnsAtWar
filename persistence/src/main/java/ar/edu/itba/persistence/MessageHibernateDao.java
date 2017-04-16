@@ -56,17 +56,11 @@ public class MessageHibernateDao implements MessageDao {
 
 	@Override
 	public int countUnreadMessages(User u){
-		final TypedQuery<Message> query = em.createQuery("from Message as c where c.to = :u and read = false", Message.class);
-		query.setParameter("u", u);
-		final List<Message> list = query.getResultList();
-		return list.size();
+		return getUnReadMessages(u).size();
 	}
 
 	@Override
 	public void markAsRead(Long id) {
-//		final Query query = em.createQuery("update Message set read = true where id = :id", Message.class);
-//		query.setParameter("id",id);
-//		query.executeUpdate();
 		Message m = getById(id);
 		m.setRead(true);
 		em.persist(m);
@@ -84,6 +78,14 @@ public class MessageHibernateDao implements MessageDao {
 	@Override
 	public List<Message> getUnReadMessages(User u) {
 		final TypedQuery<Message> query = em.createQuery("from Message as c where c.to = :u and read = false", Message.class);
+		query.setParameter("u", u);
+		final List<Message> list = query.getResultList();
+		return list;
+	}
+
+	@Override
+	public List<Message> getSentMessages(User u) {
+		final TypedQuery<Message> query = em.createQuery("from Message as c where c.from = :u", Message.class);
 		query.setParameter("u", u);
 		final List<Message> list = query.getResultList();
 		return list;

@@ -23,6 +23,8 @@ public interface UserService {
 	public boolean restoreUser(User user);
 
 	public List<String> getUsernames();
+	
+	public List<String> getUsernames(String exp);
 
 	public void setLocale(User u, String language);
 }
