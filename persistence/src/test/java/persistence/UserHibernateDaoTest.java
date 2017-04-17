@@ -1,9 +1,6 @@
 package persistence;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -39,29 +36,44 @@ public class UserHibernateDaoTest {
 	@Transactional
 	public void setUp(){
 		populator = new TestDataBasePopulator(ud);
-		populator.populateEmpire();
+		populator.populateUser();
 	}
 	
 	@Test
 	@Transactional
 	public void testCreateUser(){
+		List<User> list= ud.getAllUsers();
+		User u = ud.create("maggie2", "maggie", "mvega@itba.edu.ar");
+		User u2 = ud.create("maggie4", "maggie", "mvega@itba.edu.ar");
+		List<User> list2 = ud.getAllUsers();
+		assertNotEquals(u.getId(),u2.getId());
+		assertNotEquals(list.size(),list2.size());
+		
 	}
 	
 	@Test
 	@Transactional
 	public void testFindById(){
+		User u = ud.findByUsername("maggie");
+		User u2 = ud.findById(u.getId());
+		User u3 = ud.findById(5);
+		assertNotEquals(u,u3);
+		assertEquals(u,u2);
+		
 	}
 	
 	@Test
 	@Transactional
 	public void testExists(){
+		assertTrue(ud.exists("maggie"));
+		assertTrue(ud.exists("MAGGIE"));
+		assertFalse(ud.exists("maggie", "password"));
+		assertFalse(ud.exists("maggie2"));
+		assertFalse(ud.exists("maggie", "MAGGIE"));
+		assertTrue(ud.exists("maggie", "maggie"));
+		
+		
 	}
-	
-	@Test
-	@Transactional
-	public void testSetLocale(){
-	}
-	
 	
 	@Test
 	@Transactional
@@ -84,6 +96,21 @@ public class UserHibernateDaoTest {
 		assertEquals(2,list.size());
 		assertEquals("maggie",list.get(0).getName());
 		assertEquals("maggie3",list.get(1).getName());
+		ud.create("maggie2", "maggie", "mvega@itba.edu.ar");
+		assertNotEquals(ud.getAllUsers().size(),list.size());
+	}
+	
+	@Test
+	@Transactional
+	public void testGetUsernames(){
+		List<String> list = ud.getUsernames();
+		assertNotNull(list);
+		assertEquals(2,list.size());
+		List<String> list2 = ud.getUsernames("mag");
+		assertEquals(2,list2.size());
+		list2 = ud.getUsernames("a");
+		assertNotEquals(2,list2.size());
+		assertEquals(0,list2.size());
 	}
 
 }

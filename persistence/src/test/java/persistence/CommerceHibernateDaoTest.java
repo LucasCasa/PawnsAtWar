@@ -13,7 +13,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import ar.edu.itba.interfaces.CommerceDao;
-import ar.edu.itba.interfaces.ResourceDao;
 import ar.edu.itba.interfaces.UserDao;
 import ar.edu.itba.model.User;
 
@@ -24,7 +23,6 @@ import ar.edu.itba.model.User;
 public class CommerceHibernateDaoTest {
 	
 	private TestDataBasePopulator populator;
-	@Autowired private ResourceDao rd;
 	@Autowired private CommerceDao cd;
 	@Autowired private UserDao ud;
 	
@@ -36,7 +34,7 @@ public class CommerceHibernateDaoTest {
 	@Before
 	@Transactional
 	public void setUp(){
-		populator = new TestDataBasePopulator(ud, rd, cd);
+		populator = new TestDataBasePopulator(ud, cd);
 		populator.populateCommerce();
 	}
 	
@@ -49,6 +47,17 @@ public class CommerceHibernateDaoTest {
 		cd.createOffer(u, 0, 122, 1, 122);
 		assertEquals(cd.getAllOffers(u).size(),4);
 	}
+	
+	@Test
+	@Transactional
+	public void testDeleteCommerce(){
+	}
+	
+	@Test
+	@Transactional
+	public void testGetAll(){
+	}
+	
 	
 	
 

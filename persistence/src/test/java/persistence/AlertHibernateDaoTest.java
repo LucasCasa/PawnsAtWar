@@ -60,7 +60,7 @@ public class AlertHibernateDaoTest {
 	
 	@Test
 	@Transactional
-	public void find(){
+	public void testFind(){
 		
 	}
 

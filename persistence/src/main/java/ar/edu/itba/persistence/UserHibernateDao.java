@@ -97,8 +97,8 @@ public class UserHibernateDao implements UserDao {
 	@Override
 	public List<String> getUsernames(String exp) {
 		List<String> rta = new ArrayList<>();
-		TypedQuery<User> query = em.createQuery("from User where name like ':exp%'" ,User.class);
-		query.setParameter("exp", exp);
+		TypedQuery<User> query = em.createQuery("from User where name like :exp" ,User.class);
+		query.setParameter("exp", exp + "%");
 		final List<User> list = query.getResultList();
 		for(User u:list){
 			rta.add(u.getName());

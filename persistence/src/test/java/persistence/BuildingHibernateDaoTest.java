@@ -2,6 +2,7 @@ package persistence;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -32,6 +33,31 @@ public class BuildingHibernateDaoTest {
 	public void setUp(){
 		populator = new TestDataBasePopulator(ud, bd);
 		populator.populateBuilding();
+	}
+	
+	@Test
+	@Transactional
+	public void addBuilding(){
+	}
+	
+	@Test
+	@Transactional
+	public void getBuilding(){
+	}
+	
+	@Test
+	@Transactional
+	public void deleteBuilding(){
+	}
+	
+	@Test
+	@Transactional
+	public void setLevel(){
+	}
+	
+	@Test
+	@Transactional
+	public void getCastle(){
 	}
 	
 

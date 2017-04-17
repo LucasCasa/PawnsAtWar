@@ -64,6 +64,11 @@ public class MessageHIbernateDaoTest {
 	public void testRemoveMessage(){
 	}
 	
+	@Test
+	@Transactional
+	public void testGetSent(){
+	}
+	
 	
 
 }
