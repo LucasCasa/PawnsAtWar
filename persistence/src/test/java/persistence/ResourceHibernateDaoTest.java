@@ -48,22 +48,39 @@ public class ResourceHibernateDaoTest {
 	@Test
 	@Transactional
 	public void testAddResource(){
-		User u = ud.findByUsername("maggie");
+		User u = ud.findByUsername("maggie3");
 		List<Resource> list = rd.getResources(u);
-		assertEquals(list.size(),2);
-		rd.addResource(u, 1, 1000);
+		assertEquals(list.size(),0);
+		Resource r  = rd.addResource(u, 1);
 		list = rd.getResources(u);
-		assertEquals(list.get(0).getQuantity(),1000);
-		rd.addResource(u, 0);
-		assertNotEquals(list.size(),1);
+		assertEquals(list.size(),1);
+		assertEquals(r.getQuantity(),0);
+		r = rd.addResource(u, 0);
+		list = rd.getResources(u);
+		assertEquals(list.size(),2);
+		
+		r = rd.addResource(u, 0);
+		assertEquals(rd.getResources(u).size(),list.size());
+		
+		r = rd.addResource(u, -1,-1);
+		assertNull(r);
+		assertEquals(rd.getResources(u).size(),list.size());
+		
+		r = rd.addResource(u, -1);
+		assertNull(r);
+		assertEquals(rd.getResources(u).size(),list.size());
 		
 		u = ud.findByUsername("maggie2");
 		assertEquals(rd.getResources(u).size(),0);
+		
+		u = ud.findByUsername("maggie");
+		assertEquals(rd.getResources(u).size(),2);
+		
 	}
 	
 	@Test
 	@Transactional
-	public void testChangeResource(){
+	public void testSubstractResourceAmount(){
 		User u = ud.findByUsername("maggie");
 		Resource r = rd.getResource(u, 0);
 		assertEquals(r.getQuantity(),1000);
@@ -73,12 +90,19 @@ public class ResourceHibernateDaoTest {
 		assertNotEquals(rd.getResource(u, 0).getQuantity(),-10);
 		assertNotEquals(rd.getResource(u, 0).getQuantity(),990);
 		assertEquals(rd.getResource(u, 0).getQuantity(),0);
-		
-		r = rd.getResource(u, 1);
+	}
+	
+	@Test
+	@Transactional
+	public void testAddResourceAmount(){
+		User u = ud.findByUsername("maggie");
+		Resource r = rd.getResource(u, 1);
 		assertNotNull(r);
 		assertEquals(r.getQuantity(),1000);
 		rd.addAmount(u, 1, 100);
 		assertEquals(rd.getResource(u, 1).getQuantity(),1100);
+		rd.addAmount(u, 1, -100);
+		assertEquals(rd.getResource(u, 1).getQuantity(),1000);
 	}
 	
 	@Test

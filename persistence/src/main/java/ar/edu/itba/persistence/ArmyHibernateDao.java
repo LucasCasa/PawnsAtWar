@@ -79,10 +79,9 @@ public class ArmyHibernateDao implements ArmyDao {
 
 	@Override
 	public void setAvailable(int idArmy, boolean available) {
-		final Query query = em.createQuery("update Army set available = :available where idArmy = :idArmy");
-		query.setParameter("available", available);
-		query.setParameter("idArmy", idArmy);
-		query.executeUpdate();
+		Army a = getArmyById(idArmy);
+		a.setAvailable(available);
+		em.merge(a);
 	}
 
 	@Override
@@ -98,10 +97,6 @@ public class ArmyHibernateDao implements ArmyDao {
 		Army a = getArmyById(armyId);
 		a.setPosition(p);
 		em.merge(a);
-		/*final Query query = em.createQuery("update Army set position = :p where idArmy = :idArmy");
-		query.setParameter("p", p);
-		query.setParameter("idArmy", armyId);
-		query.executeUpdate();*/
 	}
 
 }

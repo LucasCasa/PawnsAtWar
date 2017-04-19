@@ -42,14 +42,11 @@ public class TroopHibernateDao implements TroopDao {
 
 	@Override
 	public void changeAmount(int idArmy, int type, int amount) {
-		if(amount < 0){
-			amount = 0;
-		}
-		final Query query = em.createQuery("update Troop set amount = :amount where idArmy = :idArmy and type = :type");
-		query.setParameter("amount", amount);
-		query.setParameter("idArmy", idArmy);
-		query.setParameter("type", type);
-		query.executeUpdate();
+		if(amount < 0)
+			return;
+		Troop t = getTroop(idArmy, type);
+		t.setQuantity(amount);
+		em.persist(t);
 	}
 
 	@Override

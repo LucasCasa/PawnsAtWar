@@ -1,6 +1,6 @@
 package persistence;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
@@ -46,15 +46,70 @@ public class TroopHibernateDaoTest {
 	
 	@Test
 	@Transactional
-	public void removeTroop(){
+	public void testRemoveTroop(){
 		User u = ud.findByUsername("maggie");
 		List<Army> list = ad.getArmiesByUserId(u);
 		Army a = list.get(0);
+		td.addTroop(a.getIdArmy(), 1, 100);
+		td.addTroop(a.getIdArmy(), 2, 100);
 		Troop t = td.getTroop(a.getIdArmy(), 1);
+		
 		assertEquals(t.getQuantity(),100);
 		assertEquals(td.getAllTroop(a.getIdArmy()).size(),3);
+		
 		td.deleteTroop(a.getIdArmy(), 2);
-		assertEquals(td.getAllTroop(a.getIdArmy()).size(),2);	
+		assertEquals(td.getAllTroop(a.getIdArmy()).size(),2);
+		
+		td.deleteTroop(a.getIdArmy(), -1);
+		assertEquals(td.getAllTroop(a.getIdArmy()).size(),2);
 	}
+	
+	@Test
+	@Transactional
+	public void testAddTroop(){
+		User u = ud.findByUsername("maggie");
+		List<Army> list = ad.getArmiesByUserId(u);
+		Army a = list.get(0);
+		
+		Troop t = td.getTroop(a.getIdArmy(), 0);
+		assertNotNull(t);
+		Troop t2 = td.addTroop(a.getIdArmy(), 0, 2);
+		assertEquals(t,t2);
+				
+		t = td.addTroop(a.getIdArmy(), 1, -1);
+		assertNotEquals(t.getQuantity(),-1);
+		assertEquals(t.getQuantity(),0);
+		
+		t = td.addTroop(a.getIdArmy(),2,3);
+		assertEquals(td.getTroop(a.getIdArmy(), 2),t);
+		
+	}
+	
+	@Test
+	@Transactional
+	public void testChangeTroop(){
+		User u = ud.findByUsername("maggie");
+		int idArmy = ad.getArmiesByUserId(u).get(0).getIdArmy();
+		
+		Troop t = td.getTroop(idArmy, 0);
+		assertNotNull(t);
+		assertEquals(t.getQuantity(),100);
+		
+		td.changeAmount(idArmy, 0, -1000);
+		assertEquals(td.getAmount(idArmy, 0),100);
+		
+		td.changeAmount(idArmy, 0, 200);
+		assertEquals(td.getAmount(idArmy, 0),200);
+		
+		
+	}
+	
+	@Test
+	@Transactional
+	public void testGetTroop(){
+		User u = ud.findByUsername("maggie");
+		
+	}
+	
 
 }

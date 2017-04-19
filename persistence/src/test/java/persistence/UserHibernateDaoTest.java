@@ -49,6 +49,8 @@ public class UserHibernateDaoTest {
 		assertNotEquals(u.getId(),u2.getId());
 		assertNotEquals(list.size(),list2.size());
 		
+		u = ud.create("maggie2", "hola", "mvega@itba.edu.ar");
+		assertEquals(list2.size(),ud.getAllUsers().size());
 	}
 	
 	@Test
@@ -57,8 +59,11 @@ public class UserHibernateDaoTest {
 		User u = ud.findByUsername("maggie");
 		User u2 = ud.findById(u.getId());
 		User u3 = ud.findById(5);
+		User u4 = ud.findById(-1);
 		assertNotEquals(u,u3);
 		assertEquals(u,u2);
+		assertNull(u3);
+		assertNull(u4);
 		
 	}
 	

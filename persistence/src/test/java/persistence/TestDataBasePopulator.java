@@ -87,8 +87,6 @@ public class TestDataBasePopulator{
 		User u;
 		u = ud.create("maggie", "maggie", "mvega@itba.edu.ar");
 		Army a = ard.addArmy(new Point(2,2), u, true);
-		td.addTroop(a.getIdArmy(), 2, 100);
-		td.addTroop(a.getIdArmy(), 1, 100);
 		td.addTroop(a.getIdArmy(), 0, 100);
 		a = ard.addArmy(new Point(2,0), u, false);
 		td.addTroop(a.getIdArmy(), 2, 200);
@@ -182,8 +180,6 @@ public class TestDataBasePopulator{
 		rd.addResource(u, 1, 1000);
 		rd.addResource(u, 0, 1000);
 		u = ud.create("maggie3", "maggie3", "mvega@itba.edu.ar");
-		rd.addResource(u, 1, 1000);
-		rd.addResource(u, 0, 1000);
 	}
 	
 	public void populateUser(){

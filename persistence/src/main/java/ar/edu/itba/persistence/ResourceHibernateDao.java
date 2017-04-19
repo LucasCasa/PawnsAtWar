@@ -44,6 +44,11 @@ public class ResourceHibernateDao implements ResourceDao {
 
 	@Override
 		public Resource addResource(User u, int type, int amount) {
+		if(type < 0 || amount < 0)
+			return null;
+		if(getResource(u, type) != null){
+			return getResource(u,type);
+		}
 		Resource r = new Resource(type,u,amount);
 		em.persist(r);
 		return r;
@@ -79,6 +84,8 @@ public class ResourceHibernateDao implements ResourceDao {
 
 	@Override
 	public void deleteResource(User u, int type) {
+		if(getResource(u,type) == null)
+			return;
 		final Query query = em.createQuery("delete Resource where userResource = :u and type = :t");
 		query.setParameter("u", u);
 		query.setParameter("t", type);

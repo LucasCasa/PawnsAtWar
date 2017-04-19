@@ -17,7 +17,7 @@
   <properties>  
     <org.springframework.version>4.2.5.RELEASE</org.springframework.version>
     <spring.security.version>4.0.4.RELEASE</spring.security.version>
-    <spring.spring.security.crypto>3.1.0.RELEASE</spring.spring.security.crypto>
+    <spring.spring.security.crypto>4.0.3.RELEASE</spring.spring.security.crypto>
     <maven-eclipse-plugin.version>2.10</maven-eclipse-plugin.version>
     <org.postgresql.version>9.4.1209</org.postgresql.version>
     <junit.version>4.12</junit.version>
