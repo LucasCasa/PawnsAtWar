@@ -111,8 +111,8 @@ public class AlertHibernateDaoTest {
 		ad.createAlert(u2,"Alert5",new Date(),AlertType.RECRUIT.toString(),new Point(4,4),2,2);
 		ad.createAlert(u2,"Alert4",new Date(),AlertType.UPGRADE.toString(),new Point(3,4),1,2);
 
-		assertEquals(ad.getAllAlerts(),4);
-		assertEquals(ad.getByUser(u2),2);
+		assertEquals(ad.getAllAlerts().size(),4);
+		assertEquals(ad.getByUser(u2).size(),2);
 		
 	}
 	
