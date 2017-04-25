@@ -29,6 +29,8 @@ public interface SectorService {
 	public boolean createCastle(User u);
 
 	public Point getCastle(User u);
+
+	public List<Point> getAllCastles(User u);
 	
 	public Point addCastle(User u);
 

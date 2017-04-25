@@ -29,6 +29,8 @@ public interface BuildingDao {
 	public void deleteBuilding (Point p);
 	
 	public Point getCastle(User u);
+
+	public List<Point> getAllCastles(User u);
 	
 	/**
 	 * This method returns if there are any other buildings in the range provided surrounding the castle

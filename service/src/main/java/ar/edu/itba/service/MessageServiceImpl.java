@@ -20,7 +20,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public Message createMessage(User from, User to, String subject, String message) {
-		if(from == null || to == null || message == null || from.equals(to)){
+		if(from.equals(to)){
 			return null;
 		}
 		return md.createMessage(from, to, subject, message);

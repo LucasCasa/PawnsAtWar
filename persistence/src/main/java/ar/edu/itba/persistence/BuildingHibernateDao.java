@@ -31,16 +31,16 @@ public class BuildingHibernateDao implements BuildingDao {
 
 	@Override
 	public void setLevel(Point p, int level) {
-		final Query query = em.createQuery("update Sector set level = :level where x = :x AND y = :y");
-		query.setParameter("level",level);
-		query.setParameter("x", p.getX());
-		query.setParameter("y", p.getY());
-		query.executeUpdate();
+		Sector s = getBuilding(p);
+		s.setLevel(level);
+		em.persist(s);
 
 	}
 
 	@Override
 	public List<Sector> getBuildings(Point p, int range) {
+		if(range < 0 || p == null)
+			return null;
 		final TypedQuery<Sector> query = em.createQuery("from Sector as t where ((t.p.x BETWEEN :xmin AND :xmax) AND (t.p.y BETWEEN :ymin AND :ymax))",Sector.class);
 		query.setParameter("ymin",p.getY()-range);
 		query.setParameter("xmin", p.getX()-range);
@@ -54,9 +54,7 @@ public class BuildingHibernateDao implements BuildingDao {
 	public Sector getBuilding(Point p) {
 		final TypedQuery<Sector> query = em.createQuery("from Sector as t where t.p = :p",Sector.class);
 		query.setParameter("p",p);
-		System.out.println("Gettoing building at point " + p);
 		final List<Sector> list = query.getResultList();
-		System.out.println("List size: " + list.size());
 		return list.isEmpty() ? null : list.get(0);
 	}
 
@@ -73,15 +71,16 @@ public class BuildingHibernateDao implements BuildingDao {
 
 	@Override
 	public void setIdPlayer(Point p, User u) {
-		final Query query = em.createQuery("update Sector set userBuilding.id = :idPlayer where p = :p");
-		query.setParameter("idPlayer",u);
-		query.setParameter("p",p);
-		query.executeUpdate();
+		Sector s = getBuilding(p);
+		s.setUser(u);
+		em.persist(s);
 
 	}
 
 	@Override
 	public Sector addBuilding(Point p, int level, User u, int type) {
+		if(p == null || getBuilding(p) != null || p.getX() < 0 || p.getY() < 0)
+			return null;
 		Sector b = new Sector(u,p,type,level);
 		em.persist(b);
 		return b;
@@ -103,11 +102,24 @@ public class BuildingHibernateDao implements BuildingDao {
 
 	@Override
 	public Point getCastle(User u) {
+		if(u == null)
+			return null;
+		return getAllCastles(u).get(0);
+	}
+
+	@Override
+	public List<Point> getAllCastles(User u) {
+		List<Point> res = new ArrayList<>();
+		if(u == null)
+			return null;
 		final TypedQuery<Sector> query = em.createQuery("from Sector where userBuilding = :u and type = :type",Sector.class);
 		query.setParameter("u",u);
 		query.setParameter("type", 1);
 		final List<Sector> list = query.getResultList();
-		return list.isEmpty() ? null : list.get(0).getPosition();
+		for(Sector s:list){
+			res.add(s.getPosition());
+		}
+		return res;
 	}
 
 	@Override

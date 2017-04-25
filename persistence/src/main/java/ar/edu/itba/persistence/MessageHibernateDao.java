@@ -21,6 +21,9 @@ public class MessageHibernateDao implements MessageDao {
 
 	@Override
 	public Message createMessage(User from, User to, String subject, String message) {
+		if(from == null || to == null || subject == null || message == null){
+			return null;
+		}
 		Message m = new Message(from, to, subject , message);
 		em.persist(m);
 		return m;
@@ -28,6 +31,9 @@ public class MessageHibernateDao implements MessageDao {
 
 	@Override
 	public Message getById(Long id) {
+		if(id < 0){
+			return null;
+		}
 		return em.find(Message.class, id);
 	}
 
@@ -41,6 +47,8 @@ public class MessageHibernateDao implements MessageDao {
 
 	@Override
 	public void removeMessage(Long id) {
+		if(id < 0)
+			return;
 		final Query query = em.createQuery("delete Message where id = :id");
 		query.setParameter("id", id);
 		query.executeUpdate();

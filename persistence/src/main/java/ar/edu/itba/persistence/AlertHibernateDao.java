@@ -26,6 +26,9 @@ public class AlertHibernateDao implements AlertDao{
 
 	@Override
 	public Alert createAlert(User user, String message, Date d, String type, Point p, Integer param1, Integer param2) {
+		if(user == null || message == null || d == null || type == null || p == null){
+			return null;
+		}
 		Alert a = new Alert(user,message,d,type,p,param1,param2);
 		em.persist(a);
 		return a;

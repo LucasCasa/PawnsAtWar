@@ -161,6 +161,11 @@ public class SectorServiceImpl implements SectorService {
 	}
 
 	@Override
+	public List<Point> getAllCastles(User u) {
+		return bd.getAllCastles(u);
+	}
+
+	@Override
 	public void levelUp(Point p) {
 		if(bd.getLevel(p) < 20){
 			bd.setLevel(p,bd.getLevel(p)+1);

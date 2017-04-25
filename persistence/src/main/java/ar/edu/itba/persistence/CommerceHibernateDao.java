@@ -29,6 +29,8 @@ public class CommerceHibernateDao implements CommerceDao {
 
 	@Override
 	public TradeOffer getOffer(int id) {
+		if(id < 0)
+			return null;
 		return em.find(TradeOffer.class, id);
 	}
 

@@ -98,7 +98,7 @@ public class TestDataBasePopulator{
 	public void populateMessage(){
 		User u,u2,u3;
 		u = ud.create("maggie", "maggie", "mvega@itba.edu.ar");
-		u2 = ud.create("tuti33", "tuti33", "mvega@itba.edu.ar");
+		u2 = ud.create("maggie2", "maggie2", "mvega@itba.edu.ar");
 		u3 = ud.create("maggie3", "maggie3", "mvega@itba.edu.ar");
 		md.createMessage(u, u2, "Mensaje1", "Hola");
 		md.createMessage(u2, u, "Mensaje2", "Hola");
@@ -108,55 +108,33 @@ public class TestDataBasePopulator{
 	
 	public void populateBuilding(){
 		User u = ud.create("maggie", "maggie", "mvega@itba.edu.ar");
-		bd.addBuilding(new Point (0,0), null, 0);
-		bd.addBuilding(new Point (0,1), null, 0);
-		bd.addBuilding(new Point (0,2), null, 5);
-		bd.addBuilding(new Point (0,3), null, 0);
-		bd.addBuilding(new Point (0,4), null, 0);
-		bd.addBuilding(new Point (0,5), null, 0);
-		bd.addBuilding(new Point (0,6), null, 0);
-		bd.addBuilding(new Point (1,0), null, 0);
+
 		bd.addBuilding(new Point (1,1), u, 5);
 		bd.addBuilding(new Point (1,2), u, 0);
 		bd.addBuilding(new Point (1,3), u, 0);
 		bd.addBuilding(new Point (1,4), u, 0);
 		bd.addBuilding(new Point (1,5), u, 0);
-		bd.addBuilding(new Point (1,6), null, 0);
-		bd.addBuilding(new Point (2,0), null, 0);
 		bd.addBuilding(new Point (2,1), u, 0);
 		bd.addBuilding(new Point (2,2), u, 0);
 		bd.addBuilding(new Point (2,3), u, 0);
 		bd.addBuilding(new Point (2,4), u, 0);
 		bd.addBuilding(new Point (2,5), u, 0);
-		bd.addBuilding(new Point (2,6), null, 0);
-		bd.addBuilding(new Point (3,0), null, 0);
 		bd.addBuilding(new Point (3,1), u, 5);
 		bd.addBuilding(new Point (3,2), u, 0);
 		bd.addBuilding(new Point (3,3), u, 1);
 		bd.addBuilding(new Point (3,4), u, 0);
 		bd.addBuilding(new Point (3,5), u, 4);
-		bd.addBuilding(new Point (3,6), null, 0);
-		bd.addBuilding(new Point (4,0), null, 0);
 		bd.addBuilding(new Point (4,1), u, 0);
 		bd.addBuilding(new Point (4,2), u, 0);
 		bd.addBuilding(new Point (4,3), u, 5);
 		bd.addBuilding(new Point (4,4), u, 0);
 		bd.addBuilding(new Point (4,5), u, 0);
-		bd.addBuilding(new Point (4,6), null, 0);
-		bd.addBuilding(new Point (5,0), null, 5);
 		bd.addBuilding(new Point (5,1), u, 0);
 		bd.addBuilding(new Point (5,2), u, 0);
 		bd.addBuilding(new Point (5,3), u, 5);
 		bd.addBuilding(new Point (5,4), u, 0);
 		bd.addBuilding(new Point (5,5), u, 0);
-		bd.addBuilding(new Point (5,6), null, 0);
-		bd.addBuilding(new Point (6,0), null, 0);
-		bd.addBuilding(new Point (6,1), null, 0);
-		bd.addBuilding(new Point (6,2), null, 5);
-		bd.addBuilding(new Point (6,3), null, 0);
-		bd.addBuilding(new Point (6,4), null, 0);
-		bd.addBuilding(new Point (6,5), null, 0);
-		bd.addBuilding(new Point (6,6), null, 0);
+
 		
 	}
 	
