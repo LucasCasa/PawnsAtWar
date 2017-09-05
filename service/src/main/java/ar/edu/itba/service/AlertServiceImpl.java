@@ -60,4 +60,9 @@ public class AlertServiceImpl implements AlertService {
 	public List<Alert> getBuildingConstructed(Point p) {
 		return ad.getBuildingConstructed(p);
 	}
+
+	public void setAlertDao(AlertDao alertDao) {
+		this.ad = alertDao;
+
+	}
 }

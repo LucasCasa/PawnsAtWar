@@ -1,8 +1,6 @@
 package ar.edu.itba.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import ar.edu.itba.interfaces.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,7 +93,7 @@ public class SectorServiceImpl implements SectorService {
 		}
 	}
 	
-	public void updateTerrain(Point p, User u,int range){
+	public void updateTerrain(Point p, User u, int range){
 		List<Sector> listSector = bd.getBuildings(p, range);
 		for(Sector s: listSector){
 			s.setUser(u);
@@ -208,7 +206,7 @@ public class SectorServiceImpl implements SectorService {
 	public User getPlayer(Point pos) {
 		return bd.getPlayer(pos);
 	}
-	
+
 	public int getLevel(Point p) {
 		return bd.getBuilding(p).getLevel();
 	}
@@ -216,12 +214,16 @@ public class SectorServiceImpl implements SectorService {
 	@Override
 	public int getCastlePrice(User u) {
 		int num = bd.getBuildings(u, CASTLE).size();
-		return num*castlePriceScaleFactor;
+		return num * castlePriceScaleFactor;
 	}
 
 	@Override
 	public List<Point> getAvailableSpots() {
 		LoadSpots();
 		return availableSpots;
+	}
+
+	public void setBuildingmDao(BuildingDao buildingDao) {
+		this.bd = buildingDao;
 	}
 }

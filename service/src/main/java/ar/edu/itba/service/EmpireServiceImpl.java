@@ -282,4 +282,31 @@ public class EmpireServiceImpl implements EmpireService{
 		return ed.getBuilding(u, type);
 	}
 
+	public void setEmpireDao(EmpireDao empireDao) {
+		this.ed = empireDao;
+	}
+
+	public void setSectorService(SectorService sectorService) {
+		this.ss = sectorService;
+	}
+
+	public void setArmyService(ArmyService armyService) {
+		this.as = armyService;
+	}
+
+	public void setCommerceService(CommerceService commerceService) {
+		this.cs = commerceService;
+	}
+
+	public void setResourceService(ResourceDao resourceDao){
+		this.rd = resourceDao;
+	}
+
+	public void setScheduleService(ScheduleService scheduleService) {
+		this.sh = scheduleService;
+	}
+
+	public void setAlertService(AlertService alertService) {
+		this.als = alertService;
+	}
 }

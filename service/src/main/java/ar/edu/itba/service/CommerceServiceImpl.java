@@ -89,4 +89,12 @@ public class CommerceServiceImpl implements CommerceService{
 		return true;
 	}
 
+	public void setEmpireService(EmpireService empireService) {
+		this.es = empireService;
+	}
+
+	public void setCommerceDao(CommerceDao commerceDao) {
+		this.cd = commerceDao;
+	}
+
 }

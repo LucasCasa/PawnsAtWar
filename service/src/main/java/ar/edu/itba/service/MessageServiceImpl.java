@@ -85,4 +85,8 @@ public class MessageServiceImpl implements MessageService {
 		return md.getSentMessages(u);
 	}
 
+	public void setMessageDao(MessageDao messageDao){
+		this.md = messageDao;
+	}
+
 }

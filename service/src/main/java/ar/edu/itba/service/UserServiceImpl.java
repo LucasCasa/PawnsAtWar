@@ -78,7 +78,6 @@ public class UserServiceImpl implements UserService{
 		return ud.getAllUsers();
 	}
 	
-	
 
 	@Override
 	public void setLocale(User u, String language) {
@@ -89,6 +88,16 @@ public class UserServiceImpl implements UserService{
 	public List<String> getUsernames(String exp) {
 		return ud.getUsernames(exp);
 	}
+
+	public void setUserDao (UserDao userDao){
+		this.ud = userDao;
+	}
+
+	public void setEmpireService (EmpireService empireService){
+		this.es = empireService;
+	}
+
+
 
 	
 }

@@ -92,6 +92,14 @@ public class TroopServiceImpl implements TroopService {
 		return POW0 * (amount0 == -1 ? 0:amount0) + POW1 *(amount1 == -1 ? 0:amount1) + POW2 * (amount2 == -1 ? 0:amount2);
 	}
 
+	public void setTroopDao(TroopDao troopDao){
+		this.td = troopDao;
+	}
+
+	public void setArmyService(ArmyService armyService){
+		this.as = armyService;
+	}
+
 	
 
 }

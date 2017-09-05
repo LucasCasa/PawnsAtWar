@@ -100,12 +100,21 @@ public class ArmyServiceImpl implements ArmyService {
 	@Override
 	public Army splitArmy(int armyId, Map<TroopType,Integer> troops){
 		Army a = getArmyById(armyId);
-		Army newa = ad.addArmy(a.getPosition(),a.getUser(),false);
+		Army newA = ad.addArmy(a.getPosition(),a.getUser(),false);
 		for(Map.Entry<TroopType,Integer> e : troops.entrySet()){
-			ts.addTroop(newa.getIdArmy(),e.getKey().getType(),e.getValue());
+			ts.addTroop(newA.getIdArmy(),e.getKey().getType(),e.getValue());
             ts.subtractTroop(armyId,e.getKey().getType(),e.getValue());
 		}
-		return newa;
+		return newA;
+	}
+
+	public void setArmyDao(ArmyDao armyDao) {
+		this.ad=armyDao;
+	}
+
+	public void setTroopService(TroopService troopService) {
+		this.ts = troopService;
+
 	}
 
 
