@@ -1,4 +1,4 @@
-INSERT INTO building (x,y,level,type,idPlayer) values 
+INSERT INTO building (x,y,level,type,idplayer) values
 (0,0,1,0,null),
 (1,0,1,0,null),
 (2,0,1,0,null),
