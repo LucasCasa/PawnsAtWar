@@ -36,6 +36,7 @@
     <org.hibernate.jpa.version>1.0.0.Final</org.hibernate.jpa.version>
     <maven-war-plugin.version>2.6</maven-war-plugin.version>
     <javax.mail.version>1.4.7</javax.mail.version>
+    <jersey.version>3.0-SNAPSHOT</jersey.version>
   </properties>
 
   <dependencyManagement>
@@ -46,10 +47,44 @@
           <version>${jstl.version}</version>
           <scope>runtime</scope>
       </dependency>
+      <!-- TODO remove spring-webmvc -->
+      <!-- ************* -->
       <dependency>
         <groupId>org.springframework</groupId>
         <artifactId>spring-webmvc</artifactId>
 	      <version>${org.springframework.version}</version>
+      </dependency>
+      <!-- ************* -->
+      <dependency>
+        <groupId>org.glassfish.jersey.containers</groupId>
+        <artifactId>jersey-container-servlet-core</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.ext</groupId>
+        <artifactId>jersey-spring4</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.core</groupId>
+        <artifactId>jersey-server</artifactId>
+        <version>${jersey.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+          </exclusion>
+        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-jaxb</artifactId>
+        <version>${jersey.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.glassfish.jersey.media</groupId>
+        <artifactId>jersey-media-moxy</artifactId>
+        <version>${jersey.version}</version>
       </dependency>
       <dependency>
         <groupId>org.springframework</groupId>
@@ -153,7 +188,6 @@
         <version>${logback-ext-spring.version}</version> 
         <scope>runtime</scope>
       </dependency>
-
       <dependency>
         <groupId>javax.servlet</groupId>
         <artifactId>javax.servlet-api</artifactId>
@@ -218,5 +252,16 @@
       </plugin>
     </plugins>
   </build>
+
+  <repositories>
+    <repository>
+      <id>jersey-snapshot</id>
+      <url>https://maven.java.net/content/repositories/snapshots</url>
+      <name>Jersey Snapshots</name>
+      <snapshots>
+        <enabled>true</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
 
 </project>
