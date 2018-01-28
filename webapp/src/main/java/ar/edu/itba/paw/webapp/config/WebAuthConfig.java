@@ -28,14 +28,14 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
 	
 	protected void configure(final HttpSecurity http) throws Exception {
 //		.authenticationProvider(authProvider)
-		http.userDetailsService(userDetailsService)
-		.sessionManagement()
-		.invalidSessionUrl("/login")
+		//http.userDetailsService(userDetailsService)
+		/*.sessionManagement()
+//		.invalidSessionUrl("/login")
 
 		.and().authorizeRequests()
 		.antMatchers("/login/**").anonymous()
 		.antMatchers("/admin/**").hasRole("ADMIN")
-		.antMatchers("/**").authenticated()
+//		.antMatchers("/**").authenticated()
 
 		.and().formLogin()
 		.usernameParameter("j_username")
@@ -60,7 +60,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter{
 		.accessDeniedPage("/403")
 
 		.and().csrf()
-		.disable();
+		.disable();*/
 	}
 	
 	@Override
