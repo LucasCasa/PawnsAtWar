@@ -9998,4 +9998,4 @@ INSERT INTO building (x,y,level,type,idplayer) values
 (96,99,1,0,null),
 (97,99,1,5,null),
 (98,99,1,0,null),
-(99,99,1,0,null) ON CONFLICT DO NOTHING;
+(99,99,1,0,null);

@@ -7,7 +7,7 @@ create table if not exists userPaw (
 );
 
 create table if not exists building (
-	id SERIAL PRIMARY KEY,
+	id serial PRIMARY KEY,
 	x integer not null,
 	y integer not null,
 	type integer,
