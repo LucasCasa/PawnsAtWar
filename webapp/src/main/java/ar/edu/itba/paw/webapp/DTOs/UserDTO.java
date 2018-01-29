@@ -1,7 +1,9 @@
-package ar.edu.itba.paw.webapp.beans;
+package ar.edu.itba.paw.webapp.DTOs;
 
 import ar.edu.itba.model.User;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDTO {
 
 	private int id;
