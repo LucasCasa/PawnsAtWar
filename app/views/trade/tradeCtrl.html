@@ -1,0 +1,64 @@
+<!--<%@ include file="resourceBar.jsp" %>
+<c:if test="${insuficientAmount}">
+  <div class="error"><spring:message code="commerce.error"/></div>
+</c:if> -->
+<br/>
+    <div class="row" ng-show="trade.offers.size == 0">
+      <h2 style="text-align: center">{{'NO_OFFERS' | translate}}</h2>
+    </div>
+    <table class="table">
+      <thead>
+      <td>{{'USERNAME' | translate}}</td>
+      <td>{{'OFFER' | translate}}</td>
+      <td>{{'RECEIVE' | translate}}</td>
+      <td>{{'ACCEPT' | translate}}</td>
+      </thead>
+      <tbody>
+        <tr ng-repeat="offer in trade.offers">
+          <td><a ng-href="offer.user.url">{{offer.user.name}}</a></td>
+          <td><re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}" path="${pageContext.request.contextPath}"/></td>
+          <td><re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}" path="${pageContext.request.contextPath}"/></td>
+          <td><br><form method="post" action="<c:url value="/commerce/acceptTrade"/>">
+            <input type="hidden" name="tradeId" value="${offer.getId()}"/>
+            <input type="submit" class="myButton" value="<spring:message code="commerce.accept"/>"/>
+            </form></td>
+        </tr>
+      </tbody>
+    </table>
+
+
+<h1><spring:message code="commerce.myOffers"/></h1>
+
+<c:choose>
+  <c:when test="${myTradesSize == 0}">
+    <div class="row">
+      <h2 style="text-align: center"><spring:message code="noMyOffers" /></h2>
+    </div>
+
+  </c:when>
+  <c:otherwise>
+    <table class="table">
+      <thead>
+      <td><spring:message code="commerce.user"/></td>
+      <td><spring:message code="commerce.offer"/></td>
+      <td><spring:message code="commerce.receive"/></td>
+      <td><spring:message code="commerce.remove"/></td>
+      </thead>
+      <tbody>
+      <c:forEach var="offer" items="${myTrades}">
+        <tr>
+          <td><br><br><us:User user="${offer.getOwner()}" path="${pageContext.request.contextPath}"/></td>
+          <td><re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}" path="${pageContext.request.contextPath}"/></td>
+          <td><re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}" path="${pageContext.request.contextPath}"/></td>
+          <td><br><form method="post" action="<c:url value="/commerce/delete"/>">
+            <input type="hidden" name="tradeId" value="${offer.getId()}"/>
+            <input type="submit" class="myButton" value="<spring:message code="commerce.remove"/>"/>
+            </form></td>
+        </tr>
+      </c:forEach>
+      </tbody>
+    </table>
+  </c:otherwise>
+</c:choose>
+
+<a href="<c:url value="/commerce/create"/>"><button class="myButton"><spring:message code="commerce.makeNewOffer"/></button></a>
