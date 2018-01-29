@@ -1,8 +1,10 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.User;
-import ar.edu.itba.paw.webapp.beans.UserDTO;
+import ar.edu.itba.paw.webapp.DTOs.UserDTO;
+import ar.edu.itba.paw.webapp.DTOs.UserScoreDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -22,6 +24,9 @@ public class UsersController {
 	@Autowired
 	private UserService us;
 
+	@Autowired
+	private EmpireService es;
+
 	@GET
 	@Path("/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -34,16 +39,31 @@ public class UsersController {
 	@GET
 	@Path("/{id}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response getUser(@PathParam("id") String id) {
-		try {
-			User user = us.findById(Integer.parseInt(id));
-			if (user == null) {
-				return Response.status(Response.Status.NOT_FOUND).build();
-			}
-			return Response.ok().entity(new UserDTO(user)).build();
-		} catch (NumberFormatException NFe) {
-			return Response.status(Response.Status.BAD_REQUEST).build();
+	public Response getUser(@PathParam("id") int id) {
+		User user = us.findById(id);
+		if (user == null) {
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
+		return Response.ok().entity(new UserDTO(user)).build();
 	}
 
+	@GET
+	@Path("/score")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getScores() {
+		final List<UserScoreDTO> scores = new ArrayList<>();
+		us.getAllUsers().forEach(u -> scores.add(new UserScoreDTO(u,es.calculateScore(u))));
+		return Response.ok().entity(scores).build();
+	}
+
+	@GET
+	@Path("/score/{id}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUserScore(@PathParam("id") int id) {
+		User user = us.findById(id);
+		if (user == null) {
+			return Response.status(Response.Status.NOT_FOUND).build();
+		}
+		return Response.ok().entity(new UserScoreDTO(user,es.calculateScore(user))).build();
+	}
 }
