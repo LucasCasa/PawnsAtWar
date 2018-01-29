@@ -76,6 +76,7 @@ define([], function() {
     SUBJECT: 'Subject',
     MESSAGE: 'Message',
     NO_MESSAGE: 'No messages received',
+    MESSAGE_UNREAD: 'Unread messages',
     MESSAGE_RECEIVED: 'Messages received',
     ACTION: 'Action',
     CHARACTER_REMAINING: 'Characters remaining',
