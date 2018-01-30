@@ -1,16 +1,14 @@
 package ar.edu.itba.paw.webapp.DTOs;
 
 import ar.edu.itba.model.Sector;
+import ar.edu.itba.paw.webapp.data.Validator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-@JsonIgnoreProperties(ignoreUnknown = true, value = { "basePath" })
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class MapDTO {
-
-	private static final String basePath = "/map/{0}/{1}";
 
 	private int x;
 	private int y;
@@ -23,21 +21,18 @@ public class MapDTO {
 	public MapDTO(List<List<Sector>> sectors, int x, int y) {
 		this.x = x;
 		this.y = y;
-		this.nextx = format(x+1, y);
-		this.nexty = format(x, y+1);
-		this.prevx = format(x-1, y);
-		this.prevy = format(x, y-1);
+		this.nextx = Validator.format(x+1, y);
+		this.nexty = Validator.format(x, y+1);
+		this.prevx = Validator.format(x-1, y);
+		this.prevy = Validator.format(x, y-1);
 		this.tile = new ArrayList<>();
 		for(List<Sector> row: sectors) {
 			List<TileDTO> tileRow = new ArrayList<>();
+			tile.add(tileRow);
 			for(Sector s: row) {
 				tileRow.add(new TileDTO(s));
 			}
 		}
-	}
-
-	public static String getBasePath() {
-		return basePath;
 	}
 
 	public int getX() {
@@ -94,10 +89,5 @@ public class MapDTO {
 
 	public void setTile(List<List<TileDTO>> tile) {
 		this.tile = tile;
-	}
-
-	private static String format(int x, int y) {
-		//TODO void link for invalid pos
-		return MessageFormat.format(basePath, x, y);
 	}
 }

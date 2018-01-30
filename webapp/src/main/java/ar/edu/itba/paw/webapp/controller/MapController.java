@@ -28,9 +28,9 @@ public class MapController {
 	@Path("/{x}/{y}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMap(@PathParam("x") final int x, @PathParam("y") final int y) {
-		int xPrime = Validator.getValidPos(x);
-		int yPrime = Validator.getValidPos(y);
+		int xPrime = Validator.getValidPos(x-1);
+		int yPrime = Validator.getValidPos(y-1);
 		List<List<Sector>> elements = ss.getSector(new Point(xPrime,yPrime), Info.VIEW_RANGE);
-		return Response.ok().entity(new MapDTO(elements, xPrime, yPrime)).build();
+		return Response.ok().entity(new MapDTO(elements, xPrime+1, yPrime+1)).build();
 	}
 }
