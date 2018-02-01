@@ -16,7 +16,7 @@ public class MapDTO {
 	private String nexty;
 	private String prevx;
 	private String prevy;
-	private List<List<TileDTO>> tile;
+	private List<List<TileDTO>> tiles;
 
 	public MapDTO(List<List<Sector>> sectors, int x, int y) {
 		this.x = x;
@@ -25,10 +25,10 @@ public class MapDTO {
 		this.nexty = Validator.format(x, y+1);
 		this.prevx = Validator.format(x-1, y);
 		this.prevy = Validator.format(x, y-1);
-		this.tile = new ArrayList<>();
+		this.tiles = new ArrayList<>();
 		for(List<Sector> row: sectors) {
 			List<TileDTO> tileRow = new ArrayList<>();
-			tile.add(tileRow);
+			tiles.add(tileRow);
 			for(Sector s: row) {
 				tileRow.add(new TileDTO(s));
 			}
@@ -83,11 +83,11 @@ public class MapDTO {
 		this.prevy = prevy;
 	}
 
-	public List<List<TileDTO>> getTile() {
-		return tile;
+	public List<List<TileDTO>> getTiles() {
+		return tiles;
 	}
 
-	public void setTile(List<List<TileDTO>> tile) {
-		this.tile = tile;
+	public void setTiles(List<List<TileDTO>> tiles) {
+		this.tiles = tiles;
 	}
 }
