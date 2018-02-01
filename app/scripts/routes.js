@@ -5,27 +5,27 @@ define([], function() {
         defaultRoutePath: '/',
         routes: {
             '/': {
-                templateUrl: '/views/home.html',
+                templateUrl: 'views/home.html',
                 controller: 'HomeCtrl'
             },
             '/map': {
-                templateUrl: '/views/map/mapCtrl.html',
+                templateUrl: 'views/map/mapCtrl.html',
                 controller: 'mapCtrl'
             },
             '/login': {
-                templateUrl: '/views/login/LoginCtrl.html',
+                templateUrl: 'views/login/LoginCtrl.html',
                 controller: 'LoginCtrl'
             },
             '/trade': {
-                templateUrl: '/views/trade/tradeCtrl.html',
+                templateUrl: 'views/trade/tradeCtrl.html',
                 controller: 'tradeCtrl'
             },
             '/messages': {
-                templateUrl: '/views/messages/messagesCtrl.html',
+                templateUrl: 'views/messages/messagesCtrl.html',
                 controller: 'messagesCtrl'
             },
             '/ranking': {
-                templateUrl: '/views/ranking/RankingCtrl.html',
+                templateUrl: 'views/ranking/RankingCtrl.html',
                 controller: 'RankingCtrl'
             }
             /* ===== yeoman hook ===== */

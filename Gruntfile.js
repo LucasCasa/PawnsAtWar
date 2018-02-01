@@ -7,7 +7,7 @@ module.exports = function (grunt) {
 
   var appConfig = {
     app: 'app',
-    dist: 'dist'
+    dist: 'webapp/src/main/webapp'
   };
 
   grunt.initConfig({
@@ -16,6 +16,7 @@ module.exports = function (grunt) {
       options: {
         port: 9000,
         hostname: 'localhost',
+        base: 'webapp',
         livereload: 35729
       },
       livereload: {
@@ -113,9 +114,12 @@ module.exports = function (grunt) {
         files: [{
           dot: true,
           src: [
-          '.tmp',
-          '<%= yeoman.dist %>/**/*',
-          '!<%= yeoman.dist %>/.git*'
+            '.tmp',
+            '<%= yeoman.dist %>/**/*',
+            '!<%= yeoman.dist %>/.git*',
+            '!<%= yeoman.dist %>/WEB-INF/*',
+            '!<%= yeoman.dist %>/WEB-INF*',
+            '!<%= yeoman.dist %>/resources/*'
           ]
         }]
       },
@@ -357,7 +361,7 @@ module.exports = function (grunt) {
           removeCombined: true,
           preserveLicenseComments: false,
           findNestedDependencies: true,
-          dir: 'dist/scripts',
+          dir: '<%= yeoman.dist %>/scripts',
           modules: [
             {
               name: 'build'
@@ -375,7 +379,7 @@ module.exports = function (grunt) {
         dist: {
             options: {
                 baseRoot: '<%= yeoman.dist %>/scripts',
-                baseUrl: 'scripts',
+                baseUrl: 'webapp/scripts',
                 outputFile: '<%= yeoman.dist %>/scripts/paths.js'
             }
         }
