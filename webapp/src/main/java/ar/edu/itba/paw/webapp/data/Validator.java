@@ -4,7 +4,7 @@ import java.text.MessageFormat;
 
 public final class Validator {
 
-    private static final String basePath = "/map/{0}/{1}";
+    private static final String basePath = "api/map/{0}/{1}";
 
     private Validator() {
 
