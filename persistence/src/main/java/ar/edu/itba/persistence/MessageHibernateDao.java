@@ -14,7 +14,7 @@ import ar.edu.itba.model.User;
 import java.util.List;
 
 @Repository
-public class MessageHibernateDao implements MessageDao {
+public class 	MessageHibernateDao implements MessageDao {
 	
 	@PersistenceContext
     private EntityManager em;

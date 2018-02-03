@@ -5,22 +5,25 @@ import ar.edu.itba.interfaces.PAWMailService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.Message;
 import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.DTOs.MessageDTO;
+import ar.edu.itba.paw.webapp.DTOs.UserMessagesDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-/**
- * Created by root on 26/10/16.
- */
+@Path("message")
 @Controller
 public class MessageController {
     @Autowired
@@ -36,32 +39,32 @@ public class MessageController {
     @Autowired
     private PAWMailService mailService;
 
-    @RequestMapping(value="/messages")
-    public ModelAndView messages(@ModelAttribute("userId") final User user, @RequestParam(value="s", required = false,defaultValue = "") final String success){
+    @GET
+    @Path("/messages/{userId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getUserMessages(@PathParam("userId") final int userId){
 
-        if(user == null)
-            return new ModelAndView("redirect:/login");
-        
-        final ModelAndView mav = new ModelAndView("messages");
-        List<String> usernames = us.getUsernames();;
-        List<Message> messagesUnr = ms.getUnreadMessages(user);
-        List<Message> messagesRead = ms.getReadMessages(user);
-        int messagesUnread = ms.countUnreadMessages(user);
-        mav.addObject("messagesRead",messagesRead);
-        mav.addObject("messagesUnread",messagesUnr);
+        User user = us.findById(userId);
 
-        mav.addObject("mReadListSize", messagesRead.size());
-        mav.addObject("mUnreadListSize", messagesUnr.size());
-        mav.addObject("success",success);
-        mav.addObject("messageSource",messageSource);
-        mav.addObject("namelist",usernames);
-        mav.addObject("unreadMessages",messagesUnread);
+        if (user == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
 
+        final List<String> usernames = us.getUsernames();
 
-        return mav;
+        final List<MessageDTO> messagesRead = new ArrayList<>();
+        final List<MessageDTO> messagesUnread = new ArrayList<>();
+        ms.getReadMessages(user).forEach(m -> messagesRead.add(new MessageDTO(m.getFrom(), user, m.getSubject(), m.getMessage())));
+        final List<Message> messagesUnr = ms.getUnreadMessages(user);
+        ms.getUnreadMessages(user).forEach(m -> messagesUnread.add(new MessageDTO(m.getFrom(), user, m.getSubject(), m.getMessage())));
+
+        return Response.ok().entity(new UserMessagesDTO(user, messagesRead, messagesUnread)).build();
+
     }
 
-    @RequestMapping(value="/messages/sendMessage", method = RequestMethod.POST)
+    @POST
+    @Path("/messages/sendmessage")
+    @Produces(MediaType.APPLICATION_JSON)
     public ModelAndView sendMessage(@RequestParam(required = false) String username,@RequestParam(required = false) String message, @RequestParam(required = false) String subject, @ModelAttribute("userId") final User user, Locale locale){
 
         ms.createMessage( user, us.findByUsername(username), subject, message);
@@ -80,17 +83,19 @@ public class MessageController {
     }
 
 
-    @RequestMapping(value="/messages/delete")
-    public ModelAndView deleteMessage(@RequestParam final Long id, @ModelAttribute("userId") final User user){
+    @DELETE
+    @Path("/messages/delete/{messageId}")
+    public Response deleteMessage(@PathParam("messageId") final Long messageId){
 
-        Message mssg = ms.getById(id);
+        Message mssg = ms.getById(messageId);
 
         if(mssg == null)
-            return new ModelAndView("redirect:/error");
+            return Response.status(Response.Status.NOT_FOUND).build();
+
 
         ms.deleteMessage(mssg);
 
-        return new ModelAndView("redirect:/messages");
+        return Response.ok().build();
     }
     
     @RequestMapping(value="/messages/seeMessage")
