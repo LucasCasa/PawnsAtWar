@@ -30,8 +30,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests()
-                .anyRequest().authenticated();
+        http.authorizeRequests().antMatchers("/api/**").authenticated();
 
         http.addFilterBefore(new LoginFilter("/api/login", tokenAuthService, userDetailsService, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new AuthFilter(tokenAuthService), UsernamePasswordAuthenticationFilter.class);

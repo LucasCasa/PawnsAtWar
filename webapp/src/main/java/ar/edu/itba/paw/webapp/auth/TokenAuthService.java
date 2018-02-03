@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.auth;
 
+import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.paw.webapp.DTOs.UserAuthDTO;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,6 +24,8 @@ public class TokenAuthService {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    @Autowired
+    private UserService userService;
 
     private final TokenHandler tokenHandler;
 
@@ -38,7 +41,7 @@ public class TokenAuthService {
             final String username = tokenHandler.mapToken(token);
             if(username != null) {
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword());
+                authentication = new UsernamePasswordAuthenticationToken(userDetails.getUsername(), userDetails.getPassword(),userDetails.getAuthorities());
             }
         }
 
@@ -64,8 +67,8 @@ public class TokenAuthService {
             UserAuthDTO user = mapper.readValue(builder.toString(), UserAuthDTO.class);
             UserDetails userDetails = userDetailsService.loadUserByUsername(user.getUsername());
 
-            if (user.getPassword().equals(userDetails.getPassword())) {
-                return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword());
+            if (userService.exists(user.getUsername(), user.getPassword())) {
+                return new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword(), userDetails.getAuthorities());
             }
         } catch (IOException e) {
             e.printStackTrace();
