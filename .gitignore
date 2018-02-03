@@ -28,6 +28,6 @@ target/
 
 .tmp/*
 .sass-cache/*
-webapp/src/main/webapp/*
-!webapp/src/main/webapp/WEB-INF/*
+webapp/src/main/webapp/
+!webapp/src/main/webapp/WEB-INF/
 
