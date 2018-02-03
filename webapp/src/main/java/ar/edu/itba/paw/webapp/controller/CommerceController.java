@@ -6,7 +6,9 @@ import ar.edu.itba.interfaces.MessageService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.TradeOffer;
 import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.DTOs.TradeOfferCreateDTO;
 import ar.edu.itba.paw.webapp.DTOs.TradeOfferDTO;
+import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
 import ar.edu.itba.paw.webapp.data.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -74,6 +74,20 @@ public class CommerceController {
 
         cs.removeOffer(to);
         return new ModelAndView("redirect:/commerce");
+    }
+
+    @POST
+    @Path("/create")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response createTrade(TradeOfferCreateDTO create) {
+        User creator = us.findById(AuthenticatedUser.getId());
+        boolean created = cs.createOffer(creator, create.getOffer().getType(), create.getOffer().getAmount(),
+                create.getReceive().getType(), create.getReceive().getAmount());
+        if(created) {
+            return  Response.ok().build();
+        } else {
+            return  Response.status(Response.Status.BAD_REQUEST).build();
+        }
     }
 
     @RequestMapping(value = "/commerce/create")
