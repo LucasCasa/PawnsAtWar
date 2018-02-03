@@ -8,6 +8,8 @@ require.config({
         angular: '../../bower_components/angular/angular',
         'angular-route': '../../bower_components/angular-route/angular-route',
         'angular-translate': '../../bower_components/angular-translate/angular-translate',
+        'angular-jwt': '../../bower_components/angular-jwt/dist/angular-jwt',
+        'angular-local-storage': '../../bower_components/angular-local-storage/dist/angular-local-storage',
         button: '../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button',
         bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
         carousel: '../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel',
@@ -56,7 +58,17 @@ require.config({
             deps: [
                 'angular'
             ]
-        }
+        },
+      'angular-jwt': {
+        deps: [
+          'angular'
+        ]
+      },
+      'angular-local-storage': {
+        deps: [
+          'angular'
+        ]
+      }
     },
     packages: [
 

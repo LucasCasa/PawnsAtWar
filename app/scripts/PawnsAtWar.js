@@ -5,11 +5,14 @@ define(['routes',
 	'angular',
 	'angular-route',
 	'bootstrap',
-	'angular-translate'],
+	'angular-translate',
+  'angular-jwt',
+  'angular-local-storage'],
 	function(config, dependencyResolverFor, i18n) {
 		var PawnsAtWar = angular.module('PawnsAtWar', [
 			'ngRoute',
-			'pascalprecht.translate'
+			'pascalprecht.translate',
+      'angular-jwt'
 		]);
 		PawnsAtWar
 			.config(
@@ -19,7 +22,9 @@ define(['routes',
 				'$filterProvider',
 				'$provide',
 				'$translateProvider',
-				function($routeProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $translateProvider) {
+        '$httpProvider',
+        'jwtOptionsProvider',
+          function($routeProvider, $controllerProvider, $compileProvider, $filterProvider, $provide, $translateProvider, $httpProvider, jwtOptionsProvider) {
 
 					PawnsAtWar.controller = $controllerProvider.register;
 					PawnsAtWar.directive = $compileProvider.directive;
@@ -38,6 +43,14 @@ define(['routes',
 
 					$translateProvider.translations('preferredLanguage', i18n);
 					$translateProvider.preferredLanguage('preferredLanguage');
+
+          //jwt config
+          $httpProvider.interceptors.push('jwtInterceptor');
+          jwtOptionsProvider.config({
+            tokenGetter: function () { return localStorage.getItem('token') },
+            authHeader: 'X-AUTH-TOKEN',
+            authPrefix: ''
+          });
 				}]);
 		return PawnsAtWar;
 	}
