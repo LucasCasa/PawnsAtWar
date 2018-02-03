@@ -49,7 +49,7 @@ public class CommerceController {
     }
 
     @POST
-    @Path("/accept/{id}")
+    @Path("/trade/{id}")
     public Response acceptTrade(@PathParam("id") final int id) {
         User user = AuthenticatedUser.getUser(us);
         TradeOffer offer = cs.getOffer(id);
@@ -64,7 +64,7 @@ public class CommerceController {
     }
 
     @DELETE
-    @Path("/delete/{id}")
+    @Path("/trade/{id}")
     public Response deleteTrade(@PathParam("id") final int id) {
         User user = AuthenticatedUser.getUser(us);
         TradeOffer offer = cs.getOffer(id);
