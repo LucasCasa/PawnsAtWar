@@ -5,6 +5,7 @@ import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.User;
 import ar.edu.itba.paw.webapp.DTOs.UserDTO;
 import ar.edu.itba.paw.webapp.DTOs.UserScoreDTO;
+import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
