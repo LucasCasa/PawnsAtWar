@@ -8,6 +8,7 @@ import ar.edu.itba.model.TradeOffer;
 import ar.edu.itba.model.User;
 import ar.edu.itba.paw.webapp.DTOs.TradeOfferCreateDTO;
 import ar.edu.itba.paw.webapp.DTOs.TradeOfferDTO;
+import ar.edu.itba.paw.webapp.DTOs.TradeOffersDTO;
 import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
 import ar.edu.itba.paw.webapp.data.Validator;
@@ -25,6 +26,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("commerce")
 @Controller
@@ -43,9 +45,17 @@ public class CommerceController {
     @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllTrades() {
-        List<TradeOfferDTO> offers = new ArrayList<>();
-        cs.getAllOffers().forEach(o -> offers.add(new TradeOfferDTO(o)));
-        return Response.ok().entity(offers).build();
+        String username = AuthenticatedUser.getUser(us).getName();
+        List<TradeOffer> allOffers = cs.getAllOffers();
+        List<TradeOfferDTO> mine = new ArrayList<>();
+        List<TradeOfferDTO> others = new ArrayList<>();
+        for(TradeOffer t : allOffers){
+            if(t.getOwner().getName().equals(username))
+                mine.add(new TradeOfferDTO(t));
+            else
+                others.add(new TradeOfferDTO(t));
+        }
+        return Response.ok().entity(new TradeOffersDTO(mine, others)).build();
     }
 
     @POST
@@ -76,7 +86,7 @@ public class CommerceController {
     }
 
     @POST
-    @Path("/create")
+    @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response createTrade(TradeOfferCreateDTO create) {
         User creator = AuthenticatedUser.getUser(us);
