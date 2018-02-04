@@ -72,6 +72,7 @@ define([], function() {
     CREATE: 'Create',
     OFFER: 'Offer',
     RECEIVE: 'Receive',
+    QUANTITY: 'Amount',
     FROM: 'From',
     SUBJECT: 'Subject',
     MESSAGE: 'Message',

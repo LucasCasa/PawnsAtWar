@@ -3,62 +3,96 @@
   <div class="error"><spring:message code="commerce.error"/></div>
 </c:if> -->
 <br/>
-    <div class="row" ng-show="trade.offers.size == 0">
-      <h2 style="text-align: center">{{'NO_OFFERS' | translate}}</h2>
-    </div>
-    <table class="table">
-      <thead>
-      <td>{{'USERNAME' | translate}}</td>
-      <td>{{'OFFER' | translate}}</td>
-      <td>{{'RECEIVE' | translate}}</td>
-      <td>{{'ACCEPT' | translate}}</td>
-      </thead>
-      <tbody>
-        <tr ng-repeat="offer in trade.offers">
-          <td><a ng-href="offer.user.url">{{offer.user.name}}</a></td>
-          <td><re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}" path="${pageContext.request.contextPath}"/></td>
-          <td><re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}" path="${pageContext.request.contextPath}"/></td>
-          <td><br><form method="post" action="<c:url value="/commerce/acceptTrade"/>">
-            <input type="hidden" name="tradeId" value="${offer.getId()}"/>
-            <input type="submit" class="myButton" value="<spring:message code="commerce.accept"/>"/>
-            </form></td>
-        </tr>
-      </tbody>
-    </table>
+<div style="text-align: center">
+  <button style="text-align:center" ng-hide="showNewOffer" ng-click="showNewOffer = true" class="myButton">{{'MAKE_NEW_OFFER' | translate }}</button>
+</div>
+<div class="error" style="display:none;" id="sameType">{{'SAME_TYPE' | translate}}</div>
+<!-- <c:if test="${insuficientAmount}">
+  <div class="error" id="insAmount"><spring:message code="commerce.error"/></div>
+</c:if> -->
+<br>
+<table class="table" ng-show="showNewOffer">
+  <thead>
+  <td>{{'OFFER' | translate}}</td>
+  <td>{{'RECEIVE' | translate}}</td>
+  <td>{{'CREATE' | translate}}</td>
+  </thead>
+  <tbody>
+  <tr>
+    <td>
+      <label><input name="giveType" type="radio" ng-click='selectRadioGive("FOOD")' ng-value="0" ng-model="giveType" value="FOOD"><img style="height: 50px" src="images/iconResFood.png"></label>
+      <label><input name="giveType" type="radio" ng-click='selectRadioGive("GOLD")' ng-value="1" ng-model="giveType" value="GOLD"><img style="height: 50px" src="images/iconResGold.png"></label>
+      {{'QUANTITY' | translate}}
+      <input type="number" ng-model="giveAmount" name="giveQty" min="1" ng-keyup="checkSumbitAvailability()">
+    </td>
+    <td>
+      <label><input name="getType" type="radio" ng-click="selectRadioGet('FOOD')" ng-value="0" ng-model="getType" value="FOOD"><img style="height: 50px" src="images/iconResFood.png"></label>
+      <label><input name="getType" type="radio" ng-click="selectRadioGet('GOLD')" ng-value="1" ng-model="getType" value="GOLD"><img style="height: 50px" src="images/iconResGold.png"></label>
+      {{'QUANTITY' | translate}}
+      <input type="number" ng-model="getAmount" name="getQty" min="1" ng-keyup="checkSumbitAvailability()">
+    </td>
+    <td>
+      <button id="register" ng-click="createOffer()" class="myButton">{{'CREATE' | translate}}</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<div class="row" ng-show="trade.other.size == 0">
+  <h2 style="text-align: center">{{'NO_OFFERS' | translate}}</h2>
+</div>
+<table class="table">
+  <thead>
+  <td>{{'USERNAME' | translate}}</td>
+  <td>{{'OFFERS' | translate}}</td>
+  <td>{{'RECEIVES' | translate}}</td>
+  <td>{{'ACCEPT' | translate}}</td>
+  </thead>
+  <tbody>
+  <tr ng-repeat="offer in trade.other">
+    <td><a ng-href="offer.user.url">{{offer.user.name}}</a></td>
+    <td>
+      <re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}"
+                   path="${pageContext.request.contextPath}"/>
+    </td>
+    <td>
+      <re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}"
+                   path="${pageContext.request.contextPath}"/>
+    </td>
+    <td><br>
+      <button ng-click="acceptOffer(offer.id)">{{'ACCEPT' | translate }}</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
 
 
-<h1><spring:message code="commerce.myOffers"/></h1>
+<h1>{{'MY_OFFERS' | translate }}</h1>
 
-<c:choose>
-  <c:when test="${myTradesSize == 0}">
-    <div class="row">
-      <h2 style="text-align: center"><spring:message code="noMyOffers" /></h2>
-    </div>
-
-  </c:when>
-  <c:otherwise>
-    <table class="table">
-      <thead>
-      <td><spring:message code="commerce.user"/></td>
-      <td><spring:message code="commerce.offer"/></td>
-      <td><spring:message code="commerce.receive"/></td>
-      <td><spring:message code="commerce.remove"/></td>
-      </thead>
-      <tbody>
-      <c:forEach var="offer" items="${myTrades}">
-        <tr>
-          <td><br><br><us:User user="${offer.getOwner()}" path="${pageContext.request.contextPath}"/></td>
-          <td><re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}" path="${pageContext.request.contextPath}"/></td>
-          <td><re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}" path="${pageContext.request.contextPath}"/></td>
-          <td><br><form method="post" action="<c:url value="/commerce/delete"/>">
-            <input type="hidden" name="tradeId" value="${offer.getId()}"/>
-            <input type="submit" class="myButton" value="<spring:message code="commerce.remove"/>"/>
-            </form></td>
-        </tr>
-      </c:forEach>
-      </tbody>
-    </table>
-  </c:otherwise>
-</c:choose>
-
-<a href="<c:url value="/commerce/create"/>"><button class="myButton"><spring:message code="commerce.makeNewOffer"/></button></a>
+<div class="row" ng-show="offers.mine.size == 0">
+  <h2 style="text-align: center">{{'DIDNT_MAKE_OFFER' | translate }}</h2>
+</div>
+<table class="table" ng-hide="offers.mine.size == 0">
+  <thead>
+  <td>{{'USERNAME' | translate}}</td>
+  <td>{{'OFFERS' | translate}}</td>
+  <td>{{'RECEIVES' | translate}}</td>
+  <td>{{'REMOVE' | translate}}</td>
+  </thead>
+  <tbody>
+  <tr ng-repeat="offer in trade.mine">
+    <td><a ng-href="offer.user.url">{{offer.user.name}}</a></td>
+    <td>
+      <re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}"
+                   path="${pageContext.request.contextPath}"/>
+    </td>
+    <td>
+      <re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}"
+                   path="${pageContext.request.contextPath}"/>
+    </td>
+    <td><br>
+      <button ng-click="removeOffer(offer.id)">{{'REMOVE' | translate}}</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
