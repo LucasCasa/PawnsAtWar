@@ -32,70 +32,70 @@ import java.util.stream.Collectors;
 @Controller
 public class CommerceController {
 
-    @Autowired
-    private EmpireService es;
+  @Autowired
+  private EmpireService es;
 
-    @Autowired
-    private CommerceService cs;
+  @Autowired
+  private CommerceService cs;
 
-    @Autowired
-    private UserService us;
+  @Autowired
+  private UserService us;
 
-    @GET
-    @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllTrades() {
-        String username = AuthenticatedUser.getUser(us).getName();
-        List<TradeOffer> allOffers = cs.getAllOffers();
-        List<TradeOfferDTO> mine = new ArrayList<>();
-        List<TradeOfferDTO> others = new ArrayList<>();
-        for(TradeOffer t : allOffers){
-            if(t.getOwner().getName().equals(username))
-                mine.add(new TradeOfferDTO(t));
-            else
-                others.add(new TradeOfferDTO(t));
-        }
-        return Response.ok().entity(new TradeOffersDTO(mine, others)).build();
+  @GET
+  @Path("/")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getAllTrades() {
+    String username = AuthenticatedUser.getUser(us).getName();
+    List<TradeOffer> allOffers = cs.getAllOffers();
+    List<TradeOfferDTO> mine = new ArrayList<>();
+    List<TradeOfferDTO> others = new ArrayList<>();
+    for (TradeOffer t : allOffers) {
+      if (t.getOwner().getName().equals(username))
+        mine.add(new TradeOfferDTO(t));
+      else
+        others.add(new TradeOfferDTO(t));
     }
+    return Response.ok().entity(new TradeOffersDTO(mine, others)).build();
+  }
 
-    @POST
-    @Path("/trade/{id}")
-    public Response acceptTrade(@PathParam("id") final int id) {
-        User user = AuthenticatedUser.getUser(us);
-        TradeOffer offer = cs.getOffer(id);
-        if (offer == null || offer.getOwner().equals(user)) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        if (es.getResource(user, offer.getReceiveType()).getQuantity() < offer.getReceiveAmount()) {
-            return Response.status(Response.Status.FORBIDDEN).build();
-        }
-        cs.acceptOffer(offer, user);
-        return Response.noContent().build();
+  @POST
+  @Path("/trade/{id}")
+  public Response acceptTrade(@PathParam("id") final int id) {
+    User user = AuthenticatedUser.getUser(us);
+    TradeOffer offer = cs.getOffer(id);
+    if (offer == null || offer.getOwner().equals(user)) {
+      return Response.status(Response.Status.NOT_FOUND).build();
     }
+    if (es.getResource(user, offer.getReceiveType()).getQuantity() < offer.getReceiveAmount()) {
+      return Response.status(Response.Status.FORBIDDEN).build();
+    }
+    cs.acceptOffer(offer, user);
+    return Response.noContent().build();
+  }
 
-    @DELETE
-    @Path("/trade/{id}")
-    public Response deleteTrade(@PathParam("id") final int id) {
-        User user = AuthenticatedUser.getUser(us);
-        TradeOffer offer = cs.getOffer(id);
-        if (offer == null || offer.getOwner().getId() != user.getId()) {
-            return Response.status(Response.Status.NOT_FOUND).build();
-        }
-        cs.removeOffer(offer);
-        return Response.noContent().build();
+  @DELETE
+  @Path("/trade/{id}")
+  public Response deleteTrade(@PathParam("id") final int id) {
+    User user = AuthenticatedUser.getUser(us);
+    TradeOffer offer = cs.getOffer(id);
+    if (offer == null || offer.getOwner().getId() != user.getId()) {
+      return Response.status(Response.Status.NOT_FOUND).build();
     }
+    cs.removeOffer(offer);
+    return Response.noContent().build();
+  }
 
-    @POST
-    @Path("/")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response createTrade(TradeOfferCreateDTO create) {
-        User creator = AuthenticatedUser.getUser(us);
-        boolean created = cs.createOffer(creator, create.getOffer().getType(), create.getOffer().getAmount(),
-                create.getReceive().getType(), create.getReceive().getAmount());
-        if (created) {
-            return Response.noContent().build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+  @POST
+  @Path("/")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createTrade(TradeOfferCreateDTO create) {
+    User creator = AuthenticatedUser.getUser(us);
+    boolean created = cs.createOffer(creator, create.getOffer().getType(), create.getOffer().getAmount(),
+      create.getReceive().getType(), create.getReceive().getAmount());
+    if (created) {
+      return Response.noContent().build();
+    } else {
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
+  }
 }
