@@ -1,5 +1,7 @@
 package ar.edu.itba.paw.webapp.data;
 
+import ar.edu.itba.model.Point;
+
 import java.text.MessageFormat;
 
 public final class Validator {
@@ -10,6 +12,7 @@ public final class Validator {
 
     }
 
+
     public static boolean validBoardPosition(String pos) {
         if (isInteger(pos)) {
             if (Integer.parseInt(pos) <= Info.MAP_SIZE) {
@@ -17,6 +20,14 @@ public final class Validator {
             }
         }
         return false;
+    }
+
+    public static boolean validBoardPosition(Point point) {
+      return validBoardPosition(point.getX()) && validBoardPosition(point.getY());
+    }
+
+    public static boolean validBoardPosition(int pos) {
+      return pos >= 0 && pos <= Info.MAP_SIZE;
     }
 
     public static boolean isInteger(String pos) {
@@ -39,6 +50,7 @@ public final class Validator {
     private static boolean isValidPosToDisplay(int num) {
         return num >= Info.VIEW_RANGE && num <= Info.MAP_SIZE - Info.VIEW_RANGE;
     }
+
 
     public static String format(int x, int y) {
         if (isValidPosToDisplay(x) && isValidPosToDisplay(y)) {
