@@ -74,20 +74,20 @@ public class ArmyController {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response attack(ArmyAttackDTO attackDTO) {
     User user = AuthenticatedUser.getUser(us);
-    int xPrime = attackDTO.getPoint().getX()-1;
-    int yPrime = attackDTO.getPoint().getY()-1;
+    int xPrime = attackDTO.getPoint().getX() - 1;
+    int yPrime = attackDTO.getPoint().getY() - 1;
     Point point = new Point(xPrime, yPrime);
-    if(!Validator.validBoardPosition(point)) {
+    if (!Validator.validBoardPosition(point)) {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
     Army army = as.getArmyById(attackDTO.getArmyId());
-    if(army==null) {
+    if (army == null) {
       return Response.status(Response.Status.NOT_FOUND).build();
     } else if (!army.getUser().equals(user)) {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     Sector sector = ss.getSector(point);
-    if(sector==null || sector.getUser().equals(user) || !army.getAvailable() || sector.getType() == Info.EMPTY || sector.getType() == Info.TERR_GOLD) {
+    if (sector == null || sector.getUser().equals(user) || !army.getAvailable() || sector.getType() == Info.EMPTY || sector.getType() == Info.TERR_GOLD) {
       // TODO return a custom message for each
       return Response.status(Response.Status.FORBIDDEN).build();
     }
@@ -101,7 +101,7 @@ public class ArmyController {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response train(ArmyTrainDTO trainDTO) {
     User user = AuthenticatedUser.getUser(us);
-    Point point = new Point(trainDTO.getPoint().getX()-1, trainDTO.getPoint().getY()-1);
+    Point point = new Point(trainDTO.getPoint().getX() - 1, trainDTO.getPoint().getY() - 1);
     if (!Validator.validBoardPosition(point)) {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
