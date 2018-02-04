@@ -11,8 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -21,7 +19,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @Path("message")
 @Controller
@@ -40,7 +37,7 @@ public class MessageController {
     private PAWMailService mailService;
 
     @GET
-    @Path("/messages/{userId}")
+    @Path("/message/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getUserMessages(@PathParam("userId") final int userId){
 
@@ -62,19 +59,22 @@ public class MessageController {
 
     }
 
+//    @RequestParam(required = false) String username,@RequestParam(required = false) String message, @RequestParam(required = false) String subject, @ModelAttribute("userId") final User user, Locale locale
+
     @POST
-    @Path("/messages/sendmessage")
+    @Path("/message/{userId}/{username}/{message}/{subject}")
     @Produces(MediaType.APPLICATION_JSON)
-    public ModelAndView sendMessage(@RequestParam(required = false) String username,@RequestParam(required = false) String message, @RequestParam(required = false) String subject, @ModelAttribute("userId") final User user, Locale locale){
+    public Response createMessage(@PathParam("userId") final int userId, @PathParam("username") final String username, @PathParam("message") final String message, @PathParam("subject") final String subject ){
+        User user = us.findById(userId);
 
         ms.createMessage( user, us.findByUsername(username), subject, message);
 
         if(!us.exists(username)){
-            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
+            return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         if(message.length() > 1024 || subject.length() > 50){
-            return new ModelAndView("redirect:/messages?m=" + messageSource.getMessage("error.longMessage",null ,locale));
+            return Response.status(Response.Status.FORBIDDEN).build();
         }
         
 
@@ -82,12 +82,11 @@ public class MessageController {
 
     }
 
-
     @DELETE
-    @Path("/messages/delete/{messageId}")
-    public Response deleteMessage(@PathParam("messageId") final Long messageId){
+    @Path("/message/{id}")
+    public Response deleteMessage(@PathParam("id") final Long id){
 
-        Message mssg = ms.getById(messageId);
+        Message mssg = ms.getById(id);
 
         if(mssg == null)
             return Response.status(Response.Status.NOT_FOUND).build();
@@ -95,33 +94,28 @@ public class MessageController {
 
         ms.deleteMessage(mssg);
 
-        return Response.ok().build();
+        return Response.noContent().build();
     }
-    
-    @RequestMapping(value="/messages/seeMessage")
-    public ModelAndView answerMessage(@RequestParam final Long msgId, @ModelAttribute("userId") final User user){
 
+
+    @POST
+    @Path("/message/{id}")
+    public Response answerMessage(@PathParam("id") final Long msgId){
+
+        User user = AuthenticatedUser.getUserO(us);
         Message mssg = ms.getById(msgId);
 
-
         if(mssg==null || (!mssg.getFrom().equals(user) && !mssg.getTo().equals(user))){
-        	return new ModelAndView("redirect:/error");
+        	return Response.status(Response.Status.NOT_FOUND).build();
         }
 
         final ModelAndView mav = new ModelAndView("seeMessage");
         ms.markAsRead(msgId);
-        int messagesUnread = ms.countUnreadMessages(user);
+
+//        int messagesUnread = ms.countUnreadMessages(user);
 
 
-
-
-        mav.addObject("from", mssg.getFrom().getName());
-        mav.addObject("subject", mssg.getSubject());
-        mav.addObject("message", mssg.getMessage());
-        mav.addObject("unreadMessages", messagesUnread);
-        ;
-
-        return mav;
+        return Response.noContent().build();
     }
 
     @ModelAttribute("userId")
