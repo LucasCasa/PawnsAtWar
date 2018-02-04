@@ -1,10 +1,11 @@
-define(['PawnsAtWar'], function(PawnsAtWar) {
+define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
 
     'use strict';
-    PawnsAtWar.controller('RankingCtrl', function($scope, $http) {
-      $http.get('api/users/score').then(function(response){
-        $scope.players = response.data;
+    PawnsAtWar.controller('RankingCtrl', function($scope, $http, ApiService) {
+      ApiService.playersWithScore().then(function(response){
+        $scope.players = response;
+      }, function(error){
+
       });
     });
-
 });

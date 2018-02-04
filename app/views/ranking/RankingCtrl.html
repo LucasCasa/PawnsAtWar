@@ -6,9 +6,9 @@
   </thead>
   <tbody>
     <tr ng-repeat="player in players">
-      <td class="pos">{{$index}}</td>
+      <td class="pos">{{$index + 1}}</td>
       <td>
-        {{player.name}}
+        {{player.username}}
       </td>
       <td>{{player.score}}</td>
     </tr>

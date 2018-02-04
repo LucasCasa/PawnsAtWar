@@ -52,9 +52,21 @@ define(['routes',
             authPrefix: ''
           });
 				}]);
-    PawnsAtWar.run(function(authManager) {
+    PawnsAtWar.run(function($rootScope, $location, authManager, $window) {
       authManager.checkAuthOnRefresh();
+      $rootScope.$on('$routeChangeStart', function (event, next, current) {
+        // if logged in and trying to access loggin => redirect to students
+        if ($rootScope.isAuthenticated && ($location.url() == '#/login')) {
+          $window.location.href = '#/'
+        }
+        // if route requires auth and user is not logged in
+        if (!$rootScope.isAuthenticated && ($location.url != '#/login')) {
+          $window.location.href = '#/login'
+        }
+      });
     });
-		return PawnsAtWar;
+
+
+    return PawnsAtWar;
 	}
 );
