@@ -2,6 +2,8 @@
 <div class="row">
   <div class="col-md-6">
     <h2>{{'LOGIN' | translate}}</h2>
+    <div class="form-horizontal">
+      <h3 style="color:red" ng-show="showError">{{'WRONG_USER' | translate}}</h3>
       <div class="form-group">
         <label class="col-md-3" path="username">{{'USERNAME' | translate}}</label>
         <input class="col-md-4" ng-model="loginUsername" type="text" path="username"/>
@@ -13,6 +15,7 @@
       <div>
         <button ng-click="login()" ng-value="'LOGIN' | translate">{{'LOGIN' | translate}}</button>
       </div>
+    </div>
   </div>
 
 
@@ -21,22 +24,23 @@
     <form class="form-horizontal" action="#/register" method="post">
       <div class="form-group">
         <label class="col-md-4" path="username">{{'USERNAME' | translate}}</label>
-        <input class="col-md-6" type="text" path="username"/>
+        <input class="col-md-6" ng-model="registerUsername" type="text" path="username"/>
       </div>
       <div class="form-group">
         <label class="col-md-4" path="email">{{'EMAIL' | translate}}</label>
-        <input class="col-md-6" type="email" path="email"/>
+        <input class="col-md-6" ng-model="registerEmail" type="email" path="email"/>
       </div>
       <div class="form-group">
         <label class="col-md-4" path="password">{{'PASSWORD' | translate}} </label>
-        <input class="col-md-6" type="password" path="password"/>
+        <input class="col-md-6" id="password" ng-model="registerPassword" type="password" path="password"/>
       </div>
       <div class="form-group">
         <label class="col-md-4" path="repeatPassword">{{'REPEAT_PASSWORD' | translate}}</label>
-        <input class="col-md-6" type="password" path="repeatPassword"/>
+        <input class="col-md-6" ng-model="registerRepeat" id="confirm_password" type="password" path="repeatPassword"/>
+        <span id='message' style="color: red">{{'PASSWORD_DONT_MATCH' | translate}}</span>
       </div>
       <div class="form-group">
-        <input type="submit" ng-value="'REGISTER' | translate"/>
+        <button ng-click="register()" type="submit">{{'REGISTER' | translate}}</button>
       </div>
     </form>
   </div>

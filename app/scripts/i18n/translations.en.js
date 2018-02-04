@@ -127,7 +127,7 @@ define([], function() {
     NOT_YOUR_TERRAIN: 'This terrain doesn\'t belong to you',
     CANT_LEVEL_UP: 'Can\'t level up a terrain',
     MAX_LEVEL: 'Can\'t level up, maximum level reached',
-    PASSWORD_DONT_MATCH: 'The passwords don\'t match',
+    PASSWORD_DONT_MATCH: 'Don\'t match',
     USER_ALREADY_EXIST: 'The username already exists',
     WRONG_USER: 'The user with that password doesn\'t exist',
     ALREADY_LOGOUT: 'There is no account to logout',
