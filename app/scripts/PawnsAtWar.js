@@ -46,12 +46,15 @@ define(['routes',
 
           //jwt config
           $httpProvider.interceptors.push('jwtInterceptor');
-          jwtOptionsProvider.config({
+            jwtOptionsProvider.config({
             tokenGetter: function () { return localStorage.getItem('token') },
             authHeader: 'X-AUTH-TOKEN',
             authPrefix: ''
           });
 				}]);
+    PawnsAtWar.run(function(authManager) {
+      authManager.checkAuthOnRefresh();
+    });
 		return PawnsAtWar;
 	}
 );
