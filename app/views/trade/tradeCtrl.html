@@ -50,14 +50,16 @@
   </thead>
   <tbody>
   <tr ng-repeat="offer in trade.other">
-    <td><a ng-href="offer.user.url">{{offer.user.name}}</a></td>
+    <td><a ng-href="offer.user.url">{{offer.owner.username}}</a></td>
     <td>
-      <re:Resource rate="0" type="${offer.getOfferType()}" amount="${offer.getOfferAmount()}"
-                   path="${pageContext.request.contextPath}"/>
+      <img ng-show="offer.offer.type==0" style="height: 50px" src="images/iconResFood.png">
+      <img ng-show="offer.offer.type==1" style="height: 50px" src="images/iconResGold.png">
+      {{offer.offer.amount}}
     </td>
     <td>
-      <re:Resource rate="0" type="${offer.getReceiveType()}" amount="${offer.getReceiveAmount()}"
-                   path="${pageContext.request.contextPath}"/>
+      <img ng-show="offer.receive.type==0" style="height: 50px" src="images/iconResFood.png">
+      <img ng-show="offer.receive.type==1" style="height: 50px" src="images/iconResGold.png">
+      {{offer.receive.amount}}
     </td>
     <td><br>
       <button ng-click="acceptOffer(offer.id)">{{'ACCEPT' | translate }}</button>

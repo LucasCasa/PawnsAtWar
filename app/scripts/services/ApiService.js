@@ -57,8 +57,8 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
 
         this.createOffer = function(giveType, giveAmount, getType, getAmount) {
           var result = $q.defer();
-          var body = {offer:{type: giveAmount, amount: giveAmount}, receive:{type:getType, amount: getAmount}};
-          $http.post('api/commerce/trade', body).then(function(response){
+          var body = {offer:{type: giveType, amount: giveAmount}, receive:{type:getType, amount: getAmount}};
+          $http.post('api/commerce', body).then(function(response){
             if (response.status >= 400) {
               console.log(response.status);
               return result.reject(response);
