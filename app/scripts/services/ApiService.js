@@ -68,7 +68,21 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
             return result.reject(error);
           });
           return result.promise;
-        }
+        };
+
+        this.removeOffer = function(id) {
+          var result = $q.defer();
+          $http.delete('api/commerce/trade/' + id).then(function(response){
+            if (response.status >= 400) {
+              console.log(response.status);
+              return result.reject(response);
+            }
+            return result.resolve(response.data);
+          }, function (error) {
+            return result.reject(error);
+          });
+          return result.promise;
+        };
     });
 
 });

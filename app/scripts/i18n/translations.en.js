@@ -70,6 +70,7 @@ define([], function() {
     MAKE_NEW_OFFER: 'Make new offer',
     MY_OFFERS: 'My Offers',
     CREATE: 'Create',
+    CANCEL: 'Cancel',
     OFFER: 'Offer',
     RECEIVE: 'Receive',
     QUANTITY: 'Amount',
