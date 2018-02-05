@@ -5,8 +5,10 @@ import ar.edu.itba.interfaces.PAWMailService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.Message;
 import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.DTOs.MessageCreateDTO;
 import ar.edu.itba.paw.webapp.DTOs.MessageDTO;
 import ar.edu.itba.paw.webapp.DTOs.UserMessagesDTO;
+import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -37,14 +39,14 @@ public class MessageController {
     private PAWMailService mailService;
 
     @GET
-    @Path("/message/{userId}")
+    @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserMessages(@PathParam("userId") final int userId){
+    public Response getUserMessages(){
 
-        User user = us.findById(userId);
+        User user = AuthenticatedUser.getUserO(us);
 
         if (user == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
         final List<String> usernames = us.getUsernames();
@@ -59,31 +61,32 @@ public class MessageController {
 
     }
 
-//    @RequestParam(required = false) String username,@RequestParam(required = false) String message, @RequestParam(required = false) String subject, @ModelAttribute("userId") final User user, Locale locale
-
     @POST
-    @Path("/message/{userId}/{username}/{message}/{subject}")
+    @Path("/")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createMessage(@PathParam("userId") final int userId, @PathParam("username") final String username, @PathParam("message") final String message, @PathParam("subject") final String subject ){
-        User user = us.findById(userId);
+    public Response createMessage(MessageCreateDTO create){
+        User user = AuthenticatedUser.getUserO(us);
 
-        ms.createMessage( user, us.findByUsername(username), subject, message);
-
-        if(!us.exists(username)){
-            return Response.status(Response.Status.NOT_FOUND).build();
+        if(!us.exists(user.getName())){
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
 
-        if(message.length() > 1024 || subject.length() > 50){
-            return Response.status(Response.Status.FORBIDDEN).build();
+        if(create.getMessage().length() > 1024 || create.getSubject().length() > 50){
+            return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        
 
-        return new ModelAndView("redirect:/messages?s=" + messageSource.getMessage("messageSent",null,locale));
+        Message message =  ms.createMessage( user, us.findByUsername(user.getName()), create.getSubject(), create.getMessage());
+
+        if (message!=null) {
+            return Response.noContent().build();
+        } else {
+            return Response.status(Response.Status.BAD_REQUEST).build();
+        }
 
     }
 
     @DELETE
-    @Path("/message/{id}")
+    @Path("/{id}")
     public Response deleteMessage(@PathParam("id") final Long id){
 
         Message mssg = ms.getById(id);
@@ -98,40 +101,21 @@ public class MessageController {
     }
 
 
-    @POST
-    @Path("/message/{id}")
+    @PUT
+    @Path("/{id}")
     public Response answerMessage(@PathParam("id") final Long msgId){
 
         User user = AuthenticatedUser.getUserO(us);
         Message mssg = ms.getById(msgId);
 
         if(mssg==null || (!mssg.getFrom().equals(user) && !mssg.getTo().equals(user))){
-        	return Response.status(Response.Status.NOT_FOUND).build();
+        	return Response.status(Response.Status.BAD_REQUEST).build();
         }
-
-        final ModelAndView mav = new ModelAndView("seeMessage");
         ms.markAsRead(msgId);
 
 //        int messagesUnread = ms.countUnreadMessages(user);
 
-
         return Response.noContent().build();
-    }
-
-    @ModelAttribute("userId")
-    public User loggedUser (final HttpSession session){
-        if(session.getAttribute("userId") != null){
-        	User u = us.findById((Integer)session.getAttribute("userId"));
-            return  u;
-        }
-        return null;
-    }
-
-
-
-
-    private void sendEmail(String emailTo, String subject, String message){
-        mailService.sendEmail(emailTo, subject, message);
     }
 
 
