@@ -9,12 +9,14 @@ public class TileDTO {
 	private int x;
 	private int y;
 	private int type;
+	private int level;
 	private int owner;
 
 	public TileDTO(Sector sector) {
 		this.x = sector.getPosition().getX();
 		this.y = sector.getPosition().getY();
 		this.type = sector.getType();
+		this.level = sector.getLevel();
 		this.owner = sector.getUser() == null ? -1 : sector.getUser().getId();
 	}
 
@@ -41,6 +43,14 @@ public class TileDTO {
 	public void setType(int type) {
 		this.type = type;
 	}
+
+	public int getLevel() {
+	  return this.level;
+  }
+
+  public void setLevel(int level) {
+	  this.level = level;
+  }
 
 	public int getOwner() {
 		return owner;

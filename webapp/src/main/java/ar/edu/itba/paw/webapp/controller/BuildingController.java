@@ -1,30 +1,24 @@
 package ar.edu.itba.paw.webapp.controller;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import ar.edu.itba.interfaces.*;
 import ar.edu.itba.model.*;
-import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
+import ar.edu.itba.paw.webapp.DTOs.BuildDTO;
+import ar.edu.itba.paw.webapp.DTOs.TileDTO;
+import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import ar.edu.itba.paw.webapp.data.Info;
 import ar.edu.itba.paw.webapp.data.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
-import ar.edu.itba.paw.webapp.data.InformationBuilding;
-
-import javax.servlet.http.HttpSession;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 
-/**
- * Created by Muffin Team on 9/18/16.
- */
+@Path("/buildings")
 @Controller
 public class BuildingController {
 
@@ -36,150 +30,87 @@ public class BuildingController {
   private UserService us;
   @Autowired
   private ScheduleService sh;
-  @Autowired
-  private AlertService as;
-  @Autowired
-  private MessageService ms;
-  @Autowired
-  private MessageSource messageSource;
 
-
-  @RequestMapping(value = "/building", method = RequestMethod.GET)
-
-
-  public ModelAndView terrainParams(Locale locale,
-                                    @RequestParam(value = "x", required = false) final String x,
-                                    @RequestParam(value = "y", required = false) final String y,
-                                    @RequestParam(value = "e", required = false, defaultValue = "") final String error,
-                                    @RequestParam(value = "s", required = false, defaultValue = "") final String success,
-                                    @ModelAttribute("userId") final User user) {
-
-
-    if (user == null)
-      return new ModelAndView("redirect:/login");
-
-    if (!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidPosition", null, locale));
-    } else {
-
-      final ModelAndView mav = new ModelAndView("building");
-      Point p = new Point(Integer.parseInt(x), Integer.parseInt(y));
-      Sector sector = ss.getSector(p);
-      int id = sector.getType();
-      Alert a = as.getAlertByPoint(p);
-      String name = SectorType.get(id).toString();
-      int unreadMessages = ms.countUnreadMessages(user);
-      InformationBuilding ib = new InformationBuilding(id, name, messageSource.getMessage("description." + name, null, locale));
-      mav.addObject("castleCost", ss.getCastlePrice(user));
-      mav.addObject("canBuildCastle", es.validCastlePosition(p));
-      mav.addObject("building", ib);
-      mav.addObject("owner", sector.getUser());
-      mav.addObject("user", user);
-      mav.addObject("p", p);
-      mav.addObject("unreadMessages", unreadMessages);
-      mav.addObject("alert", a);
-      mav.addObject("price", ss.getPrice(user));
-      mav.addObject("level", sector.getLevel());
-      mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
-      mav.addObject("error", error);
-      mav.addObject("success", success);
-      mav.addObject("locale", locale);
-      mav.addObject("messageSource", messageSource);
-      return mav;
-
-    }
-
-
+  @GET
+  @Path("/")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getAllBuildings() {
+    User user = AuthenticatedUser.getUser(us);
+    List<TileDTO> buildingDTOList = new ArrayList<>();
+    ss.getAllBuildings(user).forEach(b -> buildingDTOList.add(new TileDTO(b)));
+    return Response.ok().entity(buildingDTOList).build();
   }
 
-
-  @RequestMapping(value = "/build", method = RequestMethod.POST)
-  public ModelAndView build(@RequestParam String x,
-                            @RequestParam String y,
-                            @RequestParam String type,
-                            @ModelAttribute("userId") final User user,
-                            Locale locale) {
-
-    if (!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y) || !Validator.isInteger(type)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidParam", null, locale));
+  @GET
+  @Path("/{x}/{y}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getBuilding(@PathParam("x") final int x, @PathParam("y") final int y) {
+    Sector sector = ss.getSector(new Point(x, y));
+    if (sector == null) {
+      return Response.status(Response.Status.NOT_FOUND).build();
     }
-    int xprime = Integer.parseInt(x);
-    int yprime = Integer.parseInt(y);
-    int typep = Integer.parseInt(type);
-
-
-    Sector s = ss.getSector(new Point(xprime, yprime));
-
-    if (s == null || (s.getType() != Info.TERR_GOLD && s.getType() != Info.EMPTY)) {
-      System.err.println("cant build");
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.cantConstruct", null, locale));
-    }
-
-    if (es.build(user, xprime, yprime, typep)) {
-      return new ModelAndView("redirect:/map");
-    } else {
-      System.err.println("build ret false");
-      return new ModelAndView("redirect:/building?x=" + xprime + "&y=" + yprime + "&e=" + messageSource.getMessage("error.noGold", null, locale));
-    }
-
+    return Response.ok().entity(new TileDTO(sector)).build();
   }
 
-
-  @RequestMapping(value = "/demolish", method = RequestMethod.POST)
-  public ModelAndView demolish(@RequestParam String x,
-                               @RequestParam String y,
-                               @ModelAttribute("userId") final User user,
-                               Locale locale) {
-    if (!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidPosition", null, locale));
+  @POST
+  @Path("/")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response build(BuildDTO buildDTO) {
+    User user = AuthenticatedUser.getUser(us);
+    Point p = new Point(buildDTO.getPosition().getX(), buildDTO.getPosition().getY());
+    if (!Validator.validBoardPosition(p)) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
-    Point p = new Point(Integer.parseInt(x), Integer.parseInt(y));
+    Sector s = ss.getSector(p);
+    if (!user.equals(s.getUser())) {
+      return Response.status(Response.Status.UNAUTHORIZED).build();
+    }
+    if (s.getType() != Info.TERR_GOLD && s.getType() != Info.EMPTY) {
+      return Response.status(Response.Status.FORBIDDEN).build();
+    }
+
+    if (es.build(user, p.getX(), p.getY(), buildDTO.getType())) {
+      return Response.status(Response.Status.NO_CONTENT).build();
+    } else {
+      return Response.status(Response.Status.FORBIDDEN).build();
+    }
+  }
+
+  @DELETE
+  @Path("/{x}/{y}")
+  public Response demolish(@PathParam("x") final int x, @PathParam("y") final int y) {
+    User user = AuthenticatedUser.getUser(us);
+    Point p = new Point(x, y);
+    if (!Validator.validBoardPosition(p)) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
     Sector s = ss.getSector(p);
     if (!s.getUser().equals(user)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.notYourPosition", null, locale));
+      return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     ss.deleteBuilding(p);
-    return new ModelAndView("redirect:/map");
+    return Response.status(Response.Status.NO_CONTENT).build();
   }
 
-  @RequestMapping(value = "/levelup", method = RequestMethod.POST)
-  public ModelAndView levelup(@RequestParam String x,
-                              @RequestParam String y,
-                              @ModelAttribute("userId") final User user,
-                              Locale locale) {
-    if (!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidPosition", null, locale));
+  @PUT
+  @Path("/{x}/{y}")
+  public Response levelUp(@PathParam("x") final int x, @PathParam("y") final int y) {
+    User user = AuthenticatedUser.getUser(us);
+    Point p = new Point(x, y);
+    if (!Validator.validBoardPosition(p)) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
-    Point p = new Point(Integer.parseInt(x), Integer.parseInt(y));
     Sector s = ss.getSector(p);
     if (!s.getUser().equals(user)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.notYourPosition", null, locale));
+      return Response.status(Response.Status.UNAUTHORIZED).build();
     }
-//        if(!(s.getLevel() == 1)){
-//            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.cantLevelUpTerrain",null,locale));
-//        }
-    if (s.getLevel() < 20) {
-      int price = ss.getPrice(user) + (int) Math.pow(s.getLevel(), 4);
-      if (es.getResource(user, Info.RES_GOLD).getQuantity() >= price) {
-        sh.levelUpTask(s);
-        es.subtractResourceAmount(user, Info.RES_GOLD, price);
-      } else {
-        return new ModelAndView("redirect:/building?x=" + x + "&y=" + y + "&e=" + messageSource.getMessage("error.noGold", null, locale));
-      }
-    } else {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.maxLevel", null, locale));
+    int price = ss.getPrice(user) + (int) Math.pow(s.getLevel(), 4);
+    int gold = es.getResource(user, Info.RES_GOLD).getQuantity();
+    if (s.getLevel() >= 20 || gold < price) {
+      return Response.status(Response.Status.FORBIDDEN).build();
     }
-
-    return new ModelAndView("redirect:/map?x=" + x + "&y=" + y);
+    sh.levelUpTask(s);
+    es.subtractResourceAmount(user, Info.RES_GOLD, price);
+    return Response.status(Response.Status.NO_CONTENT).build();
   }
-
-  @ModelAttribute("userId")
-  public User loggedUser(final HttpSession session) {
-    if (session.getAttribute("userId") == null) {
-      return null;
-    }
-    return us.findById((Integer) session.getAttribute("userId"));
-
-  }
-
 }
