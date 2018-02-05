@@ -15,7 +15,7 @@ public class TileDTO {
 		this.x = sector.getPosition().getX();
 		this.y = sector.getPosition().getY();
 		this.type = sector.getType();
-		this.owner = sector.getUser() == null ? -1 : sector.getUser().getId(); //TODO when we have auth
+		this.owner = sector.getUser() == null ? -1 : sector.getUser().getId();
 	}
 
 	public int getX() {
