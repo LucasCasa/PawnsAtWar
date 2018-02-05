@@ -9,13 +9,13 @@ public class TileDTO {
 	private int x;
 	private int y;
 	private int type;
-	private boolean owner;
+	private int owner;
 
 	public TileDTO(Sector sector) {
 		this.x = sector.getPosition().getX();
 		this.y = sector.getPosition().getY();
 		this.type = sector.getType();
-		this.owner = true; //TODO when we have auth
+		this.owner = sector.getUser() == null ? -1 : sector.getUser().getId(); //TODO when we have auth
 	}
 
 	public int getX() {
@@ -42,11 +42,11 @@ public class TileDTO {
 		this.type = type;
 	}
 
-	public boolean isOwner() {
+	public int getOwner() {
 		return owner;
 	}
 
-	public void setOwner(boolean owner) {
+	public void setOwner(int owner) {
 		this.owner = owner;
 	}
 }

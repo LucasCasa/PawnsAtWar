@@ -1,9 +1,12 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.interfaces.SectorService;
+import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.Point;
 import ar.edu.itba.model.Sector;
+import ar.edu.itba.model.User;
 import ar.edu.itba.paw.webapp.DTOs.MapDTO;
+import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import ar.edu.itba.paw.webapp.data.Info;
 import ar.edu.itba.paw.webapp.data.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,9 @@ import java.util.List;
 @Controller
 public class MapController {
 
+  @Autowired
+  private UserService us;
+
 	@Autowired
 	SectorService ss;
 
@@ -28,9 +34,10 @@ public class MapController {
 	@Path("/{x}/{y}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMap(@PathParam("x") final int x, @PathParam("y") final int y) {
-		int xPrime = Validator.getValidPos(x-1);
+    User user = AuthenticatedUser.getUser(us);
+    int xPrime = Validator.getValidPos(x-1);
 		int yPrime = Validator.getValidPos(y-1);
 		List<List<Sector>> elements = ss.getSector(new Point(xPrime,yPrime), Info.VIEW_RANGE);
-		return Response.ok().entity(new MapDTO(elements, xPrime+1, yPrime+1)).build();
+		return Response.ok().entity(new MapDTO(elements, xPrime+1, yPrime+1, user.getId())).build();
 	}
 }
