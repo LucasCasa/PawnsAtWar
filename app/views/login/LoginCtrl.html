@@ -21,7 +21,7 @@
 
   <div class="col-md-6">
     <h2>{{'REGISTER' | translate}}</h2>
-    <form class="form-horizontal" action="#/register" method="post">
+    <div class="form-horizontal">
       <div class="form-group">
         <label class="col-md-4" path="username">{{'USERNAME' | translate}}</label>
         <input class="col-md-6" ng-model="registerUsername" type="text" path="username"/>
@@ -42,6 +42,6 @@
       <div class="form-group">
         <button ng-click="register()" type="submit">{{'REGISTER' | translate}}</button>
       </div>
-    </form>
+    </div>
   </div>
 </div>

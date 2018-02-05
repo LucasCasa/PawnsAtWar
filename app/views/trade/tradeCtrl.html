@@ -60,8 +60,8 @@
       <img ng-show="offer.receive.type==1" style="height: 50px" src="images/iconResGold.png">
       {{offer.receive.amount}}
     </td>
-    <td><br>
-      <button ng-click="acceptOffer(offer.id)">{{'ACCEPT' | translate }}</button>
+    <td>
+      <button class="myButton" ng-click="acceptOffer(offer.id)">{{'ACCEPT' | translate }}</button>
     </td>
   </tr>
   </tbody>

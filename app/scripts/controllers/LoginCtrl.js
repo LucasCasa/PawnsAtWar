@@ -10,8 +10,10 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
       $scope.registerRepeat = '';
       $scope.showError = false;
 
-      $scope.login = function () {
-        ApiService.login($scope.loginUsername, $scope.loginPassword).then(function(status) {
+      $scope.login = function (user, pass) {
+        user = user === undefined ?  $scope.loginUsername : user;
+        pass = pass === undefined ?  $scope.loginPassword : pass;
+        ApiService.login(user, pass).then(function(status) {
           if(status == 200) {
             $window.location.href = '#/map';
           } else if(status > 400) {
@@ -23,7 +25,11 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
       };
       $scope.register = function () {
         if($scope.registerPassword == $scope.registerRepeat) {
-          ApiService.register($scope.registerUsername, $scope.registerPassword, $scope.registerEmail)
+          ApiService.register($scope.registerUsername, $scope.registerPassword, $scope.registerEmail).then(function(response) {
+            $scope.login($scope.registerUsername, $scope.registerPassword);
+          }, function(error) {
+              $scope.showError = true;
+          })
         }
       };
 

@@ -6,7 +6,7 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
           var credentials = {username: user, password: pass};
           var res = $q.defer();
           $http.post('api/login', credentials).success(function (result, status, headers) {
-            if(status > 400)
+            if(status >= 400)
               return res.reject(status);
 
             if(status == 200)
@@ -24,16 +24,14 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
         };
 
         this.register = function(user, pass, email) {
-            var result = $q.defer();
+          var result = $q.defer();
           var body = {username: user, password: pass, email: email};
           $http.post('api/users', body).then(function(response){
-            if(response.status == 200){
-              localStorage.setItem('token', headers('X-AUTH-TOKEN'));
-              return result.resolve(response);
+            if(response.status >= 400){
+              return result.reject(response);
             } else{
-              result.reject(response);
+              return result.resolve(response);
             }
-
           }, function(error){
             return result.reject(error);
           });
@@ -96,6 +94,20 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
           });
           return result.promise;
         };
+
+        this.acceptOffer = function(id) {
+          var result = $q.defer();
+          $http.post('api/commerce/trade/' + id, {}).then(function(response){
+            if (response.status >= 400) {
+              console.log(response.status);
+              return result.reject(response);
+            }
+            return result.resolve(response.data);
+          }, function (error) {
+            return result.reject(error);
+          });
+          return result.promise;
+        }
     });
 
 });

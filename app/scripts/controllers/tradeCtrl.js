@@ -29,7 +29,16 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
       ApiService.removeOffer(id).then(function(response){
         $scope.getTrade();
       }, function (error) {
-        alert("ERROR" + error);
+        alert("ERROR" + error.status);
+      });
+    };
+
+    $scope.acceptOffer = function (id) {
+      ApiService.acceptOffer(id).then(function (response) {
+        $scope.getTrade();
+        //Refresh reso?
+      }, function (error) {
+        alert("ERROR" + error.status);
       });
     };
 
