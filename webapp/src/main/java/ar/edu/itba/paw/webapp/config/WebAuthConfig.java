@@ -6,6 +6,7 @@ import ar.edu.itba.paw.webapp.auth.TokenAuthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -30,7 +31,7 @@ public class WebAuthConfig extends WebSecurityConfigurerAdapter {
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers("/api/**").authenticated();
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/users").permitAll().antMatchers("/api/**").authenticated();
 
         http.addFilterBefore(new LoginFilter("/api/login", tokenAuthService, userDetailsService, authenticationManager()), UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(new AuthFilter(tokenAuthService), UsernamePasswordAuthenticationFilter.class);
