@@ -24,7 +24,20 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
         };
 
         this.register = function(user, pass, email) {
+            var result = $q.defer();
+          var body = {username: user, password: pass, email: email};
+          $http.post('api/users', body).then(function(response){
+            if(response.status == 200){
+              localStorage.setItem('token', headers('X-AUTH-TOKEN'));
+              return result.resolve(response);
+            } else{
+              result.reject(response);
+            }
 
+          }, function(error){
+            return result.reject(error);
+          });
+          return result.promise;
         };
 
         this.playersWithScore = function() {
