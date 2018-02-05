@@ -14,7 +14,7 @@
 								<td style="background-color:#000;text-align: center;color: #FFF;">{{$index + map.y}}</td>
 								<td ng-repeat="tile in row" style="width:76px;height: 76px">
 								<a href="#">
-									<img ng-src="{{tile.type}}"/>
+									<img ng-class="getClass(tile.owner, map.id)" ng-src="{{tile.type}}"/>
 								</a></td>
 							</tr>
 					</table>

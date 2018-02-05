@@ -14,6 +14,15 @@ define(['PawnsAtWar','services/tileMapper'], function(PawnsAtWar) {
         });
       };
 
+      $scope.getClass = function (ownerId, playerId) {
+        if(ownerId == -1) {
+          return ""
+        } else if(ownerId == playerId){
+          return "friendly";
+        } else {
+          return 'hostile';
+        }
+      };
       $scope.populateMap('api/map/50/50');
     });
 
