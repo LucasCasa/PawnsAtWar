@@ -35,9 +35,9 @@ public class MapController {
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response getMap(@PathParam("x") final int x, @PathParam("y") final int y) {
     User user = AuthenticatedUser.getUser(us);
-    int xPrime = Validator.getValidPos(x-1);
-		int yPrime = Validator.getValidPos(y-1);
+    int xPrime = Validator.getValidPos(x);
+		int yPrime = Validator.getValidPos(y);
 		List<List<Sector>> elements = ss.getSector(new Point(xPrime,yPrime), Info.VIEW_RANGE);
-		return Response.ok().entity(new MapDTO(elements, xPrime+1, yPrime+1, user.getId())).build();
+		return Response.ok().entity(new MapDTO(elements, xPrime, yPrime, user.getId())).build();
 	}
 }
