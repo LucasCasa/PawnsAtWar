@@ -46,9 +46,11 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
 
     $scope.updateResources = function () {
       ApiService.getResources().then(function (response) {
-        $scope.resources = response;
+        $scope.res = response;
       });
     };
+
+    $scope.updateResources();
 
     $scope.setGet = function(val) {
       if($scope.giveType == val){

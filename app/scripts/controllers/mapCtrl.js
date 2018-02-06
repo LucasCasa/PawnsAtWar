@@ -23,6 +23,10 @@ define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/r
           return 'hostile';
         }
       };
+      ApiService.getResources().then(function (response) {
+        console.log(response);
+        $scope.res = response;
+      });
 
       $scope.populateMap(50,50);
       $scope.invalidPosition = function () {
