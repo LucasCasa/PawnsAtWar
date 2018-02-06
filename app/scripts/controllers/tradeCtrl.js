@@ -19,15 +19,16 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
         $scope.showNewOffer = false;
         $scope.giveAmount = '';
         $scope.getAmount = '';
+        $scope.updateResources();
         $scope.tradeError = false;
       }, function(error){
         $scope.tradeError = true;
       });
     };
-
     $scope.removeOffer = function(id) {
       ApiService.removeOffer(id).then(function(response){
         $scope.getTrade();
+        $scope.updateResources();
       }, function (error) {
         alert("ERROR" + error.status);
       });
@@ -36,11 +37,20 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
     $scope.acceptOffer = function (id) {
       ApiService.acceptOffer(id).then(function (response) {
         $scope.getTrade();
+        $scope.updateResources();
         //Refresh reso?
       }, function (error) {
         alert("ERROR" + error.status);
       });
     };
+
+    $scope.updateResources = function () {
+      ApiService.getResources().then(function (response) {
+        $scope.res = response;
+      });
+    };
+
+    $scope.updateResources();
 
     $scope.setGet = function(val) {
       if($scope.giveType == val){

@@ -1,10 +1,10 @@
 'use strict';
-define(['PawnsAtWar','services/tileMapper'], function(PawnsAtWar) {
+define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/resource'], function(PawnsAtWar) {
 
-    PawnsAtWar.controller('mapCtrl', function($scope, $http, tileMapper) {
+    PawnsAtWar.controller('mapCtrl', function($scope, $http, tileMapper, ApiService) {
 
-      $scope.populateMap = function(url) {
-        $http.get(url).then(function(response){
+      $scope.populateMap = function(x, y) {
+        $http.get('api/map/' + x +'/' + y).then(function(response){
           $scope.map = response.data;
           for(var i = 0; i< $scope.map.tiles.length; i++){
             for(var j =0; j< $scope.map.tiles[0].length; j++) {
@@ -16,14 +16,27 @@ define(['PawnsAtWar','services/tileMapper'], function(PawnsAtWar) {
 
       $scope.getClass = function (ownerId, playerId) {
         if(ownerId == -1) {
-          return ""
+          return "";
         } else if(ownerId == playerId){
           return "friendly";
         } else {
           return 'hostile';
         }
       };
-      $scope.populateMap('api/map/50/50');
+      ApiService.getResources().then(function (response) {
+        console.log(response);
+        $scope.res = response;
+      });
+
+      $scope.populateMap(50,50);
+      $scope.invalidPosition = function () {
+        return $scope.mapX === undefined || $scope.mapY === undefined || $scope.mapX < 0 || $scope.mapX > 100 || $scope.mapY < 0 || $scope.mapY > 100
+      };
+
+      $scope.gotoPosition = function () {
+        $scope.populateMap($scope.mapX, $scope.mapY);
+      };
     });
+
 
 });

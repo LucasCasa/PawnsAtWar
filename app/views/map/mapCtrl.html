@@ -1,67 +1,67 @@
-<div class="container">
-	<div>
-		<br>
-		<div class="row">
-			<div class="especial"></div>
-			<div class="col-md-8 col-sm-9">
-				<div id="Map" range="4" class="carousel slide" style="display: inline-block">
-					<table >
-						<tr style="background-color:#000;text-align: center;color: #FFF;">
-							<td></td>
-							<td ng-repeat="pos in [0,1,2,3,4,5,6,7,8]">{{map.tiles[0][0].x + pos}}</td>
-						</tr>
-							<tr ng-repeat="row in map.tiles">
-								<td style="background-color:#000;text-align: center;color: #FFF;">{{$index + map.tiles[0][0].y}}</td>
-								<td ng-repeat="tile in row" style="width:76px;height: 76px">
-								<a href="#">
-									<img ng-class="getClass(tile.owner, map.id)" ng-src="{{tile.type}}"/>
-								</a></td>
-							</tr>
-					</table>
-					<a style="left:-15px;" class="left carousel-control" ng-click="populateMap(map.prevx)" role="button">
-					<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-					<span class="sr-only">Left</span>
-					</a>
-					<a style="top:-15px;" class="up carousel-control" ng-click="populateMap(map.prevy)" role="button">
-					<span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
-					<span class="sr-only">Up</span>
-					</a>
-					<a style="right:-15px;"class="right carousel-control" ng-click="populateMap(map.nextx)" role="button">
-					<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-					<span class="sr-only">Right</span>
-					</a>
-					<a style="bottom:-15px;" class="down carousel-control" ng-click="populateMap(map.nexty)" role="button">
-					<span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
-					<span class="sr-only">Down</span>
-					</a>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<!-- Resource bar -->
-				<br>
-				<div class="form-inline" >
-					<div class="form-group">
-						<label for="Xval">X:</label>
-						<input type="text" class="form-control" id="Xval" size="3">
+<div>
+  <br>
+  <div class="row">
+    <div class="especial"></div>
+    <div class="col-md-8 col-sm-9">
+      <div id="Map" range="4" class="carousel slide" style="display: inline-block">
+        <table>
+          <tr style="background-color:#000;text-align: center;color: #FFF;">
+            <td></td>
+            <td ng-repeat="pos in [0,1,2,3,4,5,6,7,8]">{{map.tiles[0][0].x + pos}}</td>
+          </tr>
+          <tr ng-repeat="row in map.tiles">
+            <td style="background-color:#000;text-align: center;color: #FFF;">{{$index + map.tiles[0][0].y}}</td>
+            <td ng-repeat="tile in row" style="width:76px;height: 76px">
+              <a href="#">
+                <img class="img-responsive" ng-class="getClass(tile.owner, map.id)" ng-src="{{tile.type}}"/>
+              </a></td>
+          </tr>
+        </table>
+        <a style="left:-15px;" class="left carousel-control" ng-click="populateMap(map.prevx)" role="button">
+          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+          <span class="sr-only">Left</span>
+        </a>
+        <a style="top:-15px;" class="up carousel-control" ng-click="populateMap(map.prevy)" role="button">
+          <span class="glyphicon glyphicon-chevron-up" aria-hidden="true"></span>
+          <span class="sr-only">Up</span>
+        </a>
+        <a style="right:-15px;" class="right carousel-control" ng-click="populateMap(map.nextx)" role="button">
+          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+          <span class="sr-only">Right</span>
+        </a>
+        <a style="bottom:-15px;" class="down carousel-control" ng-click="populateMap(map.nexty)" role="button">
+          <span class="glyphicon glyphicon-chevron-down" aria-hidden="true"></span>
+          <span class="sr-only">Down</span>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <!-- Resource bar -->
+      <resource res="res"></resource>
+      <br>
+      <div class="form-inline">
+        <div class="form-group">
+          <label for="Xval">X:</label>
+          <input type="text" class="form-control" ng-model="mapX" id="Xval" size="3">
 
-					</div>
-					<div class="form-group">
-						<label for="Yval">Y:</label>
-						<input type="text" class="form-control" id="Yval" size="3">
+        </div>
+        <div class="form-group">
+          <label for="Yval">Y:</label>
+          <input type="text" class="form-control" id="Yval" ng-model="mapY" size="3">
 
-					</div>
-					<button class="myButton" id="gotoDir" onclick="redir()"><spring:message code="button.go" text="IR"/> </button>
-					<div id="error" style="display:none; color:#FF0000"><spring:message code="labelError.map"/> </div>
-				</div>
-				<br>
-					<!-- <div class="well well-sm">
-						<p>${alert.message}</p>
-						<spring:message code="alert.finalize"/> <span class="timeR">
-						<nu:Number number="${(alert.date.getTime() - now) / 1000}"/></span> <spring:message code="alert.seconds"/>
-					</div> -->
-			</div>
-		</div>
-	</div>
+        </div>
+        <button class="myButton" id="gotoDir" ng-disabled="invalidPosition()" ng-click="gotoPosition()">{{'GO' |
+          translate}}
+        </button>
+      </div>
+      <br>
+      <!-- <div class="well well-sm">
+                    <p>${alert.message}</p>
+                    <spring:message code="alert.finalize"/> <span class="timeR">
+                    <nu:Number number="${(alert.date.getTime() - now) / 1000}"/></span> <spring:message code="alert.seconds"/>
+                </div> -->
+    </div>
+  </div>
 </div>
 <br/>
 <br/>
