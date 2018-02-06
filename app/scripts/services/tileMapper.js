@@ -14,6 +14,19 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
           case 7: return 'images/STABLE.jpg';
           default: return '#';
         }
+      };
+      this.getDescription = function (type) {
+        switch (type) {
+          case 0: return 'DESC_EMPTY';
+          case 1: return 'DESC_CASTLE';
+          case 2: return 'DESC_ARCHERY';
+          case 3: return 'DESC_BARRACKS';
+          case 4: return 'DESC_GOLD';
+          case 5: return 'DESC_TERR_GOLD';
+          case 6: return 'DESC_MILL';
+          case 7: return 'DESC_STABLE';
+          default: return '#';
+        }
       }
     });
 

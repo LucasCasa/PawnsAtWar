@@ -1,0 +1,40 @@
+<div id="terrain">
+  <resource res="res"></resource>
+  <br>
+  <div class="row">>
+      <h3 style="text-align: center;" ng-show="building.owner != -1">{{'TERRAIN_BELONGS' | translate}} {{building.owner.username}}</h3>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-4"> <img class="img-responsive" ng-src="{{tileMapper.getImage(building.type)}}" /></div>
+    <div class="col-md-8">
+      <h2 class="success" style="text-align: center"></h2>
+      <h2 class="error" style="text-align: center"></h2>
+      <h3><strong>{{tileMapper.getDescription(building.type) | translate}}</strong></h3>
+      <!-- LevelUp -->
+          <!-- <build:Building alert="${alert}" info="${building}" level="${level}" point="${p}" locale="${locale}" price="${price}" messageSource="${messageSource}" path="${pageContext.request.contextPath}"/>
+          <!-- attack -->
+      <!-- <div class="col-md-2" onclick="att()"><a href="<c:url value="/armies?x=${p.getX()}&y=${p.getY()}"/>"><button class="myButton"><spring:message code="button.attack"/></button></a></div>
+      <!-- create -->
+      <table id="buildListTable" style="table-layout:fixed;">
+            <thead>
+            <td>{{'BUILDING' | translate}}</td>
+            <td>{{'DESCRIPTION' | translate}}</td>
+            <td>{{'COST' | translate}}</td>
+            <td>{{'BUILD' | translate}}</td>
+            </thead>
+            <tbody>
+            <tr>
+              <td><img class="img-responsive" src="images/CASTLE.png"/></td>
+              <td style="text-align: center;">{{buildings[1].description | translate}}</td>
+              <td style="text-align: center;">{{buildings[1].cost}}</td>
+              <td>
+                <button class="myButton">{{'BUILD' | translate}}</button>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+    </div>
+  </div>
+</div>
+

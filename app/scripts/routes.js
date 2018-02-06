@@ -39,8 +39,12 @@ define([], function () {
         data: {
           requiresLogin: true
         }
-      }
-      /* ===== yeoman hook ===== */
+      },
+      '/building/:x/:y': {
+                templateUrl: 'views/building/buildingCtrl.html',
+                controller: 'buildingCtrl'
+            }
+            /* ===== yeoman hook ===== */
       /* Do not remove these commented lines! Needed for auto-generation */
     }
   };
