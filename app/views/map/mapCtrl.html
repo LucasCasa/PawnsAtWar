@@ -12,8 +12,8 @@
           <tr ng-repeat="row in map.tiles">
             <td style="background-color:#000;text-align: center;color: #FFF;">{{$index + map.tiles[0][0].y}}</td>
             <td ng-repeat="tile in row" style="width:76px;height: 76px">
-              <a href="#">
-                <img class="img-responsive" ng-class="getClass(tile.owner, map.id)" ng-src="{{tile.type}}"/>
+              <a ng-href="{{'#/building/' + tile.x + '/' + tile.y}}">
+                <img class="img-responsive" ng-class="getClass(tile.owner.id, map.id)" ng-src="{{tile.type}}"/>
               </a></td>
           </tr>
         </table>
@@ -36,7 +36,6 @@
       </div>
     </div>
     <div class="col-md-4">
-      <!-- Resource bar -->
       <resource res="res"></resource>
       <br>
       <div class="form-inline">

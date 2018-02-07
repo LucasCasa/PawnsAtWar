@@ -15,7 +15,7 @@ define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/r
       };
 
       $scope.getClass = function (ownerId, playerId) {
-        if(ownerId == -1) {
+        if(ownerId === undefined) {
           return "";
         } else if(ownerId == playerId){
           return "friendly";

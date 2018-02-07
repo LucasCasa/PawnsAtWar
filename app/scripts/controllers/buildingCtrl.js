@@ -14,6 +14,8 @@ define(['PawnsAtWar', 'services/ApiService', 'directives/resource', 'services/ti
         $scope.buildings[i] = {img:tileMapper.getImage(i), description:tileMapper.getDescription(i), cost:1000};
       }
 
+      $scope.getImage = tileMapper.getPngImage;
+      $scope.getDescription = tileMapper.getDescription;
     });
 
 });

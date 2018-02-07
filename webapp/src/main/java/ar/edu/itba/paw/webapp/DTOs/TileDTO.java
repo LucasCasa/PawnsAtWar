@@ -10,14 +10,14 @@ public class TileDTO {
 	private int y;
 	private int type;
 	private int level;
-	private int owner;
+	private UserDTO owner;
 
 	public TileDTO(Sector sector) {
 		this.x = sector.getPosition().getX();
 		this.y = sector.getPosition().getY();
 		this.type = sector.getType();
 		this.level = sector.getLevel();
-		this.owner = sector.getUser() == null ? -1 : sector.getUser().getId();
+		this.owner = sector.getUser() == null? null : new UserDTO(sector.getUser());
 	}
 
 	public int getX() {
@@ -52,11 +52,11 @@ public class TileDTO {
 	  this.level = level;
   }
 
-	public int getOwner() {
+	public UserDTO getOwner() {
 		return owner;
 	}
 
-	public void setOwner(int owner) {
+	public void setOwner(UserDTO owner) {
 		this.owner = owner;
 	}
 }

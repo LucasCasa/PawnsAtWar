@@ -15,6 +15,20 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
           default: return '#';
         }
       };
+
+      this.getPngImage = function (type) {
+        switch (type){
+          case 0: return 'images/EMPTY.png';
+          case 1: return 'images/CASTLE.png';
+          case 2: return 'images/ARCHERY.png';
+          case 3: return 'images/BARRACKS.png';
+          case 4: return 'images/GOLD.png';
+          case 5: return 'images/TERR_GOLD.png';
+          case 6: return 'images/MILL.png';
+          case 7: return 'images/STABLE.png';
+          default: return '#';
+        }
+      };
       this.getDescription = function (type) {
         switch (type) {
           case 0: return 'DESC_EMPTY';
