@@ -2,38 +2,65 @@
   <resource res="res"></resource>
   <br>
   <div class="row">
-      <h3 style="text-align: center;" ng-show="building.owner != null">{{'TERRAIN_BELONGS' | translate}} {{building.owner.username}}</h3>
+    <h3 style="text-align: center;" ng-show="building.tile.owner != null">{{'TERRAIN_BELONGS' | translate}}
+      {{building.tile.owner.username}}</h3>
   </div>
   <br>
   <div class="row">
-    <div class="col-md-4"> <img class="img-responsive" ng-src="{{getImage(building.type)}}" /></div>
+    <div class="col-md-4"><img class="img-responsive" ng-src="{{getImage(building.tile.type)}}"/></div>
     <div class="col-md-8">
       <h2 class="success" style="text-align: center"></h2>
       <h2 class="error" style="text-align: center"></h2>
-      <h3><strong>{{getDescription(building.type) | translate}}</strong></h3>
-      <!-- LevelUp -->
-          <!-- <build:Building alert="${alert}" info="${building}" level="${level}" point="${p}" locale="${locale}" price="${price}" messageSource="${messageSource}" path="${pageContext.request.contextPath}"/>
-          <!-- attack -->
-      <!-- <div class="col-md-2" onclick="att()"><a href="<c:url value="/armies?x=${p.getX()}&y=${p.getY()}"/>"><button class="myButton"><spring:message code="button.attack"/></button></a></div>
-      <!-- create -->
-      <table id="buildListTable" style="table-layout:fixed;">
-            <thead>
-            <td>{{'BUILDING' | translate}}</td>
-            <td>{{'DESCRIPTION' | translate}}</td>
+      <h3><strong>{{getDescription(building.tile.type) | translate}}</strong></h3>
+      <div class="row">
+        <div class="col-md-2">
+          <button class="myButton">{{'DEMOLISH' | translate}}</button>
+        </div>
+        <div class="col-md-3">
+          <button class="myButton">{{'LEVEL_UP' | translate}}</button>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <table class="table" id="Level">
+          <thead>
+          <tr>
+            <td> {{'LEVEL' | translate}}</td>
+            <td> {{buildingHability() | translate}}</td>
             <td>{{'COST' | translate}}</td>
-            <td>{{'BUILD' | translate}}</td>
-            </thead>
-            <tbody>
-            <tr>
-              <td><img class="img-responsive" src="images/CASTLE.png"/></td>
-              <td style="text-align: center;">{{buildings[1].description | translate}}</td>
-              <td style="text-align: center;">{{buildings[1].cost}}</td>
-              <td>
-                <button class="myButton">{{'BUILD' | translate}}</button>
-              </td>
-            </tr>
-            </tbody>
-          </table>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="level in range(building.tile.level,20)">
+            <td>{{level}}</td>
+            <td></td>
+            <td>{{1000 + level * level * level * level}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div ng-show="canAttack()" class="col-md-2">
+        <button class="myButton" ng-click="attack()">{{'ATTACK' | translate}}</button>
+      </div>
+      <h2 class="success" ng-show="building.alreadyBuilding">{{'BUILDING_BEING_CONSTRUCTED' | translate}}</h2>
+      <table ng-show="canBuild()" id="buildListTable" style="table-layout:fixed;">
+        <thead>
+        <td>{{'BUILDING' | translate}}</td>
+        <td>{{'DESCRIPTION' | translate}}</td>
+        <td>{{'COST' | translate}}</td>
+        <td>{{'BUILD' | translate}}</td>
+        </thead>
+        <tbody>
+        <tr style="text-align: center;" ng-repeat="b in buildings" ng-show="canBuildThis(b.type)">
+          <td><img class="img-responsive" ng-src="{{b.img}}"/></td>
+          <td>{{b.description | translate}}</td>
+          <td>{{b.cost}}</td>
+          <td>
+            <button class="myButton" ng-click="build(b.type)">{{'BUILD' | translate}}</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 </div>

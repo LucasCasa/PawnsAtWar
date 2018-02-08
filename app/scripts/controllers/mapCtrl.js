@@ -13,6 +13,17 @@ define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/r
           }
         });
       };
+      $scope.populateMapByUrl = function (url) {
+        if(url == '#') return;
+        $http.get(url).then(function(response){
+          $scope.map = response.data;
+          for(var i = 0; i< $scope.map.tiles.length; i++){
+            for(var j =0; j< $scope.map.tiles[0].length; j++) {
+              $scope.map.tiles[i][j].type = tileMapper.getImage($scope.map.tiles[i][j].type);
+            }
+          }
+        });
+      };
 
       $scope.getClass = function (ownerId, playerId) {
         if(ownerId === undefined) {

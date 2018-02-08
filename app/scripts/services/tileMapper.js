@@ -11,7 +11,7 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
           case 4: return 'images/GOLD.jpg';
           case 5: return 'images/TERR_GOLD.jpg';
           case 6: return 'images/MILL.jpg';
-          case 7: return 'images/STABLE.jpg';
+          case 8: return 'images/STABLE.jpg';
           default: return '#';
         }
       };
@@ -25,7 +25,7 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
           case 4: return 'images/GOLD.png';
           case 5: return 'images/TERR_GOLD.png';
           case 6: return 'images/MILL.png';
-          case 7: return 'images/STABLE.png';
+          case 8: return 'images/STABLE.png';
           default: return '#';
         }
       };
@@ -38,7 +38,7 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
           case 4: return 'DESC_GOLD';
           case 5: return 'DESC_TERR_GOLD';
           case 6: return 'DESC_MILL';
-          case 7: return 'DESC_STABLE';
+          case 8: return 'DESC_STABLE';
           default: return '#';
         }
       }

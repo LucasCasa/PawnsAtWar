@@ -147,6 +147,7 @@ define([], function() {
     DESC_TERR_GOLD : 'This is an area available for gold mine construction.',
     DESC_MILL : 'This building generates food.',
     DESC_STABLE : 'This building is a stable where knights can be recruited.',
+    BUILDING_BEING_CONSTRUCTED: 'A building is being constructed in this position',
     EMPTY : ' Empty',
     CASTLE : ' Castle',
     ARCHERY : ' Archery',

@@ -2,6 +2,7 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
 
     'use strict';
     PawnsAtWar.service('ApiService', function($q, $http) {
+
         this.login = function (user, pass) {
           var credentials = {username: user, password: pass};
           var res = $q.defer();
@@ -124,6 +125,48 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
       this.getBuilding = function (x, y) {
         var result = $q.defer();
         $http.get('api/buildings/' + x + '/' + y).then(function(response){
+          if (response.status >= 400) {
+            console.log(response.status);
+            return result.reject(response);
+          }
+          return result.resolve(response.data);
+        }, function (error) {
+          return result.reject(error);
+        });
+        return result.promise;
+      };
+
+      this.build = function(x, y, type) {
+        var result = $q.defer();
+        $http.post('api/buildings',{type:type, position:{x:x, y:y}}).then(function(response){
+          if (response.status >= 400) {
+            console.log(response.status);
+            return result.reject(response);
+          }
+          return result.resolve(response.data);
+        }, function (error) {
+          return result.reject(error);
+        });
+        return result.promise;
+      };
+
+      this.demolish = function(x, y) {
+        var result = $q.defer();
+        $http.delete('api/buildings/' + x + '/' + y).then(function(response){
+          if (response.status >= 400) {
+            console.log(response.status);
+            return result.reject(response);
+          }
+          return result.resolve(response.data);
+        }, function (error) {
+          return result.reject(error);
+        });
+        return result.promise;
+      };
+
+      this.levelUp = function (x, y) {
+        var result = $q.defer();
+        $http.put('api/buildings/' + x + '/' + y,{}).then(function(response){
           if (response.status >= 400) {
             console.log(response.status);
             return result.reject(response);
