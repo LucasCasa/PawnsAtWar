@@ -12,16 +12,17 @@
       <h2 class="success" style="text-align: center"></h2>
       <h2 class="error" style="text-align: center"></h2>
       <h3><strong>{{getDescription(building.tile.type) | translate}}</strong></h3>
-      <div class="row">
+      <h2 class="success" ng-show="building.alreadyBuilding">{{'BUILDING_BEING_CONSTRUCTED' | translate}}</h2>
+      <div ng-show="canUpgrade()" class="row">
         <div class="col-md-2">
-          <button class="myButton">{{'DEMOLISH' | translate}}</button>
+          <button ng-click="demolish()" class="myButton">{{'DEMOLISH' | translate}}</button>
         </div>
         <div class="col-md-3">
-          <button class="myButton">{{'LEVEL_UP' | translate}}</button>
+          <button ng-click="levelUp()" class="myButton">{{'LEVEL_UP' | translate}}</button>
         </div>
       </div>
       <br>
-      <div class="row">
+      <div ng-show="building.tile.owner != null && building.id == building.tile.owner.id" class="row">
         <table class="table" id="Level">
           <thead>
           <tr>
@@ -42,7 +43,6 @@
       <div ng-show="canAttack()" class="col-md-2">
         <button class="myButton" ng-click="attack()">{{'ATTACK' | translate}}</button>
       </div>
-      <h2 class="success" ng-show="building.alreadyBuilding">{{'BUILDING_BEING_CONSTRUCTED' | translate}}</h2>
       <table ng-show="canBuild()" id="buildListTable" style="table-layout:fixed;">
         <thead>
         <td>{{'BUILDING' | translate}}</td>

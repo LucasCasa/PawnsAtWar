@@ -38,7 +38,7 @@
     <div class="col-md-4">
       <resource res="res"></resource>
       <br>
-      <div class="form-inline">
+      <form  ng-submit="gotoPosition()" class="form-inline">
         <div class="form-group">
           <label for="Xval">X:</label>
           <input type="text" class="form-control" ng-model="mapX" id="Xval" size="3">
@@ -49,10 +49,10 @@
           <input type="text" class="form-control" id="Yval" ng-model="mapY" size="3">
 
         </div>
-        <button class="myButton" id="gotoDir" ng-disabled="invalidPosition()" ng-click="gotoPosition()">{{'GO' |
+        <button class="myButton" id="gotoDir" ng-disabled="invalidPosition()">{{'GO' |
           translate}}
         </button>
-      </div>
+      </form>
       <br>
       <!-- <div class="well well-sm">
                     <p>${alert.message}</p>

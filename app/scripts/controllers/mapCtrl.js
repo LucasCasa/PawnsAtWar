@@ -45,7 +45,8 @@ define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/r
       };
 
       $scope.gotoPosition = function () {
-        $scope.populateMap($scope.mapX, $scope.mapY);
+        if(!$scope.invalidPosition())
+          $scope.populateMap($scope.mapX, $scope.mapY);
       };
     });
 
