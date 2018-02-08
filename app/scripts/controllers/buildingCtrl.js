@@ -75,6 +75,42 @@ define(['PawnsAtWar', 'services/ApiService', 'directives/resource', 'services/ti
         }
         return input;
       };
+
+      $scope.getBonusIcon = function(type){
+        switch (type) {
+          case 1: return "images/silo.png";
+          case 2:
+          case 3:
+          case 6:
+          case 8: return "images/iconResFood.png";
+          case 4: return "images/iconResGold.png";
+          default : return "#";
+        }
+      };
+
+      $scope.getBonusValue = function (type, level) {
+        switch(type){
+          case 6:
+          case 4: return level*0.1;
+          case 1: return 1000 + level * level * level * level;
+          case 3: return 31 - level;
+          case 2: return 51 - level;
+          case 8: return 71 - level;
+          default: return -1;
+        }
+      };
+
+      $scope.getBonusName = function (type) {
+        switch (type) {
+          case 1: return 'EXTRA_STORAGE';
+          case 2:
+          case 3:
+          case 8: return 'TROOP_COST';
+          case 6: return 'FOOD_PER_SECOND';
+          case 4: return 'GOLD_PER_SECOND';
+          default: return '';
+        }
+      };
     });
 
 });

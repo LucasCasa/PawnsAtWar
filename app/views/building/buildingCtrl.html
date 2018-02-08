@@ -26,15 +26,15 @@
           <thead>
           <tr>
             <td> {{'LEVEL' | translate}}</td>
-            <td> {{buildingHability() | translate}}</td>
+            <td> {{getBonusName(building.tile.type) | translate}}</td>
             <td>{{'COST' | translate}}</td>
           </tr>
           </thead>
           <tbody>
-          <tr ng-repeat="level in range(building.tile.level,20)">
+          <tr ng-repeat="level in range(building.tile.level,20)" ng-class="{bold:$first}">
             <td>{{level}}</td>
-            <td></td>
-            <td>{{1000 + level * level * level * level}}</td>
+            <td><img class="resource" ng-src="{{getBonusIcon(building.tile.type)}}"><span class="quantity">{{getBonusValue(building.tile.type, level) | number:1}}</span></td>
+            <td><img class="resource" src="images/iconResGold.png"><span class="quantity">{{1000 + level * level * level * level}}</span></td>
           </tr>
           </tbody>
         </table>
