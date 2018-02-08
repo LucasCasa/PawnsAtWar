@@ -54,7 +54,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MINUTE,s.getLevel());
         Date d = c.getTime();
-        Alert alert = as.createAlert(s.getUser(),getLevelUpAlertMessage(s,d),d,AlertType.UPGRADE.toString(),s.getPosition(),null,null);
+        Alert alert = as.createAlert(s.getUser(),getLevelUpAlertMessage(s,d),d,AlertType.UPGRADE.toString(),s.getPosition(),s.getType(),null);
         setLevelUpTask(s,alert,d);
     }
 
