@@ -1,0 +1,74 @@
+<!-- <h2 class="success" style="text-align: center">${success}</h2> -->
+<h1>{{'MESSAGE_RECEIVED' | translate}}</h1>
+<!-- <div class="row">
+  <h2 style="text-align: center">{{'NO_MESSAGE' | translate}}</h2>
+</div> -->
+
+<h1>{{'MESSAGE_UNREAD' | translate}}</h1>
+<table class="table table-hover">
+  <thead>
+  <td>{{'USERNAME' | translate}}</td>
+  <td>{{'SUBJECT' | translate}}</td>
+  <td>{{'ACTION' | translate}}</td>
+  </thead>
+  <tbody>
+  <tr ng-repeat="message in messages.read" class="clickable-row">
+    <td>{{message.from}}</td>
+    <td>{{mesagge.subject}}</td>
+    <td>
+      <form method="post" action="{{message.delete}}">
+        <input type="hidden" name="id" ng-value="message.id"/>
+        <input type="submit" class="myButton" ng-value="'DELETE' | translate"/>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<h1>{{'READ_MESSAGE' | translate}}</h1>
+<table class="table table-hover">
+  <thead>
+  <td>{{'USERNAME' | translate}}</td>
+  <td>{{'SUBJECT' | translate}}</td>
+  <td>{{'ACTION' | translate }}</td>
+  </thead>
+  <tbody>
+  <tr ng-repeat="message in messages.unread" class="clickable-row">
+    <td>{{message.from}}</td>
+    <td>{{message.subject}}</td>
+    <td>
+      <form method="post" action="{{message.delete}}">
+        <input type="hidden" name="id" ng-value="message.id"/>
+        <input type="submit" class="myButton" ng-value="'DELETE' | translate"/>
+      </form>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<h1>{{'CREATE_MESSAGE' | translate}}</h1>
+<form method="post" action="{{messages.create}}">
+  <div class="form-group">
+    <label>{{'USERNAME' | translate}}</label>
+    <br>
+    <input class="form-control" id="list" name="username" placeholder="{{'MAIL_PLACEHOLDER' | translate}}">
+  </div>
+  <div class="form-group">
+    <label>{{'SUBJECT' | translate}}</label>
+    <input type="subject" class="form-control" maxlength="50" name="subject" aria-describedby="subjectHelp"
+           placeholder="{{'SUBJECT' | translate}}">
+  </div>
+  <div class="form-group">
+    <label>{{'MESSAGE' | translate}}</label>
+    <textarea class="form-control" name="message" onkeyup="textCounter(this,'counter',1024);" id="exampleTextarea"
+              rows="3" maxlength="1024"></textarea>
+    <label>{{'CHARACTER_REMAINING' | translate}}</label>
+    <input disabled style="background: white" maxlength="3" size="3" value="1024" id="counter">
+  </div>
+  <button type="submit" class="myButton" onclick="showMs()">
+    {{'SUBMIT' | translate}}
+  </button>
+</form>
+
+
+

@@ -25,98 +25,98 @@ import java.util.List;
 @Path("message")
 @Controller
 public class MessageController {
-    @Autowired
-    private UserService us;
+  @Autowired
+  private UserService us;
 
-    @Autowired
-    private MessageSource messageSource;
+  @Autowired
+  private MessageSource messageSource;
 
 
-    @Autowired
-    private MessageService ms;
+  @Autowired
+  private MessageService ms;
 
-    @Autowired
-    private PAWMailService mailService;
+  @Autowired
+  private PAWMailService mailService;
 
-    @GET
-    @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response getUserMessages(){
+  @GET
+  @Path("/")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getUserMessages(){
 
-        User user = AuthenticatedUser.getUserO(us);
+    User user = AuthenticatedUser.getUser(us);
 
-        if (user == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-
-        final List<String> usernames = us.getUsernames();
-
-        final List<MessageDTO> messagesRead = new ArrayList<>();
-        final List<MessageDTO> messagesUnread = new ArrayList<>();
-        ms.getReadMessages(user).forEach(m -> messagesRead.add(new MessageDTO(m.getFrom(), user, m.getSubject(), m.getMessage())));
-        final List<Message> messagesUnr = ms.getUnreadMessages(user);
-        ms.getUnreadMessages(user).forEach(m -> messagesUnread.add(new MessageDTO(m.getFrom(), user, m.getSubject(), m.getMessage())));
-
-        return Response.ok().entity(new UserMessagesDTO(user, messagesRead, messagesUnread)).build();
-
+    if (user == null) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    @POST
-    @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response createMessage(MessageCreateDTO create){
-        User user = AuthenticatedUser.getUserO(us);
+    final List<String> usernames = us.getUsernames();
 
-        if(!us.exists(user.getName())){
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+    final List<MessageDTO> messagesRead = new ArrayList<>();
+    final List<MessageDTO> messagesUnread = new ArrayList<>();
+    ms.getReadMessages(user).forEach(m -> messagesRead.add(new MessageDTO(m.getFrom(), user, m.getSubject(), m.getMessage())));
+    final List<Message> messagesUnr = ms.getUnreadMessages(user);
+    ms.getUnreadMessages(user).forEach(m -> messagesUnread.add(new MessageDTO(m.getFrom(), user, m.getSubject(), m.getMessage())));
 
-        if(create.getMessage().length() > 1024 || create.getSubject().length() > 50){
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+    return Response.ok().entity(new UserMessagesDTO(user, messagesRead, messagesUnread)).build();
 
-        Message message =  ms.createMessage( user, us.findByUsername(user.getName()), create.getSubject(), create.getMessage());
+  }
 
-        if (message!=null) {
-            return Response.noContent().build();
-        } else {
-            return Response.status(Response.Status.BAD_REQUEST).build();
-        }
+  @POST
+  @Path("/")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response createMessage(MessageCreateDTO create){
+    User user = AuthenticatedUser.getUser(us);
 
+    if(!us.exists(user.getName())){
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    @DELETE
-    @Path("/{id}")
-    public Response deleteMessage(@PathParam("id") final Long id){
-
-        Message mssg = ms.getById(id);
-
-        if(mssg == null)
-            return Response.status(Response.Status.NOT_FOUND).build();
-
-
-        ms.deleteMessage(mssg);
-
-        return Response.noContent().build();
+    if(create.getMessage().length() > 1024 || create.getSubject().length() > 50){
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
+    Message message =  ms.createMessage( user, us.findByUsername(user.getName()), create.getSubject(), create.getMessage());
 
-    @PUT
-    @Path("/{id}")
-    public Response answerMessage(@PathParam("id") final Long msgId){
+    if (message!=null) {
+      return Response.noContent().build();
+    } else {
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
 
-        User user = AuthenticatedUser.getUserO(us);
-        Message mssg = ms.getById(msgId);
+  }
 
-        if(mssg==null || (!mssg.getFrom().equals(user) && !mssg.getTo().equals(user))){
-        	return Response.status(Response.Status.BAD_REQUEST).build();
-        }
-        ms.markAsRead(msgId);
+  @DELETE
+  @Path("/{id}")
+  public Response deleteMessage(@PathParam("id") final Long id){
+
+    Message mssg = ms.getById(id);
+
+    if(mssg == null)
+      return Response.status(Response.Status.NOT_FOUND).build();
+
+
+    ms.deleteMessage(mssg);
+
+    return Response.noContent().build();
+  }
+
+
+  @PUT
+  @Path("/{id}")
+  public Response answerMessage(@PathParam("id") final Long msgId){
+
+    User user = AuthenticatedUser.getUser(us);
+    Message mssg = ms.getById(msgId);
+
+    if(mssg==null || (!mssg.getFrom().equals(user) && !mssg.getTo().equals(user))){
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+    ms.markAsRead(msgId);
 
 //        int messagesUnread = ms.countUnreadMessages(user);
 
-        return Response.noContent().build();
-    }
+    return Response.noContent().build();
+  }
 
 
 }

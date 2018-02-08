@@ -1,0 +1,16 @@
+<table class="table" id="rank_table">
+  <thead>
+  <th>{{'POSITION' | translate}}</th>
+  <th>{{'PLAYER' | translate}}</th>
+  <th>{{'SCORE' | translate}}</th>
+  </thead>
+  <tbody>
+    <tr ng-repeat="player in players">
+      <td class="pos">{{$index + 1}}</td>
+      <td>
+        {{player.username}}
+      </td>
+      <td>{{player.score}}</td>
+    </tr>
+  </tbody>
+</table>

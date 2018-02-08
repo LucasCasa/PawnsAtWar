@@ -1,5 +1,6 @@
 package ar.edu.itba.paw.webapp.data;
 
+import ar.edu.itba.model.Point;
 import java.text.MessageFormat;
 
 public final class Validator {
@@ -10,22 +11,13 @@ public final class Validator {
 
     }
 
-    public static boolean validBoardPosition(String pos) {
-        if (isInteger(pos)) {
-            if (Integer.parseInt(pos) <= Info.MAP_SIZE) {
-                return true;
-            }
-        }
-        return false;
+    public static boolean validBoardPosition(Point point) {
+      return validBoardPosition(point.getX()) && validBoardPosition(point.getY());
     }
 
-    public static boolean isInteger(String pos) {
 
-        if (pos == null) {
-            return false;
-        }
-        String regex = "0*\\d{1,9}";
-        return pos.matches(regex);
+    public static boolean validBoardPosition(int pos) {
+      return pos >= 0 && pos <= Info.MAP_SIZE;
     }
 
     public static int getValidPos(int num) {

@@ -8,8 +8,6 @@
 <link rel="stylesheet" href="<c:url value= "/resources/css/messages.css" /> ">
 
 <div class="container">
-
-
     <h2 class="success" style="text-align: center">${success}</h2>
 
     <h1><spring:message code="messages.messagesReceived"/></h1>

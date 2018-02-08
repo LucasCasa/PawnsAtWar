@@ -9,13 +9,15 @@ public class TileDTO {
 	private int x;
 	private int y;
 	private int type;
-	private boolean owner;
+  private int level;
+	private int owner;
 
 	public TileDTO(Sector sector) {
 		this.x = sector.getPosition().getX();
 		this.y = sector.getPosition().getY();
 		this.type = sector.getType();
-		this.owner = true; //TODO when we have auth
+		this.level = sector.getLevel();
+		this.owner = sector.getUser() == null ? -1 : sector.getUser().getId();
 	}
 
 	public int getX() {
@@ -42,11 +44,19 @@ public class TileDTO {
 		this.type = type;
 	}
 
-	public boolean isOwner() {
+  public int getLevel() {
+	  return this.level;
+  }
+
+  public void setLevel(int level) {
+	  this.level = level;
+  }
+
+	public int getOwner() {
 		return owner;
 	}
 
-	public void setOwner(boolean owner) {
+	public void setOwner(int owner) {
 		this.owner = owner;
 	}
 }

@@ -6,7 +6,11 @@ import ar.edu.itba.interfaces.MessageService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.TradeOffer;
 import ar.edu.itba.model.User;
+
+import ar.edu.itba.paw.webapp.DTOs.TradeOfferCreateDTO;
 import ar.edu.itba.paw.webapp.DTOs.TradeOfferDTO;
+import ar.edu.itba.paw.webapp.DTOs.TradeOffersDTO;
+import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import ar.edu.itba.paw.webapp.beans.ResourceBarBean;
 import ar.edu.itba.paw.webapp.data.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,110 +22,81 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Path("commerce")
 @Controller
 public class CommerceController {
+  @Autowired
+  private EmpireService es;
 
-    @Autowired
-    private EmpireService es;
+  @Autowired
+  private CommerceService cs;
 
-    @Autowired
-    private CommerceService cs;
+  @Autowired
+  private UserService us;
 
-    @Autowired
-    private UserService us;
-
-    @Autowired
-    private MessageService ms;
-
-    @GET
-    @Path("/")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response commerce() {
-        List<TradeOfferDTO> offers = new ArrayList<>();
-        cs.getAllOffers().forEach(o -> offers.add(new TradeOfferDTO(o)));
-        return Response.ok().entity(offers).build();
+  @GET
+  @Path("/")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getAllTrades() {
+    String username = AuthenticatedUser.getUser(us).getName();
+    List<TradeOffer> allOffers = cs.getAllOffers();
+    List<TradeOfferDTO> mine = new ArrayList<>();
+    List<TradeOfferDTO> others = new ArrayList<>();
+    for (TradeOffer t : allOffers) {
+      if (t.getOwner().getName().equals(username))
+        mine.add(new TradeOfferDTO(t));
+      else
+        others.add(new TradeOfferDTO(t));
     }
+    return Response.ok().entity(new TradeOffersDTO(mine, others)).build();
+  }
 
-    @RequestMapping(value = "/commerce/acceptTrade")
-    public ModelAndView acceptTrade(@RequestParam final int tradeId, @ModelAttribute("user") final User user) {
-        TradeOffer to = cs.getOffer(tradeId);
-        if (to == null || to.getOwner().getId() == user.getId())
-            return new ModelAndView("redirect:/error");
-
-        if (es.getResource(user, to.getReceiveType()).getQuantity() < to.getReceiveAmount()) {
-            ModelAndView mav = new ModelAndView("redirect:/commerce");
-            mav.addObject("insuficientAmount", true);
-            return mav;
-        }
-        cs.acceptOffer(to, user);
-        return new ModelAndView("redirect:/commerce");
+  @POST
+  @Path("/trade/{id}")
+  public Response acceptTrade(@PathParam("id") final int id) {
+    User user = AuthenticatedUser.getUser(us);
+    TradeOffer offer = cs.getOffer(id);
+    if (offer == null || offer.getOwner().equals(user)) {
+      return Response.status(Response.Status.NOT_FOUND).build();
     }
-
-    @RequestMapping(value = "/commerce/delete")
-    public ModelAndView deleteTrade(@RequestParam final int tradeId, @ModelAttribute("user") final User user) {
-        TradeOffer to = cs.getOffer(tradeId);
-        if (to == null || to.getOwner().getId() != user.getId())
-            return new ModelAndView("redirect:/error");
-
-        cs.removeOffer(to);
-        return new ModelAndView("redirect:/commerce");
+    if (es.getResource(user, offer.getReceiveType()).getQuantity() < offer.getReceiveAmount()) {
+      return Response.status(Response.Status.FORBIDDEN).build();
     }
+    cs.acceptOffer(offer, user);
+    return Response.noContent().build();
+  }
 
-    @RequestMapping(value = "/commerce/create")
-    public ModelAndView createOffer(@RequestParam(value = "insuficientAmount", required = false) boolean insuficientAmount,
-                                    @ModelAttribute("user") final User user) {
-        ModelAndView mav = new ModelAndView("createOffer");
-
-        int unreadMessages = ms.countUnreadMessages(user);
-
-        mav.addObject("resList", es.getResources(user));
-        mav.addObject("insuficientAmount", insuficientAmount);
-        mav.addObject("rBar", new ResourceBarBean(es.getResources(user), es.getMaxStorage(user), es.getRates(user)));
-        mav.addObject("unreadMessages", unreadMessages);
-
-        return mav;
+  @DELETE
+  @Path("/trade/{id}")
+  public Response deleteTrade(@PathParam("id") final int id) {
+    User user = AuthenticatedUser.getUser(us);
+    TradeOffer offer = cs.getOffer(id);
+    if (offer == null || offer.getOwner().getId() != user.getId()) {
+      return Response.status(Response.Status.NOT_FOUND).build();
     }
+    cs.removeOffer(offer);
+    return Response.noContent().build();
+  }
 
-    @RequestMapping(value = "/commerce/create/submit", method = RequestMethod.POST)
-    public ModelAndView sumbitCreate(@RequestParam(required = false) String giveType, @RequestParam(required = false) String getType, @RequestParam(required = false) String giveQty, @RequestParam(required = false) String getQty, @ModelAttribute("user") final User user) {
-
-        if (getQty == null || giveQty == null || giveType == null || getType == null)
-            return new ModelAndView("redirect:/commerce/create");
-        if (!(Validator.isInteger(giveQty) && Validator.isInteger(getQty) && Long.parseLong(giveQty) > 0 && Long.parseLong(getQty) > 0)) {
-            return new ModelAndView("redirect:/error");
-        }
-        if (!(Validator.isInteger(giveType) && Validator.isInteger(getType))) {
-            return new ModelAndView("redirect:/error");
-        }
-        int giveTyp = Integer.parseInt(giveType);
-        int getTyp = Integer.parseInt(getType);
-
-        if (giveTyp == getTyp)
-            return new ModelAndView("redirect:/error");
-
-        int giveAmount = Integer.parseInt(giveQty);
-        int receiveAmount = Integer.parseInt(getQty);
-        boolean res = cs.createOffer(user, giveTyp, giveAmount, getTyp, receiveAmount);
-        if (!res) {
-            return createOffer(true, user);
-        }
-        return new ModelAndView("redirect:/commerce");
+  @POST
+  @Path("/")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createTrade(TradeOfferCreateDTO create) {
+    User creator = AuthenticatedUser.getUser(us);
+    boolean created = cs.createOffer(creator, create.getOffer().getType(), create.getOffer().getAmount(),
+      create.getReceive().getType(), create.getReceive().getAmount());
+    if (created) {
+      return Response.noContent().build();
+    } else {
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
-
-    @ModelAttribute("user")
-    public User loggedUser(final HttpSession session) {
-        if (session.getAttribute("userId") != null)
-            return us.findById((Integer) session.getAttribute("userId"));
-        return null;
-    }
-
+  }
 }

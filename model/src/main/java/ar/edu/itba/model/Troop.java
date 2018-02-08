@@ -13,60 +13,64 @@ import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
 @Entity
-@Table(name = "troop",uniqueConstraints=@UniqueConstraint(columnNames={"idArmy", "type"}))
+@Table(name = "troop", uniqueConstraints = @UniqueConstraint(columnNames = {"idArmy", "type"}))
 public class Troop {
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "troop_id_seq")
-	@SequenceGenerator(sequenceName = "troop_id_seq", name = "troop_id_seq", allocationSize = 1)
-	@Column(name = "id")
-	private long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "troop_id_seq")
+  @SequenceGenerator(sequenceName = "troop_id_seq", name = "troop_id_seq", allocationSize = 1)
+  @Column(name = "id")
+  private long id;
 
-	@ManyToOne(fetch =FetchType.EAGER, optional = false)
-	@JoinColumn(name="idArmy")
-	private Army army;
+  @ManyToOne(fetch = FetchType.EAGER, optional = false)
+  @JoinColumn(name = "idArmy")
+  private Army army;
 
-	@Column(nullable = false, name = "type")
-	private int type;
-	@Column(nullable = false, name = "amount")
-	private int quantity;
+  @Column(nullable = false, name = "type")
+  private int type;
+  @Column(nullable = false, name = "amount")
+  private int quantity;
 
-	public Troop(Army a, int type, int quantity) {
-		this.army = a;
-		this.type = type;
-		this.quantity = quantity;
-	}
+  public Troop(Army a, int type, int quantity) {
+    this.army = a;
+    this.type = type;
+    this.quantity = quantity;
+  }
 
-	/* package */ Troop(){
+  /* package */ Troop() {
 
-	}
+  }
 
-	public int getQuantity() {
-		return quantity;
-	}
-	public void setQuantity(int quantity) {
-		this.quantity = quantity;
-	}
+  public int getQuantity() {
+    return quantity;
+  }
 
-	public Army getArmy() {
-		return army;
-	}
+  public void setQuantity(int quantity) {
+    this.quantity = quantity;
+  }
 
-	public int getType() {
-		return type;
-	}
+  public Army getArmy() {
+    return army;
+  }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+  public int getType() {
+    return type;
+  }
 
-	public void setArmy(Army army) {
-		this.army = army;
-	}
+  public long getId() {
+    return this.id;
+  }
 
-	public void setType(int type) {
-		this.type = type;
-	}
-	
-	
+  public void setId(long id) {
+    this.id = id;
+  }
+
+  public void setArmy(Army army) {
+    this.army = army;
+  }
+
+  public void setType(int type) {
+    this.type = type;
+  }
+
 
 }

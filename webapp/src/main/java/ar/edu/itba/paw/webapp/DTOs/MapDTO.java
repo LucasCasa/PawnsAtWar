@@ -10,6 +10,7 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MapDTO {
 
+  private int id;
 	private int x;
 	private int y;
 	private String nextx;
@@ -18,7 +19,9 @@ public class MapDTO {
 	private String prevy;
 	private List<List<TileDTO>> tiles;
 
-	public MapDTO(List<List<Sector>> sectors, int x, int y) {
+
+	public MapDTO(List<List<Sector>> sectors, int x, int y, int id) {
+    this.id = id;
 		this.x = x;
 		this.y = y;
 		this.nextx = Validator.format(x+1, y);
@@ -90,4 +93,13 @@ public class MapDTO {
 	public void setTiles(List<List<TileDTO>> tiles) {
 		this.tiles = tiles;
 	}
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
 }

@@ -25,3 +25,9 @@ log/
 bin/
 target/
 .settings
+
+.tmp/*
+.sass-cache/*
+webapp/src/main/webapp/
+!webapp/src/main/webapp/WEB-INF/
+

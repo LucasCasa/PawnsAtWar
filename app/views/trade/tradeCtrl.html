@@ -1,0 +1,102 @@
+<!--<%@ include file="resourceBar.jsp" %>
+<c:if test="${insuficientAmount}">
+  <div class="error"><spring:message code="commerce.error"/></div>
+</c:if> -->
+<br/>
+<resource res="res"></resource>
+<div style="text-align: center">
+  <button style="text-align:center" ng-hide="showNewOffer" ng-click="showNewOffer = true" class="myButton">{{'MAKE_NEW_OFFER' | translate }}</button>
+</div>
+<div class="error" style="display:none;" id="sameType">{{'SAME_TYPE' | translate}}</div>
+<div class="error" ng-show="tradeError">{{'COMMERCE_ERROR' | translate}}</div>
+<br>
+<table class="table" ng-show="showNewOffer">
+  <thead>
+  <td>{{'OFFER' | translate}}</td>
+  <td>{{'RECEIVE' | translate}}</td>
+  <td>{{'CREATE' | translate}}</td>
+  </thead>
+  <tbody>
+  <tr>
+    <td>
+      <label><input name="giveType" type="radio" ng-click='setGive(0)' ng-value="0" ng-model="giveType" value="0"><img style="height: 50px" src="images/iconResFood.png"></label>
+      <label><input name="giveType" type="radio" ng-click='setGive(1)' ng-value="1" ng-model="giveType" value="1"><img style="height: 50px" src="images/iconResGold.png"></label>
+      {{'QUANTITY' | translate}}
+      <input type="number" ng-model="giveAmount" name="giveQty" min="1">
+    </td>
+    <td>
+      <label><input name="getType" type="radio" ng-click="setGet(0)" ng-value="0" ng-model="getType" value="0"><img style="height: 50px" src="images/iconResFood.png"></label>
+      <label><input name="getType" type="radio" ng-click="setGet(1)" ng-value="1" ng-model="getType" value="1"><img style="height: 50px" src="images/iconResGold.png"></label>
+      {{'QUANTITY' | translate}}
+      <input type="number" ng-model="getAmount" name="getQty" min="1">
+    </td>
+    <td>
+      <button id="register" ng-disabled="invalidTrade()" ng-click="createOffer()" class="myButton">{{'CREATE' | translate}}</button>
+      <button ng-click="showNewOffer = false;getAmount= ''; giveAmount= ''" class="myButton">{{'CANCEL' | translate}}</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<br>
+<div class="row" ng-show="offers.others.length == 0">
+  <h2 style="text-align: center">{{'NO_OFFERS' | translate}}</h2>
+</div>
+<table  ng-hide="offers.others.length == 0" class="table">
+  <thead>
+  <td>{{'USERNAME' | translate}}</td>
+  <td>{{'OFFERS' | translate}}</td>
+  <td>{{'RECEIVES' | translate}}</td>
+  <td>{{'ACCEPT' | translate}}</td>
+  </thead>
+  <tbody>
+  <tr ng-repeat="offer in offers.others">
+    <td><a ng-href="offer.user.url"><h2>{{offer.owner.username}}</h2></a></td>
+    <td>
+      <img ng-show="offer.offer.type==0" style="height: 50px" src="images/iconResFood.png">
+      <img ng-show="offer.offer.type==1" style="height: 50px" src="images/iconResGold.png">
+      {{offer.offer.amount}}
+    </td>
+    <td>
+      <img ng-show="offer.receive.type==0" style="height: 50px" src="images/iconResFood.png">
+      <img ng-show="offer.receive.type==1" style="height: 50px" src="images/iconResGold.png">
+      {{offer.receive.amount}}
+    </td>
+    <td>
+      <button class="myButton" ng-click="acceptOffer(offer.id)">{{'ACCEPT' | translate }}</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+
+<h1>{{'MY_OFFERS' | translate }}</h1>
+
+<div class="row" ng-show="offers.mine.length == 0">
+  <h2 style="text-align: center">{{'DIDNT_MAKE_OFFER' | translate }}</h2>
+</div>
+<table class="table" ng-hide="offers.mine.length == 0">
+  <thead>
+  <td>{{'USERNAME' | translate}}</td>
+  <td>{{'OFFERS' | translate}}</td>
+  <td>{{'RECEIVES' | translate}}</td>
+  <td>{{'REMOVE' | translate}}</td>
+  </thead>
+  <tbody>
+  <tr ng-repeat="offer in offers.mine">
+    <td><a ng-href="offer.user.url"><h2>{{offer.owner.username}}</h2></a></td>
+    <td>
+      <img ng-show="offer.offer.type==0" style="height: 50px" src="images/iconResFood.png">
+      <img ng-show="offer.offer.type==1" style="height: 50px" src="images/iconResGold.png">
+      {{offer.offer.amount}}
+    </td>
+    <td>
+      <img ng-show="offer.receive.type==0" style="height: 50px" src="images/iconResFood.png">
+      <img ng-show="offer.receive.type==1" style="height: 50px" src="images/iconResGold.png">
+      {{offer.receive.amount}}
+    </td>
+    <td>
+      <button class="myButton" ng-click="removeOffer(offer.id)">{{'REMOVE' | translate}}</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
