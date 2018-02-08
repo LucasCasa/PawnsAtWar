@@ -72,7 +72,7 @@ public class UsersController {
   @Produces(MediaType.APPLICATION_JSON)
   public Response createUser(UserCreateDTO createDTO) {
     if (us.exists(createDTO.getUsername())) {
-      return Response.status(Response.Status.FORBIDDEN).build();
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("USER_ALREADY_EXIST")).build();
     }
     User user = us.create(createDTO.getUsername(), createDTO.getPassword(), createDTO.getEmail());
     if (user == null) {
