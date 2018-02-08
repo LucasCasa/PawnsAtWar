@@ -61,9 +61,7 @@ public class ArmyController {
   @Produces(MediaType.APPLICATION_JSON)
   public Response attack(ArmyAttackDTO attackDTO) {
     User user = AuthenticatedUser.getUser(us);
-    int xPrime = attackDTO.getPoint().getX() - 1;
-    int yPrime = attackDTO.getPoint().getY() - 1;
-    Point point = new Point(xPrime, yPrime);
+    Point point = new Point(attackDTO.getPoint().getX(), attackDTO.getPoint().getY());
     if (!Validator.validBoardPosition(point)) {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
