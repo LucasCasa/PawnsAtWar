@@ -17,7 +17,7 @@ public class TileDTO {
 		this.y = sector.getPosition().getY();
 		this.type = sector.getType();
 		this.level = sector.getLevel();
-		this.owner = sector.getUser() == null? null : new UserDTO(sector.getUser());
+		this.owner = sector.getUser() == null ? null : new UserDTO(sector.getUser());
 	}
 
 	public int getX() {

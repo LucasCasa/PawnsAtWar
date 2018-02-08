@@ -55,7 +55,7 @@ public class BuildingController {
       return Response.status(Response.Status.NOT_FOUND).build();
     }
     Alert a = as.getAlertByPoint(p);
-    boolean beingConstructed = sector.getUser().getId() == user.getId() && a != null && (a.getType().equals("BUILD") || a.getType().equals("UPGRADE"));
+    boolean beingConstructed = user.equals(sector.getUser()) && a != null && (a.getType().equals("BUILD") || a.getType().equals("UPGRADE"));
     return Response.ok().entity(new BuildingDTO(sector, user.getId(), es.validCastlePosition(p), ss.getCastlePrice(user), beingConstructed)).build();
   }
 
@@ -77,7 +77,7 @@ public class BuildingController {
     }
     Alert alert = as.getAlertByPoint(p);
     if(alert != null && (alert.getType().equals("BUILD") || alert.getType().equals("UPGRADE"))) {
-      return Response.status(Response.Status.FORBIDDEN).build();//.entity(new ErrorDTO("ALREADY_TRAINING")).build();
+      return Response.status(Response.Status.FORBIDDEN).build();
     }
     if (es.build(user, p.getX(), p.getY(), buildDTO.getType())) {
       return Response.status(Response.Status.NO_CONTENT).build();
