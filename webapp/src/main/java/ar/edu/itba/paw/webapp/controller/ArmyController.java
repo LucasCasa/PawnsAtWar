@@ -2,19 +2,13 @@ package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.interfaces.*;
 import ar.edu.itba.model.*;
-import ar.edu.itba.paw.webapp.DTOs.ArmyAttackDTO;
-import ar.edu.itba.paw.webapp.DTOs.ArmyDTO;
-import ar.edu.itba.paw.webapp.DTOs.ArmyTrainDTO;
+import ar.edu.itba.paw.webapp.DTOs.*;
 import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import ar.edu.itba.paw.webapp.data.Info;
 import ar.edu.itba.paw.webapp.data.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -29,8 +23,6 @@ public class ArmyController {
   @Autowired
   private SectorService ss;
   @Autowired
-  private TroopService ts;
-  @Autowired
   private EmpireService es;
   @Autowired
   private UserService us;
@@ -38,12 +30,6 @@ public class ArmyController {
   private ScheduleService sh;
   @Autowired
   private AlertService als;
-  @Autowired
-  private MessageSource messageSource;
-  @Autowired
-  private PAWMailService mailService;
-  @Autowired
-  private MessageService ms;
 
   @GET
   @Path("/")
@@ -72,6 +58,7 @@ public class ArmyController {
   @POST
   @Path("/attack")
   @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
   public Response attack(ArmyAttackDTO attackDTO) {
     User user = AuthenticatedUser.getUser(us);
     int xPrime = attackDTO.getPoint().getX() - 1;
@@ -87,9 +74,14 @@ public class ArmyController {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     Sector sector = ss.getSector(point);
-    if (sector == null || sector.getUser().equals(user) || !army.getAvailable() || sector.getType() == Info.EMPTY || sector.getType() == Info.TERR_GOLD) {
-      // TODO return a custom message for each
-      return Response.status(Response.Status.FORBIDDEN).build();
+    if (sector.getUser().equals(user)) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("ATTACK_SELF_BUILDING")).build();
+    } else if (!army.getAvailable()) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("ARMY_UNAVAILABLE")).build();
+    } else if (sector.getType() == Info.EMPTY || sector.getType() == Info.TERR_GOLD) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("ATTACK_EMPTY_TERRAIN")).build();
+    } else if (sector.getType() == Info.CASTLE && !ss.isCastleAlone(point, 3)) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("CANT_ATTACK_CASTLE")).build();
     }
     sh.attackTask(user, point, army.getIdArmy());
     as.setAvailable(army.getIdArmy(), false);
@@ -99,183 +91,93 @@ public class ArmyController {
   @POST
   @Path("/train")
   @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
   public Response train(ArmyTrainDTO trainDTO) {
     User user = AuthenticatedUser.getUser(us);
-    Point point = new Point(trainDTO.getPoint().getX() - 1, trainDTO.getPoint().getY() - 1);
+    Point point = new Point(trainDTO.getPoint().getX(), trainDTO.getPoint().getY());
     if (!Validator.validBoardPosition(point)) {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
     Sector sector = ss.getSector(point);
-    return null;
-  }
-
-  @RequestMapping(value = "/train", method = RequestMethod.POST)
-  public ModelAndView train(@RequestParam String type,
-                            @RequestParam String amount,
-                            @RequestParam String px,
-                            @RequestParam String py,
-                            @ModelAttribute("userId") final User user,
-                            Locale locale) {
-    if (user == null) {
-      return new ModelAndView("redirect:/");
-    }
-    if (!Validator.isInteger(type) || !Validator.isInteger(amount)
-      || !Validator.validBoardPosition(px) || !Validator.validBoardPosition(py)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidParam", null, locale));
-    }
-    int a = Integer.valueOf(amount);
-    int x = Integer.valueOf(px);
-    int y = Integer.valueOf(py);
-    Point p = new Point(x, y);
-    Sector s = ss.getSector(p);
-    int troopType = Integer.valueOf(type);
-    int cost = 0;
-    switch (troopType) {
+    int cost;
+    switch (trainDTO.getType()) {
       case Info.WARRIOR:
-        cost = (Info.COST_WARRIOR - (s.getLevel() - 1)) * a;
+        cost = (Info.COST_WARRIOR - (sector.getLevel() - 1)) * trainDTO.getAmount();
         break;
       case Info.ARCHER:
-        cost = (Info.COST_ARCHER - (s.getLevel() - 1)) * a;
+        cost = (Info.COST_ARCHER - (sector.getLevel() - 1)) * trainDTO.getAmount();
         break;
       case Info.HORSEMAN:
-        cost = (Info.COST_HORSEMAN - (s.getLevel() - 1)) * a;
+        cost = (Info.COST_HORSEMAN - (sector.getLevel() - 1)) * trainDTO.getAmount();
         break;
       default:
-        return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidTroop", null, locale));
+        return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("INVALID_TROOP_TYPE")).build();
     }
-    boolean resp = false;
-    if (als.getAlertByPoint(p) != null) {
-      return new ModelAndView("redirect:/error");
+    Alert alert = als.getAlertByPoint(point);
+    if(alert != null && alert.getType().equals("RECRUIT")) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("ALREADY_TRAINING")).build();
     }
     if (es.subtractResourceAmount(user, Info.RES_FOOD, cost)) {
-      resp = true;
-      sh.TrainTask(user, p, a, troopType);
-    }
-
-    if (resp) {
-      return new ModelAndView("redirect:/");
-
+      sh.TrainTask(user, point, trainDTO.getAmount(), trainDTO.getType());
+      return Response.noContent().build();
     } else {
-      return new ModelAndView("redirect:/building?x=" + x + "&y=" + y + "&e=" + messageSource.getMessage("error.noFood", null, locale));
+      return Response.status(Response.Status.FORBIDDEN).entity("NO_FOOD").build();
     }
-
   }
 
-  @RequestMapping(value = "/merge")
-  public ModelAndView merge(@RequestParam String f,
-                            @RequestParam String t,
-                            @ModelAttribute("userId") final User user,
-                            Locale locale) {
-    if (user == null) {
-      return new ModelAndView("redirect:/");
+  @POST
+  @Path("/move")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response move(ArmyMoveDTO moveDTO) {
+    User user = AuthenticatedUser.getUser(us);
+    Point point = new Point(moveDTO.getPoint().getX(), moveDTO.getPoint().getY());
+    if (!Validator.validBoardPosition(point)) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
-    if (!Validator.isInteger(f) || !Validator.isInteger(t)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidParam", null, locale));
+    Sector sector = ss.getSector(point);
+    if (!user.equals(sector.getUser())) {
+      return Response.status(Response.Status.UNAUTHORIZED).build();
     }
-    int from = Integer.valueOf(f);
-    int to = Integer.valueOf(t);
-    if (!as.belongs(user, from) || !as.belongs(user, to)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.notYoursArmy", null, locale));
+    if (as.getArmyById(moveDTO.getArmyId()) == null) {
+      return Response.status(Response.Status.NOT_FOUND).build();
     }
-    sh.mergeTask(user, from, to, as.getArmyById(to).getPosition());
-    as.setAvailable(from, false);
-    return new ModelAndView("redirect:/armies");
+    if (!as.belongs(user, moveDTO.getArmyId())) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NOT_YOUR_ARMY")).build();
+    }
+    as.setAvailable(moveDTO.getArmyId(), false);
+    sh.moveTask(user, moveDTO.getArmyId(), point);
+    return Response.status(Response.Status.NO_CONTENT).build();
   }
 
-  @RequestMapping(value = "/armies/{armyId}/split")
-  public ModelAndView split(@PathVariable String armyId,
-                            @ModelAttribute("userId") final User user,
-                            Locale locale) {
-    if (user == null) {
-      return new ModelAndView("redirect:/");
+  @POST
+  @Path("/merge")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response merge(ArmyMergeDTO mergeDTO) {
+    User user = AuthenticatedUser.getUser(us);
+    if(!as.belongs(user, mergeDTO.getFromId()) || !as.belongs(user, mergeDTO.getToId())) {
+      return Response.status(Response.Status.UNAUTHORIZED).build();
     }
-    if (!Validator.isInteger(armyId)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidArmy", null, locale));
-    }
-    if (!as.belongs(user, Integer.valueOf(armyId))) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.notYoursArmy", null, locale));
-    }
-    ModelAndView mav = new ModelAndView("split");
-    Army a = as.getArmyById(Integer.parseInt(armyId));
-    List<Point> points = new ArrayList<>();
-    for (Sector b : ss.getAllBuildings(user)) {
-      if (!b.getPosition().equals(a.getPosition())) {
-        points.add(b.getPosition());
-      }
-    }
-    int unreadMessages = ms.countUnreadMessages(user);
-
-    mav.addObject("unreadMessages", unreadMessages);
-    mav.addObject("user", user);
-    mav.addObject("army", a);
-    mav.addObject("possiblePoints", points);
-    return mav;
+    sh.mergeTask(user, mergeDTO.getFromId(), mergeDTO.getToId(), as.getArmyById(mergeDTO.getToId()).getPosition());
+    as.setAvailable(mergeDTO.getFromId(), false);
+    return Response.status(Response.Status.NO_CONTENT).build();
   }
 
-  @RequestMapping(value = "/split", method = RequestMethod.POST)
-  public ModelAndView split2(@RequestParam(value = "0", required = false, defaultValue = "0") String t1,
-                             @RequestParam(value = "1", required = false, defaultValue = "0") String t2,
-                             @RequestParam(value = "2", required = false, defaultValue = "0") String t3,
-                             @RequestParam(value = "pos") String pos,
-                             @RequestParam(value = "armyId") String armyId,
-                             @ModelAttribute("userId") final User user,
-                             Locale locale) {
-    String[] po = pos.split(",");
-    if (!Validator.validBoardPosition(po[0]) || !Validator.validBoardPosition(po[1])) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidPosition", null, locale));
+  @POST
+  @Path("split")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response split(ArmySplitDTO splitDTO) {
+    User user = AuthenticatedUser.getUser(us);
+    Point point = new Point(splitDTO.getPosition().getX(), splitDTO.getPosition().getY());
+    if(!Validator.validBoardPosition(point)) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
-    Point p = new Point(Integer.parseInt(po[0]), Integer.parseInt(po[1]));
-    if (!Validator.isInteger(t1) || !Validator.isInteger(t2) || !Validator.isInteger(t3)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidTroopAmount", null, locale));
+    if(!as.belongs(user, splitDTO.getArmyId())) {
+      return Response.status(Response.Status.UNAUTHORIZED).build();
     }
-    if (!Validator.isInteger(armyId)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidArmy", null, locale));
-    }
-    int id = Integer.parseInt(armyId);
-    if (!as.belongs(user, id)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.notYoursArmy", null, locale));
-    }
-    int warriors = Integer.parseInt(t1);
-    int archers = Integer.parseInt(t2);
-    int horsemen = Integer.parseInt(t3);
     Map<TroopType, Integer> tr = new HashMap<>();
-    tr.put(TroopType.warrior, warriors);
-    tr.put(TroopType.archer, archers);
-    tr.put(TroopType.horseman, horsemen);
-    Army a = as.splitArmy(id, tr);
-    sh.splitTask(user, a.getIdArmy(), p);
-    return new ModelAndView("redirect:/armies");
+    splitDTO.getUnits().forEach(u -> tr.put(TroopType.get(u.getType()), u.getAmount()));
+    Army newArmy = as.splitArmy(splitDTO.getArmyId(), tr); // newArmy starts as unavailable
+    sh.splitTask(user, newArmy.getIdArmy(), point);
+    return Response.status(Response.Status.NO_CONTENT).build();
   }
-
-  @RequestMapping(value = "/move", method = RequestMethod.POST)
-  public ModelAndView move(@ModelAttribute("userId") final User user,
-                           @RequestParam(value = "x", required = true) String x,
-                           @RequestParam(value = "y", required = true) String y,
-                           @RequestParam(value = "armyId", required = true) String armyId,
-                           Locale locale) {
-
-    if (!Validator.validBoardPosition(x) || !Validator.validBoardPosition(y)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidPosition", null, locale));
-    }
-    Point p = new Point(Integer.parseInt(x), Integer.parseInt(y));
-    if (!Validator.isInteger(armyId)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.invalidArmy", null, locale));
-    }
-    int id = Integer.parseInt(armyId);
-    if (!as.belongs(user, id)) {
-      return new ModelAndView("redirect:/error?m=" + messageSource.getMessage("error.notYoursArmy", null, locale));
-    }
-    as.setAvailable(id, false);
-    sh.moveTask(user, id, p);
-    return new ModelAndView("redirect:/map");
-
-  }
-
-  @ModelAttribute("userId")
-  public User loggedUser(final HttpSession session) {
-    if (session.getAttribute("userId") != null)
-      return us.findById((Integer) session.getAttribute("userId"));
-    return null;
-  }
-
 }

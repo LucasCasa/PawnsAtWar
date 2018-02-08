@@ -6,6 +6,7 @@ import java.util.List;
 import ar.edu.itba.interfaces.*;
 import ar.edu.itba.model.*;
 import ar.edu.itba.paw.webapp.DTOs.BuildDTO;
+import ar.edu.itba.paw.webapp.DTOs.ErrorDTO;
 import ar.edu.itba.paw.webapp.DTOs.BuildingDTO;
 import ar.edu.itba.paw.webapp.DTOs.TileDTO;
 import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
@@ -73,7 +74,7 @@ public class BuildingController {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     if (s.getType() != Info.TERR_GOLD && s.getType() != Info.EMPTY) {
-      return Response.status(Response.Status.FORBIDDEN).build();
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("CANT_BUILD")).build();
     }
     Alert alert = as.getAlertByPoint(p);
     if(alert != null && (alert.getType().equals("BUILD") || alert.getType().equals("UPGRADE"))) {
@@ -82,7 +83,7 @@ public class BuildingController {
     if (es.build(user, p.getX(), p.getY(), buildDTO.getType())) {
       return Response.status(Response.Status.NO_CONTENT).build();
     } else {
-      return Response.status(Response.Status.FORBIDDEN).build();
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NO_GOLD")).build();
     }
   }
 
@@ -116,8 +117,11 @@ public class BuildingController {
     }
     int price = ss.getPrice(user) + (int) Math.pow(s.getLevel(), 4);
     int gold = es.getResource(user, Info.RES_GOLD).getQuantity();
-    if (s.getLevel() >= 20 || gold < price) {
-      return Response.status(Response.Status.FORBIDDEN).build();
+    if (s.getLevel() >= 20) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("MAX_LEVEL")).build();
+    }
+    if (gold < price) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NO_GOLD")).build();
     }
     sh.levelUpTask(s);
     es.subtractResourceAmount(user, Info.RES_GOLD, price);

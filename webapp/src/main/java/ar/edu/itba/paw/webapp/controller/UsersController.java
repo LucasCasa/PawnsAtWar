@@ -3,6 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.DTOs.ErrorDTO;
 import ar.edu.itba.paw.webapp.DTOs.UserCreateDTO;
 import ar.edu.itba.paw.webapp.DTOs.UserDTO;
 import ar.edu.itba.paw.webapp.DTOs.UserScoreDTO;
@@ -68,14 +69,14 @@ public class UsersController {
   @POST
   @Path("/")
   @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
   public Response createUser(UserCreateDTO createDTO) {
     if (us.exists(createDTO.getUsername())) {
       return Response.status(Response.Status.FORBIDDEN).build();
     }
     User user = us.create(createDTO.getUsername(), createDTO.getPassword(), createDTO.getEmail());
     if (user == null) {
-      // Not enough space to place castle
-      return Response.status(Response.Status.FORBIDDEN).build();
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NO_CASTLE_SPACE")).build();
     }
     return Response.status(Response.Status.NO_CONTENT).build();
   }
