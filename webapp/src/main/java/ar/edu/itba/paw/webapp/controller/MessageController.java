@@ -12,10 +12,7 @@ import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -75,7 +72,7 @@ public class MessageController {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    Message message =  ms.createMessage( user, us.findByUsername(user.getName()), create.getSubject(), create.getMessage());
+    Message message =  ms.createMessage( user, create.getTo(), create.getSubject(), create.getMessage());
 
     if (message!=null) {
       return Response.noContent().build();

@@ -120,7 +120,67 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
             return result.reject(error);
           });
           return result.promise;
+        };
+        this.getMessages = function () {
+          var result = $q.defer();
+
+          $http.get('api/messages').then(function(response){
+            if (response.status >= 400) {
+              console.log(response.status);
+              return result.reject(response);
+            }
+            return result.resolve(response.data);
+          }, function (error) {
+            return result.reject(error);
+          });
+          return result.promise;
+
+        };
+
+        this.createMessage = function (giveTo, giveSubject, giveMessage) {
+          var result = $q.defer();
+          var body = {to:giveTo, subject:giveSubject,message:giveMessage};
+
+          $http.post('api/messages', body).then(function (response) {
+            if (response.status >= 400) {
+              console.log(response.status);
+              return result.reject(response);
+            }
+            return result.resolve(response.data);
+          }, function (error) {
+            return result.reject(error);
+          });
+          return result.promise;
+        };
+
+        this.deleteMessage = function(id){
+          var result = $q.defer();
+          $http.delete('api/messages/' + id).then(function (response) {
+            if (response.status >= 400) {
+              console.log(response.status);
+              return result.reject(response);
+            }
+            return result.resolve(response.data);
+          }, function (error) {
+            return result.reject(error);
+          });
+          return result.promise;
+        };
+
+        this.answerMessage = function (id) {
+          var result = $q.defer();
+          $http.answerMessage('api/messages/' + id).then(function (response) {
+            if (response.status >= 400) {
+              console.log(response.status);
+              return result.reject(response);
+            }
+            return result.resolve(response.data);
+          }, function (error) {
+            return result.reject(error);
+          });
+          return result.promise;
         }
+
     });
 
 });

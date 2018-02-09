@@ -16,10 +16,10 @@
     <td>{{message.from}}</td>
     <td>{{mesagge.subject}}</td>
     <td>
-      <form method="post" action="{{message.delete}}">
+      <div>
         <input type="hidden" name="id" ng-value="message.id"/>
-        <input type="submit" class="myButton" ng-value="'DELETE' | translate"/>
-      </form>
+        <input type="submit" class="myButton" ng-click="deleteMesssage(message.id)" ng-value="'DELETE' | translate"/>
+      </div>
     </td>
   </tr>
   </tbody>
@@ -37,38 +37,38 @@
     <td>{{message.from}}</td>
     <td>{{message.subject}}</td>
     <td>
-      <form method="post" action="{{message.delete}}">
+      <div >
         <input type="hidden" name="id" ng-value="message.id"/>
-        <input type="submit" class="myButton" ng-value="'DELETE' | translate"/>
-      </form>
+        <input type="submit" class="myButton" ng-click="deleteMesssage(message.id)" ng-value="'DELETE' | translate"/>
+      </div>
     </td>
   </tr>
   </tbody>
 </table>
 
 <h1>{{'CREATE_MESSAGE' | translate}}</h1>
-<form method="post" action="{{messages.create}}">
+<div>
   <div class="form-group">
     <label>{{'USERNAME' | translate}}</label>
     <br>
-    <input class="form-control" id="list" name="username" placeholder="{{'MAIL_PLACEHOLDER' | translate}}">
+    <input class="form-control" ng-model="giveTo" id="list" name="username" placeholder="{{'MAIL_PLACEHOLDER' | translate}}">
   </div>
   <div class="form-group">
     <label>{{'SUBJECT' | translate}}</label>
-    <input type="subject" class="form-control" maxlength="50" name="subject" aria-describedby="subjectHelp"
+    <input type="subject" class="form-control"  ng-model="giveSubject" maxlength="50" name="subject" aria-describedby="subjectHelp"
            placeholder="{{'SUBJECT' | translate}}">
   </div>
   <div class="form-group">
     <label>{{'MESSAGE' | translate}}</label>
-    <textarea class="form-control" name="message" onkeyup="textCounter(this,'counter',1024);" id="exampleTextarea"
+    <textarea class="form-control" ng-model="giveMessage" name="message" onkeyup="textCounter(this,'counter',1024);" id="exampleTextarea"
               rows="3" maxlength="1024"></textarea>
     <label>{{'CHARACTER_REMAINING' | translate}}</label>
     <input disabled style="background: white" maxlength="3" size="3" value="1024" id="counter">
   </div>
-  <button type="submit" class="myButton" onclick="showMs()">
+  <button type="submit" ng-click="createMessage()" class="myButton">
     {{'SUBMIT' | translate}}
   </button>
-</form>
+</div>
 
 
 
