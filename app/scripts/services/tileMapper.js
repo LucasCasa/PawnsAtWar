@@ -1,7 +1,7 @@
 define(['PawnsAtWar'], function(PawnsAtWar) {
 
     'use strict';
-    PawnsAtWar.service('tileMapper', function() {
+    PawnsAtWar.service('tileMapper', function($translate) {
       this.getImage = function (type) {
         switch (type){
           case 0: return 'images/EMPTY.jpg';
@@ -12,7 +12,7 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
           case 5: return 'images/TERR_GOLD.jpg';
           case 6: return 'images/MILL.jpg';
           case 8: return 'images/STABLE.jpg';
-          default: return '#';
+          default: return '';
         }
       };
 
@@ -26,7 +26,7 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
           case 5: return 'images/TERR_GOLD.png';
           case 6: return 'images/MILL.png';
           case 8: return 'images/STABLE.png';
-          default: return '#';
+          default: return '';
         }
       };
       this.getDescription = function (type) {
@@ -39,8 +39,28 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
           case 5: return 'DESC_TERR_GOLD';
           case 6: return 'DESC_MILL';
           case 8: return 'DESC_STABLE';
-          default: return '#';
+          default: return '';
         }
+      };
+
+      this.getName = function (type, value) {
+        if(type == 'BUILD' || type == 'UPGRADE'){
+          switch (value) {
+            case 1: return $translate.instant('CASTLE');
+            case 2: return $translate.instant('ARCHERY');
+            case 3: return $translate.instant('BARRACKS');
+            case 4: return $translate.instant('GOLD');
+            case 6: return $translate.instant('MILL');
+            case 8: return $translate.instant('STABLE');
+          }
+        }else if(type == 'RECRUIT') {
+          switch (value) {
+            case 0: return $translate.instant('WARRIOR');
+            case 1: return $translate.instant('ARCHER');
+            case 2: return $translate.instant('HORSEMAN');
+          }
+        }
+        return '';
       }
     });
 

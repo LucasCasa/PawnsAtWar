@@ -38,7 +38,7 @@
     <div class="col-md-4">
       <resource res="res"></resource>
       <br>
-      <form  ng-submit="gotoPosition()" class="form-inline">
+      <form ng-submit="gotoPosition()" class="form-inline">
         <div class="form-group">
           <label for="Xval">X:</label>
           <input type="text" class="form-control" ng-model="mapX" id="Xval" size="3">
@@ -49,16 +49,15 @@
           <input type="text" class="form-control" id="Yval" ng-model="mapY" size="3">
 
         </div>
-        <button class="myButton" id="gotoDir" ng-disabled="invalidPosition()">{{'GO' |
-          translate}}
+        <button class="myButton" id="gotoDir" ng-disabled="invalidPosition()">{{'GO' | translate}}
         </button>
       </form>
       <br>
-      <!-- <div class="well well-sm">
-                    <p>${alert.message}</p>
-                    <spring:message code="alert.finalize"/> <span class="timeR">
-                    <nu:Number number="${(alert.date.getTime() - now) / 1000}"/></span> <spring:message code="alert.seconds"/>
-                </div> -->
+      <br>
+      <div ng-repeat="alert in alerts" class="well well-sm">
+        <p>{{('ALERT_' + alert.type) | translate:calculateAlertParams(alert)}}</p>
+        {{'ENDS_IN' | translate}}<span class="timeR"> {{alert.timestamp | number:0}}</span> {{'SECONDS' | translate}}
+      </div>
     </div>
   </div>
 </div>

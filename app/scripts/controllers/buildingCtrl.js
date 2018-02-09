@@ -1,7 +1,7 @@
 define(['PawnsAtWar', 'services/ApiService', 'directives/resource', 'services/tileMapper'], function (PawnsAtWar) {
 
   'use strict';
-  PawnsAtWar.controller('buildingCtrl', function ($scope, $routeParams, ApiService, tileMapper, $translate) {
+  PawnsAtWar.controller('buildingCtrl', function ($scope, $routeParams, ApiService, tileMapper, $translate, $window) {
 
     $scope.reload = function () {
       ApiService.getBuilding($routeParams.x, $routeParams.y).then(function (response) {
@@ -15,7 +15,8 @@ define(['PawnsAtWar', 'services/ApiService', 'directives/resource', 'services/ti
 
     $scope.build = function (type) {
       ApiService.build($scope.building.tile.x, $scope.building.tile.y, type).then(function (response) {
-        $scope.reload();
+        //$scope.reload();
+        $window.location.href = '#/map/' ;// + $scope.building.tile.x +'/' + $scope.building.tile.y;
       }, function (error) {
         //ERROR HANDLING
       })
