@@ -1,37 +1,36 @@
 package ar.edu.itba.paw.webapp.DTOs;
 
-import ar.edu.itba.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MessageDTO {
 
-    private User from;
-    private User to;
+    private Long id;
+    private String from;
     private String subject;
     private String message;
 
-    public MessageDTO(User from, User to, String subject, String message){
+    public MessageDTO(Long id, String from, String subject, String message){
+        this.id = id;
         this.from = from;
-        this.to = to;
         this.subject = subject;
         this.message = message;
     }
 
-    public User getFrom(){
+   public Long getId() {
+      return id;
+    }
+
+    public void setId(Long id) {
+      this.id = id;
+    }
+
+  public String getFrom(){
         return from;
     }
 
-    public void setFrom(User from){
+    public void setFrom(String from){
         this.from = from;
-    }
-
-    public User getTo(){
-        return from;
-    }
-
-    public void setTo(User to){
-        this.to = to;
     }
 
     public String getSubject(){

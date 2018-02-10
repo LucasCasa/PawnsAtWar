@@ -12,16 +12,19 @@
   <td>{{'ACTION' | translate}}</td>
   </thead>
   <tbody>
-  <tr ng-repeat="message in messages.read" class="clickable-row">
+  <tr ng-repeat-start="message in messages.unread"  ng-click="toggleDetails(message.id)" class="clickable">
     <td>{{message.from}}</td>
-    <td>{{mesagge.subject}}</td>
+    <td>{{message.subject}}</td>
     <td>
       <div>
-        <input type="hidden" name="id" ng-value="message.id"/>
-        <input type="submit" class="myButton" ng-click="deleteMesssage(message.id)" ng-value="'DELETE' | translate"/>
+      <input type="hidden" name="id" ng-value="message.id"/>
+        <button class="myButton" ng-click="deleteMessage(message.id)">
+        {{'DELETE' | translate}}
+        </button>
       </div>
     </td>
   </tr>
+  <tr ng-repeat-end ng-show="activePosition == {{message.id}}" ng-click=""><td colspan="3">{{message.message}}</td></tr>
   </tbody>
 </table>
 
@@ -33,13 +36,15 @@
   <td>{{'ACTION' | translate }}</td>
   </thead>
   <tbody>
-  <tr ng-repeat="message in messages.unread" class="clickable-row">
+  <tr ng-repeat="message in messages.read" class="clickable-row">
     <td>{{message.from}}</td>
     <td>{{message.subject}}</td>
     <td>
-      <div >
+      <div>
         <input type="hidden" name="id" ng-value="message.id"/>
-        <input type="submit" class="myButton" ng-click="deleteMesssage(message.id)" ng-value="'DELETE' | translate"/>
+        <button class="myButton" ng-click="deleteMessage(message.id)">
+          {{'DELETE' | translate}}
+        </button>
       </div>
     </td>
   </tr>

@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-@Path("message")
+@Path("messages")
 @Controller
 public class MessageController {
   @Autowired
@@ -50,21 +50,22 @@ public class MessageController {
 
     final List<MessageDTO> messagesRead = new ArrayList<>();
     final List<MessageDTO> messagesUnread = new ArrayList<>();
-    ms.getReadMessages(user).forEach(m -> messagesRead.add(new MessageDTO(m.getFrom(), user, m.getSubject(), m.getMessage())));
+    ms.getReadMessages(user).forEach(m -> messagesRead.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
     final List<Message> messagesUnr = ms.getUnreadMessages(user);
-    ms.getUnreadMessages(user).forEach(m -> messagesUnread.add(new MessageDTO(m.getFrom(), user, m.getSubject(), m.getMessage())));
+    ms.getUnreadMessages(user).forEach(m -> messagesUnread.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
 
-    return Response.ok().entity(new UserMessagesDTO(user, messagesRead, messagesUnread)).build();
+    return Response.ok().entity(new UserMessagesDTO(messagesRead, messagesUnread)).build();
 
   }
 
   @POST
   @Path("/")
-  @Produces(MediaType.APPLICATION_JSON)
+  @Consumes(MediaType.APPLICATION_JSON)
   public Response createMessage(MessageCreateDTO create){
     User user = AuthenticatedUser.getUser(us);
+    User to = us.findByUsername(create.getTo());
 
-    if(!us.exists(user.getName())){
+    if(to == null){
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
@@ -72,7 +73,7 @@ public class MessageController {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    Message message =  ms.createMessage( user, create.getTo(), create.getSubject(), create.getMessage());
+    Message message =  ms.createMessage( user, to, create.getSubject(), create.getMessage());
 
     if (message!=null) {
       return Response.noContent().build();
@@ -84,6 +85,7 @@ public class MessageController {
 
   @DELETE
   @Path("/{id}")
+  @Produces(MediaType.APPLICATION_JSON)
   public Response deleteMessage(@PathParam("id") final Long id){
 
     Message mssg = ms.getById(id);

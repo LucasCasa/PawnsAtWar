@@ -1,4 +1,4 @@
-define(['PawnsAtWar'], function(PawnsAtWar) {
+define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
 
     'use strict';
     PawnsAtWar.controller('messagesCtrl', function($scope, ApiService) {
@@ -10,6 +10,7 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
       };
 
       $scope.createMessage = function () {
+        console.log($scope.giveMessage);
         ApiService.createMessage($scope.giveTo, $scope.giveSubject, $scope.giveMessage).then(function (response) {
 
         }, function (error) {
@@ -19,7 +20,7 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
 
       $scope.deleteMessage = function (id) {
         ApiService.deleteMessage(id).then(function (response) {
-
+          $scope.getMessages();
         }, function (error) {
           alert("ERROR" + error.status);
         });
@@ -30,10 +31,29 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
         }, function (error) {
           alert("ERROR" + error.status);
         });
-      }
+      };
+
+      $scope.getMessages();
+
+      $scope.getMessage = function () {
+        ApiService.getMessage().then(function(response){
+          $scope.offers = response;
+        })
+      };
+
+      $scope.getMessage();
 
 
+      $scope.activePosition = -1;
+      $scope.toggleDetails = function(id) {
+        //$scope.isVisible = $scope.isVisible == 0 ? true : false;
+        $scope.activePosition = $scope.activePosition == id ? -1 : id;
+
+      };
+
+      
     });
+
 
 
 });

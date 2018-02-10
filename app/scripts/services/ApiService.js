@@ -181,6 +181,20 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
           return result.promise;
         }
 
+      this.getMessage = function() {
+        var result = $q.defer();
+        $http.get('api/messages').then(function(response){
+          if (response.status >= 400) {
+            console.log(response.status);
+            return result.reject(response);
+          }
+          return result.resolve(response.data);
+        }, function (error) {
+          return result.reject(error);
+        });
+        return result.promise;
+      };
+
     });
 
 });
