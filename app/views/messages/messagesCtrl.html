@@ -12,19 +12,25 @@
   <td>{{'ACTION' | translate}}</td>
   </thead>
   <tbody>
-  <tr ng-repeat-start="message in messages.unread"  ng-click="toggleDetails(message.id)" class="clickable">
-    <td>{{message.from}}</td>
-    <td>{{message.subject}}</td>
+  <tr ng-repeat-start="message in messages.unread"  class="clickable">
+    <td ng-click="messageDetails(message.id)">{{message.from}}</td>
+    <td ng-click="messageDetails(message.id)">{{message.subject}}</td>
     <td>
       <div>
       <input type="hidden" name="id" ng-value="message.id"/>
+        <button class="myButton" ng-click="answer(message.id, message.from, message.subject)">
+          {{'ANSWER' | translate}}
+        </button>
         <button class="myButton" ng-click="deleteMessage(message.id)">
         {{'DELETE' | translate}}
         </button>
+
       </div>
     </td>
   </tr>
-  <tr ng-repeat-end ng-show="activePosition == {{message.id}}" ng-click=""><td colspan="3">{{message.message}}</td></tr>
+  <tr ng-repeat-end ng-show="activePosition == {{message.id}}" ng-click="">
+    <td colspan="3" style=" color: #333;background-color: #fff;">Message: {{message.message}}</td>
+  </tr>
   </tbody>
 </table>
 
@@ -36,17 +42,26 @@
   <td>{{'ACTION' | translate }}</td>
   </thead>
   <tbody>
-  <tr ng-repeat="message in messages.read" class="clickable-row">
-    <td>{{message.from}}</td>
-    <td>{{message.subject}}</td>
+  <tr ng-repeat-start="message in messages.read" class="clickable-row">
+    <td ng-click="messageDetails(message.id)">{{message.from}}</td>
+    <td ng-click="messageDetails(message.id)">{{message.subject}}</td>
     <td>
       <div>
         <input type="hidden" name="id" ng-value="message.id"/>
+        <button class="myButton" ng-click="answer(message.id, message.from, message.subject)">
+          {{'ANSWER' | translate}}
+        </button>
         <button class="myButton" ng-click="deleteMessage(message.id)">
           {{'DELETE' | translate}}
         </button>
+
       </div>
     </td>
+
+  </tr>
+  <tr ng-repeat-end ng-show="activePosition == {{message.id}}" ng-click="">
+    <td colspan="3" style=" color: #333;background-color: #fff;">Mensaje: {{message.message}}</td>
+
   </tr>
   </tbody>
 </table>
@@ -56,7 +71,7 @@
   <div class="form-group">
     <label>{{'USERNAME' | translate}}</label>
     <br>
-    <input class="form-control" ng-model="giveTo" id="list" name="username" placeholder="{{'MAIL_PLACEHOLDER' | translate}}">
+    <input type="to" class="form-control" ng-model="giveTo" id="list" name="username" placeholder="{{'MAIL_PLACEHOLDER' | translate}}">
   </div>
   <div class="form-group">
     <label>{{'SUBJECT' | translate}}</label>
@@ -65,7 +80,7 @@
   </div>
   <div class="form-group">
     <label>{{'MESSAGE' | translate}}</label>
-    <textarea class="form-control" ng-model="giveMessage" name="message" onkeyup="textCounter(this,'counter',1024);" id="exampleTextarea"
+    <textarea type="message" class="form-control" ng-model="giveMessage" name="message" id="message" ng-keyup="reduceCounter(1024, giveMessage.length)"  id="exampleTextarea"
               rows="3" maxlength="1024"></textarea>
     <label>{{'CHARACTER_REMAINING' | translate}}</label>
     <input disabled style="background: white" maxlength="3" size="3" value="1024" id="counter">

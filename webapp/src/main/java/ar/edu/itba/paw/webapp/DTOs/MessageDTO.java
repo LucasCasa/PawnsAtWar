@@ -10,6 +10,7 @@ public class MessageDTO {
     private String subject;
     private String message;
 
+
     public MessageDTO(Long id, String from, String subject, String message){
         this.id = id;
         this.from = from;

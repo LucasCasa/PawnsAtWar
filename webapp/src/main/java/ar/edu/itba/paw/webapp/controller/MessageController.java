@@ -102,17 +102,17 @@ public class MessageController {
 
   @PUT
   @Path("/{id}")
-  public Response answerMessage(@PathParam("id") final Long msgId){
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response answerMessage(@PathParam("id") final Long id){
 
     User user = AuthenticatedUser.getUser(us);
-    Message mssg = ms.getById(msgId);
+    Message mssg = ms.getById(id);
 
     if(mssg==null || (!mssg.getFrom().equals(user) && !mssg.getTo().equals(user))){
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
-    ms.markAsRead(msgId);
-
-//        int messagesUnread = ms.countUnreadMessages(user);
+    ms.markAsRead(id);
 
     return Response.noContent().build();
   }

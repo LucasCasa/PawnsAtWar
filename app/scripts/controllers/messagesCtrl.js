@@ -26,6 +26,24 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
         });
       };
 
+      $scope.answer = function (id,from, subject) {
+
+        $scope.answerMessage(id);
+        $scope.getMessages();
+
+        $scope.giveTo = ''+from;
+        $scope.giveSubject = 'RE:' + subject;
+
+        var message = document.getElementById('message');
+        if(message){
+          console.log('hello world');
+          console.log(message);
+          message.focus();
+        }
+
+
+      };
+
       $scope.answerMessage = function (id) {
         ApiService.answerMessage(id).then(function (response) {
         }, function (error) {
@@ -33,25 +51,29 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
         });
       };
 
+
       $scope.getMessages();
 
-      $scope.getMessage = function () {
-        ApiService.getMessage().then(function(response){
-          $scope.offers = response;
-        })
-      };
-
-      $scope.getMessage();
-
-
       $scope.activePosition = -1;
-      $scope.toggleDetails = function(id) {
+      $scope.messageDetails = function(id) {
         //$scope.isVisible = $scope.isVisible == 0 ? true : false;
         $scope.activePosition = $scope.activePosition == id ? -1 : id;
 
       };
 
-      
+      $scope.reduceCounter = function (maxLength, messageLength) {
+        var counter = document.getElementById('counter');
+
+        var value = maxLength - messageLength;
+
+        if(value < 0){
+          counter.setAttribute('value','0');
+        }else{
+          counter.setAttribute('value', (value).toString());
+        }
+      };
+
+
     });
 
 

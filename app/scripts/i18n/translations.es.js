@@ -83,6 +83,7 @@ define([], function() {
     ACTION: 'Accion',
     CHARACTER_REMAINING: 'Caracteres restantes',
     DELETE: 'Borrar',
+    ANSWER: 'Responder',
     MESSAGE_DESCRIPTION: 'Descripción del mensaje',
     LONG_MESSAGE: 'Mensaje demasiado largo',
     READ_MESSAGE: 'Mensajes leidos',
