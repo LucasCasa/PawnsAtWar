@@ -16,6 +16,7 @@ define([], function() {
     REGISTER: 'Registrarse',
     GO: ' IR',
     SPLIT: ' Separar',
+    MOVE: 'Mover',
     ATTACK: ' Atacar',
     MAP: 'Mapa',
     ARMY: 'Ejército',
@@ -114,6 +115,7 @@ define([], function() {
     UPGRADE: 'Mejorando',
     RECRUIT: 'Entrenando',
     GAME_OVER: 'Su castillo fue destruido. Fin del juego. Por favor, ingrese con otro usuario',
+    ARMY_BUSY: 'Ejercito Ocupado',
     INVALID_PARAM: 'Parámetros inválidos',
     INVALID_ARMY: 'Ejército inválido',
     INVALID_POSITION: 'Posición inválida',
@@ -134,6 +136,7 @@ define([], function() {
     USER_ALREADY_EXIST: 'El nombre de usuario ya existe',
     WRONG_USER: 'La contraseña o el usuario son incorrectos',
     ALREADY_LOGOUT: 'Ya cerraste sesión',
+    ARMY_IN: 'Posicion: {{x}}, {{y}}',
     NO_FOOD: 'No hay suficiente comida',
     NO_GOLD: 'No hay suficiente oro',
     NOT_ENOUGH_RESOURCES: 'No tienes suficientes recursos',
@@ -157,6 +160,7 @@ define([], function() {
     GOLD : 'Mina de oro',
     TERR_GOLD : 'Terreno de oro',
     MILL : 'Molino',
-    STABLE : 'Establo'
+    STABLE : 'Establo',
+    SEND_TO: 'Mandar a'
   };
 });

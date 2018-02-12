@@ -19,7 +19,7 @@ import ar.edu.itba.model.Troop;
 public class TroopHibernateDao implements TroopDao {
 	 @PersistenceContext
 	 private EntityManager em;
-	 
+
 	 @Autowired
 	 private ArmyDao ad;
 
@@ -63,6 +63,12 @@ public class TroopHibernateDao implements TroopDao {
 		query.executeUpdate();
 	}
 
+	@Override
+  public void deleteTroops(int idArmy){
+    final Query query = em.createQuery("delete Troop where army.idArmy = :idArmy");
+    query.setParameter("idArmy", idArmy);
+    query.executeUpdate();
+  }
 	@Override
 	public Troop addTroop(int idArmy, int type, int amount) {
 		if(exists(idArmy,type)){

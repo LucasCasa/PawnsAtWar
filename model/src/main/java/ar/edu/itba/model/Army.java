@@ -23,17 +23,17 @@ public class Army {
 	@SequenceGenerator(sequenceName = "army_idarmy_seq", name = "army_idarmy_seq", allocationSize = 1)
 	@Column(name = "idArmy")
 	private int idArmy;
-	
+
 	@Embedded
 	private Point position;
-	
+
 	@Column(nullable = false, name = "available")
 	private boolean available;
-	
-	@ManyToOne(fetch =FetchType.LAZY, optional = false)
+
+	@ManyToOne(fetch =FetchType.EAGER, optional = false)
 	@JoinColumn(name="idPlayer")
 	private User userArmy;
-	
+
 	@OneToMany(fetch = FetchType.EAGER,orphanRemoval = false, mappedBy="army")
 	private List<Troop> troops;
 
@@ -42,15 +42,15 @@ public class Army {
 		this.userArmy = user;
 		this.available = available;
 	}
-	
+
 	/* package */ Army(){
-		
+
 	}
 
 	public boolean getAvailable() {
 		return available;
 	}
-	
+
 	public User getUser(){
 		return userArmy;
 	}
@@ -65,12 +65,12 @@ public class Army {
 	public int getIdArmy() {
 		return idArmy;
 	}
-	
+
 	public void addTroop(Troop t){
 		troops.add(t);
 	}
 
-	
+
 	public List<Troop> getTroops(){
 		return troops;
 	}
@@ -94,6 +94,6 @@ public class Army {
 	public void setTroops(List<Troop> troops) {
 		this.troops = troops;
 	}
-	
-	
+
+
 }

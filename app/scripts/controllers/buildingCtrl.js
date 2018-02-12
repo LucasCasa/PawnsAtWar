@@ -7,6 +7,7 @@ define(['PawnsAtWar', 'services/ApiService', 'directives/resource', 'services/ti
       ApiService.getBuilding($routeParams.x, $routeParams.y).then(function (response) {
         $scope.building = response;
         $scope.buildings[1].cost = $scope.building.castleCost;
+        $scope.canTrain = $scope.building.tile.type == 2 || $scope.building.tile.type == 3 || $scope.building.tile.type == 8
       });
       ApiService.getResources().then(function (response) {
         $scope.res = response;
@@ -38,6 +39,12 @@ define(['PawnsAtWar', 'services/ApiService', 'directives/resource', 'services/ti
       }, function (error) {
         //ERROR HANDLING
       });
+    };
+
+    $scope.train = function () {
+      ApiService.trainTroops($scope.troopAmount, $scope.building.tile.x, $scope.building.tile.y).then(function (response) {
+        $window.location.href = '#/map'
+      })
     };
 
     $scope.canBuild = function () {

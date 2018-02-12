@@ -21,6 +21,12 @@
           <button ng-click="levelUp()" class="myButton">{{'LEVEL_UP' | translate}}</button>
         </div>
       </div>
+      <div ng-show="canTrain" class="row">
+        <form clas="form-inline" ng-submit="train()">
+          <input placeholder="{{'QUANTITY' | translate}}" type="number" ng-model="troopAmount">
+          <button type="submit" class="myButton">{{'TRAIN' | translate}}</button>
+        </form>
+      </div>
       <br>
       <div ng-show="building.tile.owner != null && building.id == building.tile.owner.id && !canBuild()" class="row">
         <table class="table" id="Level">

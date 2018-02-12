@@ -16,6 +16,7 @@ define([], function() {
     REGISTER: 'Register',
     GO: ' GO',
     SPLIT: ' Split',
+    MOVE: 'Move',
     ATTACK: ' Attack',
     MAP: 'Map',
     ARMY: 'Army',
@@ -25,8 +26,8 @@ define([], function() {
     LOGOUT: 'Logout',
     AVAILABLE: ' Available',
     MANAGE : ' Manage',
-    YES : ' Yes',
-    NO : ' No',
+    YES: ' Yes',
+    NO: ' No',
     MERGE: ' Merge',
     ATTACKER: ' Attacker',
     DEFENDER: ' Defender',
@@ -114,6 +115,7 @@ define([], function() {
     UPGRADE: 'Upgrading',
     RECRUIT: 'Training',
     GAME_OVER: 'Your castle was destroyed. Game over. Please, register with a new username',
+    ARMY_BUSY: 'This Army is Busy',
     INVALID_PARAM: 'Invalid parameters',
     INVALID_ARMY: 'Invalid army',
     INVALID_POSITION: 'Invalid position',
@@ -134,6 +136,7 @@ define([], function() {
     USER_ALREADY_EXIST: 'The username already exists',
     WRONG_USER: 'The user with that password doesn\'t exist',
     ALREADY_LOGOUT: 'There is no account to logout',
+    ARMY_IN: 'Army in {{x}}, {{y}}',
     NO_FOOD: 'Not enough food',
     NO_GOLD: 'Not enough gold',
     NOT_ENOUGH_RESOURCES: 'Not enough resources',
@@ -157,6 +160,7 @@ define([], function() {
     GOLD : ' Gold Mine',
     TERR_GOLD : ' Gold Terrain',
     MILL : ' Mill',
-    STABLE : ' Stable'
+    STABLE : ' Stable',
+    SEND_TO: 'Send to'
     };
 });

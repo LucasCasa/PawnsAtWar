@@ -60,7 +60,7 @@ define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/r
       $interval(function () {
         for (var i = 0; i < $scope.alerts.length; i++) {
           $scope.alerts[i].timestamp -= 1;
-          if ($scope.alerts[i].timestamp <= 0) {
+          if ($scope.alerts[i].timestamp <= 0 && $scope.alerts[i].timestamp > 0) {
             $scope.reload();
           }
         }

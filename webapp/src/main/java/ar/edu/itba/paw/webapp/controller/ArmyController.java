@@ -56,27 +56,57 @@ public class ArmyController {
   }
 
   @POST
-  @Path("/attack")
+  @Path("/move")
   @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
-  public Response attack(ArmyAttackDTO attackDTO) {
+  public Response moveArmy(ArmyMoveDTO moveDTO){
     User user = AuthenticatedUser.getUser(us);
-    Point point = new Point(attackDTO.getPoint().getX(), attackDTO.getPoint().getY());
+    Point point = new Point(moveDTO.getPoint().getX(), moveDTO.getPoint().getY());
     if (!Validator.validBoardPosition(point)) {
-      return Response.status(Response.Status.BAD_REQUEST).build();
+      return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("INVALID_POSITION")).build();
     }
-    Army army = as.getArmyById(attackDTO.getArmyId());
-    if (army == null) {
-      return Response.status(Response.Status.NOT_FOUND).build();
-    } else if (!army.getUser().equals(user)) {
-      return Response.status(Response.Status.UNAUTHORIZED).build();
+    Army army = as.getArmyById(moveDTO.getArmyId());
+    if(army == null){
+      return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("INVALID_ARMY")).build();
     }
-    Sector sector = ss.getSector(point);
-    if (sector.getUser().equals(user)) {
-      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("ATTACK_SELF_BUILDING")).build();
-    } else if (!army.getAvailable()) {
+    if (!user.equals(army.getUser())) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NOT_YOUR_ARMY")).build();
+    }
+    if(!army.getAvailable()){
       return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("ARMY_UNAVAILABLE")).build();
-    } else if (sector.getType() == Info.EMPTY || sector.getType() == Info.TERR_GOLD) {
+    }
+    User owner = ss.getPlayer(point);
+    if(owner == null){
+      return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("INVALID_POSITION")).build();
+    }
+    if(user.equals(owner)) {
+      Army otherArmy = as.getArmyAtPosition(user, point);
+      if(otherArmy != null){
+        return merge(user, point, army, otherArmy);
+      }
+      return move(user, point, army);
+    }
+    return attack(user, point, army);
+  }
+  private Response move(User user, Point point, Army army) {
+    Sector sector = ss.getSector(point);
+    if(sector.getType() == SectorType.EMPTY.getType() || sector.getType() == SectorType.TERR_GOLD.getType()){
+      return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("INVALID_POSITION")).build();
+    }
+
+    as.setAvailable(army.getIdArmy(), false);
+    sh.moveTask(user, army.getIdArmy(), point);
+    return Response.status(Response.Status.NO_CONTENT).build();
+  }
+
+  private Response merge(User user, Point to, Army thisArmy, Army otherArmy) {
+    sh.mergeTask(user, thisArmy.getIdArmy(), otherArmy.getIdArmy(), to);
+    as.setAvailable(thisArmy.getIdArmy(), false);
+    return Response.status(Response.Status.NO_CONTENT).build();
+  }
+
+  private Response attack(User user, Point point, Army army) {
+    Sector sector = ss.getSector(point);
+    if (sector.getType() == Info.EMPTY || sector.getType() == Info.TERR_GOLD) {
       return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("ATTACK_EMPTY_TERRAIN")).build();
     } else if (sector.getType() == Info.CASTLE && !ss.isCastleAlone(point, 3)) {
       return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("CANT_ATTACK_CASTLE")).build();
@@ -84,6 +114,25 @@ public class ArmyController {
     sh.attackTask(user, point, army.getIdArmy());
     as.setAvailable(army.getIdArmy(), false);
     return Response.noContent().build();
+  }
+
+  @POST
+  @Path("/split")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response split(ArmySplitDTO splitDTO) {
+    User user = AuthenticatedUser.getUser(us);
+    Point point = new Point(splitDTO.getPoint().getX(), splitDTO.getPoint().getY());
+    if(!Validator.validBoardPosition(point)) {
+      return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("INVALID_POSITION")).build();
+    }
+    if(!as.belongs(user, splitDTO.getArmyId())) {
+      return Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorDTO("NOT_YOUR_ARMY")).build();
+    }
+    Map<TroopType, Integer> tr = new HashMap<>();
+    splitDTO.getTroops().forEach(u -> tr.put(TroopType.get(u.getType()), u.getAmount()));
+    Army newArmy = as.splitArmy(splitDTO.getArmyId(), tr); // newArmy starts as unavailable
+    sh.splitTask(user, newArmy.getIdArmy(), point);
+    return Response.status(Response.Status.NO_CONTENT).build();
   }
 
   @POST
@@ -97,16 +146,23 @@ public class ArmyController {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
     Sector sector = ss.getSector(point);
+    if(!user.equals(sector.getUser())){
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NOT_YOUR_TERRAIN")).build();
+    }
     int cost;
-    switch (trainDTO.getType()) {
-      case Info.WARRIOR:
+    int type;
+    switch (sector.getType()) {
+      case Info.BARRACKS:
         cost = (Info.COST_WARRIOR - (sector.getLevel() - 1)) * trainDTO.getAmount();
+        type = Info.WARRIOR;
         break;
-      case Info.ARCHER:
+      case Info.ARCHERY:
         cost = (Info.COST_ARCHER - (sector.getLevel() - 1)) * trainDTO.getAmount();
+        type = Info.ARCHER;
         break;
-      case Info.HORSEMAN:
+      case Info.STABLE:
         cost = (Info.COST_HORSEMAN - (sector.getLevel() - 1)) * trainDTO.getAmount();
+        type = Info.HORSEMAN;
         break;
       default:
         return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("INVALID_TROOP_TYPE")).build();
@@ -116,66 +172,10 @@ public class ArmyController {
       return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("ALREADY_TRAINING")).build();
     }
     if (es.subtractResourceAmount(user, Info.RES_FOOD, cost)) {
-      sh.TrainTask(user, point, trainDTO.getAmount(), trainDTO.getType());
+      sh.TrainTask(user, point, trainDTO.getAmount(), type);
       return Response.noContent().build();
     } else {
       return Response.status(Response.Status.FORBIDDEN).entity("NO_FOOD").build();
     }
-  }
-
-  @POST
-  @Path("/move")
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response move(ArmyMoveDTO moveDTO) {
-    User user = AuthenticatedUser.getUser(us);
-    Point point = new Point(moveDTO.getPoint().getX(), moveDTO.getPoint().getY());
-    if (!Validator.validBoardPosition(point)) {
-      return Response.status(Response.Status.BAD_REQUEST).build();
-    }
-    Sector sector = ss.getSector(point);
-    if (!user.equals(sector.getUser())) {
-      return Response.status(Response.Status.UNAUTHORIZED).build();
-    }
-    if (as.getArmyById(moveDTO.getArmyId()) == null) {
-      return Response.status(Response.Status.NOT_FOUND).build();
-    }
-    if (!as.belongs(user, moveDTO.getArmyId())) {
-      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NOT_YOUR_ARMY")).build();
-    }
-    as.setAvailable(moveDTO.getArmyId(), false);
-    sh.moveTask(user, moveDTO.getArmyId(), point);
-    return Response.status(Response.Status.NO_CONTENT).build();
-  }
-
-  @POST
-  @Path("/merge")
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response merge(ArmyMergeDTO mergeDTO) {
-    User user = AuthenticatedUser.getUser(us);
-    if(!as.belongs(user, mergeDTO.getFromId()) || !as.belongs(user, mergeDTO.getToId())) {
-      return Response.status(Response.Status.UNAUTHORIZED).build();
-    }
-    sh.mergeTask(user, mergeDTO.getFromId(), mergeDTO.getToId(), as.getArmyById(mergeDTO.getToId()).getPosition());
-    as.setAvailable(mergeDTO.getFromId(), false);
-    return Response.status(Response.Status.NO_CONTENT).build();
-  }
-
-  @POST
-  @Path("split")
-  @Consumes(MediaType.APPLICATION_JSON)
-  public Response split(ArmySplitDTO splitDTO) {
-    User user = AuthenticatedUser.getUser(us);
-    Point point = new Point(splitDTO.getPosition().getX(), splitDTO.getPosition().getY());
-    if(!Validator.validBoardPosition(point)) {
-      return Response.status(Response.Status.BAD_REQUEST).build();
-    }
-    if(!as.belongs(user, splitDTO.getArmyId())) {
-      return Response.status(Response.Status.UNAUTHORIZED).build();
-    }
-    Map<TroopType, Integer> tr = new HashMap<>();
-    splitDTO.getUnits().forEach(u -> tr.put(TroopType.get(u.getType()), u.getAmount()));
-    Army newArmy = as.splitArmy(splitDTO.getArmyId(), tr); // newArmy starts as unavailable
-    sh.splitTask(user, newArmy.getIdArmy(), point);
-    return Response.status(Response.Status.NO_CONTENT).build();
   }
 }

@@ -1,0 +1,43 @@
+<div class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content split">
+      <div class="modal-header">
+        <h4 class="modal-title">{{'SPLIT' | translate}}</h4>
+      </div>
+      <div class="modal-body" style="text-align: center">
+        <h3 class="error" ng-hide="errorMessage == undefined">{{errorMessage | translate}}</h3>
+        <div class="form-inline">
+          <label style="padding-right: 50px"><h3>{{'SEND_TO' | translate}}</h3></label>
+          <div class="form-group">
+            <label>X:</label>
+            <input type="text" class="form-control" ng-model="x" size="2"
+                   style="padding-right: 5px; padding-left: 5px">
+          </div>
+          <div class="form-group">
+            <label>Y:</label>
+            <input type="text" class="form-control" ng-model="y" size="2"
+                   style="padding-right: 5px; padding-left: 5px; margin-right: 10px">
+          </div>
+        </div>
+        <table class="table split-table" style="background-color: transparent; max-width: 467px">
+          <thead>
+          <td><img class="img-responsive" src="images/warrior.png"></td>
+          <td><img class="img-responsive" src="images/archer.png"></td>
+          <td><img class="img-responsive" src="images/horseman.png"></td>
+          </thead>
+          <tbody>
+          <tr style="text-align: center">
+            <td><input size="5" ng-keyup="limit(0)" ng-model="wc" ng-disabled="warriorAmount == '-'"></td>
+            <td><input size="5" ng-keyup="limit(1)" ng-model="ac" ng-disabled="archerAmount == '-'"></td>
+            <td><input size="5" ng-keyup="limit(2)" ng-model="hc" ng-disabled="horsemenAmount == '-'"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="modal-footer" style="text-align: center">
+        <button type="button" ng-click="split()" class="myButton">{{'SPLIT' | translate}}</button>
+        <button type="button" ng-click="cancel()" class="myButton">{{'CANCEL' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

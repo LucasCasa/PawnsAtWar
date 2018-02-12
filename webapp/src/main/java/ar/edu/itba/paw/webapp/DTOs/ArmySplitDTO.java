@@ -5,8 +5,8 @@ import java.util.List;
 public class ArmySplitDTO {
 
   private int armyId;
-  private PointDTO position;
-  private List<UnitDTO> units;
+  private PointDTO point;
+  private List<UnitDTO> troops;
 
   public ArmySplitDTO() {}
 
@@ -18,19 +18,19 @@ public class ArmySplitDTO {
     this.armyId = armyId;
   }
 
-  public PointDTO getPosition() {
-    return position;
+  public PointDTO getPoint() {
+    return point;
   }
 
-  public void setPosition(PointDTO position) {
-    this.position = position;
+  public void setPoint(PointDTO position) {
+    this.point = position;
   }
 
-  public List<UnitDTO> getUnits() {
-    return units;
+  public List<UnitDTO> getTroops() {
+    return troops;
   }
 
-  public void setUnits(List<UnitDTO> units) {
-    this.units = units;
+  public void setTroops(List<UnitDTO> units) {
+    this.troops = units;
   }
 }

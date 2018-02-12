@@ -210,6 +210,11 @@ p{
   background-repeat:   no-repeat;
   background-position: center center
 }
+
+.army {
+  background-image: url(../images/armyBack.png) !important;
+  box-shadow: none !important;
+}
 pre {
   background-color: transparent;
   border-width: 0;
@@ -222,4 +227,57 @@ td {
 
 td h2 {
   margin: 10px;
+}
+
+.split {
+  //background: url(../images/splitback.png);
+  //background-size:     cover;                      /* <------ */
+  //background-repeat:   no-repeat;
+  //background-position: center center;
+  background-color: transparent;
+  box-shadow: none !important;
+  text-align: center;
+  border: none;
+}
+
+.modal-header {
+  border: none;
+  background-image: url(../images/splitHeader.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: transparent;
+  padding: 12px;
+}
+
+.modal-footer {
+  border: none;
+  background-image: url(../images/splitFooter.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-color: transparent;
+  padding: 5px;
+}
+.modal-body {
+  background-image: url(../images/splitCenter.png);
+  background-repeat: repeat-y;
+  background-position: center center;
+  background-color: transparent;
+}
+
+.split-table {
+  margin-left:auto;
+  margin-right:auto;
+  background-color: transparent;
+  text-align: center;
+}
+
+.split-table td {
+  background-color: transparent !important;
+  width: 33%;
+}
+
+.split-table img {
+  max-width: 100px;
+  height: auto;
+  margin: auto;
 }
