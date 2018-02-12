@@ -5,135 +5,117 @@ import ar.edu.itba.interfaces.PAWMailService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.Message;
 import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.DTOs.MessageCreateDTO;
+import ar.edu.itba.paw.webapp.DTOs.MessageDTO;
+import ar.edu.itba.paw.webapp.DTOs.UserMessagesDTO;
+import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
-/**
- * Created by root on 26/10/16.
- */
+@Path("messages")
 @Controller
 public class MessageController {
-    @Autowired
-    private UserService us;
+  @Autowired
+  private UserService us;
 
-    @Autowired
-    private MessageSource messageSource;
-
-
-    @Autowired
-    private MessageService ms;
-
-    @Autowired
-    private PAWMailService mailService;
-
-    @RequestMapping(value="/messages")
-    public ModelAndView messages(@ModelAttribute("userId") final User user, @RequestParam(value="s", required = false,defaultValue = "") final String success){
-
-        if(user == null)
-            return new ModelAndView("redirect:/login");
-        
-        final ModelAndView mav = new ModelAndView("messages");
-        List<String> usernames = us.getUsernames();;
-        List<Message> messagesUnr = ms.getUnreadMessages(user);
-        List<Message> messagesRead = ms.getReadMessages(user);
-        int messagesUnread = ms.countUnreadMessages(user);
-        mav.addObject("messagesRead",messagesRead);
-        mav.addObject("messagesUnread",messagesUnr);
-
-        mav.addObject("mReadListSize", messagesRead.size());
-        mav.addObject("mUnreadListSize", messagesUnr.size());
-        mav.addObject("success",success);
-        mav.addObject("messageSource",messageSource);
-        mav.addObject("namelist",usernames);
-        mav.addObject("unreadMessages",messagesUnread);
+  @Autowired
+  private MessageSource messageSource;
 
 
-        return mav;
+  @Autowired
+  private MessageService ms;
+
+  @Autowired
+  private PAWMailService mailService;
+
+  @GET
+  @Path("/")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getUserMessages(){
+
+    User user = AuthenticatedUser.getUser(us);
+
+    if (user == null) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    @RequestMapping(value="/messages/sendMessage", method = RequestMethod.POST)
-    public ModelAndView sendMessage(@RequestParam(required = false) String username,@RequestParam(required = false) String message, @RequestParam(required = false) String subject, @ModelAttribute("userId") final User user, Locale locale){
+    final List<String> usernames = us.getUsernames();
 
-        ms.createMessage( user, us.findByUsername(username), subject, message);
+    final List<MessageDTO> messagesRead = new ArrayList<>();
+    final List<MessageDTO> messagesUnread = new ArrayList<>();
+    ms.getReadMessages(user).forEach(m -> messagesRead.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
+    final List<Message> messagesUnr = ms.getUnreadMessages(user);
+    ms.getUnreadMessages(user).forEach(m -> messagesUnread.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
 
-        if(!us.exists(username)){
-            return new ModelAndView("redirect:/error?m="+ messageSource.getMessage("error.userAlreadyExist",null,locale));
-        }
+    return Response.ok().entity(new UserMessagesDTO(messagesRead, messagesUnread)).build();
 
-        if(message.length() > 1024 || subject.length() > 50){
-            return new ModelAndView("redirect:/messages?m=" + messageSource.getMessage("error.longMessage",null ,locale));
-        }
-        
+  }
 
-        return new ModelAndView("redirect:/messages?s=" + messageSource.getMessage("messageSent",null,locale));
+  @POST
+  @Path("/")
+  @Consumes(MediaType.APPLICATION_JSON)
+  public Response createMessage(MessageCreateDTO create){
+    User user = AuthenticatedUser.getUser(us);
+    User to = us.findByUsername(create.getTo());
 
+    if(to == null){
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-
-    @RequestMapping(value="/messages/delete")
-    public ModelAndView deleteMessage(@RequestParam final Long id, @ModelAttribute("userId") final User user){
-
-        Message mssg = ms.getById(id);
-
-        if(mssg == null)
-            return new ModelAndView("redirect:/error");
-
-        ms.deleteMessage(mssg);
-
-        return new ModelAndView("redirect:/messages");
-    }
-    
-    @RequestMapping(value="/messages/seeMessage")
-    public ModelAndView answerMessage(@RequestParam final Long msgId, @ModelAttribute("userId") final User user){
-
-        Message mssg = ms.getById(msgId);
-
-
-        if(mssg==null || (!mssg.getFrom().equals(user) && !mssg.getTo().equals(user))){
-        	return new ModelAndView("redirect:/error");
-        }
-
-        final ModelAndView mav = new ModelAndView("seeMessage");
-        ms.markAsRead(msgId);
-        int messagesUnread = ms.countUnreadMessages(user);
-
-
-
-
-        mav.addObject("from", mssg.getFrom().getName());
-        mav.addObject("subject", mssg.getSubject());
-        mav.addObject("message", mssg.getMessage());
-        mav.addObject("unreadMessages", messagesUnread);
-        ;
-
-        return mav;
+    if(create.getMessage().length() > 1024 || create.getSubject().length() > 50){
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    @ModelAttribute("userId")
-    public User loggedUser (final HttpSession session){
-        if(session.getAttribute("userId") != null){
-        	User u = us.findById((Integer)session.getAttribute("userId"));
-            return  u;
-        }
-        return null;
+    Message message =  ms.createMessage( user, to, create.getSubject(), create.getMessage());
+
+    if (message!=null) {
+      return Response.noContent().build();
+    } else {
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
+  }
+
+  @DELETE
+  @Path("/{id}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response deleteMessage(@PathParam("id") final Long id){
+
+    Message mssg = ms.getById(id);
+
+    if(mssg == null)
+      return Response.status(Response.Status.NOT_FOUND).build();
 
 
+    ms.deleteMessage(mssg);
 
-    private void sendEmail(String emailTo, String subject, String message){
-        mailService.sendEmail(emailTo, subject, message);
+    return Response.noContent().build();
+  }
+
+
+  @PUT
+  @Path("/{id}")
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response answerMessage(@PathParam("id") final Long id){
+
+    User user = AuthenticatedUser.getUser(us);
+    Message mssg = ms.getById(id);
+
+    if(mssg==null || (!mssg.getFrom().equals(user) && !mssg.getTo().equals(user))){
+      return Response.status(Response.Status.BAD_REQUEST).build();
     }
+    ms.markAsRead(id);
+
+    return Response.noContent().build();
+  }
 
 
 }

@@ -8,8 +8,6 @@ public class TradeOfferResourceDTO {
     private int type;
     private int amount;
 
-    public TradeOfferResourceDTO() {}
-
     public TradeOfferResourceDTO(int type, int amount) {
         this.type = type;
         this.amount = amount;

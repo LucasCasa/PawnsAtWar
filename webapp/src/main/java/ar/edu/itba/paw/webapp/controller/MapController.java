@@ -8,6 +8,7 @@ import ar.edu.itba.model.User;
 import ar.edu.itba.paw.webapp.DTOs.ErrorDTO;
 import ar.edu.itba.paw.webapp.DTOs.MapDTO;
 import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
+
 import ar.edu.itba.paw.webapp.data.Info;
 import ar.edu.itba.paw.webapp.data.Validator;
 import org.springframework.beans.factory.annotation.Autowired;

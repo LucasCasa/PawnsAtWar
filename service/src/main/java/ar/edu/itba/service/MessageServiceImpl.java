@@ -14,15 +14,13 @@ import java.util.List;
 @Service
 @Transactional
 public class MessageServiceImpl implements MessageService {
-	
+
 	@Autowired
 	private MessageDao md;
 
 	@Override
 	public Message createMessage(User from, User to, String subject, String message) {
-		if(from.equals(to)){
-			return null;
-		}
+
 		return md.createMessage(from, to, subject, message);
 	}
 
@@ -55,7 +53,7 @@ public class MessageServiceImpl implements MessageService {
 		List<Message> sent = user.getSentMessages();
 		md.removeMessages(sent);
 		md.removeMessages(received);
-		
+
 	}
 
 
