@@ -43,6 +43,10 @@ define([], function () {
       '/building/:x/:y': {
                 templateUrl: 'views/building/buildingCtrl.html',
                 controller: 'buildingCtrl'
+            },
+            '/tactic': {
+                templateUrl: 'views/tactic/tacticCtrl.html',
+                controller: 'tacticCtrl'
             }
             /* ===== yeoman hook ===== */
       /* Do not remove these commented lines! Needed for auto-generation */
