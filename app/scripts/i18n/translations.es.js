@@ -136,6 +136,7 @@ define([], function() {
     ALREADY_LOGOUT: 'Ya cerraste sesión',
     NO_FOOD: 'No hay suficiente comida',
     NO_GOLD: 'No hay suficiente oro',
+    NOT_ENOUGH_RESOURCES: 'No tienes suficientes recursos',
     NO_USER_IN_POSITION: 'No existe usuario en esa posición, el castillo ya fue destruido',
     TROOPS_TRAINED: 'Tropas entrenadas',
     NO_CASTLE: 'El usuario no tiene castillo',

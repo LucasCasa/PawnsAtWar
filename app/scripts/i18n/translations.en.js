@@ -136,6 +136,7 @@ define([], function() {
     ALREADY_LOGOUT: 'There is no account to logout',
     NO_FOOD: 'Not enough food',
     NO_GOLD: 'Not enough gold',
+    NOT_ENOUGH_RESOURCES: 'Not enough resources',
     NO_USER_IN_POSITION: 'No user in that position, castle already destroyed',
     TROOPS_TRAINED: 'Troops trained',
     NO_CASTLE: 'The user does not have a castle',
