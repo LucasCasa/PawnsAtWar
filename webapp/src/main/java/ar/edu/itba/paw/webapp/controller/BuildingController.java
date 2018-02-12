@@ -6,6 +6,8 @@ import java.util.List;
 import ar.edu.itba.interfaces.*;
 import ar.edu.itba.model.*;
 import ar.edu.itba.paw.webapp.DTOs.BuildDTO;
+import ar.edu.itba.paw.webapp.DTOs.ErrorDTO;
+import ar.edu.itba.paw.webapp.DTOs.BuildingDTO;
 import ar.edu.itba.paw.webapp.DTOs.TileDTO;
 import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import ar.edu.itba.paw.webapp.data.Info;
@@ -30,6 +32,8 @@ public class BuildingController {
   private UserService us;
   @Autowired
   private ScheduleService sh;
+  @Autowired
+  private AlertService as;
 
   @GET
   @Path("/")
@@ -45,11 +49,15 @@ public class BuildingController {
   @Path("/{x}/{y}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getBuilding(@PathParam("x") final int x, @PathParam("y") final int y) {
-    Sector sector = ss.getSector(new Point(x, y));
+    User user = AuthenticatedUser.getUser(us);
+    Point p = new Point(x, y);
+    Sector sector = ss.getSector(p);
     if (sector == null) {
       return Response.status(Response.Status.NOT_FOUND).build();
     }
-    return Response.ok().entity(new TileDTO(sector)).build();
+    Alert a = as.getAlertByPoint(p);
+    boolean beingConstructed = user.equals(sector.getUser()) && a != null && (a.getType().equals("BUILD") || a.getType().equals("UPGRADE"));
+    return Response.ok().entity(new BuildingDTO(sector, user.getId(), es.validCastlePosition(p), ss.getCastlePrice(user), beingConstructed)).build();
   }
 
   @POST
@@ -66,13 +74,16 @@ public class BuildingController {
       return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     if (s.getType() != Info.TERR_GOLD && s.getType() != Info.EMPTY) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("CANT_BUILD")).build();
+    }
+    Alert alert = as.getAlertByPoint(p);
+    if(alert != null && (alert.getType().equals("BUILD") || alert.getType().equals("UPGRADE"))) {
       return Response.status(Response.Status.FORBIDDEN).build();
     }
-
     if (es.build(user, p.getX(), p.getY(), buildDTO.getType())) {
       return Response.status(Response.Status.NO_CONTENT).build();
     } else {
-      return Response.status(Response.Status.FORBIDDEN).build();
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NO_GOLD")).build();
     }
   }
 
@@ -106,8 +117,11 @@ public class BuildingController {
     }
     int price = ss.getPrice(user) + (int) Math.pow(s.getLevel(), 4);
     int gold = es.getResource(user, Info.RES_GOLD).getQuantity();
-    if (s.getLevel() >= 20 || gold < price) {
-      return Response.status(Response.Status.FORBIDDEN).build();
+    if (s.getLevel() >= 20) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("MAX_LEVEL")).build();
+    }
+    if (gold < price) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NO_GOLD")).build();
     }
     sh.levelUpTask(s);
     es.subtractResourceAmount(user, Info.RES_GOLD, price);

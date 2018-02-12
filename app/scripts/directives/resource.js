@@ -17,12 +17,12 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
     $scope.addFood = 0;
     $scope.addGold = 0;
     $interval(function() {
+      console.log('llamado');
       $scope.res = $scope.reso();
-      console.log($scope.reso());
-      $scope.addFood = Math.min($scope.res.resources[0].rate + $scope.addFood, $scope.res.limit - $scope.res.resources[0].amount);
-      $scope.addGold = Math.min($scope.res.resources[1].rate + $scope.addFood, $scope.res.limit - $scope.res.resources[1].amount);
-      $scope.res.resources[0].amount = $scope.res.resources[0].amount + $scope.addFood;
-      $scope.res.resources[1].amount = $scope.res.resources[1].amount + $scope.addGold;
+      $scope.addFood = Math.min($scope.res.resources[0].rate, $scope.res.limit - $scope.res.resources[0].amount);
+      $scope.addGold = Math.min($scope.res.resources[1].rate, $scope.res.limit - $scope.res.resources[1].amount);
+      $scope.res.resources[0].amount += $scope.addFood;
+      $scope.res.resources[1].amount += $scope.addGold;
     }, 1000);
   });
 });

@@ -7,18 +7,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public class TileDTO {
 
   private int x;
-  private int y;
-  private int type;
-  private int level;
-  private UserDTO owner;
+	private int y;
+	private int type;
+	private int level;
+	private UserDTO owner;
 
-  public TileDTO(Sector sector) {
-    this.x = sector.getPosition().getX();
-    this.y = sector.getPosition().getY();
-    this.type = sector.getType();
-    this.level = sector.getLevel();
-    this.owner = sector.getUser() == null ? null : new UserDTO(sector.getUser());
-  }
+	public TileDTO(Sector sector) {
+		this.x = sector.getPosition().getX();
+		this.y = sector.getPosition().getY();
+		this.type = sector.getType();
+		this.level = sector.getLevel();
+		this.owner = sector.getUser() == null ? null : new UserDTO(sector.getUser());
+	}
 
   public int getX() {
     return x;
@@ -59,4 +59,5 @@ public class TileDTO {
   public void setOwner(UserDTO owner) {
     this.owner = owner;
   }
+
 }

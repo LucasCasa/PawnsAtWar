@@ -1,0 +1,139 @@
+define(['PawnsAtWar', 'services/ApiService', 'directives/resource', 'services/tileMapper'], function (PawnsAtWar) {
+
+  'use strict';
+  PawnsAtWar.controller('buildingCtrl', function ($scope, $routeParams, ApiService, tileMapper, $translate, $window) {
+
+    $scope.reload = function () {
+      ApiService.getBuilding($routeParams.x, $routeParams.y).then(function (response) {
+        $scope.building = response;
+        $scope.buildings[1].cost = $scope.building.castleCost;
+      });
+      ApiService.getResources().then(function (response) {
+        $scope.res = response;
+      });
+    };
+
+    $scope.build = function (type) {
+      ApiService.build($scope.building.tile.x, $scope.building.tile.y, type).then(function (response) {
+        //$scope.reload();
+        $window.location.href = '#/map/' ;// + $scope.building.tile.x +'/' + $scope.building.tile.y;
+      }, function (error) {
+        //ERROR HANDLING
+      })
+    };
+
+    $scope.demolish = function () {
+      if (confirm($translate.instant('WARNING_DEMOLISH'))) {
+        ApiService.demolish($scope.building.tile.x, $scope.building.tile.y).then(function (response) {
+          $scope.reload()
+        }, function (error) {
+          //ERROR HANDLING
+        });
+      }
+    };
+
+    $scope.levelUp = function () {
+      ApiService.levelUp($scope.building.tile.x, $scope.building.tile.y).then(function (response) {
+        $scope.reload();
+      }, function (error) {
+        //ERROR HANDLING
+      });
+    };
+
+    $scope.canBuild = function () {
+      return $scope.building !== undefined && !$scope.building.alreadyBuilding && $scope.building.tile.owner.id == $scope.building.id && ($scope.building.tile.type == 0 || $scope.building.tile.type == 5);
+    };
+    $scope.canAttack = function () {
+      return $scope.building !== undefined && $scope.building.tile.owner != null && $scope.building.tile.owner.id != $scope.building.id && $scope.building.tile.type != 5 && $scope.building.tile.type != 0;
+    };
+    $scope.canUpgrade = function () {
+      return $scope.building !== undefined && !$scope.building.alreadyBuilding && $scope.building.tile.owner != null && $scope.building.tile.owner.id == $scope.building.id && $scope.building.tile.type != 0 && $scope.building.tile.type != 5;
+    };
+
+    $scope.canBuildThis = function (type) {
+      if (type == 7) return false;
+      if ($scope.building === undefined) return false;
+      if (type == 0 || type == 5) return false;
+      if (type == 1 && !$scope.building.canBuildCastle) return false;
+      if (type == 4 && $scope.building.tile.type != 5) return false;
+      if ($scope.building.tile.type == 5 && type != 4) return false;
+      if ($scope.building.tile.owner == null && type != 1) return false;
+      return true;
+    };
+
+    $scope.reload();
+    $scope.buildings = [];
+    for (var i = 0; i < 9; i++) {
+      $scope.buildings[i] = {
+        img: tileMapper.getPngImage(i),
+        description: tileMapper.getDescription(i),
+        cost: 1000,
+        type: i
+      };
+    }
+
+    $scope.getImage = tileMapper.getPngImage;
+    $scope.getDescription = tileMapper.getDescription;
+
+    $scope.range = function (min, max, step) {
+      step = step || 1;
+      var input = [];
+      for (var i = min; i <= max; i += step) {
+        input.push(i);
+      }
+      return input;
+    };
+
+    $scope.getBonusIcon = function (type) {
+      switch (type) {
+        case 1:
+          return "images/silo.png";
+        case 2:
+        case 3:
+        case 6:
+        case 8:
+          return "images/iconResFood.png";
+        case 4:
+          return "images/iconResGold.png";
+        default :
+          return "#";
+      }
+    };
+
+    $scope.getBonusValue = function (type, level) {
+      switch (type) {
+        case 6:
+        case 4:
+          return level * 0.1;
+        case 1:
+          return 1000 + level * level * level * level;
+        case 3:
+          return 31 - level;
+        case 2:
+          return 51 - level;
+        case 8:
+          return 71 - level;
+        default:
+          return -1;
+      }
+    };
+
+    $scope.getBonusName = function (type) {
+      switch (type) {
+        case 1:
+          return 'EXTRA_STORAGE';
+        case 2:
+        case 3:
+        case 8:
+          return 'TROOP_COST';
+        case 6:
+          return 'FOOD_PER_SECOND';
+        case 4:
+          return 'GOLD_PER_SECOND';
+        default:
+          return '';
+      }
+    };
+  });
+
+});

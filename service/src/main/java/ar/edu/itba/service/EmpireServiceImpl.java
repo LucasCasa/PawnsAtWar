@@ -32,11 +32,10 @@ import ar.edu.itba.model.User;
 @Service
 @Transactional
 public class EmpireServiceImpl implements EmpireService{
-	
+
 	private static final int INITIAL_VALUE = 2000;
 	private static final int MIN_STORAGE = 3000;
-	//private static final int STORAGE_PER_LEVEL = 1000;
-	
+
 	@Autowired
 	private EmpireDao ed;
 	@Autowired
@@ -55,7 +54,7 @@ public class EmpireServiceImpl implements EmpireService{
 	@Override
 	public Set<Resource> getResources(User u) {
 		updateResources(u);
-		Set<Resource> set = new TreeSet<Resource>(new Comparator<Resource>(){
+		Set<Resource> set = new TreeSet<>(new Comparator<Resource>(){
 			public int compare(Resource r1, Resource r2){
 				return r1.getType()-r2.getType();
 			}
@@ -64,7 +63,7 @@ public class EmpireServiceImpl implements EmpireService{
 		set.addAll(l);
 		return set;
 	}
-	
+
 	/**
 	 * Updates all resources by calculating the previous amount plus the rate times the time lasped in
 	 * seconds since the last update
@@ -79,7 +78,7 @@ public class EmpireServiceImpl implements EmpireService{
 			ed.setResource(u, r.getType(), (max<cant?max:cant));
 		}
 	}
-	
+
 	/**
 	 * Returns the max amount of resources that can be stored
 	 * @param u The user
@@ -133,7 +132,7 @@ public class EmpireServiceImpl implements EmpireService{
 		sh.buildTask(u,new Point(xprime,yprime),type);
 		return true;
 	}
-	
+
 	public boolean validCastlePosition(Point p) {
 		List<Alert> alerts = als.getBuildingConstructed(p);
 		if(!alerts.isEmpty())
@@ -166,7 +165,7 @@ public class EmpireServiceImpl implements EmpireService{
 		}
 		return map;
 	}
-	
+
 	@Override
 	public List<Double> getRates(User u){
 		List<Double> l = new ArrayList<>();
@@ -175,7 +174,7 @@ public class EmpireServiceImpl implements EmpireService{
 		}
 		return l;
 	}
-	
+
 	@Override
 	public double getRate(User u, int type){
 		List<Sector> list;
@@ -224,7 +223,7 @@ public class EmpireServiceImpl implements EmpireService{
 		}
 		return false;
 	}
-	
+
 	@Override
 	public boolean createUser(User user, boolean newUser) {
 		boolean resp = ss.createCastle(user);
@@ -237,14 +236,14 @@ public class EmpireServiceImpl implements EmpireService{
 			}else{
 				ed.setResource(user, 0, INITIAL_VALUE);
 				ed.setResource(user, 1, INITIAL_VALUE);
-			}	
+			}
 		}else{
 			return false;
 		}
 		return true;
 	}
 
-	
+
 	@Override
 	public boolean createEmpire(User user){
 		ed.createEmpire(user,new Date());
@@ -265,7 +264,7 @@ public class EmpireServiceImpl implements EmpireService{
 		for(TradeOffer td: user.getCommerce()){
 			cs.deleteOffer(td.getId());
 		}
-		
+
 	}
 
 	@Override
@@ -276,7 +275,7 @@ public class EmpireServiceImpl implements EmpireService{
 		}
 		return score;
 	}
-	
+
 	@Override
 	public List<Sector> getBuilding(User u, int type){
 		return ed.getBuilding(u, type);

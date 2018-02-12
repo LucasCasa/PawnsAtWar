@@ -1,11 +1,13 @@
 $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/bootstrap/";
 // bower:scss
-@import 'bootstrap-sass-official/assets/stylesheets/_bootstrap.scss';
+@import '../bower_components/bootstrap-sass-official/assets/stylesheets/_bootstrap.scss';
 // endbower
 
 @import 'partials/home';
 
 @import "partials/resourceBar.scss";
+
+@import "partials/building.scss";
 
 .carousel-control.up{
   width: 100%;
@@ -198,11 +200,15 @@ p{
 }
 
 .well {
-
   /* Add shadows to create the "card" effect */
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
-  padding: 2px 16px;
+  padding: 25px 35px;
+  border: 0;
+  background: url(../images/alerts.png);
+  background-size:     cover;                      /* <------ */
+  background-repeat:   no-repeat;
+  background-position: center center
 }
 pre {
   background-color: transparent;

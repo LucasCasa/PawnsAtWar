@@ -1,0 +1,67 @@
+<div id="terrain">
+  <resource res="res"></resource>
+  <br>
+  <div class="row">
+    <h3 style="text-align: center;" ng-show="building.tile.owner != null">{{'TERRAIN_BELONGS' | translate}}
+      {{building.tile.owner.username}}</h3>
+  </div>
+  <br>
+  <div class="row">
+    <div class="col-md-4"><img class="img-responsive" ng-src="{{getImage(building.tile.type)}}"/></div>
+    <div class="col-md-8">
+      <h2 class="success" style="text-align: center"></h2>
+      <h2 class="error" style="text-align: center"></h2>
+      <h3><strong>{{getDescription(building.tile.type) | translate}}</strong></h3>
+      <h2 class="success" ng-show="building.alreadyBuilding">{{'BUILDING_BEING_CONSTRUCTED' | translate}}</h2>
+      <div ng-show="canUpgrade()" class="row">
+        <div class="col-md-2">
+          <button ng-click="demolish()" class="myButton">{{'DEMOLISH' | translate}}</button>
+        </div>
+        <div class="col-md-3">
+          <button ng-click="levelUp()" class="myButton">{{'LEVEL_UP' | translate}}</button>
+        </div>
+      </div>
+      <br>
+      <div ng-show="building.tile.owner != null && building.id == building.tile.owner.id && !canBuild()" class="row">
+        <table class="table" id="Level">
+          <thead>
+          <tr>
+            <td> {{'LEVEL' | translate}}</td>
+            <td> {{getBonusName(building.tile.type) | translate}}</td>
+            <td>{{'COST' | translate}}</td>
+          </tr>
+          </thead>
+          <tbody>
+          <tr ng-repeat="level in range(building.tile.level,20)" ng-class="{bold:$first}">
+            <td>{{level}}</td>
+            <td><img class="resource" ng-src="{{getBonusIcon(building.tile.type)}}"><span class="quantity">{{getBonusValue(building.tile.type, level) | number:1}}</span></td>
+            <td><img class="resource" src="images/iconResGold.png"><span class="quantity">{{1000 + level * level * level * level}}</span></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+      <div ng-show="canAttack()" class="col-md-2">
+        <button class="myButton" ng-click="attack()">{{'ATTACK' | translate}}</button>
+      </div>
+      <table ng-show="canBuild()" id="buildListTable" style="table-layout:fixed;">
+        <thead>
+        <td>{{'BUILDING' | translate}}</td>
+        <td>{{'DESCRIPTION' | translate}}</td>
+        <td>{{'COST' | translate}}</td>
+        <td>{{'BUILD' | translate}}</td>
+        </thead>
+        <tbody>
+        <tr style="text-align: center;" ng-repeat="b in buildings" ng-show="canBuildThis(b.type)">
+          <td><img class="img-responsive" ng-src="{{b.img}}"/></td>
+          <td>{{b.description | translate}}</td>
+          <td>{{b.cost}}</td>
+          <td>
+            <button class="myButton" ng-click="build(b.type)">{{'BUILD' | translate}}</button>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+

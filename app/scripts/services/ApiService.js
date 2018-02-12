@@ -251,7 +251,7 @@ define(['PawnsAtWar'], function(PawnsAtWar) {
       });
       return result.promise;
     };
-    
+
   });
 
 });
