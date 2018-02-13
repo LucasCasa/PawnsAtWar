@@ -4,24 +4,52 @@ define(['PawnsAtWar','services/ApiService', 'services/tileMapper'], function(Paw
     PawnsAtWar.controller('tacticCtrl', function($scope, $routeParams, ApiService, tileMapper) {
 
       $scope.myBuildings = function () {
+        $scope.buildings = [];
+
         ApiService.getBuildings().then(function (response) {
             var aux = response;
-          console.log(aux);
-            $scope.buildings = [];
             for (var i = 0; i < response.length; i++) {
               $scope.buildings[i] = {
                 img: tileMapper.getPngImage(aux[i].type),
                 description: tileMapper.getDescription(aux[i].type),
                 x: aux[i].x,
                 y: aux[i].y,
-                type: aux[i].type,
-                army: aux[i].type,
+                type: tileMapper.getName('BUILD', aux[i].type),
+                army: '-',
+                amount: '-',
                 level: aux[i].level
               };
             }
 
         });
+
+        ApiService.getArmies().then(function (response) {
+          var armies = response;
+          var position = null;
+          console.log(armies);
+          console.log(armies[0].troops[0].quantity);
+
+          for (var i = 0; i< armies.length; i++) {
+            position = armies[i].position;
+            for(var j = 0; j< armies[i].troops.length; j++){
+                for( var k =0; k < $scope.buildings.length; k++){
+                  if($scope.buildings[k].x == position.x &&  $scope.buildings[k].y == position.y){
+                    $scope.buildings[k].army = $scope.armyInfo(armies[i].troops[0].type);
+                    $scope.buildings[k].amount = armies[i].troops[0].quantity;
+                  }
+                }
+            }
+          }
+        });
       };
+
+      $scope.armyInfo = function (type) {
+        return tileMapper.getName('RECRUIT', type);
+
+      };
+
+
+
 
       $scope.myBuildings();
 

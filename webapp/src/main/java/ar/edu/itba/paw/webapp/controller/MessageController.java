@@ -5,6 +5,7 @@ import ar.edu.itba.interfaces.PAWMailService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.Message;
 import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.DTOs.ErrorDTO;
 import ar.edu.itba.paw.webapp.DTOs.MessageCreateDTO;
 import ar.edu.itba.paw.webapp.DTOs.MessageDTO;
 import ar.edu.itba.paw.webapp.DTOs.UserMessagesDTO;
@@ -46,12 +47,11 @@ public class MessageController {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    final List<String> usernames = us.getUsernames();
+    //final List<String> usernames = us.getUsernames();
 
     final List<MessageDTO> messagesRead = new ArrayList<>();
     final List<MessageDTO> messagesUnread = new ArrayList<>();
     ms.getReadMessages(user).forEach(m -> messagesRead.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
-    final List<Message> messagesUnr = ms.getUnreadMessages(user);
     ms.getUnreadMessages(user).forEach(m -> messagesUnread.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
 
     return Response.ok().entity(new UserMessagesDTO(messagesRead, messagesUnread)).build();
@@ -66,7 +66,7 @@ public class MessageController {
     User to = us.findByUsername(create.getTo());
 
     if(to == null){
-      return Response.status(Response.Status.BAD_REQUEST).build();
+      return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("INVALID_USER")).build();
     }
 
     if(create.getMessage().length() > 1024 || create.getSubject().length() > 50){

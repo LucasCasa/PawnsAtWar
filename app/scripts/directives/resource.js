@@ -5,20 +5,17 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
         return {
             restrict: 'E',
             scope: {
-              reso: '&res'
+              res: '='
             },
             templateUrl: 'views/resourceBar.html',
-          controller: 'resourceController',
-          bindToController: true
+          controller: 'resourceController'
         }
     });
 
-  PawnsAtWar.controller('resourceController', function (ApiService, $interval, $scope) {
+  PawnsAtWar.controller('resourceController', function ($interval, $scope) {
     $scope.addFood = 0;
     $scope.addGold = 0;
     $interval(function() {
-      console.log('llamado');
-      $scope.res = $scope.reso();
       $scope.addFood = Math.min($scope.res.resources[0].rate, $scope.res.limit - $scope.res.resources[0].amount);
       $scope.addGold = Math.min($scope.res.resources[1].rate, $scope.res.limit - $scope.res.resources[1].amount);
       $scope.res.resources[0].amount += $scope.addFood;

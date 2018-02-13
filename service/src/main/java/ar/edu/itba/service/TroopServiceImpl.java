@@ -17,12 +17,12 @@ public class TroopServiceImpl implements TroopService {
 	private static final double POW0 = 1;
 	private static final double POW1 = 2;
 	private static final double POW2 = 3;
-	
+
 	private static final int MAX_TROOP = 3;
-	
+
 	@Autowired
 	private TroopDao td;
-	
+
 	@Autowired
 	private ArmyService as;
 
@@ -52,10 +52,17 @@ public class TroopServiceImpl implements TroopService {
 		if(td.getAmountTroops(idArmy) == 0){
 			as.deleteArmy(idArmy);
 		}
-		
+
 	}
 
-	@Override
+  @Override
+  public void deleteTroops(int idArmy) {
+    if(as.getArmyById(idArmy) == null)
+      return;
+    td.deleteTroops(idArmy);
+  }
+
+  @Override
 	public void addTroop(int idArmy, int type, int amount) {
 		if((type < 0 && type >= MAX_TROOP) || amount < 0){
 			return;
@@ -67,7 +74,7 @@ public class TroopServiceImpl implements TroopService {
 		td.addTroop(idArmy,type,amount);
 		return;
 	}
-	
+
 	@Override
 	public void subtractTroop(int idArmy, int type, int amount){
 		if((type < 0 && type >= MAX_TROOP || amount < 0 )){
@@ -81,7 +88,7 @@ public class TroopServiceImpl implements TroopService {
 			deleteTroop(idArmy, type);
 			return;
 		}
-		td.changeAmount(idArmy, type, originalAmount-amount);	
+		td.changeAmount(idArmy, type, originalAmount-amount);
 	}
 
 	@Override
@@ -100,6 +107,6 @@ public class TroopServiceImpl implements TroopService {
 		this.as = armyService;
 	}
 
-	
+
 
 }

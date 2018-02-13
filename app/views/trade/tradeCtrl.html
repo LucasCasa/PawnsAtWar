@@ -7,8 +7,7 @@
 <div style="text-align: center">
   <button style="text-align:center" ng-hide="showNewOffer" ng-click="showNewOffer = true" class="myButton">{{'MAKE_NEW_OFFER' | translate }}</button>
 </div>
-<div class="error" style="display:none;" id="sameType">{{'SAME_TYPE' | translate}}</div>
-<div class="error" ng-show="tradeError">{{'COMMERCE_ERROR' | translate}}</div>
+<div class="error" ng-hide="errorMessage == undefined">{{errorMessage | translate}}</div>
 <br>
 <table class="table" ng-show="showNewOffer">
   <thead>

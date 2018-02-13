@@ -15,7 +15,8 @@
     <td>X: {{b.x}}  Y: {{b.y}}</td>
     <td>{{b.type }}</td>
     <td>{{b.level}}</td>
-    <td>{{b.army}}</td>
+    <td>{{'TROOPS' | translate}}: {{b.army}} -{{b.amount}}
+    </td>
     <td>
       <div class="col-md-3" >
       <button  ng-click="levelUp(b.x, b.y)" style="align: center" class="myButton">{{'LEVEL_UP' | translate}}</button>

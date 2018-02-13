@@ -63,8 +63,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.SECOND,amount*30);
         Date d = c.getTime();
-        Alert alert = as.createAlert(u,getTrainAlertMessage(p,amount,type),d,AlertType.RECRUIT.toString(),p,amount,type);
-        setTrainTask(u,p,amount,type,alert,d);
+        Alert alert = as.createAlert(u,getTrainAlertMessage(p,amount,type),d,AlertType.RECRUIT.toString(),p,type,amount);
+        setTrainTask(u,p,type,amount,alert,d);
     }
 
     @Override
@@ -155,7 +155,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         scheduler.schedule(buildRunnable,d);
     }
 
-    private void setTrainTask(User u, Point p, Integer am, Integer t,final Alert alert, final Date d) {
+    private void setTrainTask(User u, Point p, Integer t, Integer am,final Alert alert, final Date d) {
         Runnable buildRunnable = new Runnable() {
             User user = u;
             Point pos = p;

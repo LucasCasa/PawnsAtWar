@@ -5,6 +5,7 @@ import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.TradeOffer;
 import ar.edu.itba.model.User;
+import ar.edu.itba.paw.webapp.DTOs.ErrorDTO;
 import ar.edu.itba.paw.webapp.DTOs.TradeOfferCreateDTO;
 import ar.edu.itba.paw.webapp.DTOs.TradeOfferDTO;
 import ar.edu.itba.paw.webapp.DTOs.TradeOffersDTO;
@@ -53,11 +54,14 @@ public class CommerceController {
   public Response acceptTrade(@PathParam("id") final int id) {
     User user = AuthenticatedUser.getUser(us);
     TradeOffer offer = cs.getOffer(id);
-    if (offer == null || offer.getOwner().equals(user)) {
+    if (offer == null) {
       return Response.status(Response.Status.NOT_FOUND).build();
     }
+    if(offer.getOwner().equals(user)){
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("CANT_ACCEPT_SELF_OFFER")).build();
+    }
     if (es.getResource(user, offer.getReceiveType()).getQuantity() < offer.getReceiveAmount()) {
-      return Response.status(Response.Status.FORBIDDEN).build();
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NOT_ENOUGH_RESOURCES")).build();
     }
     cs.acceptOffer(offer, user);
     return Response.noContent().build();
@@ -68,8 +72,10 @@ public class CommerceController {
   public Response deleteTrade(@PathParam("id") final int id) {
     User user = AuthenticatedUser.getUser(us);
     TradeOffer offer = cs.getOffer(id);
-    if (offer == null || offer.getOwner().getId() != user.getId()) {
+    if (offer == null) {
       return Response.status(Response.Status.NOT_FOUND).build();
+    } else if(offer.getOwner().getId() != user.getId()) {
+      return Response.status(Response.Status.UNAUTHORIZED).build();
     }
     cs.removeOffer(offer);
     return Response.noContent().build();
@@ -80,12 +86,15 @@ public class CommerceController {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response createTrade(TradeOfferCreateDTO create) {
     User creator = AuthenticatedUser.getUser(us);
+    if(create.getOffer().getType() == create.getReceive().getType()) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
     boolean created = cs.createOffer(creator, create.getOffer().getType(), create.getOffer().getAmount(),
       create.getReceive().getType(), create.getReceive().getAmount());
     if (created) {
       return Response.noContent().build();
     } else {
-      return Response.status(Response.Status.BAD_REQUEST).build();
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NOT_ENOUGH_RESOURCES")).build();
     }
   }
 }

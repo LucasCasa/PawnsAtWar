@@ -1,11 +1,12 @@
 <!-- <h2 class="success" style="text-align: center">${success}</h2> -->
 <h1>{{'MESSAGE_RECEIVED' | translate}}</h1>
-<!-- <div class="row">
-  <h2 style="text-align: center">{{'NO_MESSAGE' | translate}}</h2>
-</div> -->
-
+<br>
+<br>
 <h1>{{'MESSAGE_UNREAD' | translate}}</h1>
-<table class="table table-hover">
+<div class="row">
+  <h2 style="text-align: center" ng-show="messages.unread.length == 0">{{'NO_MESSAGES' | translate}}</h2>
+</div>
+<table id="buildListTable" style="table-layout:fixed;" class="table table-hover" ng-show="messages.unread.length > 0">
   <thead>
   <td>{{'USERNAME' | translate}}</td>
   <td>{{'SUBJECT' | translate}}</td>
@@ -35,7 +36,11 @@
 </table>
 
 <h1>{{'READ_MESSAGE' | translate}}</h1>
-<table class="table table-hover">
+<div class="row">
+  <h2 style="text-align: center" ng-show="messages.read.length == 0">{{'NO_MESSAGES' | translate}}</h2>
+</div>
+
+<table  id="buildListTable2" style="table-layout:fixed;" class="table table-hover" ng-show="messages.read.length > 0">
   <thead>
   <td>{{'USERNAME' | translate}}</td>
   <td>{{'SUBJECT' | translate}}</td>
@@ -72,11 +77,13 @@
     <label>{{'USERNAME' | translate}}</label>
     <br>
     <input type="to" class="form-control" ng-model="giveTo" id="list" name="username" placeholder="{{'MAIL_PLACEHOLDER' | translate}}">
+    <span class="error" ng-show="noUserError">{{'NO_USER' | translate}}</span>
   </div>
   <div class="form-group">
     <label>{{'SUBJECT' | translate}}</label>
     <input type="subject" class="form-control"  ng-model="giveSubject" maxlength="50" name="subject" aria-describedby="subjectHelp"
            placeholder="{{'SUBJECT' | translate}}">
+    <span class="error" ng-show="noSubjectError">{{'NO_SUBJECT' | translate}}</span>
   </div>
   <div class="form-group">
     <label>{{'MESSAGE' | translate}}</label>
@@ -84,10 +91,11 @@
               rows="3" maxlength="1024"></textarea>
     <label>{{'CHARACTER_REMAINING' | translate}}</label>
     <input disabled style="background: white" maxlength="3" size="3" value="1024" id="counter">
+    <span class="error" ng-show="noMessageError">{{'NO_MESSAGE' | translate}}</span>
   </div>
   <button type="submit" ng-click="createMessage()" class="myButton">
-    {{'SUBMIT' | translate}}
-  </button>
+    {{'SEND_MESSAGE' | translate}}
+  </button><span><h2 class="error" ng-show="errorMessage != undefined">{{errorMessage | translate}}</h2></span>
 </div>
 
 

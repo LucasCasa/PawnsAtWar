@@ -19,7 +19,7 @@ public class ArmyDTO {
     this.id = army.getIdArmy();
     this.position = new PointDTO(army.getPosition());
     this.available = army.getAvailable();
-    this.owner = new UserDTO(army.getUser());
+    this.owner = null; // new UserDTO(army.getUser());
     this.troops = new ArrayList<>();
 
     army.getTroops().forEach(troop -> troops.add(new TroopDTO(troop)));

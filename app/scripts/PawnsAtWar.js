@@ -7,12 +7,14 @@ define(['routes',
 	'bootstrap',
 	'angular-translate',
   'angular-jwt',
-  'angular-local-storage'],
+  'angular-local-storage',
+  'angular-modal-service'],
 	function(config, dependencyResolverFor, i18n) {
 		var PawnsAtWar = angular.module('PawnsAtWar', [
 			'ngRoute',
 			'pascalprecht.translate',
-      'angular-jwt'
+      'angular-jwt',
+      'angularModalService'
 		]);
 		PawnsAtWar
 			.config(
@@ -55,13 +57,13 @@ define(['routes',
     PawnsAtWar.run(function($rootScope, $location, authManager, $window) {
       authManager.checkAuthOnRefresh();
       $rootScope.$on('$routeChangeStart', function (event, next, current) {
-        // if logged in and trying to access loggin => redirect to students
-        if ($rootScope.isAuthenticated && ($location.url() == '#/login')) {
-          $window.location.href = '#/'
+        // if logged in and trying to access loggin => redirect to map
+        if ($rootScope.isAuthenticated && ($location.url() == '#!/login')) {
+          $window.location.href = '#!/map'
         }
         // if route requires auth and user is not logged in
-        if (!$rootScope.isAuthenticated && ($location.url != '#/login')) {
-          $window.location.href = '#/login'
+        if (!$rootScope.isAuthenticated && ($location.url != '#!/login')) {
+          $window.location.href = '#!/login'
         }
       });
     });

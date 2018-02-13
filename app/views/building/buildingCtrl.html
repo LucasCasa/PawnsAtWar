@@ -9,8 +9,8 @@
   <div class="row">
     <div class="col-md-4"><img class="img-responsive" ng-src="{{getImage(building.tile.type)}}"/></div>
     <div class="col-md-8">
-      <h2 class="success" style="text-align: center"></h2>
-      <h2 class="error" style="text-align: center"></h2>
+      <h2 class="success" style="text-align: center" ng-show="successMessage != undefined">{{successMessage | translate}}</h2>
+      <h2 class="error" style="text-align: center" ng-show="errorMessage != undefined">{{errorMessage | translate}}</h2>
       <h3><strong>{{getDescription(building.tile.type) | translate}}</strong></h3>
       <h2 class="success" ng-show="building.alreadyBuilding">{{'BUILDING_BEING_CONSTRUCTED' | translate}}</h2>
       <div ng-show="canUpgrade()" class="row">
@@ -20,6 +20,12 @@
         <div class="col-md-3">
           <button ng-click="levelUp()" class="myButton">{{'LEVEL_UP' | translate}}</button>
         </div>
+      </div>
+      <div ng-show="canTrain" class="row">
+        <form clas="form-inline" ng-submit="train()">
+          <input placeholder="{{'QUANTITY' | translate}}" type="number" ng-model="troopAmount">
+          <button type="submit" class="myButton">{{'TRAIN' | translate}}</button>
+        </form>
       </div>
       <br>
       <div ng-show="building.tile.owner != null && building.id == building.tile.owner.id && !canBuild()" class="row">

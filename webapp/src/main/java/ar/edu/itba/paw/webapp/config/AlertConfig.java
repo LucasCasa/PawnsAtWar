@@ -56,7 +56,7 @@ public class AlertConfig {
         }else if(s.equals(AlertType.ATTACK.toString())){
 
         }else if(s.equals(AlertType.RECRUIT.toString())){
-            ars.trainTroops(a.getUser(),a.getP(),a.getParam1(),a.getParam2());
+            ars.trainTroops(a.getUser(),a.getP(),a.getParam2(),a.getParam1());
         }
         as.removeAlert(a);
     }

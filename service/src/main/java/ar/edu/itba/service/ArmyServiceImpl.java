@@ -91,6 +91,7 @@ public class ArmyServiceImpl implements ArmyService {
     for (Troop troop : troops) {
       ts.addTroop(to, troop.getType(), troop.getQuantity());
     }
+    ts.deleteTroops(from);
     deleteArmy(from);
   }
 

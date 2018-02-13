@@ -10,6 +10,7 @@ require.config({
         'angular-translate': '../../bower_components/angular-translate/angular-translate',
         'angular-jwt': '../../bower_components/angular-jwt/dist/angular-jwt',
         'angular-local-storage': '../../bower_components/angular-local-storage/dist/angular-local-storage',
+        'angular-modal-service': '../../bower_components/angular-modal-service/dst/angular-modal-service',
         button: '../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button',
         bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
         carousel: '../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel',
@@ -65,6 +66,11 @@ require.config({
         ]
       },
       'angular-local-storage': {
+        deps: [
+          'angular'
+        ]
+      },
+      'angular-modal-service': {
         deps: [
           'angular'
         ]

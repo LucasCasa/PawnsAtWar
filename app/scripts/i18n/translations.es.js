@@ -16,6 +16,7 @@ define([], function() {
     REGISTER: 'Registrarse',
     GO: ' IR',
     SPLIT: ' Separar',
+    MOVE: 'Mover',
     ATTACK: ' Atacar',
     MAP: 'Mapa',
     ARMY: 'Ejército',
@@ -77,7 +78,7 @@ define([], function() {
     FROM: 'De',
     SUBJECT: 'Asunto',
     MESSAGE: 'Mensaje',
-    NO_MESSAGE: 'No hay mensajes',
+    NO_MESSAGES: 'No hay mensajes',
     MESSAGE_RECEIVED: 'Mensajes recibidos',
     MESSAGE_UNREAD: 'Mensajes sin leer',
     ACTION: 'Accion',
@@ -89,6 +90,10 @@ define([], function() {
     READ_MESSAGE: 'Mensajes leidos',
     CREATE_MESSAGE: 'Escribir mensaje',
     ANSWER_MESSAGE: 'Responder mensaje',
+    NO_USER: 'Debe selecionar jugador',
+    NO_SUBJECT: 'No hay asunto',
+    NO_MESSAGE: 'Debe escribir mensaje',
+    INVALID_USER: 'El usuario no existe',
     TO: 'Para:',
     MAIL_PLACEHOLDER: 'Ingresa nombre jugador',
     ADVICE: 'No compartiremos tu email con nadie.',
@@ -114,6 +119,7 @@ define([], function() {
     UPGRADE: 'Mejorando',
     RECRUIT: 'Entrenando',
     GAME_OVER: 'Su castillo fue destruido. Fin del juego. Por favor, ingrese con otro usuario',
+    ARMY_BUSY: 'Ejercito Ocupado',
     INVALID_PARAM: 'Parámetros inválidos',
     INVALID_ARMY: 'Ejército inválido',
     INVALID_POSITION: 'Posición inválida',
@@ -134,8 +140,11 @@ define([], function() {
     USER_ALREADY_EXIST: 'El nombre de usuario ya existe',
     WRONG_USER: 'La contraseña o el usuario son incorrectos',
     ALREADY_LOGOUT: 'Ya cerraste sesión',
+    ARMY_IN: 'Posicion: {{x}}, {{y}}',
     NO_FOOD: 'No hay suficiente comida',
     NO_GOLD: 'No hay suficiente oro',
+    NOT_ENOUGH_RESOURCES: 'No tienes suficientes recursos',
+    CANT_ACCEPT_SELF_OFFER: 'No puedes aceptar una oferta tuya',
     NO_USER_IN_POSITION: 'No existe usuario en esa posición, el castillo ya fue destruido',
     TROOPS_TRAINED: 'Tropas entrenadas',
     NO_CASTLE: 'El usuario no tiene castillo',
@@ -158,9 +167,10 @@ define([], function() {
     MILL : 'Molino',
     STABLE : 'Establo',
     UPGRADES: 'Mejoras',
-    POSITION: 'Posici&oacute;n',
-    TACTICS:  'T&Aacute;CTICAS'
-
-
+    POSITION: 'Posicion',
+    TACTICS:  'TACTICAS',
+    SEND_TO: 'Mandar a',
+    TYPE: 'Tipo',
+    TROOPS: 'Tropas'
   };
 });
