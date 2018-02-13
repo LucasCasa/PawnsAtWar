@@ -156,6 +156,9 @@ define([], function() {
     GOLD : ' Gold Mine',
     TERR_GOLD : ' Gold Terrain',
     MILL : ' Mill',
-    STABLE : ' Stable'
+    STABLE : ' Stable',
+    UPGRADES: 'Upgrades',
+    POSITION: 'Position',
+    TACTICS:  'TACTICS'
     };
 });

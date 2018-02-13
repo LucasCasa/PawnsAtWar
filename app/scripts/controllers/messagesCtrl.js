@@ -12,11 +12,19 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
       $scope.createMessage = function () {
         console.log($scope.giveMessage);
         ApiService.createMessage($scope.giveTo, $scope.giveSubject, $scope.giveMessage).then(function (response) {
+          $scope.getMessages();
+          $scope.giveTo = '';
+          $scope.giveSubject = '';
+          $scope.giveMessage = '';
+          var counter = document.getElementById('counter');
+          counter.setAttribute('value','1024');
 
         }, function (error) {
           $scope.MessageError = true;
         });
       };
+
+      $scope.getMessages();
 
       $scope.deleteMessage = function (id) {
         ApiService.deleteMessage(id).then(function (response) {
@@ -36,8 +44,6 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
 
         var message = document.getElementById('message');
         if(message){
-          console.log('hello world');
-          console.log(message);
           message.focus();
         }
 
@@ -46,13 +52,11 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
 
       $scope.answerMessage = function (id) {
         ApiService.answerMessage(id).then(function (response) {
+          $scope.getMessages();
         }, function (error) {
           alert("ERROR" + error.status);
         });
       };
-
-
-      $scope.getMessages();
 
       $scope.activePosition = -1;
       $scope.messageDetails = function(id) {

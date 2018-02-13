@@ -55,4 +55,6 @@ public class MapController {
     List<List<Sector>> elements = ss.getSector(new Point(xPrime, yPrime), Info.VIEW_RANGE);
     return Response.ok().entity(new MapDTO(elements, xPrime, yPrime, user.getId())).build();
   }
+
+
 }

@@ -1,12 +1,28 @@
-<div class="jumbotron">
-	<h1>'Allo, 'Allo!</h1>
-	<p class="lead">
-		<img src="images/yeoman.png" alt="I'm Yeoman"><br>
-		{{'WELCOME_CONTROLLER' | translate}}
-	</p>
-	<p><a class="btn btn-lg btn-success" ng-href="#">Incredible!<span class="glyphicon glyphicon-ok"></span></a></p>
-</div>
+<h1 style="text-align: center;">{{'TACTICS' | translate}}</h1>
 
-<div class="row marketing">
-	<p>{{'WELCOME_CONTROLLER_FOLLOWUP' | translate}}</p>
-</div>
+<table  id="buildListTable" style="table-layout:fixed;">
+  <thead>
+  <td>{{'BUILDING' | translate}}</td>
+  <td>{{'POSITION' | translate}}</td>
+  <td>{{'TYPE' | translate}}</td>
+  <td>{{'LEVEL' | translate}}</td>
+  <td>{{'ARMY' | translate}}</td>
+  <td>{{'UPGRADES' | translate}}</td>
+  </thead>
+  <tbody>
+  <tr style="text-align: center;" ng-repeat="b in buildings" >
+    <td><img class="img-responsive" ng-src="{{b.img}}"/></td>
+    <td>X: {{b.x}}  Y: {{b.y}}</td>
+    <td>{{b.type }}</td>
+    <td>{{b.level}}</td>
+    <td>{{b.army}}</td>
+    <td>
+      <div class="col-md-3" >
+      <button  ng-click="levelUp(b.x, b.y)" style="align: center" class="myButton">{{'LEVEL_UP' | translate}}</button>
+    </div>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+

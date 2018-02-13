@@ -156,6 +156,11 @@ define([], function() {
     GOLD : 'Mina de oro',
     TERR_GOLD : 'Terreno de oro',
     MILL : 'Molino',
-    STABLE : 'Establo'
+    STABLE : 'Establo',
+    UPGRADES: 'Mejoras',
+    POSITION: 'Posici&oacute;n',
+    TACTICS:  'T&Aacute;CTICAS'
+
+
   };
 });
