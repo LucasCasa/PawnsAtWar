@@ -1,7 +1,7 @@
 'use strict'
 define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
 
-    PawnsAtWar.controller('LoginCtrl', function($window, $scope, ApiService) {
+    PawnsAtWar.controller('LoginCtrl', function($window, $scope, ApiService, $translate) {
       $scope.loginUsername = '';
       $scope.loginPassword = '';
       $scope.registerUsername = '';
@@ -13,19 +13,15 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
       $scope.login = function (user, pass) {
         user = user === undefined ?  $scope.loginUsername : user;
         pass = pass === undefined ?  $scope.loginPassword : pass;
-        ApiService.login(user, pass).then(function(status) {
-          if(status == 200) {
-            $window.location.href = '#/map';
-          } else if(status > 400) {
-            $scope.showError = true
-          }
-        }).catch(function (error) {
+        ApiService.login(user, pass).then(function(response) {
+          $window.location.href = '#!/map';
+        }, function (error) {
           $scope.showError = true
-        })
+        });
       };
       $scope.register = function () {
         if($scope.registerPassword == $scope.registerRepeat) {
-          ApiService.register($scope.registerUsername, $scope.registerPassword, $scope.registerEmail).then(function(response) {
+          ApiService.register($scope.registerUsername, $scope.registerPassword, $scope.registerEmail, $translate.resolveClientLocale()).then(function(response) {
             $scope.login($scope.registerUsername, $scope.registerPassword);
           }, function(error) {
               $scope.showError = true;

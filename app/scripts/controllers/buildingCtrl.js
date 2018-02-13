@@ -47,10 +47,14 @@ define(['PawnsAtWar', 'services/ApiService', 'directives/resource', 'services/ti
 
     $scope.train = function () {
       ApiService.trainTroops($scope.troopAmount, $scope.building.tile.x, $scope.building.tile.y).then(function (response) {
-        $window.location.href = '#!/map' + $scope.building.tile.x + '/' + $scope.building.tile.y;
+        $window.location.href = '#!/map/' + $scope.building.tile.x + '/' + $scope.building.tile.y;
       }, function (error) {
         $scope.errorMessage = error.data.errorId;
       })
+    };
+
+    $scope.attack = function() {
+      $window.location.href = '#!/armies?x=' + $scope.building.tile.x + '&y=' + $scope.building.tile.y;
     };
 
     $scope.canBuild = function () {

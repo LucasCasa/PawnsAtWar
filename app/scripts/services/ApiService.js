@@ -6,15 +6,13 @@ define(['PawnsAtWar'], function (PawnsAtWar) {
     this.login = function (user, pass) {
       var credentials = {username: user, password: pass};
       var res = $q.defer();
-      $http.post('api/login', credentials).success(function (result, status, headers) {
+      $http.post('api/login', credentials).then(function (response) {
         if (status >= 400)
-          return res.reject(status);
+          return res.reject(response);
 
-        if (status == 200)
-          localStorage.setItem('token', headers('X-AUTH-TOKEN'));
-
-        return res.resolve(status)
-      }).error(function (data, status) {
+        localStorage.setItem('token', response.headers('X-AUTH-TOKEN'));
+        return res.resolve(response)
+      }, function (status) {
         res.reject(status);
       });
       return res.promise;
@@ -44,8 +42,8 @@ define(['PawnsAtWar'], function (PawnsAtWar) {
       return this.callApi('PUT', 'api/messages/' + id);
     };
 
-    this.register = function (user, pass, email) {
-      return this.callApi('POST', 'api/users', {username: user, password: pass, email: email});
+    this.register = function (user, pass, email, locale) {
+      return this.callApi('POST', 'api/users', {username: user, password: pass, email: email, locale: locale});
     };
 
     this.playersWithScore = function () {

@@ -78,6 +78,7 @@ public class UsersController {
     if (user == null) {
       return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NO_CASTLE_SPACE")).build();
     }
+    us.setLocale(user, createDTO.getLocale());
     return Response.status(Response.Status.NO_CONTENT).build();
   }
 }
