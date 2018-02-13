@@ -264,10 +264,10 @@ public class ScheduleServiceImpl implements ScheduleService {
                             values.put("d"+t.getType()+"b",t.getQuantity());
                             values.put("d"+t.getType()+"l",t.getQuantity());
                         }
+                        sendMail(values,user,ss.getPlayer(pos),0);
                         ars.deleteArmy(armyId);
                         ars.deleteArmy(d.getIdArmy());
                         as.removeAlert(this.a);
-                        sendMail(values,user,ss.getPlayer(pos),0);
                         return;
                     }
                     List<Troop> defeated = adef.getTroops();
@@ -300,10 +300,11 @@ public class ScheduleServiceImpl implements ScheduleService {
                     values.put("a"+t.getType()+"b",t.getQuantity());
                     values.put("a"+t.getType()+"l",0);
                 }
+                sendMail(values,user,ss.getPlayer(pos),1);
                 ss.deleteBuilding(pos);
                 as.removeAlert(this.a);
                 ars.setAvailable(armyId,true);
-                sendMail(values,user,ss.getPlayer(pos),1);
+
             }
         };
         scheduler.schedule(buildRunnable,d);
@@ -444,7 +445,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         params[15] = res.get("a2b");
         params[16] = res.get("a2l");
         params[17] = res.get("a2b") - res.get("a2l");
-        Locale l =LocaleContextHolder.getLocale();
+        Locale l = a.getLocale() == null ? LocaleContextHolder.getLocale() : new Locale(a.getLocale());
         Locale df = l;
         if(d.getLocale() != null){
              df = new Locale(d.getLocale());
