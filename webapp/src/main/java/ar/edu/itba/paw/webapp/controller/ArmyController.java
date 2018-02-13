@@ -143,7 +143,7 @@ public class ArmyController {
     User user = AuthenticatedUser.getUser(us);
     Point point = new Point(trainDTO.getPoint().getX(), trainDTO.getPoint().getY());
     if (!Validator.validBoardPosition(point)) {
-      return Response.status(Response.Status.BAD_REQUEST).build();
+      return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("INVALID_POSITION")).build();
     }
     Sector sector = ss.getSector(point);
     if(!user.equals(sector.getUser())){
@@ -175,7 +175,7 @@ public class ArmyController {
       sh.TrainTask(user, point, trainDTO.getAmount(), type);
       return Response.noContent().build();
     } else {
-      return Response.status(Response.Status.FORBIDDEN).entity("NO_FOOD").build();
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NO_FOOD")).build();
     }
   }
 }

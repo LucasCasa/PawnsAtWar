@@ -2,6 +2,13 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
 
     'use strict';
     PawnsAtWar.controller('messagesCtrl', function($scope, ApiService) {
+      $scope.noUserError = false;
+      $scope.noSubjectError = false;
+      $scope.noMessageError = false;
+
+      $scope.giveTo = '';
+      $scope.giveSubject = '';
+      $scope.giveMessage = '';
 
       $scope.getMessages = function () {
           ApiService.getMessages().then(function (response) {
@@ -10,11 +17,29 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
       };
 
       $scope.createMessage = function () {
-        console.log($scope.giveMessage);
-        ApiService.createMessage($scope.giveTo, $scope.giveSubject, $scope.giveMessage).then(function (response) {
+        if($scope.giveTo == ''){
+          $scope.noUserError = true;
+        } else {
+          $scope.noUserError = false;
+        }
+        if($scope.giveSubject == ''){
+          $scope.noSubjectError = true;
+        } else {
+          $scope.noSubjectError = false
+        }
+        if($scope.giveMessage == ''){
+          $scope.noMessageError = true;
+        } else {
+          $scope.noMessageError = false;
+        }
+        if($scope.giveTo == '' || $scope.giveSubject == '' || $scope.giveMessage == ''){
+          return;
+        }
 
+        ApiService.createMessage($scope.giveTo, $scope.giveSubject, $scope.giveMessage).then(function (response) {
+            $scope.errorMessage = undefined;
         }, function (error) {
-          $scope.MessageError = true;
+          $scope.errorMessage = error.data.errorId;
         });
       };
 

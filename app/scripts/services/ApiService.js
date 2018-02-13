@@ -33,7 +33,7 @@ define(['PawnsAtWar'], function (PawnsAtWar) {
     };
 
     this.deleteMessage = function (id) {
-      return this,callApi('DELETE', 'api/messages/' + id);
+      return this.callApi('DELETE', 'api/messages/' + id);
     };
 
     this.answerMessage = function (id) {

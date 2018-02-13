@@ -1,7 +1,7 @@
 'use strict';
 define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/resource'], function(PawnsAtWar) {
 
-    PawnsAtWar.controller('mapCtrl', function($scope, $http, tileMapper, ApiService, $interval) {
+    PawnsAtWar.controller('mapCtrl', function($scope, $routeParams, $http, tileMapper, ApiService, $interval) {
 
       $scope.populateMap = function(x, y) {
         $http.get('api/map/' + x +'/' + y).then(function(response){
@@ -67,7 +67,9 @@ define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/r
       }, 1000);
 
       $scope.reload = function () {
-        if($scope.map === undefined){
+        if($routeParams.x != undefined && $routeParams.y != undefined) {
+          $scope.populateMap($routeParams.x, $routeParams.y);
+        }else if($scope.map === undefined){
           $scope.populateMap(50,50);
         }else{
           $scope.populateMap($scope.map.x, $scope.map.y);

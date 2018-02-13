@@ -54,8 +54,11 @@ public class CommerceController {
   public Response acceptTrade(@PathParam("id") final int id) {
     User user = AuthenticatedUser.getUser(us);
     TradeOffer offer = cs.getOffer(id);
-    if (offer == null || offer.getOwner().equals(user)) {
+    if (offer == null) {
       return Response.status(Response.Status.NOT_FOUND).build();
+    }
+    if(offer.getOwner().equals(user)){
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("CANT_ACCEPT_SELF_OFFER")).build();
     }
     if (es.getResource(user, offer.getReceiveType()).getQuantity() < offer.getReceiveAmount()) {
       return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("NOT_ENOUGH_RESOURCES")).build();

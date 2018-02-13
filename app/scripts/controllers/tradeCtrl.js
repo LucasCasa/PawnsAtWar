@@ -3,7 +3,7 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
   'use strict';
   PawnsAtWar.controller('tradeCtrl', function ($scope, ApiService) {
     $scope.showNewOffer = false;
-    $scope.tradeError = false;
+    $scope.errorMessage = undefined;
 
     $scope.getTrade = function () {
         ApiService.getTrade().then(function(response){
@@ -20,17 +20,18 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
         $scope.giveAmount = '';
         $scope.getAmount = '';
         $scope.updateResources();
-        $scope.tradeError = false;
+        $scope.tradeError = undefined;
       }, function(error){
-        $scope.tradeError = true;
+        $scope.errorMessage = error.data.errorId;
       });
     };
     $scope.removeOffer = function(id) {
       ApiService.removeOffer(id).then(function(response){
         $scope.getTrade();
         $scope.updateResources();
+        $scope.tradeError = undefined;
       }, function (error) {
-        alert("ERROR" + error.status);
+        $scope.errorMessage = error.data.errorId;
       });
     };
 
@@ -38,9 +39,10 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
       ApiService.acceptOffer(id).then(function (response) {
         $scope.getTrade();
         $scope.updateResources();
+        $scope.tradeError = undefined;
         //Refresh reso?
       }, function (error) {
-        alert("ERROR" + error.status);
+        $scope.errorMessage = error.data.errorId;
       });
     };
 
