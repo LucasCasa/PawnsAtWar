@@ -26,8 +26,16 @@ define(['PawnsAtWar'], function (PawnsAtWar) {
       return this.callApi('GET', 'api/messages');
     };
 
+    this.myPosition = function () {
+      return this.callApi('GET', 'api/map');
+    };
+
     this.createMessage = function (giveTo, giveSubject, giveMessage) {
       return this.callApi('POST', 'api/messages', {to: giveTo, subject: giveSubject, message: giveMessage});
+    };
+
+    this.myPosition = function () {
+      return this.callApi('GET', 'api/map');
     };
 
     this.deleteMessage = function (id) {
@@ -64,8 +72,13 @@ define(['PawnsAtWar'], function (PawnsAtWar) {
     this.getResources = function () {
       return this.callApi('GET', 'api/resources');
     };
+
     this.getBuilding = function (x, y) {
       return this.callApi('GET', 'api/buildings/' + x + '/' + y);
+    };
+
+    this.getBuildings = function () {
+      return this.callApi('GET', 'api/buildings');
     };
 
     this.build = function (x, y, type) {

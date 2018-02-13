@@ -166,6 +166,11 @@ define([], function() {
     TERR_GOLD : ' Gold Terrain',
     MILL : ' Mill',
     STABLE : ' Stable',
-    SEND_TO: 'Send to'
+    UPGRADES: 'Upgrades',
+    POSITION: 'Position',
+    TACTICS:  'Tactic View',
+    SEND_TO: 'Send to',
+    TYPE: 'Type',
+    TROOPS: 'Troops'
     };
 });

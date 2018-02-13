@@ -40,8 +40,13 @@ public class BuildingController {
   @Produces(MediaType.APPLICATION_JSON)
   public Response getAllBuildings() {
     User user = AuthenticatedUser.getUser(us);
-    List<TileDTO> buildingDTOList = new ArrayList<>();
-    ss.getAllBuildings(user).forEach(b -> buildingDTOList.add(new TileDTO(b)));
+    List<BuildingDTO> buildingDTOList = new ArrayList<>();
+    List<Sector> buildings = ss.getAllBuildings(user);
+    for(Sector sector : buildings){
+      Alert a = as.getAlertByPoint(sector.getPosition());
+      boolean beingConstructed = user.equals(sector.getUser()) && a != null && (a.getType().equals("BUILD") || a.getType().equals("UPGRADE"));
+      buildingDTOList.add(new BuildingDTO(sector,user.getId(),false, 0, beingConstructed));
+    }
     return Response.ok().entity(buildingDTOList).build();
   }
 

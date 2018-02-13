@@ -58,7 +58,17 @@ define(['PawnsAtWar', 'services/ApiService', 'directives/resource', 'services/ti
     };
 
     $scope.canBuild = function () {
-      return $scope.building !== undefined && !$scope.building.alreadyBuilding && $scope.building.tile.owner.id == $scope.building.id && ($scope.building.tile.type == 0 || $scope.building.tile.type == 5);
+      if($scope.building === undefined)
+        return false;
+      if($scope.building.alreadyBuilding)
+        return false;
+      if($scope.building.tile.owner == null && (!$scope.building.canBuildCastle || $scope.building.tile.type == 5))
+        return false;
+      if($scope.building.tile.owner != null && $scope.building.tile.owner.id != $scope.building.id)
+        return false;
+      if($scope.building.tile.type != 0 && $scope.building.tile.type != 5)
+        return false;
+      return true;
     };
     $scope.canAttack = function () {
       return $scope.building !== undefined && $scope.building.tile.owner != null && $scope.building.tile.owner.id != $scope.building.id && $scope.building.tile.type != 5 && $scope.building.tile.type != 0;

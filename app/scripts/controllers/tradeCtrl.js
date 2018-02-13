@@ -1,4 +1,4 @@
-define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
+define(['PawnsAtWar', 'services/ApiService', 'directives/resource'], function(PawnsAtWar) {
 
   'use strict';
   PawnsAtWar.controller('tradeCtrl', function ($scope, ApiService) {

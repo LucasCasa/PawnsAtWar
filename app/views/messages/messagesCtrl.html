@@ -6,7 +6,7 @@
 <div class="row">
   <h2 style="text-align: center" ng-show="messages.unread.length == 0">{{'NO_MESSAGES' | translate}}</h2>
 </div>
-<table class="table table-hover" ng-show="messages.unread.length > 0">
+<table id="buildListTable" style="table-layout:fixed;" class="table table-hover" ng-show="messages.unread.length > 0">
   <thead>
   <td>{{'USERNAME' | translate}}</td>
   <td>{{'SUBJECT' | translate}}</td>
@@ -39,7 +39,8 @@
 <div class="row">
   <h2 style="text-align: center" ng-show="messages.read.length == 0">{{'NO_MESSAGES' | translate}}</h2>
 </div>
-<table class="table table-hover" ng-show="messages.read.length > 0">
+
+<table  id="buildListTable2" style="table-layout:fixed;" class="table table-hover" ng-show="messages.read.length > 0">
   <thead>
   <td>{{'USERNAME' | translate}}</td>
   <td>{{'SUBJECT' | translate}}</td>

@@ -66,16 +66,29 @@ define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/r
         }
       }, 1000);
 
+      $scope.myPosition = function () {
+        ApiService.myPosition().then(function (response) {
+          $scope.map = response;
+          for(var i = 0; i< $scope.map.tiles.length; i++){
+            for(var j =0; j< $scope.map.tiles[0].length; j++) {
+              $scope.map.tiles[i][j].type = tileMapper.getImage($scope.map.tiles[i][j].type);
+            }
+          }
+        }, function (error) {
+          alert("ERROR" + error.status);
+        });
+      };
+
       $scope.reload = function () {
         if($routeParams.x != undefined && $routeParams.y != undefined) {
           $scope.populateMap($routeParams.x, $routeParams.y);
         }else if($scope.map === undefined){
-          $scope.populateMap(50,50);
+          $scope.myPosition();
         }else{
           $scope.populateMap($scope.map.x, $scope.map.y);
         }
+
         ApiService.getResources().then(function (response) {
-          console.log(response);
           $scope.res = response;
         });
         $scope.getAlerts();

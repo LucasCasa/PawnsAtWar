@@ -166,6 +166,11 @@ define([], function() {
     TERR_GOLD : 'Terreno de oro',
     MILL : 'Molino',
     STABLE : 'Establo',
-    SEND_TO: 'Mandar a'
+    TYPE: 'Tipo',
+    TROOPS: 'Tropas',
+    SEND_TO: 'Mandar a',
+    UPGRADES: 'Mejoras',
+    POSITION: 'Posicion',
+    TACTICS:  'Vista tactica'
   };
 });

@@ -17,6 +17,7 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
       };
 
       $scope.createMessage = function () {
+
         if($scope.giveTo == ''){
           $scope.noUserError = true;
         } else {
@@ -35,13 +36,20 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
         if($scope.giveTo == '' || $scope.giveSubject == '' || $scope.giveMessage == ''){
           return;
         }
-
         ApiService.createMessage($scope.giveTo, $scope.giveSubject, $scope.giveMessage).then(function (response) {
-            $scope.errorMessage = undefined;
+          $scope.getMessages();
+          $scope.giveTo = '';
+          $scope.giveSubject = '';
+          $scope.giveMessage = '';
+          var counter = document.getElementById('counter');
+          counter.setAttribute('value','1024');
+          $scope.errorMessage = undefined;
         }, function (error) {
           $scope.errorMessage = error.data.errorId;
         });
       };
+
+      $scope.getMessages();
 
       $scope.deleteMessage = function (id) {
         ApiService.deleteMessage(id).then(function (response) {
@@ -61,8 +69,6 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
 
         var message = document.getElementById('message');
         if(message){
-          console.log('hello world');
-          console.log(message);
           message.focus();
         }
 
@@ -71,13 +77,11 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
 
       $scope.answerMessage = function (id) {
         ApiService.answerMessage(id).then(function (response) {
+          $scope.getMessages();
         }, function (error) {
           alert("ERROR" + error.status);
         });
       };
-
-
-      $scope.getMessages();
 
       $scope.activePosition = -1;
       $scope.messageDetails = function(id) {
@@ -97,10 +101,6 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
           counter.setAttribute('value', (value).toString());
         }
       };
-
-
     });
-
-
 
 });

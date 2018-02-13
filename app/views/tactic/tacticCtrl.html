@@ -1,12 +1,28 @@
-<div class="jumbotron">
-	<h1>'Allo, 'Allo!</h1>
-	<p class="lead">
-		<img src="images/yeoman.png" alt="I'm Yeoman"><br>
-		{{'WELCOME_CONTROLLER' | translate}}
-	</p>
-	<p><a class="btn btn-lg btn-success" ng-href="#">Incredible!<span class="glyphicon glyphicon-ok"></span></a></p>
-</div>
+<br>
+<resource res="res"></resource>
+<br>
+<h1 style="text-align: center;">{{'TACTICS' | translate}}</h1>
+<br>
+<table  id="buildListTable" style="table-layout:fixed;">
+  <thead>
+  <td>{{'BUILDING' | translate}}</td>
+  <td>{{'POSITION' | translate}}</td>
+  <td>{{'LEVEL' | translate}}</td>
+  <td>{{'ARMY' | translate}}</td>
+  <td>{{'ACTION' | translate}}</td>
+  </thead>
+  <tbody>
+  <tr style="text-align: center;" ng-repeat="b in buildings" ng-show="b.tile.type != 5 && b.tile.type != 0">
+    <td>{{tileMapper.getName('BUILD', b.tile.type)}}</td>
+    <td>X: {{b.tile.x}}  Y: {{b.tile.y}}</td>
+    <td>{{b.tile.level}}</td>
+    <td><span ng-repeat="troops in b.army.troops"><img ng-src="{{getTroopImage(troops.type)}}" align="middle" width="32"><strong>{{'  ' + troops.quantity + '   '}}</strong></span></td>
+    <td>
+      <button  ng-disabled="b.alreadyBuilding" ng-click="levelUp(b.tile.x, b.tile.y)" class="myButton">{{'LEVEL_UP' | translate}}</button>
+      <button  ng-click="goto(b.tile.x, b.tile.y)" class="myButton">{{'GO' | translate}}</button>
+    </td>
+  </tr>
+  </tbody>
+</table>
 
-<div class="row marketing">
-	<p>{{'WELCOME_CONTROLLER_FOLLOWUP' | translate}}</p>
-</div>
+
