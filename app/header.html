@@ -21,7 +21,7 @@
       <li><a href="#!/ranking">{{'RANKING' | translate}}</a></li>
       <li><a href="#!/messages">{{'MESSAGES' | translate}}<i class="glyphicon glyphicon-bell notification-icon"></i></a>
       </li>
-      <li><a ng-click="localStorage.removeItem('token')" href="#!/login">{{'LOGOUT' | translate}}</a></li>
+      <li><a ng-click="authManager.unauthenticate();localStorage.removeItem('token')" href="#!/login">{{'LOGOUT' | translate}}</a></li>
     </ul>
   </div><!-- /.navbar-collapse -->
 </div><!-- /.container-fluid -->

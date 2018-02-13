@@ -1,12 +1,20 @@
 define(['PawnsAtWar', 'services/ApiService'], function (PawnsAtWar) {
 
   'use strict';
-  PawnsAtWar.controller('armiesCtrl', ['$scope', 'ModalService', 'ApiService', function ($scope, ModalService, ApiService) {
+  PawnsAtWar.controller('armiesCtrl', function ($scope, $routeParams, ModalService, ApiService) {
+    $scope.attackx = $routeParams.x;
+    $scope.attacky = $routeParams.y;
     $scope.x = [];
     $scope.y = [];
     $scope.getArmies = function () {
       ApiService.getArmies().then(function (response) {
         $scope.armies = response;
+        if($scope.attackx != undefined || $scope.attacky != undefined){
+          for(var i = 0; i< $scope.armies.length; i++){
+            $scope.x[i] = $scope.attackx;
+            $scope.y[i] = $scope.attacky;
+          }
+        }
       });
     };
 
@@ -58,7 +66,7 @@ define(['PawnsAtWar', 'services/ApiService'], function (PawnsAtWar) {
       });
 
     };
-  }]);
+  });
 
   PawnsAtWar.controller('splitModalCtrl', function ($scope, $element, ApiService, warriorAmount, archerAmount, horsemenAmount, armyId, close) {
     $scope.warriorAmount = warriorAmount;

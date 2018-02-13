@@ -5,6 +5,7 @@ public class UserCreateDTO {
   private String username;
   private String password;
   private String email;
+  private String locale;
 
   public UserCreateDTO() {}
 
@@ -30,5 +31,13 @@ public class UserCreateDTO {
 
   public void setEmail(String email) {
     this.email = email;
+  }
+
+  public String getLocale() {
+    return locale;
+  }
+
+  public void setLocale(String locale) {
+    this.locale = locale;
   }
 }
