@@ -10,10 +10,11 @@ define([], function () {
       },
       '/map': {
         templateUrl: 'views/map/mapCtrl.html',
-        controller: 'mapCtrl',
-        data: {
-          requiresLogin: true
-        }
+        controller: 'mapCtrl'
+      },
+      '/map/:x/:y': {
+        templateUrl: 'views/map/mapCtrl.html',
+        controller: 'mapCtrl'
       },
       '/login': {
         templateUrl: 'views/login/LoginCtrl.html',
