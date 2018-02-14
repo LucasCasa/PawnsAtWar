@@ -26,8 +26,6 @@ define(['PawnsAtWar','services/ApiService', 'services/tileMapper'], function(Paw
         ApiService.getArmies().then(function (response) {
           var armies = response;
           var position = null;
-          console.log(armies);
-          console.log(armies[0].troops[0].quantity);
 
           for (var i = 0; i< armies.length; i++) {
             position = armies[i].position;

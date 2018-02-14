@@ -103,6 +103,28 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
         }
       };
 
+      //AutoComplete starts
+
+      $scope.localSearch = function(str) {
+        $scope.matches = [];
+        ApiService.getUsers().then(function (response) {
+         var  users = response;
+          console.log(str);
+          console.log(users);
+        });
+
+        // people.forEach(function(person) {
+        //   var fullName = person.firstName + ' ' + person.surname;
+        //   if ((person.firstName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+        //     (person.surname.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0) ||
+        //     (fullName.toLowerCase().indexOf(str.toString().toLowerCase()) >= 0)) {
+        //     matches.push(person);
+        //   }
+        // });
+        // return matches;
+      };
+      //AutoComplete ends
+
 
       $scope.showMessage = function (id, from, subject, message) {
         $scope.answerMessage(id);

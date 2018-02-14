@@ -3,10 +3,7 @@ package ar.edu.itba.paw.webapp.controller;
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.User;
-import ar.edu.itba.paw.webapp.DTOs.ErrorDTO;
-import ar.edu.itba.paw.webapp.DTOs.UserCreateDTO;
-import ar.edu.itba.paw.webapp.DTOs.UserDTO;
-import ar.edu.itba.paw.webapp.DTOs.UserScoreDTO;
+import ar.edu.itba.paw.webapp.DTOs.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -65,6 +62,17 @@ public class UsersController {
     }
     return Response.ok().entity(new UserScoreDTO(user, es.calculateScore(user))).build();
   }
+
+  @GET
+  @Path("/{userName}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getUsernamesByOccurence(@PathParam("userName") String userName){
+    final List<UserDTO> users = new ArrayList<>();
+    us.getUsernames(userName).forEach(user -> users.add(new UserDTO(new User(user, null, null))));
+    return Response.ok().entity(new UserNameDTO(users)).build();
+  }
+
+
 
   @POST
   @Path("/")

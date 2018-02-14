@@ -115,81 +115,19 @@
   </div>
 </div>
 
-<!--<h1>{{'MESSAGE_UNREAD' | translate}}</h1>-->
-<!--<div class="row">-->
-  <!--<h2 style="text-align: center" ng-show="messages.unread.length == 0">{{'NO_MESSAGES' | translate}}</h2>-->
-<!--</div>-->
-<!--<table id="buildListTable" style="table-layout:fixed;" class="table table-hover" ng-show="messages.unread.length > 0">-->
-  <!--<thead>-->
-  <!--<td>{{'USERNAME' | translate}}</td>-->
-  <!--<td>{{'SUBJECT' | translate}}</td>-->
-  <!--<td>{{'ACTION' | translate}}</td>-->
-  <!--</thead>-->
-  <!--<tbody>-->
-  <!--<tr ng-repeat-start="message in messages.unread"  class="clickable">-->
-    <!--<td ng-click="messageDetails(message.id)">{{message.from}}</td>-->
-    <!--<td ng-click="messageDetails(message.id)">{{message.subject}}</td>-->
-    <!--<td>-->
-      <!--<div>-->
-      <!--<input type="hidden" name="id" ng-value="message.id"/>-->
-        <!--<button class="myButton" ng-click="answer(message.id, message.from, message.subject)">-->
-          <!--{{'ANSWER' | translate}}-->
-        <!--</button>-->
-        <!--<button class="myButton" ng-click="deleteMessage(message.id)">-->
-        <!--{{'DELETE' | translate}}-->
-        <!--</button>-->
-
-      <!--</div>-->
-    <!--</td>-->
-  <!--</tr>-->
-  <!--<tr ng-repeat-end ng-show="activePosition == {{message.id}}" ng-click="">-->
-    <!--<td colspan="3" style=" color: #333;background-color: #fff;">Message: {{message.message}}</td>-->
-  <!--</tr>-->
-  <!--</tbody>-->
-<!--</table>-->
-
-<!--<h1>{{'READ_MESSAGE' | translate}}</h1>-->
-<!--<div class="row">-->
-  <!--<h2 style="text-align: center" ng-show="messages.read.length == 0">{{'NO_MESSAGES' | translate}}</h2>-->
-<!--</div>-->
-
-<!--<table  id="buildListTable2" style="table-layout:fixed;" class="table table-hover" ng-show="messages.read.length > 0">-->
-  <!--<thead>-->
-  <!--<td>{{'USERNAME' | translate}}</td>-->
-  <!--<td>{{'SUBJECT' | translate}}</td>-->
-  <!--<td>{{'ACTION' | translate }}</td>-->
-  <!--</thead>-->
-  <!--<tbody>-->
-  <!--<tr ng-repeat-start="message in messages.read" class="clickable-row">-->
-    <!--<td ng-click="messageDetails(message.id)">{{message.from}}</td>-->
-    <!--<td ng-click="messageDetails(message.id)">{{message.subject}}</td>-->
-    <!--<td>-->
-      <!--<div>-->
-        <!--<input type="hidden" name="id" ng-value="message.id"/>-->
-        <!--<button class="myButton" ng-click="answer(message.id, message.from, message.subject)">-->
-          <!--{{'ANSWER' | translate}}-->
-        <!--</button>-->
-        <!--<button class="myButton" ng-click="deleteMessage(message.id)">-->
-          <!--{{'DELETE' | translate}}-->
-        <!--</button>-->
-
-      <!--</div>-->
-    <!--</td>-->
-
-  <!--</tr>-->
-  <!--<tr ng-repeat-end ng-show="activePosition == {{message.id}}" ng-click="">-->
-    <!--<td colspan="3" style=" color: #333;background-color: #fff;">Mensaje: {{message.message}}</td>-->
-
-  <!--</tr>-->
-  <!--</tbody>-->
-<!--</table>-->
-
 <h2>{{'CREATE_MESSAGE' | translate}}</h2>
 <div>
   <div class="form-group">
     <label>{{'USERNAME' | translate}}</label>
     <br>
-    <input type="to" class="form-control" ng-model="giveTo" id="list" name="username" placeholder="{{'MAIL_PLACEHOLDER' | translate}}">
+    <angucomplete-alt id="players"
+                      placeholder="{{'USERNAME' | translate }}"
+                      pause="400"
+                      selected-object="giveTo"
+                      remote-url="api/users/"
+                      remote-url-data-field="users"
+                      title-field="username"
+                      input-class="form-control form-control-small"/>
     <span class="error" ng-show="noUserError">{{'NO_USER' | translate}}</span>
   </div>
   <div class="form-group">

@@ -18,6 +18,10 @@ define(['PawnsAtWar'], function (PawnsAtWar) {
       return res.promise;
     };
 
+    this.getUsers = function () {
+      return this.callApi('GET', 'api/users');
+    };
+
     this.map = function (x, y) {
       return this.callApi('GET', 'api/map/x/y');
     };
