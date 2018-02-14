@@ -15,8 +15,8 @@ define(['PawnsAtWar','services/ApiService', 'services/tileMapper'], function(Paw
                 x: aux[i].x,
                 y: aux[i].y,
                 type: tileMapper.getName('BUILD', aux[i].type),
-                army: '-',
-                amount: '-',
+                army: '',
+                amount: '',
                 level: aux[i].level
               };
             }

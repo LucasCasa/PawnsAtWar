@@ -51,10 +51,13 @@ public class MessageController {
 
     final List<MessageDTO> messagesRead = new ArrayList<>();
     final List<MessageDTO> messagesUnread = new ArrayList<>();
+    final List<MessageDTO> messagesSent = new ArrayList<>();
+
     ms.getReadMessages(user).forEach(m -> messagesRead.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
     ms.getUnreadMessages(user).forEach(m -> messagesUnread.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
+    ms.getSentMessages(user).forEach(m -> messagesSent.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
 
-    return Response.ok().entity(new UserMessagesDTO(messagesRead, messagesUnread)).build();
+    return Response.ok().entity(new UserMessagesDTO(messagesRead, messagesUnread, messagesSent)).build();
 
   }
 

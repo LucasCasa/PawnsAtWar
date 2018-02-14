@@ -1,7 +1,7 @@
 define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
 
     'use strict';
-    PawnsAtWar.controller('messagesCtrl', function($scope, ApiService) {
+    PawnsAtWar.controller('messagesCtrl', function($scope, ApiService, ModalService) {
       $scope.noUserError = false;
       $scope.noSubjectError = false;
       $scope.noMessageError = false;
@@ -66,7 +66,7 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
         $scope.getMessages();
 
         $scope.giveTo = ''+from;
-        $scope.giveSubject = 'RE:' + subject;
+        $scope.giveSubject = subject.includes("RE:")?subject:'RE:' + subject;
 
         var message = document.getElementById('message');
         if(message){
@@ -104,8 +104,59 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
       };
 
 
+      $scope.showMessage = function (id, from, subject, message) {
+        $scope.answerMessage(id);
+        ModalService.showModal({
+          templateUrl: 'views/messages/messageModal.html',
+          controller: 'messageModalCtrl',
+          preClose: function (modal) {
+            modal.element.modal('hide');
+          },
+          inputs: {
+            messageFrom: from,
+            messageSubject: subject,
+            messageDescription: message,
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if(result){
+              $scope.getMessages();
+            }
+          });
+        });
+
+      };
+
     });
 
 
+PawnsAtWar.controller('messageModalCtrl', function ($scope, $element, ApiService, messageFrom, messageSubject, messageDescription, close) {
+    $scope.messageFrom = messageFrom;
+    $scope.messageSubject = messageSubject;
+    $scope.messageDescription = messageDescription;
+
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
+    $scope.close = function (success) {
+      $element.modal('hide');
+      close(success, 500); // close, but give 500ms for bootstrap to animate
+    };
+
+    //  This cancel function must use the bootstrap, 'modal' function because
+    //  the doesn't have the 'data-dismiss' attribute.
+    $scope.cancel = function () {
+
+      //  Manually hide the modal.
+      $element.modal('hide');
+
+      //  Now call close, returning control to the caller.
+      close(false, 500); // close, but give 500ms for bootstrap to animate
+    };
+
+  });
 
 });
+
+
+

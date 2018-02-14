@@ -1,0 +1,29 @@
+<div class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content split">
+      <div class="modal-header">
+        <h4 class="modal-title">{{'MESSAGE' | translate}}</h4>
+      </div>
+      <div class="modal-body" style="text-align: center">
+        <h3 class="error" ng-hide="errorMessage == undefined">{{errorMessage | translate}}</h3>
+        <div class="form-inline">
+          <label style="padding-right: 50px"><h3>{{'USERNAME' | translate}}</h3> : {{messageFrom}}</label>
+        </div>
+        <div class="form-inline">
+          <label style="padding-right: 50px"><h3>{{'SUBJECT' | translate}}</h3> : {{messageSubject}}</label>
+        </div>
+        <div class="form-inline">
+          <label style="padding-right: 50px"><h3>{{'MESSAGE' | translate}}</h3> : </label>
+        </div>
+        <div class="form-inline">
+          {{messageDescription}}
+        </div>
+
+      </div>
+      <!--<div class="modal-footer" style="text-align: center">-->
+        <!--<button type="button" ng-click="split()" class="myButton">{{'SPLIT' | translate}}</button>-->
+        <!--<button type="button" ng-click="cancel()" class="myButton">{{'CANCEL' | translate}}</button>-->
+      <!--</div>-->
+    </div>
+  </div>
+</div>
