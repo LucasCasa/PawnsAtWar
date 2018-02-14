@@ -20,7 +20,7 @@
     </ul>
     <ul class="nav navbar-nav navbar-right">
       <li><a href="#!/ranking">{{'RANKING' | translate}}</a></li>
-      <li><a href="#!/messages">{{'MESSAGES' | translate}}<i class="glyphicon glyphicon-bell notification-icon"></i></a>
+      <li><a href="#!/messages">{{'MESSAGES' | translate}}<i ng-show="messageCount > 0" class="glyphicon glyphicon-bell notification-icon">({{(messageCount > 0)? messageCount: 0}})</i></a>
       </li>
       <li><a ng-click="authManager.unauthenticate();localStorage.removeItem('token')" href="#!/login">{{'LOGOUT' | translate}}</a></li>
     </ul>

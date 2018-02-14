@@ -69,11 +69,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public JavaMailSenderImpl mailSender() {
         JavaMailSenderImpl jmsi = new JavaMailSenderImpl();
-        Properties p = new Properties();
-        p.setProperty("mail.transport.protocol", "smtp");
-        p.setProperty("mail.smtp.auth", "true");
-        p.setProperty("mail.smtp.starttls.enable", "true");
-        p.setProperty("mail.debug", "true");
+        Properties p = jmsi.getJavaMailProperties();
+        p.put("mail.transport.protocol", "smtp");
+        p.put("mail.smtp.auth", "true");
+        p.put("mail.smtp.starttls.enable", "true");
+        p.put("mail.debug", "true");
         jmsi.setHost("smtp.gmail.com");
         jmsi.setPort(587);
         jmsi.setUsername("pawnsatwar@gmail.com");

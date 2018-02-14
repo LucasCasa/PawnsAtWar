@@ -114,6 +114,7 @@ define([], function() {
     ALERT_MOVE: 'Moviendo hacia {{x}},{{y}}',
     ALERT_MERGE: 'Juntando ejercitos en {{x}},{{y}}',
     ALERT_ATTACK_NOTIFICATION: '{{name}} te esta atacando en {{x}},{{y}}',
+    ALERT_RETURN: 'Tus tropas estan volviendo de {{x}}, {{y}}',
     ENDS_IN: 'Finaliza en',
     SECONDS: 'segundos',
     UPGRADE: 'Mejorando',
@@ -149,7 +150,7 @@ define([], function() {
     TROOPS_TRAINED: 'Tropas entrenadas',
     NO_CASTLE: 'El usuario no tiene castillo',
     NO_PLACE: 'No pudimos encontrar lugar para tu castillo',
-    DESC_EMPTY: 'Este es un territorio en el cual puedes construir edificios.',
+    DESC_EMPTY: 'Este es un territorio en el cual puedes construir edificios. Para construir un castillo el terreno no debe tener dueño, y estar a una distancia minima de 3 posiciones de un terreno con dueño',
     DESC_CASTLE : 'Este edificio es un castillo. Aumentarlo de nivel permite almacenar mas recursos. Si un jugador se queda sin castillos pierde.',
     DESC_ARCHERY : 'Este edificio es una arquería. Aquí se pueden entrenar arqueros.',
     DESC_BARRACKS : 'Este edificio es un cuartel. Aquí se pueden entrenar guerreros.',
@@ -166,11 +167,12 @@ define([], function() {
     TERR_GOLD : 'Terreno de oro',
     MILL : 'Molino',
     STABLE : 'Establo',
+    TIME_SECONDS: 'Tiempo(s)',
     TYPE: 'Tipo',
     TROOPS: 'Tropas',
-    SEND_TO: 'Mandar a',
     UPGRADES: 'Mejoras',
     POSITION: 'Posicion',
-    TACTICS:  'Vista tactica'
+    TACTICS:  'Vista tactica',
+    TIME_UNIT: 'Tiempo entrenamiento (s)'
   };
 });

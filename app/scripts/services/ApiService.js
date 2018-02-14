@@ -22,6 +22,10 @@ define(['PawnsAtWar'], function (PawnsAtWar) {
       return this.callApi('GET', 'api/map/x/y');
     };
 
+    this.getMessageCount = function () {
+      return this.callApi('GET', 'api/messages/count');
+    };
+
     this.getMessages = function () {
       return this.callApi('GET', 'api/messages');
     };

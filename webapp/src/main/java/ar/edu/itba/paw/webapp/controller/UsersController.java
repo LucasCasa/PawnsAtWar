@@ -1,6 +1,7 @@
 package ar.edu.itba.paw.webapp.controller;
 
 import ar.edu.itba.interfaces.EmpireService;
+import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.User;
 import ar.edu.itba.paw.webapp.DTOs.ErrorDTO;
@@ -15,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 @Path("users")
 @Controller
@@ -25,6 +28,9 @@ public class UsersController {
 
   @Autowired
   private EmpireService es;
+
+  @Autowired
+  private SectorService ss;
 
   @GET
   @Path("/")
@@ -50,9 +56,9 @@ public class UsersController {
   @Path("/score")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getScores() {
-    final List<UserScoreDTO> scores = new ArrayList<>();
-    us.getAllUsers().forEach(u -> scores.add(new UserScoreDTO(u, es.calculateScore(u))));
-    return Response.ok().entity(scores).build();
+    final Set<UserScoreDTO> scores = new TreeSet<>((UserScoreDTO a, UserScoreDTO b) -> (int)((b.getScore() - a.getScore() == 0)? b.getUsername().compareTo(a.getUsername()) : b.getScore() - a.getScore()));
+    us.getAllUsers().forEach(u -> scores.add(new UserScoreDTO(u, ss.getCastle(u), es.calculateScore(u))));
+    return Response.ok().entity(scores.toArray()).build();
   }
 
   @GET
@@ -63,7 +69,7 @@ public class UsersController {
     if (user == null) {
       return Response.status(Response.Status.NOT_FOUND).build();
     }
-    return Response.ok().entity(new UserScoreDTO(user, es.calculateScore(user))).build();
+    return Response.ok().entity(new UserScoreDTO(user,ss.getCastle(user), es.calculateScore(user))).build();
   }
 
   @POST

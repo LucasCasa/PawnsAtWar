@@ -117,5 +117,18 @@ public class MessageController {
     return Response.noContent().build();
   }
 
+  @GET
+  @Path("/count")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getMessageCount() {
+    User user = AuthenticatedUser.getUser(us);
+
+    if (user == null) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
+
+    return Response.ok().entity(ms.countUnreadMessages(user)).build();
+  }
+
 
 }

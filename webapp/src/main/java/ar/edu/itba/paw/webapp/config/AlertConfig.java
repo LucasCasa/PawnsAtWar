@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.util.Calendar;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class AlertConfig {
     ScheduleService sh;
 
 
-    @Scheduled(fixedDelay = Long.MAX_VALUE)
+    @PostConstruct
     public void setAlerts() {
         List<Alert> alerts = as.getAllAlerts();
         alerts.forEach(this::checkAlert);
@@ -54,9 +55,11 @@ public class AlertConfig {
         }else if(s.equals(AlertType.UPGRADE.toString())){
             ss.levelUp(a.getP());
         }else if(s.equals(AlertType.ATTACK.toString())){
-
+            ars.setAvailable(a.getParam1(), true);
         }else if(s.equals(AlertType.RECRUIT.toString())){
             ars.trainTroops(a.getUser(),a.getP(),a.getParam2(),a.getParam1());
+        } else if(s.equals(AlertType.RETURN.toString())){
+          ars.setAvailable(a.getParam1(), true);
         }
         as.removeAlert(a);
     }

@@ -34,14 +34,18 @@
           <tr>
             <td> {{'LEVEL' | translate}}</td>
             <td> {{getBonusName(building.tile.type) | translate}}</td>
+            <td ng-show="building.tile.type == 2 || building.tile.type == 3 || building.tile.type == 8"> {{'TIME_UNIT' | translate}}</td>
             <td>{{'COST' | translate}}</td>
+            <td>{{'TIME_SECONDS' | translate}}</td>
           </tr>
           </thead>
           <tbody>
           <tr ng-repeat="level in range(building.tile.level,20)" ng-class="{bold:$first}">
             <td>{{level}}</td>
             <td><img class="resource" ng-src="{{getBonusIcon(building.tile.type)}}"><span class="quantity">{{getBonusValue(building.tile.type, level) | number:1}}</span></td>
+            <td ng-show="building.tile.type == 2 || building.tile.type == 3 || building.tile.type == 8">30</td>
             <td><img class="resource" src="images/iconResGold.png"><span class="quantity">{{1000 + level * level * level * level}}</span></td>
+            <td>{{60 * level}}</td>
           </tr>
           </tbody>
         </table>
@@ -54,6 +58,7 @@
         <td>{{'BUILDING' | translate}}</td>
         <td>{{'DESCRIPTION' | translate}}</td>
         <td>{{'COST' | translate}}</td>
+        <td>{{'TIME_SECONDS' | translate}}</td>
         <td>{{'BUILD' | translate}}</td>
         </thead>
         <tbody>
@@ -61,6 +66,7 @@
           <td><img class="img-responsive" ng-src="{{b.img}}"/></td>
           <td>{{b.description | translate}}</td>
           <td>{{b.cost}}</td>
+          <td>{{60}}</td>
           <td>
             <button class="myButton" ng-click="build(b.type)">{{'BUILD' | translate}}</button>
           </td>

@@ -68,7 +68,7 @@ define(['routes',
       authManager.redirectWhenUnauthenticated();
       $rootScope.$on('$routeChangeStart', function (event, next, current) {
         // if logged in and trying to access loggin => redirect to map
-        if (authManager.isAuthenticated() && ($location.url() == '#!/login')) {
+        if (authManager.isAuthenticated() && ($location.url().includes('login'))) {
           $window.location.href = '#!/map'
         }
         // if route requires auth and user is not logged in

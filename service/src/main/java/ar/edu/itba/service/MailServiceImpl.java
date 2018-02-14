@@ -2,6 +2,7 @@ package ar.edu.itba.service;
 
 import ar.edu.itba.interfaces.PAWMailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
@@ -15,6 +16,7 @@ public class MailServiceImpl implements PAWMailService{
     private MailSender mailSender; // MailSender interface defines a strategy
     // for sending simple mails
 
+    @Async
     public void sendEmail(String toAddress, String subject, String msgBody) {
 
         SimpleMailMessage msg = new SimpleMailMessage();

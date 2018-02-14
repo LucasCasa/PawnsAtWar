@@ -114,6 +114,7 @@ define([], function() {
     ALERT_MOVE: 'Moving to {{x}},{{y}}',
     ALERT_MERGE: 'Merging on {{x}},{{y}}',
     ALERT_ATTACK_NOTIFICATION: '{{name}} is attacking you on {{x}},{{y}}',
+    ALERT_RETURN: 'Your troops are returning from {{x}}, {{y}}',
     ENDS_IN: 'Ends in',
     SECONDS: 'seconds',
     UPGRADE: 'Upgrading',
@@ -149,7 +150,7 @@ define([], function() {
     TROOPS_TRAINED: 'Troops trained',
     NO_CASTLE: 'The user does not have a castle',
     NO_PLACE: 'We couldn\'t find a place for your castle',
-    DESC_EMPTY: 'This is an area available for building construction.',
+    DESC_EMPTY: 'This is an area available for building construction, To build a castle, the terrain mustn\'t have an owner, and be 3 tiles away from a terrain with an owner',
     DESC_CASTLE : 'This building is a castle. Leveling up will increase the storage capacity. If a player is left with no castles he loses.',
     DESC_ARCHERY : 'This building is an archery where archers can be recruited.',
     DESC_BARRACKS : 'This building is a barracks where warriors can be recruited.',
@@ -166,11 +167,13 @@ define([], function() {
     TERR_GOLD : ' Gold Terrain',
     MILL : ' Mill',
     STABLE : ' Stable',
+    TIME_SECONDS: 'Time (s)',
     UPGRADES: 'Upgrades',
     POSITION: 'Position',
     TACTICS:  'Tactic View',
     SEND_TO: 'Send to',
     TYPE: 'Type',
-    TROOPS: 'Troops'
+    TROOPS: 'Troops',
+    TIME_UNIT: 'Training time (s)'
     };
 });

@@ -7,7 +7,7 @@
   <tbody>
     <tr ng-repeat="player in players">
       <td class="pos">{{$index + 1}}</td>
-      <td>{{player.username}}</td>
+      <td><a ng-href="{{'#!/map/' + player.point.x + '/' + player.point.y}}">{{player.username}}</a></td>
       <td>{{player.score}}</td>
     </tr>
   </tbody>
