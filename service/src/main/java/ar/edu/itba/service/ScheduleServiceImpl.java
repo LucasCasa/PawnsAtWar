@@ -78,7 +78,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     Date d = c.getTime();
     Alert alert = as.createAlert(user, getAttackAlertMessage(point), d, AlertType.ATTACK.toString(), point, armyId, null);
     User def = ss.getPlayer(point);
-    Alert alert2 = as.createAlert(def, getNotifyAttackAlertMessage(user, point, def.getLocale()), d, AlertType.ATTACK.toString(), point, armyId, null);
+    Alert alert2 = as.createAlert(def, getNotifyAttackAlertMessage(user, point, def.getLocale()), d, AlertType.ATTACK_NOTIFICATION.toString(), point, null, null);
     setAttackTask(user, point, armyId, alert, d);
     setNotifyAttackTask(alert2, d);
     sendMailToDefender(def);

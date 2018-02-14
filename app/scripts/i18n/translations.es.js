@@ -113,7 +113,7 @@ define([], function() {
     ALERT_SPLIT: 'Separando ejercito hacia {{x}},{{y}}',
     ALERT_MOVE: 'Moviendo hacia {{x}},{{y}}',
     ALERT_MERGE: 'Juntando ejercitos en {{x}},{{y}}',
-    ALERT_ATTACK_NOTIFICATION: '{{name}} te esta atacando en {{x}},{{y}}',
+    ALERT_ATTACK_NOTIFICATION: 'Te estan atacando en {{x}},{{y}}',
     ALERT_RETURN: 'Tus tropas estan volviendo de {{x}}, {{y}}',
     ENDS_IN: 'Finaliza en',
     SECONDS: 'segundos',
