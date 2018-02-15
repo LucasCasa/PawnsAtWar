@@ -39,7 +39,7 @@ public class MessageController {
   @GET
   @Path("/")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response getUserMessages(){
+  public Response getUserMessages() {
 
     User user = AuthenticatedUser.getUser(us);
 
@@ -59,23 +59,23 @@ public class MessageController {
   @POST
   @Path("/")
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response createMessage(MessageCreateDTO create){
+  public Response createMessage(MessageCreateDTO create) {
     User user = AuthenticatedUser.getUser(us);
     User to = us.findByUsername(create.getTo());
 
-    if(to == null){
+    if (to == null) {
       return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("INVALID_USER")).build();
     } else if (user.equals(to)) {
       return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("MESSAGE_TO_SELF")).build();
     }
 
-    if(create.getMessage().length() > 1024 || create.getSubject().length() > 50){
+    if (create.getMessage().length() > 1024 || create.getSubject().length() > 50) {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    Message message =  ms.createMessage( user, to, create.getSubject(), create.getMessage());
+    Message message = ms.createMessage(user, to, create.getSubject(), create.getMessage());
 
-    if (message!=null) {
+    if (message != null) {
       return Response.noContent().build();
     } else {
       return Response.status(Response.Status.BAD_REQUEST).build();
@@ -86,11 +86,11 @@ public class MessageController {
   @DELETE
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
-  public Response deleteMessage(@PathParam("id") final Long id){
+  public Response deleteMessage(@PathParam("id") final Long id) {
 
     Message msg = ms.getById(id);
 
-    if(msg == null) {
+    if (msg == null) {
       return Response.status(Response.Status.NOT_FOUND).build();
     }
 
@@ -103,13 +103,15 @@ public class MessageController {
   @PUT
   @Path("/{id}")
   @Consumes(MediaType.APPLICATION_JSON)
-  public Response answerMessage(@PathParam("id") final Long id){
+  public Response answerMessage(@PathParam("id") final Long id) {
 
     User user = AuthenticatedUser.getUser(us);
     Message msg = ms.getById(id);
 
-    if(msg==null || (!msg.getFrom().equals(user) && !msg.getTo().equals(user))) {
-      return Response.status(Response.Status.BAD_REQUEST).build();
+    if (msg == null) {
+      return Response.status(Response.Status.NOT_FOUND).build();
+    } else if (!msg.getFrom().equals(user) && !msg.getTo().equals(user)) {
+      return Response.status(Response.Status.UNAUTHORIZED).build();
     }
 
     ms.markAsRead(id);
