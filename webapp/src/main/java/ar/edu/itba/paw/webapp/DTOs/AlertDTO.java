@@ -3,18 +3,23 @@ package ar.edu.itba.paw.webapp.DTOs;
 import ar.edu.itba.model.Alert;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+import java.util.Calendar;
+import java.util.Date;
+
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class AlertDTO {
 
   private String type;
   private long timestamp;
+  private long serverTimestamp;
   private PointDTO position;
   private Integer param1;
   private Integer param2;
 
   public AlertDTO(Alert alert) {
     this.type = alert.getType();
+    this.serverTimestamp = new Date().getTime();
     this.timestamp = alert.getDate().toInstant().toEpochMilli();
     this.position = new PointDTO(alert.getP());
     this.param1 = alert.getParam1();
@@ -27,6 +32,14 @@ public class AlertDTO {
 
   public void setType(String type) {
     this.type = type;
+  }
+
+  public long getServerTimestamp() {
+    return serverTimestamp;
+  }
+
+  public void setServerTimestamp(long serverTimestamp) {
+    this.serverTimestamp = serverTimestamp;
   }
 
   public long getTimestamp() {

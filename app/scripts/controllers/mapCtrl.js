@@ -41,7 +41,7 @@ define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/r
         ApiService.getAlerts().then(function (response) {
           $scope.alerts = response;
           for(var i = 0; i< $scope.alerts.length;i++){
-            $scope.alerts[i].timestamp = ($scope.alerts[i].timestamp - Date.now()) / 1000;
+            $scope.alerts[i].timestamp = ($scope.alerts[i].timestamp - $scope.alerts[i].serverTimestamp) / 1000;
           }
         })
       };
