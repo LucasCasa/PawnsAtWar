@@ -89,13 +89,4 @@ public class CommerceServiceImpl implements CommerceService {
     cd.createOffer(u, giveType, giveAmount, getType, receiveAmount);
     return true;
   }
-
-  public void setEmpireService(EmpireService empireService) {
-    this.es = empireService;
-  }
-
-  public void setCommerceDao(CommerceDao commerceDao) {
-    this.cd = commerceDao;
-  }
-
 }

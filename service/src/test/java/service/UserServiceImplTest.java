@@ -2,43 +2,49 @@ package service;
 
 import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.UserDao;
+import ar.edu.itba.model.User;
 import ar.edu.itba.service.UserServiceImpl;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.mockito.runners.MockitoJUnitRunner;
-import static org.junit.Assert.*;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class UserServiceImplTest {
 
-    private UserServiceImpl userService;
+  @InjectMocks
+  private UserServiceImpl userService;
 
-    @Mock
-    private UserDao userDao;
+  @Mock
+  private UserDao userDao;
 
-    @Mock
-    private EmpireService empireService;
+  @Mock
+  private EmpireService empireService;
 
-    @Rule
-    public MockitoRule mockitoRule = MockitoJUnit.rule();
+  @Rule
+  public MockitoRule mockitoRule = MockitoJUnit.rule();
 
-    @Before
-    public void setUp() {
-        MockitoAnnotations.initMocks(this);
-        userService = new UserServiceImpl();
-        userService.setUserDao(userDao);
-        userService.setEmpireService(empireService);
-    }
+  @Before
+  public void setUp() {
+    MockitoAnnotations.initMocks(this);
+  }
 
-    @Test
-    public void testCreateUser(){
-        assertEquals(1,1);
-    }
+  @Test
+  public void testFindUsername() {
+    String username = "test";
+    String email = "e@mail";
+    User expected = new User(username, "", email);
+    when(userDao.findByUsername(username)).thenReturn(expected);
+    assertEquals(username, userService.findByUsername(username).getName());
+  }
 
 }

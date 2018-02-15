@@ -57,23 +57,6 @@ public class ArmyServiceImpl implements ArmyService {
   }
 
   @Override
-  public Army getStrongest(User u) {
-    Army strongest = null;
-    double value = 0;
-    List<Army> armies = ad.getArmiesByUserId(u);
-    for (Army a : armies) {
-      if (a.getAvailable()) {
-        double aux = ts.getValue(a.getIdArmy());
-        if (new Double(aux).compareTo(value) > 0) {
-          value = aux;
-          strongest = a;
-        }
-      }
-    }
-    return strongest;
-  }
-
-  @Override
   public boolean trainTroops(User user, Point point, int amountTroops, int troopType) {
     Army ar = getOrCreateArmy(point, user);
     ts.addTroop(ar.getIdArmy(), troopType, amountTroops);
@@ -110,15 +93,4 @@ public class ArmyServiceImpl implements ArmyService {
     }
     return newA;
   }
-
-  public void setArmyDao(ArmyDao armyDao) {
-    this.ad = armyDao;
-  }
-
-  public void setTroopService(TroopService troopService) {
-    this.ts = troopService;
-
-  }
-
-
 }

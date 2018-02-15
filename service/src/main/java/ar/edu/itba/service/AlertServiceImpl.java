@@ -17,7 +17,7 @@ import java.util.List;
 @Service
 @Transactional
 public class AlertServiceImpl implements AlertService {
-	
+
 	@Autowired
 	private AlertDao ad;
 
@@ -59,10 +59,5 @@ public class AlertServiceImpl implements AlertService {
 	@Override
 	public List<Alert> getBuildingConstructed(Point p) {
 		return ad.getBuildingConstructed(p);
-	}
-
-	public void setAlertDao(AlertDao alertDao) {
-		this.ad = alertDao;
-
 	}
 }

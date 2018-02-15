@@ -8,7 +8,6 @@ import ar.edu.itba.model.*;
 import ar.edu.itba.paw.webapp.DTOs.BuildDTO;
 import ar.edu.itba.paw.webapp.DTOs.ErrorDTO;
 import ar.edu.itba.paw.webapp.DTOs.BuildingDTO;
-import ar.edu.itba.paw.webapp.DTOs.TileDTO;
 import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import ar.edu.itba.paw.webapp.data.Info;
 import ar.edu.itba.paw.webapp.data.Validator;

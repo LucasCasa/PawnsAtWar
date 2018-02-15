@@ -15,76 +15,69 @@ import java.util.List;
 @Transactional
 public class MessageServiceImpl implements MessageService {
 
-	@Autowired
-	private MessageDao md;
+  @Autowired
+  private MessageDao md;
 
-	@Override
-	public Message createMessage(User from, User to, String subject, String message) {
+  @Override
+  public Message createMessage(User from, User to, String subject, String message) {
 
-		return md.createMessage(from, to, subject, message);
-	}
+    return md.createMessage(from, to, subject, message);
+  }
 
-	@Override
-	public Message getById(Long id) {
-		if(id < 0){
-			return null;
-		}
-		return md.getById(id);
-	}
+  @Override
+  public Message getById(Long id) {
+    if (id < 0) {
+      return null;
+    }
+    return md.getById(id);
+  }
 
-	@Override
-	public List<Message> getAllMessages(User u) {
-		return md.getAllMessages(u);
-	}
+  @Override
+  public List<Message> getAllMessages(User u) {
+    return md.getAllMessages(u);
+  }
 
-	@Override
-	public void deleteMessage(Long id) {
-		md.removeMessage(id);
-	}
+  @Override
+  public void deleteMessage(Long id) {
+    md.removeMessage(id);
+  }
 
-	@Override
-	public void deleteMessage(Message mssg) {
-		deleteMessage(mssg.getId());
-	}
+  @Override
+  public void deleteMessage(Message mssg) {
+    deleteMessage(mssg.getId());
+  }
 
-	@Override
-	public void deleteMessages(User user) {
-		List<Message> received = user.getReceivedMessages();
-		List<Message> sent = user.getSentMessages();
-		md.removeMessages(sent);
-		md.removeMessages(received);
+  @Override
+  public void deleteMessages(User user) {
+    List<Message> received = user.getReceivedMessages();
+    List<Message> sent = user.getSentMessages();
+    md.removeMessages(sent);
+    md.removeMessages(received);
+  }
 
-	}
+  @Override
+  public int countUnreadMessages(User u) {
+    return md.countUnreadMessages(u);
+  }
 
+  @Override
+  public void markAsRead(Long id) {
+    if (!md.getById(id).isRead())
+      md.markAsRead(id);
+  }
 
-	@Override
-	public int countUnreadMessages(User u){
-		return md.countUnreadMessages(u);
-	}
+  @Override
+  public List<Message> getReadMessages(User u) {
+    return md.getReadMesssages(u);
+  }
 
-	@Override
-	public void markAsRead(Long id) {
-		if(!md.getById(id).isRead())
-			md.markAsRead(id);
-	}
+  @Override
+  public List<Message> getUnreadMessages(User u) {
+    return md.getUnReadMessages(u);
+  }
 
-	@Override
-	public List<Message> getReadMessages(User u) {
-		return md.getReadMesssages(u);
-	}
-
-	@Override
-	public List<Message> getUnreadMessages(User u) {
-		return md.getUnReadMessages(u);
-	}
-
-	@Override
-	public List<Message> getSentMessages(User u) {
-		return md.getSentMessages(u);
-	}
-
-	public void setMessageDao(MessageDao messageDao){
-		this.md = messageDao;
-	}
-
+  @Override
+  public List<Message> getSentMessages(User u) {
+    return md.getSentMessages(u);
+  }
 }

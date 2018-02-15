@@ -98,10 +98,10 @@ public class EmpireServiceImpl implements EmpireService{
 	 * @param u the user whose resources are queried
 	 * @return The time lapsed in seconds
 	 */
-	public long timeLapsed(User u){
-		Date oldTime = u.getEmpire().getLastUpdate();
+	public long timeLapsed(User user){
+		Date oldTime = user.getEmpire().getLastUpdate();
 		Date currentTime = new Date();
-		ed.setLastUpdate(u,currentTime);
+		ed.setLastUpdate(user, currentTime);
 
 		return (currentTime.getTime()-oldTime.getTime())/1000;
 	}
@@ -278,33 +278,5 @@ public class EmpireServiceImpl implements EmpireService{
 	@Override
 	public List<Sector> getBuilding(User u, int type){
 		return ed.getBuilding(u, type);
-	}
-
-	public void setEmpireDao(EmpireDao empireDao) {
-		this.ed = empireDao;
-	}
-
-	public void setSectorService(SectorService sectorService) {
-		this.ss = sectorService;
-	}
-
-	public void setArmyService(ArmyService armyService) {
-		this.as = armyService;
-	}
-
-	public void setCommerceService(CommerceService commerceService) {
-		this.cs = commerceService;
-	}
-
-	public void setResourceService(ResourceDao resourceDao){
-		this.rd = resourceDao;
-	}
-
-	public void setScheduleService(ScheduleService scheduleService) {
-		this.sh = scheduleService;
-	}
-
-	public void setAlertService(AlertService alertService) {
-		this.als = alertService;
 	}
 }
