@@ -125,6 +125,14 @@ public class ArmyController {
     if(!Validator.validBoardPosition(point)) {
       return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("INVALID_POSITION")).build();
     }
+    if(!user.equals(ss.getPlayer(point))){
+      return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("NOT_YOUR_TERRAIN")).build();
+    }
+    Sector s = ss.getSector(point);
+    if(s.getType() == SectorType.EMPTY.getType() || s.getType() == SectorType.TERR_GOLD.getType()){
+      return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("NOT_BUILDING_IN_POSITION")).build();
+    }
+
     if(!as.belongs(user, splitDTO.getArmyId())) {
       return Response.status(Response.Status.UNAUTHORIZED).entity(new ErrorDTO("NOT_YOUR_ARMY")).build();
     }

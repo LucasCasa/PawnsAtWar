@@ -10,7 +10,7 @@
 <form ng-show="divCreate" ng-submit="createMessage()">
   <br>
   <h2 ng-show = "title" ng-hide = "!title">{{'NEW_MESSAGE' | translate}}</h2>
-
+  <h3 class="success" ng-show="messageSent">{{'MESSAGE_SENT' | translate}}</h3>
   <!--EMPIEZA CREAR MENSAJE-->
   <div class="form-group">
     <label>{{'USERNAME' | translate}}</label>

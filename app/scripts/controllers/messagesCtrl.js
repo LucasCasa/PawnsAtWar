@@ -5,6 +5,7 @@ define(['PawnsAtWar','services/ApiService', 'angular-auto-complete'], function(P
       if($rootScope.isGameOver) {
         $window.location.href = '#!/gameover';
       }
+      $scope.messageSent = false;
       $scope.noUserError = false;
       $scope.noSubjectError = false;
       $scope.noMessageError = false;
@@ -31,6 +32,7 @@ define(['PawnsAtWar','services/ApiService', 'angular-auto-complete'], function(P
           $scope.cancelButton = true;
           $scope.divCreate = true;
         }else{
+          $scope.messageSent = false;
           $scope.show = true;
           $scope.title= false;
           $scope.cancelButton = false;
@@ -71,11 +73,13 @@ define(['PawnsAtWar','services/ApiService', 'angular-auto-complete'], function(P
           $scope.clearInput();
           $scope.giveSubject = '';
           $scope.giveMessage = '';
+          $scope.messageSent = true;
           var counter = document.getElementById('counter');
           counter.setAttribute('value','1024');
           $scope.errorMessage = undefined;
         }, function (error) {
           $scope.errorMessage = error.data.errorId;
+          $scope.messageSent = false;
         });
       };
 

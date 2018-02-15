@@ -88,15 +88,14 @@ public class EmpireServiceImpl implements EmpireService{
 		int max = MIN_STORAGE;
 		List<Sector> castles = ed.getBuilding(u, SectorServiceImpl.CASTLE);
 		for(Sector c: castles){
-			for(int i=1; i<= c.getLevel(); i++)
-				max += (1000-10*(i-1)+Math.pow(i, 4));
+      max += (1000*c.getLevel() + Math.pow(3*c.getLevel(), 3));
 		}
 		return max;
 	}
 
 	/**
 	 * Retrieves the time lapsed since last update and sets the new time
-	 * @param userid The id of the user whose resources are queried
+	 * @param u the user whose resources are queried
 	 * @return The time lapsed in seconds
 	 */
 	public long timeLapsed(User u){

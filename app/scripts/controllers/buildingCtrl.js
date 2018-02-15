@@ -136,7 +136,7 @@ define(['PawnsAtWar', 'services/ApiService', 'directives/resource', 'services/ti
         case 4:
           return level * 0.1;
         case 1:
-          return 1000 + level * level * level * level;
+          return 1000*level + Math.pow(3*level, 3);
         case 3:
           return 31 - level;
         case 2:
