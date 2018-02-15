@@ -111,7 +111,7 @@ define(['PawnsAtWar','services/ApiService', 'angular-auto-complete'], function(P
         }
 
         $scope.changeInput(from);
-        $scope.giveSubject = subject.includes("RE:")?subject:'RE:' + subject;
+        $scope.giveSubject = ('RE:' + subject).substring(0, 49);
       };
 
       $scope.showMessage = function (id, from, subject, message, sent) {
