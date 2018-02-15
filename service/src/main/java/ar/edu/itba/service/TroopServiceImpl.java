@@ -64,7 +64,7 @@ public class TroopServiceImpl implements TroopService {
 
   @Override
 	public void addTroop(int idArmy, int type, int amount) {
-		if((type < 0 && type >= MAX_TROOP) || amount < 0){
+		if(type < 0 || type >= MAX_TROOP || amount <= 0){
 			return;
 		}
 		if(td.exists(idArmy,type)){
@@ -72,12 +72,11 @@ public class TroopServiceImpl implements TroopService {
 			return;
 		}
 		td.addTroop(idArmy,type,amount);
-		return;
 	}
 
 	@Override
 	public void subtractTroop(int idArmy, int type, int amount){
-		if((type < 0 && type >= MAX_TROOP || amount < 0 )){
+		if(type < 0 || type >= MAX_TROOP || amount <= 0){
 			return;
 		}
 		if(!td.exists(idArmy,type)){

@@ -149,7 +149,7 @@ public class EmpireServiceImpl implements EmpireService{
 
 	@Override
 	public boolean hasResourcesAvailable(User u, int amount, int resType){
-		int rate = 1; /*Temporary*/
+		double rate = getRate(u, resType);
 		Resource l = ed.getResource(u,resType);
 		int time = (int)timeLapsed(u);
 		return l.getQuantity()+time*rate>=amount;
