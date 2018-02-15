@@ -94,6 +94,7 @@ define([], function() {
     NO_SUBJECT: 'No subject',
     NO_MESSAGE: 'Message is required',
     INVALID_USER: 'The user doesn\'t exists',
+    MESSAGE_TO_SELF: 'Can\'t send a message to yourself',
     TO: 'To:',
     MAIL_PLACEHOLDER: 'Enter player name',
     ADVICE: ' We\'ll never share your email with anyone else.',

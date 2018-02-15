@@ -47,8 +47,6 @@ public class MessageController {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
 
-    //final List<String> usernames = us.getUsernames();
-
     final List<MessageDTO> messagesRead = new ArrayList<>();
     final List<MessageDTO> messagesUnread = new ArrayList<>();
     ms.getReadMessages(user).forEach(m -> messagesRead.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
@@ -67,6 +65,8 @@ public class MessageController {
 
     if(to == null){
       return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("INVALID_USER")).build();
+    } else if (user.equals(to)) {
+      return Response.status(Response.Status.FORBIDDEN).entity(new ErrorDTO("MESSAGE_TO_SELF")).build();
     }
 
     if(create.getMessage().length() > 1024 || create.getSubject().length() > 50){
@@ -88,13 +88,13 @@ public class MessageController {
   @Produces(MediaType.APPLICATION_JSON)
   public Response deleteMessage(@PathParam("id") final Long id){
 
-    Message mssg = ms.getById(id);
+    Message msg = ms.getById(id);
 
-    if(mssg == null)
+    if(msg == null) {
       return Response.status(Response.Status.NOT_FOUND).build();
+    }
 
-
-    ms.deleteMessage(mssg);
+    ms.deleteMessage(msg);
 
     return Response.noContent().build();
   }
@@ -103,15 +103,15 @@ public class MessageController {
   @PUT
   @Path("/{id}")
   @Consumes(MediaType.APPLICATION_JSON)
-  @Produces(MediaType.APPLICATION_JSON)
   public Response answerMessage(@PathParam("id") final Long id){
 
     User user = AuthenticatedUser.getUser(us);
-    Message mssg = ms.getById(id);
+    Message msg = ms.getById(id);
 
-    if(mssg==null || (!mssg.getFrom().equals(user) && !mssg.getTo().equals(user))){
+    if(msg==null || (!msg.getFrom().equals(user) && !msg.getTo().equals(user))) {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
+
     ms.markAsRead(id);
 
     return Response.noContent().build();
@@ -129,6 +129,4 @@ public class MessageController {
 
     return Response.ok().entity(ms.countUnreadMessages(user)).build();
   }
-
-
 }
