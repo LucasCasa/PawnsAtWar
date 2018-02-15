@@ -27,14 +27,7 @@ public class MessageController {
   private UserService us;
 
   @Autowired
-  private MessageSource messageSource;
-
-
-  @Autowired
   private MessageService ms;
-
-  @Autowired
-  private PAWMailService mailService;
 
   @GET
   @Path("/")
@@ -49,10 +42,13 @@ public class MessageController {
 
     final List<MessageDTO> messagesRead = new ArrayList<>();
     final List<MessageDTO> messagesUnread = new ArrayList<>();
-    ms.getReadMessages(user).forEach(m -> messagesRead.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
-    ms.getUnreadMessages(user).forEach(m -> messagesUnread.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getSubject(), m.getMessage())));
+    final List<MessageDTO> messagesSent = new ArrayList<>();
 
-    return Response.ok().entity(new UserMessagesDTO(messagesRead, messagesUnread)).build();
+    ms.getReadMessages(user).forEach(m -> messagesRead.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getTo().getName(), m.getSubject(), m.getMessage())));
+    ms.getUnreadMessages(user).forEach(m -> messagesUnread.add(new MessageDTO(m.getId(), m.getFrom().getName(), m.getTo().getName(), m.getSubject(), m.getMessage())));
+    ms.getSentMessages(user).forEach(m -> messagesSent.add(new MessageDTO(m.getId(), m.getTo().getName(), m.getTo().getName(), m.getSubject(), m.getMessage())));
+
+    return Response.ok().entity(new UserMessagesDTO(messagesRead, messagesUnread, messagesSent)).build();
 
   }
 

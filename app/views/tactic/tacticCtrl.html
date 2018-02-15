@@ -2,21 +2,25 @@
 <resource res="res"></resource>
 <br>
 <h1 style="text-align: center;">{{'TACTICS' | translate}}</h1>
+<h3 class="error" ng-show="errorMessage != undefined">{{errorMessage | translate}}</h3>
+<h3 class="success" ng-show="successMessage != undefined">{{successMessage | translate}}</h3>
 <br>
 <table  id="buildListTable" style="table-layout:fixed;">
   <thead>
   <td>{{'BUILDING' | translate}}</td>
   <td>{{'POSITION' | translate}}</td>
-  <td>{{'LEVEL' | translate}}</td>
   <td>{{'ARMY' | translate}}</td>
+  <td>{{'LEVEL' | translate}}</td>
+  <td>{{'COST' | translate}}</td>
   <td>{{'ACTION' | translate}}</td>
   </thead>
   <tbody>
   <tr style="text-align: center;" ng-repeat="b in buildings" ng-show="b.tile.type != 5 && b.tile.type != 0">
     <td>{{tileMapper.getName('BUILD', b.tile.type)}}</td>
     <td>X: {{b.tile.x}}  Y: {{b.tile.y}}</td>
-    <td>{{b.tile.level}}</td>
     <td><span ng-repeat="troops in b.army.troops"><img ng-src="{{getTroopImage(troops.type)}}" align="middle" width="32"><strong>{{'  ' + troops.quantity + '   '}}</strong></span></td>
+    <td>{{b.tile.level}}</td>
+    <td>{{1000 + b.tile.level * b.tile.level * b.tile.level * b.tile.level}}</td>
     <td>
       <button  ng-disabled="b.alreadyBuilding" ng-click="levelUp(b.tile.x, b.tile.y)" class="myButton">{{'LEVEL_UP' | translate}}</button>
       <button  ng-click="goto(b.tile.x, b.tile.y)" class="myButton">{{'GO' | translate}}</button>

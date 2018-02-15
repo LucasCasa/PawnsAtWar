@@ -1,7 +1,10 @@
 define(['PawnsAtWar','services/ApiService', 'services/tileMapper', 'directives/resource'], function(PawnsAtWar) {
 
     'use strict';
-    PawnsAtWar.controller('tacticCtrl', function($scope, $window, $routeParams, ApiService, tileMapper) {
+    PawnsAtWar.controller('tacticCtrl', function($rootScope, $scope, $window, $routeParams, ApiService, tileMapper) {
+      if($rootScope.isGameOver) {
+        $window.location.href = '#!/gameover';
+      }
       $scope.tileMapper = tileMapper;
       $scope.myBuildings = function () {
         $scope.buildings = [];
@@ -11,8 +14,6 @@ define(['PawnsAtWar','services/ApiService', 'services/tileMapper', 'directives/r
           ApiService.getArmies().then(function (response) {
             var armies = response;
             var position = null;
-            console.log(armies);
-            console.log(armies[0].troops[0].quantity);
 
             for (var i = 0; i< armies.length; i++) {
               position = armies[i].position;
@@ -49,8 +50,11 @@ define(['PawnsAtWar','services/ApiService', 'services/tileMapper', 'directives/r
       $scope.levelUp = function (x, y) {
         ApiService.levelUp(x, y).then(function (response) {
           $scope.myBuildings();
+          $scope.successMessage = 'SUCCESS';
+          $scope.errorMessage = undefined;
         }, function (error) {
-          //ERROR HANDLING
+          $scope.errorMessage = error.data.errorId;
+          $scope.successMessage = undefined;
         });
       };
 

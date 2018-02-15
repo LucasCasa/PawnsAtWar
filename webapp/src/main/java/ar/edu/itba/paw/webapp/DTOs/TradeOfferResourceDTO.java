@@ -13,6 +13,10 @@ public class TradeOfferResourceDTO {
         this.amount = amount;
     }
 
+    public TradeOfferResourceDTO(){
+
+    }
+
     public int getType() {
         return type;
     }

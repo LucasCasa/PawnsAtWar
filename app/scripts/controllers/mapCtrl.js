@@ -1,8 +1,10 @@
 'use strict';
 define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/resource'], function(PawnsAtWar) {
 
-    PawnsAtWar.controller('mapCtrl', function($scope, $routeParams, $http, tileMapper, ApiService, $interval) {
-
+    PawnsAtWar.controller('mapCtrl', function($rootScope, $scope, $window, $routeParams, $http, tileMapper, ApiService, $interval, authManager) {
+      if($rootScope.isGameOver) {
+        $window.location.href = '#!/gameover';
+      }
       $scope.populateMap = function(x, y) {
         $http.get('api/map/' + x +'/' + y).then(function(response){
           $scope.map = response.data;
@@ -58,6 +60,7 @@ define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/r
       };
 
       $interval(function () {
+        if($rootScope.isGameOver || $scope.alerts == undefined) return;
         for (var i = 0; i < $scope.alerts.length; i++) {
           $scope.alerts[i].timestamp -= 1;
           if ($scope.alerts[i].timestamp <= 0) {
@@ -75,7 +78,10 @@ define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/r
             }
           }
         }, function (error) {
-          alert("ERROR" + error.status);
+          if(error.data.errorId == "GAME_OVER"){
+            $rootScope.isGameOver = true;
+            $window.location.href = '#!/gameover';
+          }
         });
       };
 

@@ -8,13 +8,16 @@ define(['routes',
     'angular-translate',
     'angular-jwt',
     'angular-local-storage',
-    'angular-modal-service'],
+    'angular-modal-service',
+    'angucomplete-alt',
+  ],
   function (config, dependencyResolverFor, i18n) {
     var PawnsAtWar = angular.module('PawnsAtWar', [
       'ngRoute',
       'pascalprecht.translate',
       'angular-jwt',
-      'angularModalService'
+      'angularModalService',
+      'angucomplete-alt'
     ]);
     PawnsAtWar
       .config(
@@ -65,7 +68,7 @@ define(['routes',
           }]);
     PawnsAtWar.run(function ($rootScope, $location, authManager, $window) {
       authManager.checkAuthOnRefresh();
-      authManager.redirectWhenUnauthenticated();
+      //authManager.redirectWhenUnauthenticated();
       $rootScope.$on('$routeChangeStart', function (event, next, current) {
         // if logged in and trying to access loggin => redirect to map
         if (authManager.isAuthenticated() && ($location.url().includes('login'))) {

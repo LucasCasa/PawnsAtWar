@@ -1,8 +1,11 @@
 define(['PawnsAtWar', 'services/ApiService', 'directives/resource', 'services/tileMapper'], function (PawnsAtWar) {
 
   'use strict';
-  PawnsAtWar.controller('buildingCtrl', function ($scope, $routeParams, ApiService, tileMapper, $translate, $window) {
+  PawnsAtWar.controller('buildingCtrl', function ($rootScope, $scope, $routeParams, ApiService, tileMapper, $translate, $window) {
 
+    if($rootScope.isGameOver) {
+      $window.location.href = '#!/gameover';
+    }
     $scope.reload = function () {
       ApiService.getBuilding($routeParams.x, $routeParams.y).then(function (response) {
         $scope.building = response;

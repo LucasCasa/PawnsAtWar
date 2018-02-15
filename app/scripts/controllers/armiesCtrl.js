@@ -1,7 +1,10 @@
 define(['PawnsAtWar', 'services/ApiService'], function (PawnsAtWar) {
 
   'use strict';
-  PawnsAtWar.controller('armiesCtrl', function ($scope, $routeParams, ModalService, ApiService) {
+  PawnsAtWar.controller('armiesCtrl', function ($rootScope, $window, $scope, $routeParams, ModalService, ApiService) {
+    if($rootScope.isGameOver) {
+      $window.location.href = '#!/gameover';
+    }
     $scope.attackx = $routeParams.x;
     $scope.attacky = $routeParams.y;
     $scope.x = [];

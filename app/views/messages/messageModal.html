@@ -1,0 +1,21 @@
+<div class="modal fade">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content split">
+      <div class="modal-header">
+        <h4 class="modal-title">{{'MESSAGE' | translate}}</h4>
+      </div>
+      <div class="modal-body" style="text-align: center">
+        <h3 class="error" ng-hide="errorMessage == undefined">{{errorMessage | translate}}</h3>
+          <h2>{{messageFrom}}</h2>
+          <h4><strong>{{messageSubject}}</strong></h4>
+        <div style="display: block">
+          <pre style="max-width: 465px;text-align: left;display:inline-block;white-space:pre-wrap">{{messageDescription}}</pre>
+        </div>
+      </div>
+      <div class="modal-footer" style="text-align: center">
+        <button type="button" ng-click="close()" class="myButton">{{'ANSWER' | translate}}</button>
+        <button type="button" ng-click="cancel()" class="myButton">{{'GO_BACK' | translate}}</button>
+      </div>
+    </div>
+  </div>
+</div>

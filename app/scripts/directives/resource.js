@@ -12,10 +12,12 @@ define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
         }
     });
 
-  PawnsAtWar.controller('resourceController', function ($interval, $scope) {
+  PawnsAtWar.controller('resourceController', function ($rootScope, $interval, $scope) {
+
     $scope.addFood = 0;
     $scope.addGold = 0;
     $interval(function() {
+      if($rootScope.isGameOver || $scope.res == undefined) return;
       $scope.addFood = Math.min($scope.res.resources[0].rate, $scope.res.limit - $scope.res.resources[0].amount);
       $scope.addGold = Math.min($scope.res.resources[1].rate, $scope.res.limit - $scope.res.resources[1].amount);
       $scope.res.resources[0].amount += $scope.addFood;

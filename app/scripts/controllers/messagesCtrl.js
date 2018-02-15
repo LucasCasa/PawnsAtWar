@@ -1,14 +1,21 @@
-define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
+define(['PawnsAtWar','services/ApiService', 'angular-auto-complete'], function(PawnsAtWar) {
 
     'use strict';
-    PawnsAtWar.controller('messagesCtrl', function($scope, ApiService) {
+    PawnsAtWar.controller('messagesCtrl', function($rootScope, $window,  $scope, ApiService, ModalService) {
+      if($rootScope.isGameOver) {
+        $window.location.href = '#!/gameover';
+      }
       $scope.noUserError = false;
       $scope.noSubjectError = false;
       $scope.noMessageError = false;
-
+      $scope.to = 'pepito';
       $scope.giveTo = '';
       $scope.giveSubject = '';
       $scope.giveMessage = '';
+      $scope.show = true;
+      $scope.cancelButton = false;
+      $scope.title= false;
+      $scope.divCreate = false;
 
       $scope.getMessages = function () {
           ApiService.getMessages().then(function (response) {
@@ -16,16 +23,38 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
           })
       };
 
-      $scope.createMessage = function () {
+      $scope.createOrCancelMessage = function () {
+        if($scope.show){
+          $scope.clearInput();
+          $scope.show = false;
+          $scope.title= true;
+          $scope.cancelButton = true;
+          $scope.divCreate = true;
+        }else{
+          $scope.show = true;
+          $scope.title= false;
+          $scope.cancelButton = false;
+          $scope.divCreate = false;
+          $scope.noUserError=false;
+          $scope.noSubjectError=false;
+          $scope.noMessageError=false;
+        }
 
-        if($scope.giveTo == ''){
+      };
+
+      $scope.createMessage = function () {
+        if($scope.giveTo == undefined || $scope.giveTo.originalObject == undefined || $scope.giveTo.originalObject.username == undefined){
           $scope.noUserError = true;
         } else {
           $scope.noUserError = false;
         }
         if($scope.giveSubject == ''){
           $scope.noSubjectError = true;
+
         } else {
+          if($scope.giveSubject.includes("RE:")){
+            $scope.noUserError=false;
+          }
           $scope.noSubjectError = false
         }
         if($scope.giveMessage == ''){
@@ -33,12 +62,13 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
         } else {
           $scope.noMessageError = false;
         }
-        if($scope.giveTo == '' || $scope.giveSubject == '' || $scope.giveMessage == ''){
+        if($scope.noUserError || $scope.giveSubject == '' || $scope.giveMessage == ''){
           return;
         }
-        ApiService.createMessage($scope.giveTo, $scope.giveSubject, $scope.giveMessage).then(function (response) {
+        console.log($scope.giveTo.title);
+        ApiService.createMessage($scope.giveTo.originalObject.username, $scope.giveSubject, $scope.giveMessage).then(function (response) {
           $scope.getMessages();
-          $scope.giveTo = '';
+          $scope.clearInput();
           $scope.giveSubject = '';
           $scope.giveMessage = '';
           var counter = document.getElementById('counter');
@@ -60,18 +90,50 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
       };
 
       $scope.answer = function (id,from, subject) {
-
         $scope.answerMessage(id);
         $scope.getMessages();
 
-        $scope.giveTo = ''+from;
-        $scope.giveSubject = 'RE:' + subject;
+        $scope.show = false;
+        $scope.title= true;
+        $scope.cancelButton = true;
+        $scope.divCreate = true;
+        $scope.noUserError = false;
+        $scope.noSubjectError=false;
+        $scope.noMessageError = false;
 
         var message = document.getElementById('message');
         if(message){
           message.focus();
         }
 
+        $scope.changeInput(from);
+        $scope.giveSubject = subject.includes("RE:")?subject:'RE:' + subject;
+      };
+
+      $scope.showMessage = function (id, from, subject, message, sent) {
+        if (!sent)
+          $scope.answerMessage(id);
+
+        ModalService.showModal({
+          templateUrl: 'views/messages/messageModal.html',
+          controller: 'messageModalCtrl',
+          preClose: function (modal) {
+            modal.element.modal('hide');
+          },
+          inputs: {
+            messageId: id,
+            messageFrom: from,
+            messageSubject: subject,
+            messageDescription: message
+          }
+        }).then(function (modal) {
+          modal.element.modal();
+          modal.close.then(function (result) {
+            if(result.response){
+              $scope.answer(result.id, result.username, result.subject);
+            }
+          });
+        });
 
       };
 
@@ -101,6 +163,50 @@ define(['PawnsAtWar','services/ApiService'], function(PawnsAtWar) {
           counter.setAttribute('value', (value).toString());
         }
       };
+
+
+      $scope.changeInput = function (from) {
+        $scope.$broadcast('angucomplete-alt:changeInput', 'player', {username:from});
+      };
+
+      $scope.clearInput= function () {
+        $scope.$broadcast('angucomplete-alt:clearInput', 'player');
+        $scope.giveSubject='';
+        $scope.giveMessage='';
+      };
+
+      $scope.autoCompleteOptions = {
+        minimumChars:2,
+        data: function(searchText) {
+          ApiService.getUsers(searchText).then(function (response) {
+            return _.pluck(response.users, 'name');
+          })
+        }
+      }
     });
 
+  PawnsAtWar.controller('messageModalCtrl', function ($scope, $element, ApiService, messageId, messageFrom, messageSubject, messageDescription, close) {
+    $scope.messageFrom = messageFrom;
+    $scope.messageSubject = messageSubject;
+    $scope.messageDescription = messageDescription;
+
+    //  This close function doesn't need to use jQuery or bootstrap, because
+    //  the button has the 'data-dismiss' attribute.
+    $scope.close = function (success) {
+      $element.modal('hide');
+      close({response:true, id:messageId, username: messageFrom, subject: messageSubject}, 500); // close, but give 500ms for bootstrap to animate
+    };
+
+    //  This cancel function must use the bootstrap, 'modal' function because
+    //  the doesn't have the 'data-dismiss' attribute.
+    $scope.cancel = function () {
+
+      //  Manually hide the modal.
+      $element.modal('hide');
+
+      //  Now call close, returning control to the caller.
+      close({response:false}, 500); // close, but give 500ms for bootstrap to animate
+    };
+
+  });
 });

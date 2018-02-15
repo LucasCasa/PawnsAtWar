@@ -1,7 +1,11 @@
 define(['PawnsAtWar', 'services/ApiService', 'directives/resource'], function(PawnsAtWar) {
 
   'use strict';
-  PawnsAtWar.controller('tradeCtrl', function ($scope, ApiService) {
+  PawnsAtWar.controller('tradeCtrl', function ($rootScope, $window, $scope, ApiService) {
+    if($rootScope.isGameOver) {
+      $window.location.href = '#!/gameover';
+    }
+
     $scope.showNewOffer = false;
     $scope.errorMessage = undefined;
 

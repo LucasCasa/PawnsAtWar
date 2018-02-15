@@ -4,10 +4,8 @@ import ar.edu.itba.interfaces.EmpireService;
 import ar.edu.itba.interfaces.SectorService;
 import ar.edu.itba.interfaces.UserService;
 import ar.edu.itba.model.User;
-import ar.edu.itba.paw.webapp.DTOs.ErrorDTO;
-import ar.edu.itba.paw.webapp.DTOs.UserCreateDTO;
-import ar.edu.itba.paw.webapp.DTOs.UserDTO;
-import ar.edu.itba.paw.webapp.DTOs.UserScoreDTO;
+import ar.edu.itba.paw.webapp.DTOs.*;
+import ar.edu.itba.paw.webapp.auth.AuthenticatedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -42,6 +40,15 @@ public class UsersController {
   }
 
   @GET
+  @Path("/{userName}")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getUsernamesByOccurence(@PathParam("userName") String userName){
+    final List<UserDTO> users = new ArrayList<>();
+    us.getUsernames(userName).forEach(user -> users.add(new UserDTO(new User(user, null, null))));
+    return Response.ok().entity(new UserListDTO(users)).build();
+  }
+
+  /*@GET
   @Path("/{id}")
   @Produces(MediaType.APPLICATION_JSON)
   public Response getUser(@PathParam("id") int id) {
@@ -50,7 +57,7 @@ public class UsersController {
       return Response.status(Response.Status.NOT_FOUND).build();
     }
     return Response.ok().entity(new UserDTO(user)).build();
-  }
+  }*/
 
   @GET
   @Path("/score")
@@ -86,5 +93,17 @@ public class UsersController {
     }
     us.setLocale(user, createDTO.getLocale());
     return Response.status(Response.Status.NO_CONTENT).build();
+  }
+
+  @PUT
+  @Path("/")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response startAgain(){
+    User user = AuthenticatedUser.getUser(us);
+    if(us.restoreUser(user)){
+      return Response.status(Response.Status.NO_CONTENT).build();
+    } else {
+      return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorDTO("NO_PLACE")).build();
+    }
   }
 }

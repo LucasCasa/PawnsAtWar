@@ -1,7 +1,8 @@
 'use strict'
 define(['PawnsAtWar', 'services/ApiService'], function(PawnsAtWar) {
 
-    PawnsAtWar.controller('LoginCtrl', function($window, $scope, ApiService, $translate) {
+    PawnsAtWar.controller('LoginCtrl', function($rootScope, $window, $scope, ApiService, $translate) {
+      $rootScope.isGameOver = false;
       $scope.loginUsername = '';
       $scope.loginPassword = '';
       $scope.registerUsername = '';

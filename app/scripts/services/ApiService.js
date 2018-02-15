@@ -67,11 +67,11 @@ define(['PawnsAtWar'], function (PawnsAtWar) {
     };
 
     this.removeOffer = function (id) {
-      return this.callApi('DELETE', 'api/commerce/trade' + id);
+      return this.callApi('DELETE', 'api/commerce/trade/' + id);
     };
 
     this.acceptOffer = function (id) {
-      return this.callApi('POST', 'api/commerce/trade' + id, {});
+      return this.callApi('POST', 'api/commerce/trade/' + id, {});
     };
     this.getResources = function () {
       return this.callApi('GET', 'api/resources');
@@ -97,6 +97,9 @@ define(['PawnsAtWar'], function (PawnsAtWar) {
       return this.callApi('PUT', 'api/buildings/' + x + '/' + y, {});
     };
 
+    this.getUsers = function (name) {
+      return this.callApi('GET', 'api/users/' + name);
+    }
     this.getAlerts = function () {
       return this.callApi('GET', 'api/alerts');
     };
@@ -115,6 +118,9 @@ define(['PawnsAtWar'], function (PawnsAtWar) {
 
     this.splitArmy = function (id, x, y, troops) {
       return this.callApi('POST', 'api/armies/split' , {armyId: id, point: {x: x, y: y}, troops: troops});
+    };
+    this.startAgain = function () {
+      return this.callApi('PUT', 'api/users');
     };
 
     this.callApi = function (method, url, params) {

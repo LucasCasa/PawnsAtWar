@@ -48,8 +48,12 @@ define([], function () {
       '/tactic': {
         templateUrl: 'views/tactic/tacticCtrl.html',
         controller: 'tacticCtrl'
+      },
+      '/gameover': {
+        templateUrl: 'views/gameover/gameover.html',
+        controller: 'gameover'
       }
-            /* ===== yeoman hook ===== */
+      /* ===== yeoman hook ===== */
       /* Do not remove these commented lines! Needed for auto-generation */
     }
   };

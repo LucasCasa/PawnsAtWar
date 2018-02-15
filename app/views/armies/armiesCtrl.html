@@ -1,4 +1,7 @@
 <h2 class="error" ng-show="errorMessage != undefined">{{errorMessage | translate}}</h2>
+<div style="text-align: center">
+  <h2 ng-show="armies.length == 0">{{'NO_ARMY' | translate}}</h2>
+</div>
 <div class="army well col-md-3 col-md-offset-1" ng-repeat="army in armies">
   <h3><strong>{{'ARMY_IN' | translate:getPos(army)}}</strong></h3>
   <br>

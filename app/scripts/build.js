@@ -11,6 +11,8 @@ require.config({
         'angular-jwt': '../../bower_components/angular-jwt/dist/angular-jwt',
         'angular-local-storage': '../../bower_components/angular-local-storage/dist/angular-local-storage',
         'angular-modal-service': '../../bower_components/angular-modal-service/dst/angular-modal-service',
+        'angular-auto-complete': '../../bower_components/angular-auto-complete/angular-auto-complete',
+        'angucomplete-alt': '../../bower_components/angucomplete-alt/angucomplete-alt',
         button: '../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/button',
         bootstrap: '../../bower_components/bootstrap/dist/js/bootstrap',
         carousel: '../../bower_components/bootstrap-sass-official/assets/javascripts/bootstrap/carousel',
@@ -71,6 +73,16 @@ require.config({
         ]
       },
       'angular-modal-service': {
+        deps: [
+          'angular'
+        ]
+      },
+      'angular-auto-complete': {
+        deps: [
+          'angular'
+        ]
+      },
+      'angucomplete-alt': {
         deps: [
           'angular'
         ]

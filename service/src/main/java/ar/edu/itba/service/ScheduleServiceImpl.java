@@ -40,10 +40,6 @@ public class ScheduleServiceImpl implements ScheduleService {
   public void buildTask(final User u, final Point p, final int t) {
     Calendar c = Calendar.getInstance();
     int time = 1;
-    if (t == 1) {
-      Point ca = ss.getCastle(u);
-      time += (int) Math.sqrt(Math.pow(ca.getX() - p.getX(), 2) + Math.pow(ca.getY() - p.getY(), 2));
-    }
     c.add(Calendar.MINUTE, time);
     Date d = c.getTime();
     Alert alert = as.createAlert(u, getBuildAlertMessage(u, p, t, d), d, AlertType.BUILD.toString(), p, t, null);
