@@ -62,7 +62,7 @@ define(['PawnsAtWar','services/tileMapper', 'services/ApiService', 'directives/r
       $interval(function () {
         if($rootScope.isGameOver || $scope.alerts == undefined) return;
         for (var i = 0; i < $scope.alerts.length; i++) {
-          $scope.alerts[i].timestamp -= 1;
+          $scope.alerts[i].timestamp = Math.max($scope.alerts[i].timestamp - 1, 0);
           if ($scope.alerts[i].timestamp <= 0) {
             $scope.reload();
           }
